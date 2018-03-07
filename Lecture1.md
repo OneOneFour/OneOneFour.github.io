@@ -49,7 +49,7 @@ The **Statistical Weight** is always a positive integer, it is _un-normalized_ a
 
 ----
 
-####Single Particle States
+#### Single Particle States
 
 We can construct a **single particle state** which is the set of **Microscopic** variables for a _single_ particle in the  system. So for particle _Steve_, its single particle state will be {$$x_{Steve}$$,$p_{Steve}$}. This is **NOT** a microstate, which describes _every_ particle in the system. 
 
