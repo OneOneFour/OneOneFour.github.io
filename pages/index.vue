@@ -165,14 +165,7 @@ html,body{
   transition: background-color 0.2s ease-in-out,color 0.2s ease-in-out;
 }
 
-.container{
-  height:100vh;
-  height:calc(var(--vh,1vh) * 100);
-  position:relative;
-  width:1580px;
-  margin: 0 auto;
-  color:var(--black);
-}
+
 
 .name{
   font-size:42pt;
@@ -259,11 +252,7 @@ html,body{
 .bubble > img{
   flex: 0 0 auto;
 } 
-a{
-  text-decoration: none;
-  cursor:pointer;
-  color:inherit;
-}
+
 .emailaddress{
   font-size: 0.9rem;
 
@@ -313,9 +302,6 @@ a{
 
 /* Three Column */
 @media screen and (max-width:1580px) {
-  .container{
-    width:1240px;
-  }
   .rightbar{
     width: 930px;
   }
@@ -324,18 +310,14 @@ a{
 
 /* Two Column */
 @media screen and (max-width:1240px) {
-  .container{
-    width:920px;
-  }
+
   .rightbar{
     width: 620px;
   }
 }
 
 @media screen and (max-width:970px) {
-  .container{
-    width:700px;
-  }
+
 
    .rightbar{
     width:400px;
@@ -343,9 +325,6 @@ a{
 
 }
 @media screen and (max-width:740px) {
-  .container{
-    width:100%;
-  }
   .project-grid{
       flex-direction: column;
       align-items:center;
