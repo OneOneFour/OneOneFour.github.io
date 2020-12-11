@@ -17,8 +17,9 @@ jobs:
         run: npm install
       - name: Generate Site
         run: npm run generate
-      - name: Push git subdirectory as branch
+      - name: Deploy Site
         uses: s0/git-publish-subdir-action@v2.4.0
+        env:
           REPO: self
           BRANCH: master
           FOLDER: dist
