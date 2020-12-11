@@ -1,5 +1,8 @@
-name:gen-and-deploy
-on:[push]
+name: Generate & Deploy
+on: 
+  push:
+    branches: [page-src]
+
 jobs:
   gen-and-deploy:
     runs-on:ubuntu-latest
