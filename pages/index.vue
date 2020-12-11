@@ -31,7 +31,7 @@
     <div class="mini-left-bar" v-else @click="togglePane">
       <h1 class="mini-left-bar-title">RK</h1>
       <div>
-      <img :src="miniArrow"/>
+        <img :src="miniArrow"/>
       </div>
 
     </div>
@@ -43,8 +43,6 @@
 
 <script>
 import ProjectGrid from '../components/ProjectGrid.vue'
-import sun_img from '@/assets/iconmonstr-brightness-2.svg'
-import moon_img from '@/assets/iconmonstr-weather-118.svg'
 import right_arrow from '@/assets/iconmonstr-arrow-25.svg'
 import down_arrow from '@/assets/iconmonstr-arrow-65.svg'
 
@@ -54,7 +52,7 @@ export default {
   },
   data(){
     return{
-      windowWidth:0,
+      windowWidth:1000,
       resizeResolved:{desktop:true,prevPane:true}
     }
   },
@@ -66,7 +64,7 @@ export default {
       return this.$store.state.pane
     },
     currentIcon(){
-      return (this.night)?  sun_img: moon_img
+      return (this.night)?  '/sun_img.svg': '/moon_img.svg'
     },
     miniArrow(){
       return (this.windowWidth < 740)? down_arrow:right_arrow;
