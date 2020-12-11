@@ -7,6 +7,22 @@
             "icon":"csharp-plain"
         }
     ],
-    "year":2017,
-    "month":4
+    "year":2016,
+    "month":8,
+    "image": "/proc/procterrain.png",
+    "slideshow":[
+        "/proc/procterrain.png"
+    ],
+    "links":[
+        {
+            "type":"GitHub",
+            "logo":"github-plain",
+            "url":"https://github.com/OneOneFour/City-Sim"
+        },
+        {
+            "type": "Download",
+            "logo":"windows8-complete",
+            "url": "/proc/proc-terrain.zip"
+        }
+    ]
 }
