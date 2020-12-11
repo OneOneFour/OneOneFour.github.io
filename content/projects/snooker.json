@@ -22,7 +22,7 @@
         {
             "type":"Launch",
             "logo":"webplay-plain",
-            "url":"/pool/index.html"
+            "url":"/VueSnooker"
         }
     ]
 }
