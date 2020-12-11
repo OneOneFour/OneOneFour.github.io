@@ -21,8 +21,8 @@
         },
         {
             "type": "Download",
-            "logo":"windows8-complete",
-            "url": "/proc/proc-terrain.zip"
+            "logo":"windows8-original",
+            "url": "/proc/procedural.zip"
         }
     ]
 }
