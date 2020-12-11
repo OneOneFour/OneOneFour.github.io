@@ -47,7 +47,7 @@ export default {
   },
   loading: { color: '#333333', throttle: 0 },
   loadingIndicator: {
-    name: 'circle',
+    name: 'chasing-dots',
     color: '#3B8070',
     background: 'white'
   },
