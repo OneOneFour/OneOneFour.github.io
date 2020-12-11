@@ -17,5 +17,9 @@ jobs:
         run: npm install
       - name: Generate Site
         run: npm run generate
-      - name: Deploy site to GitHub pages
-        run: npm run deploy
+      - name: Push git subdirectory as branch
+        uses: s0/git-publish-subdir-action@v2.4.0
+          REPO: self
+          BRANCH: master
+          FOLDER: dist
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
