@@ -1,0 +1,42 @@
+{
+    "title":"Master's Project",
+    "tagline":"Using remote sensing techniques to investigate cloud microphysics of intense tropical cyclones",
+    "tech":[
+        {
+            "name":"Python",
+            "icon":"python-plain"
+        },
+        {
+            "name":"SatPy"
+        },
+        {
+            "name":"NumPy",
+            "icon":"numpy-plain"
+        }
+    ],
+    "links":[
+        {
+            "type":"Project Report",
+            "icon":"download",
+            "url":"/masters/MSci_Report.pdf"
+        },
+        {
+            "type":"GitHub",
+            "logo":"github-plain",
+            "url":"https://github.com/OneOneFour/TropicalCyclonesMSci"
+        }
+    ],
+   "longform_md":"",
+   "location":"Imperial College, London, UK",
+   "year":2020,
+   "month":4,
+   "image":"/masters/graph_img.png",
+   "slideshow":[
+       "/masters/graph_img.png",
+       "/masters/HECTOR_257521_MASKED.png",
+       "/masters/HectorMasked.png",
+       "/masters/model.png"
+   ],
+   "start_year":2019,
+   "start_month":9
+}

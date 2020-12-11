@@ -1,0 +1,24 @@
+{
+    "title":"Predator-Prey Dynamics",
+    "tech":[
+        {
+            "name":"Python",
+            "icon":"python-plain"
+        }
+    ],
+    "tagline":"Adding spatial dynamics to the Lotka-Volterra model via Monte Carlo simulation",
+    "year":2017,
+    "month":6,
+    "image":"/predprey/screenshot.png",
+    "slideshow":[
+        "/predprey/full.png",
+        "/predprey/another.png"
+    ],
+    "links":[
+        {
+            "type":"GitHub",
+            "logo":"github-plain",
+            "url":"https://github.com/OneOneFour/ICSP_Monte_Carlo"
+        }
+    ]
+}

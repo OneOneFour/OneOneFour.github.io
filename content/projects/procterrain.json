@@ -1,0 +1,12 @@
+{
+    "title":"Procedural Terrain Generator",
+    "tagline":"Simple C# based terrain generator using the diamond-square algorithm",
+    "tech":[
+        {
+            "name":"C#",
+            "icon":"csharp-plain"
+        }
+    ],
+    "year":2017,
+    "month":4
+}

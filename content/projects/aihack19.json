@@ -1,0 +1,30 @@
+{
+    "title":"AIHack 2018",
+    "tagline":"Using census data and k-means clustering to investigate the viability of potential train routes",
+    "tech":[
+        {
+            "name":"Python",
+            "icon":"python"
+        },
+        {
+            "name":"Pandas",
+            "icon":"pandas"
+        },
+        {
+            "name":"SciKit Learn"
+        }
+    ],
+    "year":2018,
+    "month":11,
+    "links":[
+        {
+            "type":"GitHub",
+            "logo":"github-plain",
+            "url":"https://github.com/mp2516/AIHack"
+        }
+    ],
+    "image":"/aihack/cover.png",
+    "slideshow":[
+        "/aihack/poster.png"
+    ]
+}

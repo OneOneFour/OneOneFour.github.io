@@ -1,0 +1,46 @@
+{
+    "title":"Ising Model + Neural Networks",
+    "tagline":"IROP project at UBC investigating whether neural networks can identify critical phases in the Ising model",
+    "tech":[
+        {
+            "name":"Python",
+            "icon":"python-plain"
+        },
+        {
+            "name":"C++",
+            "icon":"cplusplus-plain"
+        },
+        {
+            "name":"TensorFlow",
+            "icon":"tensorflow-plain"
+        }
+    ],
+    "links":[
+        {
+            "type":"GitHub",
+            "logo":"github-plain"
+        },
+        {
+            "type":"Full Report",
+            "logo":"download",
+            "url":"/ising/IROP_Report.pdf"
+        },
+        {
+            "type": "Simulation (Win)",
+            "logo":"windows8-original"
+        },
+        {
+            "type": "Simulation (Linux)",
+            "logo":"linux-plain"
+        }
+    ],
+    "image":"/ising/main.png",
+    "slideshow":[
+        "/ising/subcrit.png",
+        "/ising/supercrit_close.png",
+        "/ising/50sweep.png",
+        "/ising/point_1_sample_row.png"
+    ],
+    "year":2019,
+    "month":8
+}
