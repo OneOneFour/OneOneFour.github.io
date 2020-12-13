@@ -4,11 +4,11 @@
     "tech":[
         {
             "name":"Python",
-            "icon":"python"
+            "icon":"python-plain"
         },
         {
             "name":"Pandas",
-            "icon":"pandas"
+            "icon":"pandas-plain"
         },
         {
             "name":"SciKit Learn"

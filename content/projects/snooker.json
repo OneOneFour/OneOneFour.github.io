@@ -15,14 +15,14 @@
     ],
     "links":[
         {
+            "type":"Launch",
+            "logo":"webplay-plain",
+            "url":"/VueSnooker"
+        },
+        {
             "type":"GitHub",
             "logo":"github-plain",
             "url":"http://www.github.com/OneOneFour/VueSnooker"
-        },
-        {
-            "type":"Launch",
-            "logo":"webplay-plain",
-            "url":"/pool/index.html"
         }
     ]
 }

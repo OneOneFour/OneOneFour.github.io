@@ -31,7 +31,7 @@
     <div class="mini-left-bar" v-else @click="togglePane">
       <h1 class="mini-left-bar-title">RK</h1>
       <div>
-      <img :src="miniArrow"/>
+        <img :src="miniArrow"/>
       </div>
 
     </div>
@@ -43,8 +43,6 @@
 
 <script>
 import ProjectGrid from '../components/ProjectGrid.vue'
-import sun_img from '@/assets/iconmonstr-brightness-2.svg'
-import moon_img from '@/assets/iconmonstr-weather-118.svg'
 import right_arrow from '@/assets/iconmonstr-arrow-25.svg'
 import down_arrow from '@/assets/iconmonstr-arrow-65.svg'
 
@@ -54,7 +52,7 @@ export default {
   },
   data(){
     return{
-      windowWidth:0,
+      windowWidth:1000,
       resizeResolved:{desktop:true,prevPane:true}
     }
   },
@@ -66,7 +64,7 @@ export default {
       return this.$store.state.pane
     },
     currentIcon(){
-      return (this.night)?  sun_img: moon_img
+      return (this.night)?  '/sun_img.svg': '/moon_img.svg'
     },
     miniArrow(){
       return (this.windowWidth < 740)? down_arrow:right_arrow;
@@ -167,14 +165,7 @@ html,body{
   transition: background-color 0.2s ease-in-out,color 0.2s ease-in-out;
 }
 
-.container{
-  height:100vh;
-  height:calc(var(--vh,1vh) * 100);
-  position:relative;
-  width:1580px;
-  margin: 0 auto;
-  color:var(--black);
-}
+
 
 .name{
   font-size:42pt;
@@ -261,11 +252,7 @@ html,body{
 .bubble > img{
   flex: 0 0 auto;
 } 
-a{
-  text-decoration: none;
-  cursor:pointer;
-  color:inherit;
-}
+
 .emailaddress{
   font-size: 0.9rem;
 
@@ -315,9 +302,6 @@ a{
 
 /* Three Column */
 @media screen and (max-width:1580px) {
-  .container{
-    width:1240px;
-  }
   .rightbar{
     width: 930px;
   }
@@ -326,18 +310,14 @@ a{
 
 /* Two Column */
 @media screen and (max-width:1240px) {
-  .container{
-    width:920px;
-  }
+
   .rightbar{
     width: 620px;
   }
 }
 
 @media screen and (max-width:970px) {
-  .container{
-    width:700px;
-  }
+
 
    .rightbar{
     width:400px;
@@ -345,9 +325,6 @@ a{
 
 }
 @media screen and (max-width:740px) {
-  .container{
-    width:100%;
-  }
   .project-grid{
       flex-direction: column;
       align-items:center;
