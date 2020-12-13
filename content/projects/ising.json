@@ -28,11 +28,7 @@
         {
             "type": "Simulation (Win)",
             "logo":"windows8-original"
-        },
-        {
-            "type": "Simulation (Linux)",
-            "logo":"linux-plain"
-        }
+        }	
     ],
     "image":"/ising/main.png",
     "slideshow":[
