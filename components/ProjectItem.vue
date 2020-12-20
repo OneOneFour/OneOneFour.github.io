@@ -48,7 +48,10 @@ export default {
     },
     methods:{
         getMonthStr(i){
-            return months[i - 1];
+            if(typeof months[i-1] !== 'undefined'){
+                return months[i - 1];
+            }
+            return "";
         }
     },
     computed:{
