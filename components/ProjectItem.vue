@@ -6,7 +6,8 @@
                 {{startDate}}{{endDate}}
                 <p class="project-item-tagline"> {{project.tagline}}</p>
                 <div class="project-item-footer">
-                    <NuxtLink class="project-item-link" :to="projectUrl">View</NuxtLink>
+                    <a class="project-item-link" v-if="project.directLink" :href="project.directLink">View</a>
+                    <NuxtLink v-else class="project-item-link" :to="projectUrl">View</NuxtLink>
                     <ProjectIcons :tech="project.tech" />
                 </div>
             </div>
@@ -66,7 +67,6 @@ export default {
             
         },
         projectUrl(){
-            if(typeof this.project.directLink !== 'undefined') return this.project.directLink
             return `/project/${this.project.slug}`
         },
         itemStyle(){
