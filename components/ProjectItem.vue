@@ -16,7 +16,6 @@
 <script>
 import ProjectIcons from '@/components/ProjectIcons.vue';
 const months = [
-    "",
     "Jan",
     "Feb",
     "Mar",
