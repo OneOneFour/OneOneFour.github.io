@@ -66,6 +66,7 @@ export default {
             
         },
         projectUrl(){
+            if(typeof this.project.directLink !== 'undefined') return this.project.directLink
             return `/project/${this.project.slug}`
         },
         itemStyle(){
