@@ -16,7 +16,7 @@ export default {
       { rel: 'stylesheet', href:"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"}
     ]
   },
-  ssr:false,
+  ssr:true,
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
     '@/assets/main.css'
