@@ -12,10 +12,10 @@
 
         </div>
         <section class="main">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/j0pz4QePKWs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/p60OWCBusUI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         <p>
             Please find above my application video for my PhD appliciation to the NYU PhD program for Atmospheric, Ocean Science and Mathematics.
-            If the above embeded video does not work, please try this link: <a href="https://www.youtube.com/watch?v=j0pz4QePKWs">https://www.youtube.com/watch?v=j0pz4QePKWs</a> 
+            If the above embeded video does not work, please try this link: <a href="https://www.youtube.com/watch?v=p60OWCBusUI">https://www.youtube.com/watch?v=p60OWCBusUI</a> 
             <br/>
             I hope you enjoy the video and reviewing the rest of my application! 
         </p>
