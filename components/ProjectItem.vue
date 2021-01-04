@@ -108,7 +108,7 @@ export default {
     align-items: flex-start;
     justify-content: space-around;
     padding: 5px 15px;
-}1
+}
 .project-item-tagline{
     font-size:10pt;
 }
