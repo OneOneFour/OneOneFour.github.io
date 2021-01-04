@@ -16,7 +16,7 @@ export default {
       { rel: 'stylesheet', href:"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"}
     ]
   },
-  ssr:false,
+  ssr:true,
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
     '@/assets/main.css'
@@ -46,11 +46,6 @@ export default {
     host:"0.0.0.0"
   },
   loading: { color: '#333333', throttle: 0 },
-  loadingIndicator: {
-    name: 'chasing-dots',
-    color: '#000000',
-    background: 'white'
-  },
   generate:{
     fallback:true
   }
