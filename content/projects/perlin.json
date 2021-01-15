@@ -1,14 +1,18 @@
 {
     "title":"Perlin Noise Generator",
-    "tagline":"Simple implementation of a perlin noise generator. Currently WIP working on adding multiple octave support",
+    "tagline":"Simple implementation of a perlin noise generator",
     "directLink":"/PerlinNoise/",
-    "year":2020,
-    "month":12,
+    "year":2021,
+    "month":1,
     "image":"/perlin/preview.png",
     "tech":[
         {
             "name":"JavaScript",
             "icon":"javascript-plain"
+        },
+        {
+            "name":"VueJS",
+            "icon":"vuejs-plain"
         }
     ]
 }
