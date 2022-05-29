@@ -1,20 +1,12 @@
 {
-  "name": "robert_king_personal_site",
-  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "deploy": "push-dir --dir=dist --branch=master --cleanup"
-  },
-  "dependencies": {
-    "@nuxt/content": "^1.11.1",
-    "core-js": "^3.6.5",
-    "nuxt": "^2.14.6"
+    "preview": "nuxt preview"
   },
   "devDependencies": {
-    "push-dir": "^0.4.1"
+    "nuxt": "3.0.0-rc.3"
   }
 }

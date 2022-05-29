@@ -1,1 +1,0 @@
-A very simple transport app creating using the TransLink API for displaying bus timetables at bus stops closest to the user. The app was built using the VueJS framework and modern JavaScript features including the fetch API. 
