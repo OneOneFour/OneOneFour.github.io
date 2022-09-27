@@ -7,14 +7,18 @@
       </h1>
       <div class="sidetext">
         <p>
-        Recent Physics graduate from Imperial College. 
+        Graduate student in Atmospheric Dynamics at Stanford University.
+        </p>
+        <p>
+          Former developer at Octopus Energy and GMV NSL. 
         </p>
         <p>
         Interested in atmospheric science, applied maths and creating educational visualisations.
+        </p>
         <p>
         Feel free to check out some of my recent projects.
-      </p>
-      <button class="toggle-switch" @click="toggleMode"><img :src="currentIcon"/> </button>
+        </p>
+      <!-- <button class="toggle-switch" @click="toggleMode"><img :src="currentIcon"/> </button> -->
       </div>
       <div class="link">
         <div class="social">
@@ -22,8 +26,7 @@
           <a href="https://www.linkedin.com/in/robert-king-8263b6140/"> <img alt="LinkedIn" src="@/assets/iconmonstr-linkedin-1.svg"/> </a>
           <a href="https://twitter.com/HeIsRobKing"> <img alt="Twitter" src="@/assets/iconmonstr-twitter-1.svg"/> </a>
       </div>
-      
-      <a class=bubble href="/Robert_King_CV.pdf">  <img src="@/assets/iconmonstr-file-23.svg" alt="Download"/> <span> Curriculum Vitae</span> </a> 
+      <!-- <a class=bubble href="/Robert_King_CV.pdf">  <img src="@/assets/iconmonstr-file-23.svg" alt="Download"/> <span> Curriculum Vitae</span> </a>  -->
       <a href="mailto:robertcking98@gmail.com" class="bubble"> <img src="@/assets/iconmonstr-email-1.svg" alt="Email"/> <span class="emailaddress"> robertcking98@gmail.com </span></a>
       
       </div>
