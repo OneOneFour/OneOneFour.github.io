@@ -2,11 +2,17 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
+    "lint": "vue-cli-service lint",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview"
   },
   "devDependencies": {
+    "@vue/cli-plugin-eslint": "~4.5.9",
+    "@vue/eslint-config-airbnb": "^5.0.2",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-vue": "^6.2.2",
     "nuxt": "3.0.0-rc.3"
   }
 }
