@@ -1,0 +1,12 @@
+{
+    "title":"Orographic Gravity Wave",
+    "tagline":"Presentation for Scientic Art",
+    "directLink":"/GW-SciArt/",
+    "year":2023,
+    "month":3,
+    "image":"/sciart/preview.png",
+    "tech":[
+        {"name":"JavaScript",
+        "icon":"javscript-plain"}
+    ]
+}
