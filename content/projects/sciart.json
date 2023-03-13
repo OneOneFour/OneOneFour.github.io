@@ -6,7 +6,9 @@
     "month":3,
     "image":"/sciart/preview.png",
     "tech":[
-        {"name":"JavaScript",
-        "icon":"javscript-plain"}
+        {
+            "name":"JavaScript",
+            "icon":"javascript-plain"
+        }
     ]
 }
