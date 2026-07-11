@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro'
+
+// --- Edit these to change what shows up on the splash page ---------------
+
+const socialLinks = [
+  { label: 'GitHub', href: 'https://www.github.com/OneOneFour', icon: '/icons/github.svg' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/robert-king-8263b6140/', icon: '/icons/linkedin.svg' },
+  { label: 'Twitter', href: 'https://twitter.com/HeIsRobKing', icon: '/icons/twitter.svg' },
+]
+
+const email = 'robertcking98@gmail.com'
+
+// Flip to true once /public/Robert_King_CV.pdf is the version you want linked.
+const showCvLink = false
+// ---------------------------------------------------------------------------
+---
+
+<Layout title="Robert King">
+  <main class="splash">
+    <!--
+      To add a profile photo: drop an image at public/profile.jpg, then
+      uncomment the <img> below.
+    -->
+    <!-- <img class="photo" src="/profile.jpg" alt="Robert King" /> -->
+
+    <h1 class="name">Robert King</h1>
+
+    <div class="bio">
+      <!-- EDIT YOUR BIO HERE --------------------------------------------- -->
+      <p>Graduate student in Atmospheric Dynamics at Stanford University.</p>
+      <p>Former developer at Octopus Energy and GMV NSL.</p>
+      <p>Interested in atmospheric science, applied maths and creating educational visualisations.</p>
+      <p>Feel free to check out some of my recent projects.</p>
+      <!-- ------------------------------------------------------------------ -->
+    </div>
+
+    <div class="links">
+      <div class="social">
+        {socialLinks.map((link) => (
+          <a href={link.href} aria-label={link.label}>
+            <img src={link.icon} alt={link.label} />
+          </a>
+        ))}
+      </div>
+
+      <a class="bubble" href={`mailto:${email}`}>
+        <img src="/icons/email.svg" alt="Email" />
+        <span>{email}</span>
+      </a>
+
+      {showCvLink && (
+        <a class="bubble" href="/Robert_King_CV.pdf">
+          <img src="/icons/cv.svg" alt="Download CV" />
+          <span>Curriculum Vitae</span>
+        </a>
+      )}
+    </div>
+  </main>
+</Layout>

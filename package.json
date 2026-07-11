@@ -1,0 +1,22 @@
+{
+  "name": "oneonefour-github-io",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^7.0.2",
+    "@astrojs/vue": "^7.0.1",
+    "astro": "^7.0.7",
+    "vue": "^3.5.39"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^5.7.3"
+  }
+}
