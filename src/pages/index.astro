@@ -6,7 +6,6 @@ import Layout from '../layouts/Layout.astro'
 const socialLinks = [
   { label: 'GitHub', href: 'https://www.github.com/OneOneFour', icon: '/icons/github.svg' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/robert-king-8263b6140/', icon: '/icons/linkedin.svg' },
-  { label: 'Twitter', href: 'https://twitter.com/HeIsRobKing', icon: '/icons/twitter.svg' },
 ]
 
 const email = 'robertcking98@gmail.com'
@@ -28,10 +27,11 @@ const showCvLink = false
 
     <div class="bio">
       <!-- EDIT YOUR BIO HERE --------------------------------------------- -->
-      <p>Graduate student in Atmospheric Dynamics at Stanford University.</p>
-      <p>Former developer at Octopus Energy and GMV NSL.</p>
-      <p>Interested in atmospheric science, applied maths and creating educational visualisations.</p>
-      <p>Feel free to check out some of my recent projects.</p>
+      <p>Late stage graduate student in at Stanford University.</p>
+      <p>Interested in predicting the future (particularly involving complicated things). </p>
+      <p>Curator of climate models.</p>
+      <p class="old">Former developer at Octopus Energy and GMV NSL.</p>
+
       <!-- ------------------------------------------------------------------ -->
     </div>
 
@@ -43,11 +43,11 @@ const showCvLink = false
           </a>
         ))}
       </div>
-
       <a class="bubble" href={`mailto:${email}`}>
         <img src="/icons/email.svg" alt="Email" />
         <span>{email}</span>
       </a>
+
 
       {showCvLink && (
         <a class="bubble" href="/Robert_King_CV.pdf">

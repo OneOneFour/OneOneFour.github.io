@@ -80,12 +80,25 @@ a {
   font-weight: 400;
 }
 
+.bio p.old {
+  margin-top: 1.5rem;
+  font-style: italic;
+  color: #888;
+}
+
 .links {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
   margin-top: 1rem;
+}
+
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 /* Round icon buttons (GitHub/LinkedIn/Twitter/etc.) */
