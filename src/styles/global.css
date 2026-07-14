@@ -43,24 +43,152 @@ a {
   color: inherit;
 }
 
-/* ==========================================================================
-   Splash page layout
-   ========================================================================== */
-.splash {
-  min-height: 100vh;
-  max-width: var(--content-max-width);
-  margin: 0 auto;
-  padding: 4rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1.5rem;
+/* .leftbar/.mini-left-bar set their own `display`, which would otherwise
+   win over the browser's default `[hidden] { display: none }` rule (same
+   specificity, later in the cascade) --- so toggling the `hidden` attribute
+   from index.astro's script needs this to actually take effect. */
+[hidden] {
+  display: none !important;
 }
 
-/* Profile photo --- drop a photo at public/profile.jpg and remove the
-   `hidden` attribute on the <img> in index.astro to show it. Keeping it as
-   a plain <img> (not astro:assets) for now, since there's no photo yet;
-   Phase 2 introduces optimized images for project/photo galleries. */
+/* ==========================================================================
+   Homepage layout --- a fixed-width profile sidebar (.leftbar) next to the
+   project grid (.rightbar). On narrow screens only one is shown at a time;
+   see the toggle script in index.astro and .mini-left-bar below.
+   ========================================================================== */
+.container {
+  position: relative;
+  width: 1580px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.leftbar {
+  width: 300px;
+  float: left;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: fixed;
+  padding: 0 25px;
+}
+
+.rightbar {
+  float: right;
+  width: 1240px;
+}
+
+/* Collapsed stand-in for .leftbar on mobile --- tap to bring the profile
+   sidebar back (see index.astro's script). Hidden above the 740px
+   breakpoint, where both columns just show side by side. */
+.mini-left-bar {
+  display: none;
+  cursor: pointer;
+  border: 6px solid var(--color-border);
+  border-radius: 50px;
+  background-color: var(--color-bg);
+  color: inherit;
+  font: inherit;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px 20px;
+}
+
+.mini-left-bar:hover {
+  background-color: var(--color-border);
+  color: var(--color-bg);
+}
+
+.mini-left-bar:hover img {
+  filter: invert(100%);
+}
+
+.mini-left-bar-title {
+  font-size: 14pt;
+  font-weight: 600;
+}
+
+.mini-left-bar img {
+  width: 18px;
+}
+
+/* Mobile-only "back to projects" button at the top of .leftbar. */
+.toggle-switch.top {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 60%;
+  margin: 20px auto 10px auto;
+  padding: 6px;
+  border: 4px solid var(--color-border);
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--color-bg);
+  color: inherit;
+  font-family: inherit;
+}
+
+.toggle-switch.top img {
+  width: 16px;
+}
+
+/* Three/two/one-column breakpoints, same widths as the legacy site. */
+@media screen and (max-width: 1580px) {
+  .container {
+    width: 1240px;
+  }
+  .rightbar {
+    width: 930px;
+  }
+}
+
+@media screen and (max-width: 1240px) {
+  .container {
+    width: 920px;
+  }
+  .rightbar {
+    width: 620px;
+  }
+}
+
+@media screen and (max-width: 970px) {
+  .container {
+    width: 700px;
+  }
+  .rightbar {
+    width: 400px;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .container {
+    width: 100%;
+  }
+  .leftbar {
+    position: static;
+    width: 100%;
+  }
+  .rightbar {
+    display: none;
+    width: 100%;
+  }
+  .rightbar.fill {
+    display: block;
+  }
+  .mini-left-bar {
+    display: flex;
+    width: 300px;
+    margin: 30px auto 0 auto;
+  }
+  .toggle-switch.top {
+    display: flex;
+  }
+}
+
+/* Profile photo. */
 .photo {
   width: 140px;
   height: 140px;

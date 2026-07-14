@@ -1,0 +1,34 @@
+---
+// Ported from the old Vue ProjectGrid.vue, which fetched `$content('projects')`
+// client-side on mount. Astro content collections are known at build time,
+// so this is now a static component that reads getCollection() directly ---
+// no client fetch, no loading state, no JS shipped for the grid itself.
+import { getCollection } from 'astro:content'
+import ProjectItem from './ProjectItem.astro'
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => b.data.year - a.data.year || b.data.month - a.data.month
+)
+---
+
+<div class="project-grid">
+  {projects.map((project) => <ProjectItem project={project} />)}
+</div>
+
+<style>
+  .project-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: auto;
+    justify-content: flex-start;
+    margin-top: 25px;
+  }
+  @media screen and (max-width: 970px) {
+    .project-grid {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>

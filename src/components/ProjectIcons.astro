@@ -1,0 +1,38 @@
+---
+// Ported from the old Vue ProjectIcons.vue --- the original used Vue only for
+// two computed arrays (tech entries with/without an icon) and a native
+// `title` attribute for the tooltip. None of that needs a client-side
+// component, so this is a plain static Astro component instead of a Vue
+// island: same markup/behavior, zero JS shipped to the browser.
+interface Tech {
+  name: string
+  icon?: string
+}
+
+interface Props {
+  tech: Tech[]
+  inline?: boolean
+}
+
+const { tech, inline = false } = Astro.props
+
+const techIcons = tech.filter((t) => t.icon)
+const techNoIcons = tech.filter((t) => !t.icon)
+const techNoIconsStr = techNoIcons.map((t) => t.name).join('\n')
+---
+
+<div class="project-icons" style={{ display: inline ? 'inline' : 'block' }}>
+  {techIcons.map((t) => <i class={`devicon-${t.icon!.toLowerCase()}`} title={t.name} />)}
+  {techNoIcons.length > 0 && <span class="tooltip-hint" title={techNoIconsStr}>+</span>}
+</div>
+
+<style>
+  .tooltip-hint {
+    font-weight: 600;
+    font-size: 20pt;
+  }
+  .project-icons > i {
+    margin: 0 5px;
+    font-size: 16pt;
+  }
+</style>

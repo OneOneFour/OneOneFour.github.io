@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import ProjectGrid from '../components/ProjectGrid.astro'
 
 // --- Edit these to change what shows up on the splash page ---------------
 
@@ -16,45 +17,81 @@ const showCvLink = false
 ---
 
 <Layout title="Robert King">
-  <main class="splash">
-    <!--
-      To add a profile photo: drop an image at public/profile.jpg, then
-      uncomment the <img> below.
-    -->
-    <!-- <img class="photo" src="/profile.jpg" alt="Robert King" /> -->
-    <img src="/images/mugshota.png" alt="Photo of me (Rob that is)" class="photo">
-    <h1 class="name">Robert King</h1>
+  <div class="container" id="app-container">
+    <div class="leftbar" id="leftbar">
+      <!-- Mobile-only: jump to the projects column (see the <script> below
+           for the show/hide logic --- this button and .mini-left-bar are
+           the two ends of the same toggle). -->
+      <button class="toggle-switch top" id="show-projects" aria-label="Show projects">
+        <img src="/icons/arrow-66.svg" alt="" /><span>Projects</span>
+      </button>
 
-    <div class="bio">
-      <!-- EDIT YOUR BIO HERE --------------------------------------------- -->
-      <p>Late stage graduate student in at Stanford University.</p>
-      <p>Interested in predicting the future (particularly involving complicated things). </p>
-      <p>Curator of climate models.</p>
-      <p class="old">Former developer at Octopus Energy and GMV NSL.</p>
+      <img src="/images/mugshota.png" alt="Photo of me (Rob that is)" class="photo">
+      <h1 class="name">Robert King</h1>
 
-      <!-- ------------------------------------------------------------------ -->
-    </div>
+      <div class="bio">
+        <!-- EDIT YOUR BIO HERE --------------------------------------------- -->
+        <p>Late stage graduate student in at Stanford University.</p>
+        <p>Interested in predicting the future (particularly involving complicated things). </p>
+        <p>Curator of climate models.</p>
+        <p class="old">Former developer at Octopus Energy and GMV NSL.</p>
 
-    <div class="links">
-      <div class="social">
-        {socialLinks.map((link) => (
-          <a href={link.href} aria-label={link.label}>
-            <img src={link.icon} alt={link.label} />
-          </a>
-        ))}
+        <!-- ------------------------------------------------------------------ -->
       </div>
-      <a class="bubble" href={`mailto:${email}`}>
-        <img src="/icons/email.svg" alt="Email" />
-        <span>{email}</span>
-      </a>
 
-
-      {showCvLink && (
-        <a class="bubble" href="/files/Robert_King_CV.pdf">
-          <img src="/icons/cv.svg" alt="Download CV" />
-          <span>Curriculum Vitae</span>
+      <div class="links">
+        <div class="social">
+          {socialLinks.map((link) => (
+            <a href={link.href} aria-label={link.label}>
+              <img src={link.icon} alt={link.label} />
+            </a>
+          ))}
+        </div>
+        <a class="bubble" href={`mailto:${email}`}>
+          <img src="/icons/email.svg" alt="Email" />
+          <span>{email}</span>
         </a>
-      )}
+
+
+        {showCvLink && (
+          <a class="bubble" href="/files/Robert_King_CV.pdf">
+            <img src="/icons/cv.svg" alt="Download CV" />
+            <span>Curriculum Vitae</span>
+          </a>
+        )}
+      </div>
     </div>
-  </main>
+
+    <!-- Mobile-only collapsed state of the leftbar --- hidden by default;
+         shown by the script below once the leftbar is dismissed. -->
+    <button class="mini-left-bar" id="show-profile" hidden aria-label="Show profile">
+      <h1 class="mini-left-bar-title">RK</h1>
+      <img src="/icons/arrow-65.svg" alt="" />
+    </button>
+
+    <div class="rightbar" id="rightbar">
+      <ProjectGrid />
+    </div>
+  </div>
 </Layout>
+
+<script>
+  // @ts-nocheck --- plain DOM script, not worth typing (TypeScript is
+  // entirely optional in this project; see the note in Layout.astro).
+  // Mobile-only profile/projects toggle, replacing the old Vuex `pane` flag
+  // --- there's nothing here that needs to be shared across components, so
+  // a couple of DOM references + classList toggles are simpler than pulling
+  // in a store for two buttons.
+  const leftbar = document.getElementById('leftbar')
+  const miniBar = document.getElementById('show-profile')
+  const rightbar = document.getElementById('rightbar')
+
+  const setPane = (showProjects) => {
+    leftbar.hidden = showProjects
+    miniBar.hidden = !showProjects
+    rightbar.classList.toggle('fill', showProjects)
+  }
+
+  document.getElementById('show-projects')?.addEventListener('click', () => setPane(true))
+  miniBar.addEventListener('click', () => setPane(false))
+</script>
