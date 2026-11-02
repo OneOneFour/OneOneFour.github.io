@@ -1,0 +1,46 @@
+/* Widget frame: a dashed panel holding an interactive figure, with a title, a stage for the
+   canvas or SVG, and a row of controls.
+
+   <figure class="rk-widget-frame">
+     <figcaption class="rk-widget-frame-title">Title</figcaption>
+     <div class="rk-widget-frame-stage"><canvas>…</canvas></div>
+     <div class="rk-widget-frame-controls">buttons, sliders…</div>
+   </figure> */
+
+.rk-widget-frame {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: var(--space-4);
+  border: var(--outline-width) dashed var(--line-unfilled);
+  border-radius: var(--radius);
+  background: var(--lilac-tint);
+}
+
+.rk-widget-frame-title {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 800;
+  line-height: var(--line-height-heading);
+}
+
+.rk-widget-frame-stage {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--raised);
+}
+
+.rk-widget-frame-stage > :is(canvas, svg, img) {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+
+.rk-widget-frame-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
