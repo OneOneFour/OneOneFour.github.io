@@ -1,9 +1,7 @@
 ---
-/** Spinner options A–C, progress bar options A and B (set and indeterminate), and the meter. */
+/** Spinners A and B, progress bar options A and B (set and indeterminate), and the meter. */
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import GearIcon from 'rk-ui/icons/gear-six.svg'
-import CircleNotchIcon from 'rk-ui/icons/circle-notch.svg'
 
 const METERS = [
   { label: 'good (optimum range)', value: 0.3 },
@@ -13,7 +11,7 @@ const METERS = [
 ---
 
 <SpecimenRow title="Spinners">
-  <Specimen label="A: ring">
+  <Specimen label="A: rolling ring">
     <span class="rk-spinner rk-spinner--ring" role="status">
       <span class="rk-visually-hidden">Loading…</span>
     </span>
@@ -22,18 +20,6 @@ const METERS = [
     <span class="rk-spinner rk-spinner--dots" role="status">
       <span class="rk-spinner-dot"></span><span class="rk-spinner-dot"></span><span
         class="rk-spinner-dot"></span>
-      <span class="rk-visually-hidden">Loading…</span>
-    </span>
-  </Specimen>
-  <Specimen label="C: icon (gear)">
-    <span class="rk-spinner rk-spinner--icon" role="status">
-      <GearIcon class="rk-icon" />
-      <span class="rk-visually-hidden">Loading…</span>
-    </span>
-  </Specimen>
-  <Specimen label="C: icon (circle notch)">
-    <span class="rk-spinner rk-spinner--icon" role="status">
-      <CircleNotchIcon class="rk-icon" />
       <span class="rk-visually-hidden">Loading…</span>
     </span>
   </Specimen>

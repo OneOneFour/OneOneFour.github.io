@@ -1,5 +1,5 @@
-/* More three-dot spinners for Gate 1b, beside B in spinner.css, with the same markup: three
-   .rk-spinner-dot children and a visually hidden label.
+/* More three-dot spinners, beside B in spinner.css, with the same markup: three .rk-spinner-dot
+   children and a visually hidden label.
    F, .rk-spinner--orbit: the dots chase each other round a circle.
    G, .rk-spinner--triangle: the dots hop from corner to corner of a triangle.
    H, .rk-spinner--dots.rk-spinner--squash: B's row, squashing and stretching as it bounces.

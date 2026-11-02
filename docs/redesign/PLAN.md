@@ -448,14 +448,19 @@ above the tabs, so it never comes between them and the sheet.
 thumb, a sunken track, a slider groove) were tried and removed; they are in git history.
 
 **More loading options** *(Gate 1b)*: on `/styleguide/` under "More loading options", beside
-spinners A–C and progress bars A–B. *Rob's picks, 2026-11-02:* water spinner D and the filling
+spinners A and B and progress bars A–B. *Rob's picks, 2026-11-02:* water spinner D and the filling
 buttons; dots B, G and H for general content loading; several loader bars stay as candidates,
 with C, the hopping ball, the favourite (recoloured with `--loader-fill`, and an icon can ride in a
 `.rk-loader-ball`).
-- Toon water (`water.css`, `.rk-water`, level from `--water-level`): spinners D (flask filling)
-  and E (flask sloshing); a busy filled button that fills with its own colour
-  (`aria-busy="true"` + `aria-disabled="true"`, looping or set); pending panels A (filling) and
-  B (sloshing along the bottom).
+*DECIDED 2026-11-02 (Rob): spinners.* Kept: B (three dots), D (water flask filling), G
+(triangle), H (squash) and F (orbit) as an alternate. A (ring) stays with more flair: its wedge
+rolls as if it feels gravity, slow over the top and fast through the bottom, from two mirrored
+`cubic-bezier()` half turns in the keyframes that meet at the same speed; reduced motion still
+fades it. C (turning icon) and E (water sloshing) were removed; they are in git history.
+- Toon water (`water.css`, `.rk-water`, level from `--water-level`): spinner D (flask
+  filling); a busy filled button that fills with its own colour (`aria-busy="true"` +
+  `aria-disabled="true"`, looping or set); pending panels A (filling) and B (sloshing along the
+  bottom).
 - Dot spinners (`spinner-dots.css`): F in a circle, G in a triangle, H squash and stretch.
 - Loaders, indeterminate bars (`loader.css`): A inchworm, B bouncing block, C hopping ball,
   D candy stripes.

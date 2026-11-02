@@ -13,7 +13,7 @@ import SpecimenRow from './SpecimenRow.astro'
 const FILLS = [undefined, 'teal', 'navy', 'coral', 'grape'] as const
 const LEVELS = [0.25, 0.5, 0.85]
 const DOT_SPINNERS = [
-  { label: 'F: dots in a circle', class: 'rk-spinner--orbit' },
+  { label: 'F: dots in a circle (an alternate)', class: 'rk-spinner--orbit' },
   { label: 'G: dots in a triangle', class: 'rk-spinner--triangle' },
   { label: 'H: dots that squash and stretch', class: 'rk-spinner--dots rk-spinner--squash' },
 ]
@@ -39,22 +39,16 @@ const BALLS = [
       <span class="rk-visually-hidden">Loading…</span>
     </span>
   </Specimen>
-  <Specimen label="E: water, sloshing">
-    <span class="rk-spinner rk-spinner--water" role="status">
-      <span class="rk-water rk-water--slosh" aria-hidden="true"></span>
-      <span class="rk-visually-hidden">Loading…</span>
-    </span>
-  </Specimen>
   <Specimen label="D: large, --spinner-fill set to teal">
     <span class="rk-spinner rk-spinner--water" style="--spinner-size: 3rem; --spinner-fill: var(--teal)" role="status">
       <span class="rk-water rk-water--rise" aria-hidden="true"></span>
       <span class="rk-visually-hidden">Loading…</span>
     </span>
   </Specimen>
-  <Specimen label="E: small, with a visible label">
+  <Specimen label="D: small, with a visible label">
     <span class="loading" role="status">
       <span class="rk-spinner rk-spinner--water" style="--spinner-size: 1.25rem" aria-hidden="true">
-        <span class="rk-water rk-water--slosh"></span>
+        <span class="rk-water rk-water--rise"></span>
       </span>
       Loading…
     </span>

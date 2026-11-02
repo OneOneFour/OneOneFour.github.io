@@ -7,7 +7,6 @@
 
    Hosts in this file, labelled for Gate 1b:
    spinner D, .rk-spinner--water with .rk-water--rise: a flask that fills and drains;
-   spinner E, .rk-spinner--water with .rk-water--slosh: a half-full flask that sloshes;
    filling button: a filled .rk-button with aria-busy="true" and an .rk-water child fills with its
    own colour. Keep it focusable with aria-disabled="true" rather than disabled, so focus isn't
    lost, ignore its clicks while busy, and say what is happening in its label;
@@ -117,7 +116,7 @@
   }
 }
 
-/* Spinners D and E: a round flask of water with the hard shadow, and a glint on the side the
+/* Spinner D: a round flask of water with the hard shadow, and a glint on the side the
    light comes from. */
 .rk-spinner--water {
   --spinner-fill: var(--sky);
@@ -139,7 +138,6 @@
   --wave-length: calc(var(--spinner-size) * 0.6);
   --wave-height: calc(var(--spinner-size) / 6);
   --wave-period: 0.9s;
-  --slosh-angle: 14deg;
 }
 
 .rk-spinner--water::after {
