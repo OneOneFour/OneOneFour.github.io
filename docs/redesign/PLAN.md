@@ -637,6 +637,10 @@ the single source for order, file locations and acceptance.
 - A warm "greige" alternate mode for the whole site, built from the greige slate Rob liked at
   Gate 1b (kept as an opt-in `--slate` alternative for code panels). It would be a third
   `data-theme` value or a separate attribute; nothing is built for it yet.
+- A "How this site was made" section with a credits page listing every third-party asset and
+  its author/licence (icons, fonts, logos), generated from or kept in step with
+  `THIRD_PARTY_NOTICES.md`. Some assets need visible credit there (e.g. the Julia logo,
+  CC BY-NC-SA).
 
 ## Sources
 
