@@ -78,6 +78,7 @@
   background: var(--water-fill);
 }
 
+/* The animation sets the level, so the level's transition would only drag behind it. */
 .rk-water--rise {
   transition: none;
   animation: rk-water-rise 2.4s ease-in-out infinite alternate;
