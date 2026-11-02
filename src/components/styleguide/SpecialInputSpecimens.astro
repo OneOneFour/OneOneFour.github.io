@@ -16,6 +16,14 @@ interface Props {
 }
 
 const { theme } = Astro.props
+const DROP_STATES = [
+  { label: "rest: click or drop a file (the name isn't shown without a script)" },
+  { label: 'hover', class: 'is-hover' },
+  { label: 'focused', class: 'is-focus' },
+  { label: 'disabled', disabled: true },
+  { label: 'error', invalid: true },
+]
+const DATE_TYPES = ['date', 'time', 'month', 'week', 'datetime-local'] as const
 const SEARCH_STATES = [
   { label: 'rest', class: '' },
   { label: 'with a value (hover or focus it for the clear button)', class: '', value: 'Query' },
@@ -51,14 +59,6 @@ const TICK_STATES = [
   { label: 'disabled', class: '', disabled: true },
 ]
 const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
-const DATE_TYPES = ['date', 'time', 'month', 'week', 'datetime-local'] as const
-const DROP_STATES = [
-  { label: "rest: click or drop a file (the name isn't shown without a script)" },
-  { label: 'hover', class: 'is-hover' },
-  { label: 'focused', class: 'is-focus' },
-  { label: 'disabled', disabled: true },
-  { label: 'error', invalid: true },
-]
 ---
 
 <SpecimenRow title="File A: button and filename">
