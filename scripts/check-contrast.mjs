@@ -39,16 +39,17 @@ const TAB_STRIPS = ['--slate-tab', '--slate-greige-tab']
 const CODE_COLOURS = ['--code-keyword', '--code-function', '--code-string', '--code-number', '--code-comment']
 // The colour shadow mode gives every fill but navy a shadow in its own shade (shadow-colour.css).
 const EXTRUDED_FILLS = FILLS.filter((fill) => fill !== '--navy')
-// Each button fill, its label, and the colour water.css mixes its empty part towards when busy.
+// Each button fill, its label, the colour water.css mixes its empty part towards when busy, and
+// how much of the fill that mix keeps.
 const BUSY_BUTTONS = [
-  ['--yellow', '--on-fill', '--glint'],
-  ['--teal', '--on-fill', '--glint'],
-  ['--green', '--on-fill', '--glint'],
-  ['--tangerine', '--on-fill', '--glint'],
-  ['--navy', '--on-navy', '--line'],
-  ['--coral-solid', '--on-coral', '--fg'],
-  ['--grape', '--on-grape', '--fg'],
-  ['--section', '--on-section', '--glint'],
+  ['--yellow', '--on-fill', '--glint', '45%'],
+  ['--teal', '--on-fill', '--glint', '45%'],
+  ['--green', '--on-fill', '--glint', '45%'],
+  ['--tangerine', '--on-fill', '--glint', '45%'],
+  ['--navy', '--on-navy', '--line', '45%'],
+  ['--coral-solid', '--on-coral', '--fg', '45%'],
+  ['--grape', '--on-grape', '--fg', '45%'],
+  ['--section', '--on-section', '--glint', '70%'],
 ]
 
 /** Every foreground against every background, with one minimum ratio. */
@@ -91,10 +92,10 @@ const GROUPS = [
   { title: 'Tooltip text', pairs: [{ fg: '--surface', bg: '--fg', min: 4.5 }] },
   {
     title: "Labels on a busy button's empty part",
-    pairs: BUSY_BUTTONS.map(([fill, label, away]) => ({
+    pairs: BUSY_BUTTONS.map(([fill, label, away, share]) => ({
       fg: label,
       bg: '--water-empty',
-      inputs: { '--button-fill': fill, '--water-empty-mix': away },
+      inputs: { '--button-fill': fill, '--water-empty-mix': away, '--water-empty-fill': share },
       min: 4.5,
     })),
   },
@@ -227,11 +228,15 @@ export function resolveColor(tokens, name, theme) {
  * makes `--shade` teal's shade.
  *
  * @param {Map<string, string>} tokens
- * @param {Record<string, string>} [inputs] each input token and the token it is set to
+ * @param {Record<string, string>} [inputs] each input token and the token it is set to, or a
+ *   plain value such as `70%`
  */
 export function withInputs(tokens, inputs) {
   if (!inputs) return tokens
-  const set = Object.entries(inputs).map(([name, token]) => [name, `var(${token})`])
+  const set = Object.entries(inputs).map(([name, value]) => [
+    name,
+    value.startsWith('--') ? `var(${value})` : value,
+  ])
   return new Map([...tokens, ...set])
 }
 

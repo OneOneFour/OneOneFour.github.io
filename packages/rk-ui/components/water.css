@@ -137,6 +137,13 @@
    reads on the empty and the full part alike. */
 .rk-button {
   --water-empty-mix: var(--glint);
+  --water-empty-fill: 45%;
+}
+
+/* The section fill is ink by default, already the darkest, so its empty part takes less glint:
+   still lighter than the water, and dark enough for its cream label. */
+.rk-button--section {
+  --water-empty-fill: 70%;
 }
 
 .rk-button--navy {
@@ -149,7 +156,7 @@
 }
 
 .rk-button[aria-busy='true']:has(> .rk-water) {
-  --water-empty: color-mix(in oklab, var(--button-fill) 45%, var(--water-empty-mix));
+  --water-empty: color-mix(in oklab, var(--button-fill) var(--water-empty-fill), var(--water-empty-mix));
 
   position: relative;
   isolation: isolate;
