@@ -1,0 +1,42 @@
+---
+/** More loading options for Gate 1b: water spinners. Letters carry on from the spinners above. */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+---
+
+<SpecimenRow title="Water spinners">
+  <Specimen label="D: water, filling">
+    <span class="rk-spinner rk-spinner--water" role="status">
+      <span class="rk-water rk-water--rise" aria-hidden="true"></span>
+      <span class="rk-visually-hidden">Loading…</span>
+    </span>
+  </Specimen>
+  <Specimen label="E: water, sloshing">
+    <span class="rk-spinner rk-spinner--water" role="status">
+      <span class="rk-water rk-water--slosh" aria-hidden="true"></span>
+      <span class="rk-visually-hidden">Loading…</span>
+    </span>
+  </Specimen>
+  <Specimen label="D: large, --spinner-fill set to teal">
+    <span class="rk-spinner rk-spinner--water" style="--spinner-size: 3rem; --spinner-fill: var(--teal)" role="status">
+      <span class="rk-water rk-water--rise" aria-hidden="true"></span>
+      <span class="rk-visually-hidden">Loading…</span>
+    </span>
+  </Specimen>
+  <Specimen label="E: small, with a visible label">
+    <span class="loading" role="status">
+      <span class="rk-spinner rk-spinner--water" style="--spinner-size: 1.25rem" aria-hidden="true">
+        <span class="rk-water rk-water--slosh"></span>
+      </span>
+      Loading…
+    </span>
+  </Specimen>
+</SpecimenRow>
+
+<style>
+  .loading {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+</style>
