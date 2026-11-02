@@ -1,0 +1,82 @@
+---
+/**
+ * The segmented control, live with icons and text-only, and its option states.
+ *
+ * @param theme the panel's theme, used to keep radio names unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import SunIcon from 'rk-ui/icons/sun.svg'
+import MoonIcon from 'rk-ui/icons/moon.svg'
+import CircleHalfIcon from 'rk-ui/icons/circle-half.svg'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const OPTIONS = [
+  { value: 'one', label: 'One', Icon: SunIcon },
+  { value: 'two', label: 'Two', Icon: MoonIcon },
+  { value: 'three', label: 'Three', Icon: CircleHalfIcon },
+]
+const STATES = [
+  { label: 'hover', class: 'is-hover' },
+  { label: 'pressed', class: 'is-active' },
+  { label: 'focused', class: 'is-focus' },
+]
+---
+
+<SpecimenRow title="Segmented control">
+  <Specimen label="live, with icons">
+    <fieldset class="rk-segmented">
+      <legend class="rk-visually-hidden">Specimen</legend>
+      {
+        OPTIONS.map(({ value, label, Icon }, i) => (
+          <label>
+            <input type="radio" name={`${theme}-segmented-icons`} value={value} checked={i === 0} />
+            <Icon class="rk-icon" />
+            {label}
+          </label>
+        ))
+      }
+    </fieldset>
+  </Specimen>
+  <Specimen label="live, text only">
+    <fieldset class="rk-segmented">
+      <legend class="rk-visually-hidden">Specimen</legend>
+      {
+        OPTIONS.map(({ value, label }, i) => (
+          <label>
+            <input type="radio" name={`${theme}-segmented-text`} value={value} checked={i === 2} />
+            {label}
+          </label>
+        ))
+      }
+    </fieldset>
+  </Specimen>
+  {
+    STATES.map((state, i) => (
+      <Specimen label={`second option ${state.label}`}>
+        <fieldset class="rk-segmented">
+          <legend class="rk-visually-hidden">Specimen</legend>
+          <label>
+            <input type="radio" name={`${theme}-segmented-state-${i}`} checked />
+            One
+          </label>
+          <label class={state.class}>
+            <input type="radio" name={`${theme}-segmented-state-${i}`} />
+            Two
+          </label>
+        </fieldset>
+      </Specimen>
+    ))
+  }
+  <Specimen label="second option disabled">
+    <fieldset class="rk-segmented">
+      <legend class="rk-visually-hidden">Specimen</legend>
+      <label><input type="radio" name={`${theme}-segmented-disabled`} checked /> One</label>
+      <label><input type="radio" name={`${theme}-segmented-disabled`} disabled /> Two</label>
+    </fieldset>
+  </Specimen>
+</SpecimenRow>
