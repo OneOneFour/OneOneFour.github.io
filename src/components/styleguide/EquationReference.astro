@@ -1,0 +1,19 @@
+---
+/**
+ * A reference to a numbered equation in prose: the markup the posts' maths pipeline will write for
+ * \eqref.
+ *
+ * @param to the equation's anchor, e.g. eq-lorenz
+ * @param number the equation's number
+ * @param class extra classes, e.g. a static state such as is-focus
+ */
+interface Props {
+  to: string
+  number: number
+  class?: string
+}
+
+const { to, number, class: className } = Astro.props
+---
+
+<a class:list={['rk-eqref', className]} href={`#${to}`}><span>(</span>{number}<span>)</span></a>

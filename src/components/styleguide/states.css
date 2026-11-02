@@ -91,7 +91,9 @@ a.is-hover {
   text-decoration-thickness: var(--outline-width);
 }
 
-a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab)).is-focus {
+a:where(
+    :not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab, .rk-eqref:is(.rk-eqref-pill, .rk-eqref-pill *))
+  ).is-focus {
   background: var(--focus);
   color: var(--ink);
 }
@@ -209,4 +211,14 @@ a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab)).is-focus {
 
 .rk-equation.is-target {
   background-color: var(--apricot-tint);
+}
+
+.rk-eqref:is(.rk-eqref-pill, .rk-eqref-pill *).is-hover {
+  box-shadow: inset 0 0 0 var(--outline-width) var(--line-unfilled);
+}
+
+.rk-eqref:is(.rk-eqref-pill, .rk-eqref-pill *).is-focus {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--outline-width);
+  box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);
 }
