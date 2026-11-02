@@ -37,6 +37,11 @@ Rob King's personal site, built with Astro. Rob reviews every diff by hand.
   holds no site copy or section names, and is themed only through tokens.
 - **Git hygiene in the main checkout:** never `git add -A` or `git commit -a`. Rob may have
   uncommitted content there.
+- **No browser automation outside Playwright.** Never launch Chrome, Chromium or "Chrome for
+  Testing" directly (headless or not, CLI or DevTools protocol): it crashes and asks for Rob's
+  keychain. Browser checks go through Playwright only, once it is a dev dependency (P3).
+  Until then, verify with `npm run build`, `npm run contrast` and the built files; Rob checks
+  visuals. Never start `astro dev` (Rob runs his own).
 
 ## Code style
 
