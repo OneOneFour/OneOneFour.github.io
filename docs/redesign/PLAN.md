@@ -400,6 +400,10 @@ general way to group content, not only for widgets. Generalise it into a groupin
 outline, flat) with a raised option (dashed outline plus the hard shadow), and build it with the
 P2 card work so the widget frame becomes one use of it.
 
+**Overflow** *(decided at Gate 1b, Rob)*: D by default (dots + toon scrollbar on hover/focus),
+A always-visible bar as the alternative; C dropped. A folder's tab strip puts its scrollbar
+above the tabs, so it never comes between them and the sheet.
+
 
 ### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*
 
