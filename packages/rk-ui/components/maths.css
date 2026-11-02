@@ -1,15 +1,17 @@
 /* Maths: KaTeX's output, sized to the body font and coloured by the tokens. Load KaTeX's own
-   stylesheet before rk-ui.css, so these rules win. A display equation sits in a wrapper that
-   scrolls sideways when it is too wide (tabindex="0" lets the keyboard scroll it). Its id is the
-   anchor that equation references (\href{#eq-…}) link to.
+   stylesheet before rk-ui.css, so these rules win. A display equation sits in a wrapper that is a
+   scroll region (overflow.css) for when it is too wide (tabindex="0" lets the keyboard scroll
+   it). Its id is the anchor that equation references (\href{#eq-…}) link to.
 
-   <div class="rk-equation" id="eq-lorenz" tabindex="0">
+   <div class="rk-equation rk-scroll" id="eq-lorenz" tabindex="0">
      <span class="katex-display">…KaTeX output, with \tag{1}…</span>
    </div>
 
    Opt-in modifiers on .rk-equation: --panel (a slate panel), --rule (a rule down the left) and
-   --key (a raised dashed panel for a key result). .rk-tag-pill on an equation or any ancestor
-   shows equation numbers as small pills, and .rk-eqref-pill does the same for references.
+   --key (a raised dashed panel for a key result). --rule and --key have side borders of their
+   own, so they take .rk-scroll--bar too, in place of the dots. .rk-tag-pill on an equation or
+   any ancestor shows equation numbers as small pills, and .rk-eqref-pill does the same for
+   references.
 
    Colour-coded terms: \htmlClass{rk-maths-teal}{…}, one class per chart hue. .rk-maths-tint on
    any ancestor gives the terms a tinted background instead of coloured text. */
@@ -21,37 +23,28 @@
 
 .rk-equation {
   margin-block: var(--space-5);
-  overflow-x: auto;
   overflow-y: hidden;
   border-radius: var(--radius);
   scroll-margin-block: var(--space-6);
 }
 
-.rk-equation > .katex-display {
-  margin: 0;
-  padding: var(--space-2);
-}
-
 /* A wide equation keeps its full width, so the number sits after it rather than on top of it.
    Padding on both sides keeps a short equation centred and clear of its number. */
-.rk-equation .katex-html {
+.rk-equation > .katex-display {
   inline-size: max-content;
   min-inline-size: 100%;
+  margin: 0;
+  padding: var(--space-2);
+  border-radius: inherit;
 }
 
 .rk-equation .katex-html:has(> .katex-tag) {
   padding-inline: 2.5em;
 }
 
-/* The focus band hugs a ring of the outline colour, as on code blocks. */
-.rk-equation:focus-visible {
-  outline: var(--focus-width) solid var(--focus);
-  outline-offset: var(--outline-width);
-  box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);
-}
-
-/* The equation a reference jumped to flashes a tint, then fades back. */
-.rk-equation:is(:target, :has(:target)) {
+/* The equation a reference jumped to flashes a tint, then fades back. The tint is on the inner
+   element because the wrapper's animation shows the scroll region's dots. */
+.rk-equation:is(:target, :has(:target)) > .katex-display {
   animation: rk-equation-target 2s ease-in;
 }
 
@@ -63,7 +56,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rk-equation:is(:target, :has(:target)) {
+  .rk-equation:is(:target, :has(:target)) > .katex-display {
     animation: none;
     background-color: var(--apricot-tint);
   }

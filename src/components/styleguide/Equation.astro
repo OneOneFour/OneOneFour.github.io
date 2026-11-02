@@ -4,7 +4,7 @@
  *
  * @param tex the TeX source, with \tag{n} for a numbered equation
  * @param id the anchor that equation references link to, e.g. eq-lorenz
- * @param class modifier classes, e.g. rk-equation--panel
+ * @param class modifier classes, e.g. rk-equation--panel, or rk-equation--rule with rk-scroll--bar
  */
 import { renderMaths } from './maths'
 
@@ -17,4 +17,4 @@ interface Props {
 const { tex, id, class: className } = Astro.props
 ---
 
-<div class:list={['rk-equation', className]} id={id} tabindex="0" set:html={renderMaths(tex, true)} />
+<div class:list={['rk-equation', 'rk-scroll', className]} id={id} tabindex="0" set:html={renderMaths(tex, true)} />

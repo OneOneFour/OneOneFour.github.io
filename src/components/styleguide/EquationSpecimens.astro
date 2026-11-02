@@ -35,7 +35,7 @@ const LYAPUNOV = String.raw`\lambda = \lim_{t \to \infty} \frac{1}{t} \ln \frac{
 const WRAPPERS = [
   { label: 'A: bare (default)', class: undefined },
   { label: 'B: slate panel (.rk-equation--panel)', class: 'rk-equation--panel' },
-  { label: 'C: left rule (.rk-equation--rule)', class: 'rk-equation--rule' },
+  { label: 'C: left rule (.rk-equation--rule.rk-scroll--bar)', class: 'rk-equation--rule rk-scroll--bar' },
 ]
 const REFERENCE_STYLES = [
   { key: 'plain', label: 'plain links and numbers (default; click to jump)', class: undefined },
@@ -111,8 +111,8 @@ const REFERENCE_STYLES = [
   <Specimen label={String.raw`A: \boxed{…}`} wide>
     <Equation tex={`\\boxed{${LYAPUNOV}} \\tag{6}`} />
   </Specimen>
-  <Specimen label="B: raised dashed panel (.rk-equation--key)" wide>
-    <Equation tex={`${LYAPUNOV} \\tag{6}`} class="rk-equation--key" />
+  <Specimen label="B: raised dashed panel (.rk-equation--key.rk-scroll--bar)" wide>
+    <Equation tex={`${LYAPUNOV} \\tag{6}`} class="rk-equation--key rk-scroll--bar" />
   </Specimen>
 </SpecimenRow>
 
