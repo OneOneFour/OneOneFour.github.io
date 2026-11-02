@@ -18,6 +18,7 @@ const { theme } = Astro.props
   colourGroups(tokensCss).map((group) => (
     <>
       <h3>{group.title}</h3>
+      {group.caption && <p class="caption">{group.caption}</p>}
       <div class="swatches">
         {group.names.map((name) => (
           <Swatch tokens={tokens} name={name} theme={theme} />
@@ -31,6 +32,13 @@ const { theme } = Astro.props
   h3 {
     margin-block: var(--space-5) var(--space-3);
     font-size: var(--step-1);
+  }
+
+  .caption {
+    max-width: 65ch;
+    margin-block: calc(-1 * var(--space-2)) var(--space-3);
+    color: var(--muted);
+    font-size: var(--step--1);
   }
 
   .swatches {

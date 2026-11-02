@@ -24,7 +24,6 @@
   --focus: var(--tangerine);
   /* Where tangerine surrounds the focused element, set --focus: var(--focus-alt) */
   --focus-alt: var(--yellow);
-
   /* Shadow D's fallback (Gate 1b option): a dark-mode shadow lighter than the page */
   --shadow-lit: light-dark(var(--line), #6e7891);
 
@@ -50,7 +49,7 @@
   --on-coral: light-dark(#ffffff, var(--ink));
   --on-grape: light-dark(#ffffff, var(--ink));
 
-  /* Hue text on --surface and --raised */
+  /* Hue text: for text and links on --surface and --raised */
   --navy-deep: light-dark(#2c4d6e, #8fb3e0);
   --teal-deep: light-dark(#176f78, #6fcfd7);
   --coral-deep: light-dark(#c8322a, #f08a83);
@@ -60,7 +59,7 @@
   --grape-deep: light-dark(#7b4fc9, #b89cf0);
   --tangerine-deep: light-dark(#a14c0a, #f8a65c);
 
-  /* Panels that carry --fg text */
+  /* Tints: panels that carry --fg text */
   --navy-tint: light-dark(#c7d5e6, #25364f);
   --teal-tint: light-dark(#a6dfe3, #173f44);
   --coral-tint: light-dark(#f6c1bb, #4d2623);
@@ -73,7 +72,7 @@
   /* Icon fills: the quiet default for interface icons, a pale wash of the outline colour */
   --icon-fill-neutral: color-mix(in srgb, currentColor 20%, transparent);
 
-  /* Checked and selected controls */
+  /* Selected: checked and selected controls */
   --selected: var(--yellow);
   --on-selected: var(--on-fill);
   /* A panel that carries --fg text, for the selected option's surroundings */
@@ -83,23 +82,21 @@
   --section: var(--ink);
   --on-section: var(--on-ink);
 
-  /* Slate: a quiet neutral panel for code. The tab is a step further from the page, for the code
-     block's editor-tab strip. .rk-slate-greige (code.css) swaps in the greige pair. */
+  /* Code: slate panels and syntax colours. The tab is the code block's editor-tab strip, and
+     .rk-slate-greige (code.css) swaps in the greige pair. */
   --slate: light-dark(#e7ebf3, #2c323d);
   --slate-tab: light-dark(#dbe0ea, #333946);
   --slate-greige: light-dark(#eae7e2, #35332e);
   --slate-greige-tab: light-dark(#e0dcd6, #3d3a34);
   --shadow-code-inset: inset calc(var(--shadow-dx) * 4px) calc(var(--shadow-dy) * 4px) 0
     color-mix(in srgb, var(--line) 20%, transparent);
-
-  /* Syntax highlighting on slate */
   --code-keyword: var(--navy-deep);
   --code-function: var(--teal-deep);
   --code-string: var(--green-deep);
   --code-number: var(--tangerine-deep);
   --code-comment: var(--muted);
 
-  /* Chart series, in a fixed order that keeps neighbours apart for colour-blind readers */
+  /* Chart series: in a fixed order that keeps neighbours apart for colour-blind readers */
   --chart-1: var(--teal);
   --chart-2: var(--yellow);
   --chart-3: var(--navy);
@@ -109,7 +106,7 @@
   --chart-7: var(--grape);
   --chart-8: var(--tangerine);
 
-  /* Sequential chart scale (magnitude): navy's tint to its text colour, so in both themes the
+  /* Sequential scale: for magnitudes, from navy's tint to its text colour, so in both themes the
      strongest step stands out most from the page */
   --seq-1: color-mix(in oklab, var(--navy-deep) 27%, var(--navy-tint));
   --seq-2: color-mix(in oklab, var(--navy-deep) 45%, var(--navy-tint));
@@ -117,7 +114,7 @@
   --seq-4: color-mix(in oklab, var(--navy-deep) 82%, var(--navy-tint));
   --seq-5: var(--navy-deep);
 
-  /* Diverging chart scale (anomalies): navy below, coral above, a faint neutral between. The
+  /* Diverging scale: for anomalies, navy below and coral above with a faint neutral between. The
      coral end leans towards --fg so that both ends are about as light as each other. */
   --div-cold-3: var(--navy-deep);
   --div-cold-2: color-mix(in oklab, var(--navy-deep) 67%, var(--navy-tint));
