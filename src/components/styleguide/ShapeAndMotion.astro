@@ -1,0 +1,100 @@
+---
+/** Demo boxes for the shape, outline, shadow, press and focus tokens. Not components. */
+---
+
+<div class="demos">
+  <figure>
+    <div class="box panel">Panel</div>
+    <figcaption>--radius, no outline (static)</figcaption>
+  </figure>
+  <figure>
+    <button type="button" class="box filled">Press me</button>
+    <figcaption>--outline-width, --shadow; press for --shadow-pressed</figcaption>
+  </figure>
+  <figure>
+    <div class="box filled pressed">Pressed</div>
+    <figcaption>held down: moved by --press-offset</figcaption>
+  </figure>
+  <figure>
+    <button type="button" class="box filled pill">Pill</button>
+    <figcaption>--radius-pill</figcaption>
+  </figure>
+  <figure>
+    <button type="button" class="box unfilled">Unfilled</button>
+    <figcaption>--line-unfilled outline</figcaption>
+  </figure>
+  <figure>
+    <div class="box filled focused">Focused</div>
+    <figcaption>--focus ring (Tab to the buttons)</figcaption>
+  </figure>
+</div>
+
+<style>
+  .demos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: var(--space-5);
+  }
+
+  figure {
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    gap: var(--space-3);
+    margin: 0;
+  }
+
+  figcaption {
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  .box {
+    padding: var(--space-3) var(--space-4);
+    border: var(--outline-width) solid transparent;
+    border-radius: var(--radius);
+    font: inherit;
+    font-weight: 600;
+  }
+
+  .panel {
+    background: var(--raised);
+  }
+
+  .filled {
+    border-color: var(--line);
+    background: var(--teal);
+    box-shadow: var(--shadow);
+    color: var(--on-fill);
+  }
+
+  .pill {
+    border-radius: var(--radius-pill);
+    background: var(--yellow);
+  }
+
+  .unfilled {
+    border-color: var(--line-unfilled);
+    background: transparent;
+    color: var(--fg);
+  }
+
+  button {
+    cursor: pointer;
+    transition:
+      transform var(--duration-fast) var(--ease-spring),
+      box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  button:active,
+  .pressed {
+    box-shadow: var(--shadow-pressed);
+    transform: translate(var(--press-offset), var(--press-offset));
+  }
+
+  button:focus-visible,
+  .focused {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+</style>

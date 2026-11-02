@@ -1,0 +1,77 @@
+---
+import { grade, hexOf, swatchPairs, type Theme, type Tokens } from './colour-tokens'
+
+/**
+ * One colour token: a sample of each pair it is used in, its hex and the contrast of each pair.
+ *
+ * @param tokens the parsed token map
+ * @param name the token, e.g. `--teal`
+ * @param theme the theme its hex and ratios are computed for
+ */
+interface Props {
+  tokens: Tokens
+  name: string
+  theme: Theme
+}
+
+const { tokens, name, theme } = Astro.props
+const pairs = swatchPairs(tokens, name, theme)
+---
+
+<figure class="swatch">
+  <div class="samples">
+    {
+      pairs.map((pair) => (
+        <span class="sample" style={`background: var(${pair.bg}); color: var(${pair.fg})`}>
+          Aa
+        </span>
+      ))
+    }
+  </div>
+  <figcaption>
+    <strong>{name}</strong>
+    <span>{hexOf(tokens, name, theme)}</span>
+    {
+      pairs.map((pair) => (
+        <span>
+          {pair.fg === name ? `on ${pair.bg}` : pair.fg} {pair.ratio.toFixed(2)} {grade(pair.ratio)}
+        </span>
+      ))
+    }
+  </figcaption>
+</figure>
+
+<style>
+  .swatch {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    margin: 0;
+  }
+
+  .samples {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    border: 1px solid var(--muted);
+    border-radius: var(--radius);
+  }
+
+  .sample {
+    display: grid;
+    flex: 1 1 3rem;
+    place-items: center;
+    min-height: 4rem;
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 800;
+  }
+
+  figcaption {
+    display: grid;
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--line-height-heading);
+    gap: var(--space-1);
+  }
+</style>

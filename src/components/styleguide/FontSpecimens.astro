@@ -1,0 +1,81 @@
+---
+/** Roboto Slab and Xmind in the weights in use, Xmind italic, and Greek in running prose. */
+
+const SLAB_WEIGHTS = [500, 800]
+const XMIND_WEIGHTS = [400, 600, 800]
+const XMIND_ITALIC_WEIGHTS = [400, 600]
+---
+
+<h3>Roboto Slab</h3>
+{
+  SLAB_WEIGHTS.map((weight) => (
+    <p class="slab" style={`font-weight: ${weight}`}>
+      <span class="label">{weight}</span>
+      Sphinx of black quartz, judge my vow
+    </p>
+  ))
+}
+
+<h3>Xmind</h3>
+{
+  XMIND_WEIGHTS.map((weight) => (
+    <p class="xmind" style={`font-weight: ${weight}`}>
+      <span class="label">{weight}</span>
+      Pack my box with five dozen liquor jugs. 0123456789
+    </p>
+  ))
+}
+{
+  XMIND_ITALIC_WEIGHTS.map((weight) => (
+    <p class="xmind" style={`font-weight: ${weight}; font-style: italic`}>
+      <span class="label">{weight} italic</span>
+      The quick brown fox jumps over the lazy dog.
+    </p>
+  ))
+}
+
+<h3>Greek in prose</h3>
+<p class="slab greek-heading">Δt, σ and β in a heading: Ξεσκεπάζω</p>
+<p class="greek-prose">
+  With σ = 10, ρ = 28 and β ≈ 0.3, halving the step Δt leaves the trajectory unchanged to within
+  ε. <em>Ξεσκεπάζω την ψυχοφθόρα βδελυγμία.</em> Η γρήγορη καφέ αλεπού πηδάει πάνω από τον τεμπέλη
+  σκύλο, and the sentence carries on in Latin script.
+</p>
+
+<style>
+  h3 {
+    margin-block: var(--space-5) var(--space-3);
+    font-size: var(--step-1);
+  }
+
+  p {
+    margin-block: 0 var(--space-3);
+  }
+
+  .label {
+    display: block;
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .slab {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    line-height: var(--line-height-heading);
+  }
+
+  .xmind {
+    font-size: var(--step-1);
+  }
+
+  .greek-heading {
+    font-weight: 800;
+  }
+
+  .greek-prose {
+    max-width: 38rem;
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+import tokensCss from 'rk-ui/tokens.css?raw'
+import Swatch from './Swatch.astro'
+import { colourGroups, tokens, type Theme } from './colour-tokens'
+
+/**
+ * Every colour token in the package's tokens.css, grouped as the file groups them.
+ *
+ * @param theme the theme the hex values and ratios are computed for
+ */
+interface Props {
+  theme: Theme
+}
+
+const { theme } = Astro.props
+---
+
+{
+  colourGroups(tokensCss).map((group) => (
+    <>
+      <h3>{group.title}</h3>
+      <div class="swatches">
+        {group.names.map((name) => (
+          <Swatch tokens={tokens} name={name} theme={theme} />
+        ))}
+      </div>
+    </>
+  ))
+}
+
+<style>
+  h3 {
+    margin-block: var(--space-5) var(--space-3);
+    font-size: var(--step-1);
+  }
+
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+    gap: var(--space-4);
+  }
+</style>
