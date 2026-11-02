@@ -1,7 +1,7 @@
 ---
 /**
- * Folder tabs: live tabbed panels in both tab shapes (A index card, B sloped), on a plain and a
- * tinted sheet, and a tab's states.
+ * Folder tabs: live tabbed panels on a plain and a tinted sheet, the join with each tab selected,
+ * and a tab's states.
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
@@ -14,83 +14,102 @@ interface Props {
 
 const { theme } = Astro.props
 const TABS = ['Tab one', 'Tab two', 'Tab three']
-const SHAPES = [
-  { key: 'card', title: 'A: index-card tabs', class: '' },
-  { key: 'sloped', title: 'B: sloped tabs', class: 'rk-folder--sloped' },
-]
 const SHEETS = [
   { key: 'plain', label: 'live, plain sheet', class: '' },
   { key: 'tinted', label: 'live, .rk-folder--tinted', class: 'rk-folder--tinted' },
 ]
-const STATES = [
-  { label: 'hover', class: 'is-hover' },
-  { label: 'pressed', class: 'is-active' },
-  { label: 'focused', class: 'is-focus' },
+const STATIC_TABS = ['One', 'Two', 'Three']
+
+/** A static folder: which tab is selected, and optionally a state class on one tab */
+interface StaticFolder {
+  label: string
+  selected: number
+  tinted?: boolean
+  state?: { tab: number; class: string }
+}
+
+const JOINS: StaticFolder[] = [
+  { label: 'second tab selected', selected: 1 },
+  { label: 'third tab selected', selected: 2 },
+  { label: 'third tab selected, tinted', selected: 2, tinted: true },
+]
+const STATES: StaticFolder[] = [
+  { label: 'second tab hover', selected: 0, state: { tab: 1, class: 'is-hover' } },
+  { label: 'second tab pressed', selected: 0, state: { tab: 1, class: 'is-active' } },
+  { label: 'second tab focused', selected: 0, state: { tab: 1, class: 'is-focus' } },
+  { label: 'selected tab focused', selected: 0, state: { tab: 0, class: 'is-focus' } },
 ]
 ---
 
-{
-  SHAPES.map((shape) => (
-    <SpecimenRow title={shape.title}>
-      {SHEETS.map((sheet) => {
-        const id = `${theme}-folder-${shape.key}-${sheet.key}`
-        return (
-          <Specimen label={sheet.label} wide>
-            <rk-tabs class:list={['rk-folder', shape.class, sheet.class]}>
-              <div class="rk-folder-tabs" role="tablist" aria-label="Specimen">
-                {TABS.map((name, i) => (
-                  <button
-                    class="rk-folder-tab"
-                    type="button"
-                    role="tab"
-                    id={`${id}-tab-${i}`}
-                    aria-controls={`${id}-panel-${i}`}
-                    aria-selected={i === 0 ? 'true' : 'false'}
-                    tabindex={i === 0 ? undefined : -1}
-                  >
-                    {name}
-                  </button>
-                ))}
-              </div>
-              {TABS.map((name, i) => (
-                <div
-                  class="rk-folder-sheet"
-                  role="tabpanel"
-                  id={`${id}-panel-${i}`}
-                  aria-labelledby={`${id}-tab-${i}`}
-                  tabindex="0"
-                  hidden={i !== 0}
-                >
-                  <p>Panel for {name.toLowerCase()}.</p>
-                </div>
-              ))}
-            </rk-tabs>
-          </Specimen>
-        )
-      })}
-      {STATES.map((state) => (
-        <Specimen label={`second tab ${state.label}`}>
-          <div class:list={['rk-folder', shape.class]}>
+<SpecimenRow title="Live">
+  {
+    SHEETS.map((sheet) => {
+      const id = `${theme}-folder-${sheet.key}`
+      return (
+        <Specimen label={sheet.label} wide>
+          <rk-tabs class:list={['rk-folder', sheet.class]}>
             <div class="rk-folder-tabs" role="tablist" aria-label="Specimen">
-              <button class="rk-folder-tab" type="button" role="tab" aria-selected="true">One</button>
-              <button class:list={['rk-folder-tab', state.class]} type="button" role="tab" aria-selected="false" tabindex="-1">
-                Two
-              </button>
-              <button class="rk-folder-tab" type="button" role="tab" aria-selected="false" tabindex="-1">Three</button>
+              {TABS.map((name, i) => (
+                <button
+                  class="rk-folder-tab"
+                  type="button"
+                  role="tab"
+                  id={`${id}-tab-${i}`}
+                  aria-controls={`${id}-panel-${i}`}
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  tabindex={i === 0 ? undefined : -1}
+                >
+                  {name}
+                </button>
+              ))}
             </div>
-            <div class="rk-folder-sheet" role="tabpanel"><p>Panel.</p></div>
+            {TABS.map((name, i) => (
+              <div
+                class="rk-folder-sheet"
+                role="tabpanel"
+                id={`${id}-panel-${i}`}
+                aria-labelledby={`${id}-tab-${i}`}
+                tabindex="0"
+                hidden={i !== 0}
+              >
+                <p>Panel for {name.toLowerCase()}.</p>
+              </div>
+            ))}
+          </rk-tabs>
+        </Specimen>
+      )
+    })
+  }
+</SpecimenRow>
+
+{
+  [
+    { title: 'The join', specimens: JOINS },
+    { title: 'States', specimens: STATES },
+  ].map((row) => (
+    <SpecimenRow title={row.title}>
+      {row.specimens.map((specimen) => (
+        <Specimen label={specimen.label}>
+          <div class:list={['rk-folder', { 'rk-folder--tinted': specimen.tinted }]}>
+            <div class="rk-folder-tabs" role="tablist" aria-label="Specimen">
+              {STATIC_TABS.map((name, i) => (
+                <button
+                  class:list={['rk-folder-tab', specimen.state?.tab === i && specimen.state.class]}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === specimen.selected ? 'true' : 'false'}
+                  tabindex={i === specimen.selected ? undefined : -1}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
+            <div class="rk-folder-sheet" role="tabpanel">
+              <p>Panel.</p>
+            </div>
           </div>
         </Specimen>
       ))}
-      <Specimen label="selected tab focused">
-        <div class:list={['rk-folder', shape.class]}>
-          <div class="rk-folder-tabs" role="tablist" aria-label="Specimen">
-            <button class="rk-folder-tab is-focus" type="button" role="tab" aria-selected="true">One</button>
-            <button class="rk-folder-tab" type="button" role="tab" aria-selected="false" tabindex="-1">Two</button>
-          </div>
-          <div class="rk-folder-sheet" role="tabpanel"><p>Panel.</p></div>
-        </div>
-      </Specimen>
     </SpecimenRow>
   ))
 }

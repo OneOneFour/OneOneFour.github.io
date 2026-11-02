@@ -6,8 +6,7 @@
  * @param theme the panel's theme, used to keep anchors unique across the two panels
  */
 import Equation from './Equation.astro'
-import Maths from './Maths.astro'
-import { renderMaths } from './maths'
+import EquationReference from './EquationReference.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 
@@ -17,8 +16,6 @@ interface Props {
 
 const { theme } = Astro.props
 const anchor = (label: string) => `eq-${label}-${theme}`
-// KaTeX writes the link, so the static focus class is added to its markup.
-const focusedReference = renderMaths(`\\href{#${anchor('lorenz')}}{(2)}`).replace('<a ', '<a class="is-focus" ')
 
 const FLOW = String.raw`\frac{\mathrm{d}\mathbf{x}}{\mathrm{d}t} = \mathbf{f}(\mathbf{x};\, \sigma, \rho, \beta)`
 const LORENZ_ROWS = String.raw`
@@ -39,6 +36,14 @@ const WRAPPERS = [
   { label: 'A: bare (default)', class: undefined },
   { label: 'B: slate panel (.rk-equation--panel)', class: 'rk-equation--panel' },
   { label: 'C: left rule (.rk-equation--rule)', class: 'rk-equation--rule' },
+]
+const REFERENCE_STYLES = [
+  { key: 'plain', label: 'plain links and numbers (default; click to jump)', class: undefined },
+  {
+    key: 'pill',
+    label: 'pill links and numbers (.rk-eqref-pill and .rk-tag-pill on an ancestor)',
+    class: 'rk-eqref-pill rk-tag-pill',
+  },
 ]
 ---
 
@@ -65,22 +70,25 @@ const WRAPPERS = [
 </SpecimenRow>
 
 <SpecimenRow title="References and the jump target">
-  <Specimen label="A: the reference is KaTeX's link (click to jump)" wide>
-    <p>
-      Pack my box with <Maths tex={`\\href{#${anchor('flow')}}{(1)}`} /> five dozen liquor jugs, and
-      <Fragment set:html={focusedReference} /> once more.
-    </p>
-  </Specimen>
-  <Specimen label="B: the reference is a plain link in the body font" wide>
-    <p>
-      Pack my box with <a href={`#${anchor('flow')}`}>(1)</a> five dozen liquor jugs, and
-      <a href={`#${anchor('lorenz')}`} class="is-focus">(2)</a> once more.
-    </p>
-  </Specimen>
-  <Specimen label="jump targets (live)" wide>
-    <Equation tex={`${FLOW} \\tag{1}`} id={anchor('flow')} />
-    <Equation tex={LORENZ_SYSTEM} id={anchor('lorenz')} />
-  </Specimen>
+  {
+    REFERENCE_STYLES.map((style) => {
+      const flow = anchor(`flow-${style.key}`)
+      const lorenz = anchor(`lorenz-${style.key}`)
+      return (
+        <Specimen label={style.label} wide>
+          <div class={style.class}>
+            <Equation tex={`${FLOW} \\tag{1}`} id={flow} />
+            <Equation tex={LORENZ_SYSTEM} id={lorenz} />
+            <p>
+              Pack my box with <EquationReference to={flow} number={1} /> five dozen liquor jugs:{' '}
+              <EquationReference to={lorenz} number={2} class="is-hover" /> hovered,{' '}
+              <EquationReference to={lorenz} number={2} class="is-focus" /> focused.
+            </p>
+          </div>
+        </Specimen>
+      )
+    })
+  }
   <Specimen label="targeted (static copy of :target)" wide>
     <Equation tex={`${FLOW} \\tag{1}`} class="is-target" />
   </Specimen>

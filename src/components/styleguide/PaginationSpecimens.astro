@@ -1,7 +1,7 @@
 ---
 /**
- * Pagination, on page 2: A as folder tabs over the page's sheet (both tab shapes), B as tiles
- * between previous and next buttons.
+ * Pagination, on page 2: A as folder tabs over the page's sheet, B as tiles between previous and
+ * next buttons.
  */
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
@@ -10,10 +10,6 @@ import CaretRightIcon from 'rk-ui/icons/caret-right.svg'
 
 const PAGES = [1, 2, 3, null, 9]
 const CURRENT = 2
-const FOLDERS = [
-  { label: 'index-card tabs', class: '' },
-  { label: 'sloped tabs', class: 'rk-folder--sloped' },
-]
 const STATES = [
   { label: 'live', class: '' },
   { label: 'page 3 focused', class: 'is-focus' },
@@ -21,44 +17,40 @@ const STATES = [
 ---
 
 <SpecimenRow title="A: folder tabs">
-  {
-    FOLDERS.map((folder) => (
-      <Specimen label={folder.label} wide>
-        <div class:list={['rk-folder', folder.class]}>
-          <nav aria-label="Pagination">
-            <ol class="rk-folder-tabs">
-              <li>
-                <a class="rk-folder-tab" href="#" rel="prev">
-                  <CaretLeftIcon class="rk-icon rk-icon--small" />
-                  <span class="rk-visually-hidden">Previous page</span>
+  <Specimen label="index-card tabs" wide>
+    <div class="rk-folder">
+      <nav aria-label="Pagination">
+        <ol class="rk-folder-tabs">
+          <li>
+            <a class="rk-folder-tab" href="#" rel="prev">
+              <CaretLeftIcon class="rk-icon rk-icon--small" />
+              <span class="rk-visually-hidden">Previous page</span>
+            </a>
+          </li>
+          {PAGES.map((page) => (
+            <li>
+              {page === null ? (
+                '…'
+              ) : (
+                <a class="rk-folder-tab" href="#" aria-current={page === CURRENT ? 'page' : undefined}>
+                  {page}
                 </a>
-              </li>
-              {PAGES.map((page) => (
-                <li>
-                  {page === null ? (
-                    '…'
-                  ) : (
-                    <a class="rk-folder-tab" href="#" aria-current={page === CURRENT ? 'page' : undefined}>
-                      {page}
-                    </a>
-                  )}
-                </li>
-              ))}
-              <li>
-                <a class="rk-folder-tab" href="#" rel="next">
-                  <CaretRightIcon class="rk-icon rk-icon--small" />
-                  <span class="rk-visually-hidden">Next page</span>
-                </a>
-              </li>
-            </ol>
-          </nav>
-          <div class="rk-folder-sheet">
-            <p>Page {CURRENT}</p>
-          </div>
-        </div>
-      </Specimen>
-    ))
-  }
+              )}
+            </li>
+          ))}
+          <li>
+            <a class="rk-folder-tab" href="#" rel="next">
+              <CaretRightIcon class="rk-icon rk-icon--small" />
+              <span class="rk-visually-hidden">Next page</span>
+            </a>
+          </li>
+        </ol>
+      </nav>
+      <div class="rk-folder-sheet">
+        <p>Page {CURRENT}</p>
+      </div>
+    </div>
+  </Specimen>
 </SpecimenRow>
 
 <SpecimenRow title="B: tiles and buttons">

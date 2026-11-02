@@ -25,11 +25,10 @@
      <div class="rk-folder-sheet">…</div>
    </div>
 
-   Add .rk-folder--sloped for overlapping tabs with sloped sides, like a manila folder's, and
-   .rk-folder--tinted for a sheet in --selected-tint.
+   Add .rk-folder--tinted for a sheet in --selected-tint.
 
-   Stacking, back to front: tabs (1), a hovered or focused tab (2), the sheet (3), the selected
-   tab (4). */
+   Stacking, back to front: the other tabs (1), whatever their state; the sheet (2); the selected
+   tab (3). */
 
 .rk-folder {
   --folder-sheet: var(--raised);
@@ -46,11 +45,12 @@
 }
 
 /* Scrolls sideways when the tabs don't fit. The top padding leaves room for the focus band and a
-   lifted tab's shadow. */
+   lifted tab's shadow. The gap is wider than a lifted tab's shadow at any light angle, so the
+   shadow never falls on a neighbour. */
 .rk-folder-tabs {
   display: flex;
   align-items: flex-end;
-  gap: var(--space-2);
+  gap: var(--space-3);
   margin: 0 0 calc(-1 * var(--folder-tuck));
   padding: var(--space-2) var(--space-3) 0;
   overflow: auto hidden;
@@ -91,14 +91,10 @@
   color: inherit;
 }
 
-.rk-folder-tab:is(:hover, :focus-visible) {
-  z-index: 2;
-}
-
 /* The selected tab stops at the sheet's top edge, and its ::after covers the sheet's outline
    between the tab's sides, joining the two. */
 .rk-folder-tab:is([aria-selected='true'], [aria-current='page']) {
-  z-index: 4;
+  z-index: 3;
   margin-block-end: var(--folder-tuck);
   padding-block-end: var(--space-2);
   background: var(--folder-sheet);
@@ -115,9 +111,21 @@
   background: var(--folder-sheet);
 }
 
+/* The selected tab's shadow is the sheet's, cast by the tab and cut off where it would fall on the
+   sheet: at the tab's bottom edge, or higher by the shadow's offset when the light comes from
+   below, so that it meets the sheet's own shadow edge to edge. */
+.rk-folder-tab:is([aria-selected='true'], [aria-current='page'])::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--outline-width)) calc(-1 * var(--outline-width)) 0;
+  border-radius: inherit;
+  box-shadow: var(--shadow);
+  clip-path: inset(-100vmax -100vmax max(0px, -1 * var(--shadow-offset-y)));
+}
+
 .rk-folder-sheet {
   position: relative;
-  z-index: 3;
+  z-index: 2;
   padding: var(--space-4);
   border: var(--outline-width) solid var(--line-unfilled);
   border-radius: var(--radius);
@@ -129,20 +137,4 @@
   .rk-folder-sheet[role='tabpanel'][hidden] {
     display: block;
   }
-}
-
-/* corner-shape: bevel straightens the tabs' top corners into slopes; without it they stay
-   curved. The vertical radius of 100% runs each slope from the top to the bottom of the tab. */
-.rk-folder--sloped .rk-folder-tabs {
-  gap: 0;
-}
-
-.rk-folder--sloped .rk-folder-tab {
-  --tab-slope: var(--space-4);
-
-  margin-inline-end: calc(-1 * var(--tab-slope) / 2);
-  padding-inline: calc(var(--space-3) + var(--tab-slope));
-  border-start-start-radius: var(--tab-slope) 100%;
-  border-start-end-radius: var(--tab-slope) 100%;
-  corner-shape: bevel;
 }

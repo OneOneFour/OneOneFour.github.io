@@ -61,16 +61,13 @@
   translate: var(--shadow-offset-x) var(--shadow-offset-y);
 }
 
-/* The selected folder tab is joined to the sheet and doesn't pop. Its shadow falls beside it and
-   above it, never onto the sheet. Its edge is the shadow moved on by --outline-width rather than
-   widened, which would draw the edge above the tab and on the sheet. */
+/* The selected folder tab is joined to the sheet and doesn't pop; its shadow is on ::before
+   (folder.css). It takes the selected state at once, so the press it was clicked with doesn't
+   ease back across the join. */
 .rk-folder-tab:is([aria-selected='true'], [aria-current='page']) {
-  box-shadow:
-    var(--shadow-offset-x) min(0px, var(--shadow-offset-y)) 0 var(--shadow-color),
-    calc(var(--shadow-offset-x) + var(--shadow-dx) * var(--outline-width))
-      min(0px, var(--shadow-offset-y) + var(--shadow-dy) * var(--outline-width)) 0
-      var(--shadow-edge);
+  box-shadow: none;
   translate: none;
+  transition: none;
 }
 
 /* Focus band. Chips, cards, tiles, colour input frames and segmented groups (deck keys included)
@@ -81,6 +78,24 @@
 :is(.rk-chip, .rk-card--link, .rk-segmented, .rk-tile, .rk-colour-input):has(:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-offset);
+  box-shadow: none;
+}
+
+/* The selected folder tab's band is drawn by its ::before in place of its shadow, and stops at
+   the sheet's edge like the tab's outline does. */
+.rk-folder-tab:is([aria-selected='true'], [aria-current='page']):focus-visible {
+  outline: none;
+}
+
+.rk-folder-tab:is([aria-selected='true'], [aria-current='page']):focus-visible::before {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+  box-shadow: none;
+  clip-path: inset(-100vmax -100vmax 0);
+}
+
+/* A focused sheet loses its shadow, so its selected tab does too. */
+.rk-folder:has(> .rk-folder-sheet:focus-visible) > .rk-folder-tabs .rk-folder-tab::before {
   box-shadow: none;
 }
 
