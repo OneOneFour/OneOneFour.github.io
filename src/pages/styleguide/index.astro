@@ -35,6 +35,7 @@ import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen
 import BreadcrumbSpecimens from '../../components/styleguide/BreadcrumbSpecimens.astro'
 import FolderSpecimens from '../../components/styleguide/FolderSpecimens.astro'
 import PaginationSpecimens from '../../components/styleguide/PaginationSpecimens.astro'
+import TopBarSpecimens from '../../components/styleguide/TopBarSpecimens.astro'
 import OverflowSpecimens from '../../components/styleguide/OverflowSpecimens.astro'
 import EquationSpecimens from '../../components/styleguide/EquationSpecimens.astro'
 import MathsInTextSpecimens from '../../components/styleguide/MathsInTextSpecimens.astro'
@@ -90,7 +91,7 @@ const CONTENTS = [
   },
   {
     title: 'Navigation and scrolling',
-    sections: ['Breadcrumbs', 'Folder tabs', 'Pagination', 'Overflow'],
+    sections: ['Breadcrumbs', 'Folder tabs', 'Pagination', 'Top bar', 'Overflow'],
   },
   {
     title: 'Maths and charts',
@@ -285,6 +286,16 @@ const CONTENTS = [
     <SpecimenSection title="Pagination">
       <PaginationSpecimens slot="light" />
       <PaginationSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Top bar">
+      <p>
+        Options for Gate 1b. This page's own header is A; see <a href="?topbar=flush">B live</a> here.
+        At the top of the page the toast lies flat and the flush bar has no shadow; scroll a little
+        and they take the look below, and the back-to-top button appears.
+      </p>
+      <TopBarSpecimens slot="light" />
+      <TopBarSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Widget frame">
