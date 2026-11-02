@@ -149,10 +149,12 @@
 }
 
 .rk-button[aria-busy='true']:has(> .rk-water) {
+  --water-empty: color-mix(in oklab, var(--button-fill) 45%, var(--water-empty-mix));
+
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: color-mix(in oklab, var(--button-fill) 45%, var(--water-empty-mix));
+  background: var(--water-empty);
 }
 
 /* The wave line is a darker shade of the fill, so it doesn't muddle the label as it passes. */

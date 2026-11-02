@@ -3,6 +3,7 @@ import SpecimenLayout from '../../layouts/SpecimenLayout.astro'
 // After SpecimenLayout, which loads rk-ui.css, so the mirrored states win over the real ones.
 import '../../components/styleguide/states.css'
 import SpecimenSection from '../../components/styleguide/SpecimenSection.astro'
+import ColourSummary from '../../components/styleguide/ColourSummary.astro'
 import ColourTokens from '../../components/styleguide/ColourTokens.astro'
 import TypeScale from '../../components/styleguide/TypeScale.astro'
 import FontSpecimens from '../../components/styleguide/FontSpecimens.astro'
@@ -54,7 +55,7 @@ const CONTENTS = [
   {
     title: 'Foundations',
     sections: [
-      'Colour tokens',
+      'Colours',
       'Type scale',
       'Fonts',
       'Monospace',
@@ -115,8 +116,9 @@ const CONTENTS = [
     <h1>Styleguide</h1>
     <StyleguideContents groups={CONTENTS} />
 
-    <SpecimenSection title="Colour tokens">
+    <SpecimenSection title="Colours" collapsed="All colour tokens">
       <p>Ratios are WCAG contrast: AA needs 4.5 for body text, 3:1 for large text and UI edges.</p>
+      <ColourSummary />
       <ColourTokens slot="light" theme="light" />
       <ColourTokens slot="dark" theme="dark" />
     </SpecimenSection>

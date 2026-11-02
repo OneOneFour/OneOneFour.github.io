@@ -1,6 +1,8 @@
 /**
  * Checks WCAG 2.x contrast between pairs of rk-ui colour tokens, in both themes and under every
- * page palette. Reads the styleguide's chart tokens too, so their fallback is checked.
+ * page palette. Reads the styleguide's chart and illustration tokens too, and water.css's
+ * busy-button recipe. Tokens may use var(), light-dark() and color-mix() (colour.mjs evaluates
+ * the mixes).
  *
  * Usage: node scripts/check-contrast.mjs
  *
@@ -9,11 +11,16 @@
  */
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { composite, contrastRatio, evaluateColour, selfCheck, toHex } from './colour.mjs'
 
 const TOKEN_FILES = [
   new URL('../packages/rk-ui/tokens.css', import.meta.url),
   new URL('../src/components/styleguide/chart-tokens.css', import.meta.url),
+  new URL('../src/components/styleguide/illustration-tokens.css', import.meta.url),
 ]
+// Component recipes that mix a per-element colour, measured below with each colour they take.
+const RECIPE_FILE = new URL('../packages/rk-ui/components/water.css', import.meta.url)
+const RECIPES = ['--water-empty']
 export const THEMES = ['light', 'dark']
 export const DEFAULT_PALETTE = 'cream'
 
@@ -30,6 +37,19 @@ const STICKY_NOTES = ['yellow', 'sky', 'tangerine', 'green', 'coral', 'grape'].m
 const SLATES = ['--slate', '--slate-greige']
 const TAB_STRIPS = ['--slate-tab', '--slate-greige-tab']
 const CODE_COLOURS = ['--code-keyword', '--code-function', '--code-string', '--code-number', '--code-comment']
+// The colour shadow mode gives every fill but navy a shadow in its own shade (shadow-colour.css).
+const EXTRUDED_FILLS = FILLS.filter((fill) => fill !== '--navy')
+// Each button fill, its label, and the colour water.css mixes its empty part towards when busy.
+const BUSY_BUTTONS = [
+  ['--yellow', '--on-fill', '--glint'],
+  ['--teal', '--on-fill', '--glint'],
+  ['--green', '--on-fill', '--glint'],
+  ['--tangerine', '--on-fill', '--glint'],
+  ['--navy', '--on-navy', '--line'],
+  ['--coral-solid', '--on-coral', '--fg'],
+  ['--grape', '--on-grape', '--fg'],
+  ['--section', '--on-section', '--glint'],
+]
 
 /** Every foreground against every background, with one minimum ratio. */
 function pairs(foregrounds, backgrounds, min) {
@@ -58,6 +78,26 @@ const GROUPS = [
     ],
   },
   { title: 'Text on sticky notes', pairs: pairs(['--on-fill'], STICKY_NOTES, 4.5) },
+  {
+    title: "Icon lines on a sticky note's fold and icon fills (--shade of the note)",
+    pairs: STICKY_NOTES.map((note) => ({
+      fg: '--on-fill',
+      bg: '--shade',
+      inputs: { '--shade-of': note },
+      min: 3,
+    })),
+  },
+  { title: 'Muted labels on unselected folder tabs', pairs: pairs(['--muted'], ['--folder-back'], 4.5) },
+  { title: 'Tooltip text', pairs: [{ fg: '--surface', bg: '--fg', min: 4.5 }] },
+  {
+    title: "Labels on a busy button's empty part",
+    pairs: BUSY_BUTTONS.map(([fill, label, away]) => ({
+      fg: label,
+      bg: '--water-empty',
+      inputs: { '--button-fill': fill, '--water-empty-mix': away },
+      min: 4.5,
+    })),
+  },
   { title: 'Large text on bright coral', pairs: [{ fg: '--on-coral', bg: '--coral', min: 3 }] },
   // The highlighter band hugs the ink outline, so that is the edge it must stand out from.
   { title: 'Focus band against the outline', pairs: pairs(['--focus', '--focus-alt'], ['--line'], 3) },
@@ -69,6 +109,13 @@ const GROUPS = [
     title: 'Colour shadow mode: the shadow without a fill against the page',
     themes: ['dark'],
     pairs: pairs(['--shadow-lit'], SURFACES, 3),
+  },
+  {
+    title: "Colour shadow mode: each fill's shade against the page",
+    themes: ['dark'],
+    pairs: EXTRUDED_FILLS.flatMap((fill) =>
+      SURFACES.map((bg) => ({ fg: '--shade', bg, inputs: { '--shade-of': fill }, min: 3 }))
+    ),
   },
   {
     title: 'Outline against the page',
@@ -160,50 +207,80 @@ function chooseTheme(value, theme) {
   return chooseTheme(value.slice(0, start) + chosen.trim() + value.slice(end + 1), theme)
 }
 
-/** The `#rrggbb` colour a token resolves to in one theme ('light' or 'dark'). */
-export function resolveColor(tokens, name, theme) {
+/** The colour a token resolves to in one theme ('light' or 'dark'), as `{ r, g, b, alpha }`. */
+export function resolveRgba(tokens, name, theme) {
   const value = chooseTheme(expandVars(tokens, name), theme)
-  if (!/^#[0-9a-f]{6}$/i.test(value)) {
-    throw new Error(`${name} is not a #rrggbb colour in the ${theme} theme: ${value}`)
+  try {
+    return evaluateColour(value)
+  } catch (error) {
+    throw new Error(`${name} is not a colour in the ${theme} theme: ${value} (${error.message})`)
   }
-  return value
 }
 
-function toLinear(channel) {
-  return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4
+/** The colour a token resolves to in one theme, as `#rrggbb`, or `#rrggbbaa` if translucent. */
+export function resolveColor(tokens, name, theme) {
+  return toHex(resolveRgba(tokens, name, theme))
 }
 
-/** WCAG 2.x relative luminance of a `#rrggbb` colour. */
-export function relativeLuminance(hex) {
-  const [r, g, b] = [1, 3, 5].map((i) => toLinear(parseInt(hex.slice(i, i + 2), 16) / 255))
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b
+/**
+ * The tokens with the per-element tokens a recipe reads set, e.g. `{ '--shade-of': '--teal' }`
+ * makes `--shade` teal's shade.
+ *
+ * @param {Map<string, string>} tokens
+ * @param {Record<string, string>} [inputs] each input token and the token it is set to
+ */
+export function withInputs(tokens, inputs) {
+  if (!inputs) return tokens
+  const set = Object.entries(inputs).map(([name, token]) => [name, `var(${token})`])
+  return new Map([...tokens, ...set])
 }
 
-/** WCAG 2.x contrast ratio between two `#rrggbb` colours, from 1 to 21. */
-export function contrastRatio(hexA, hexB) {
-  const [lighter, darker] = [relativeLuminance(hexA), relativeLuminance(hexB)].sort((a, b) => b - a)
-  return (lighter + 0.05) / (darker + 0.05)
+/**
+ * Measures one pair in one theme, with a translucent foreground painted over the background.
+ * `inputs` sets the per-element tokens a recipe reads (see withInputs).
+ *
+ * @param {Map<string, string>} tokens
+ * @param {{ fg: string, bg: string, inputs?: Record<string, string> }} pair
+ * @param {string} theme
+ * @returns the hex colours as painted, and their contrast ratio
+ */
+export function measurePair(tokens, { fg, bg, inputs }, theme) {
+  const scoped = withInputs(tokens, inputs)
+  const background = composite(resolveRgba(scoped, bg, theme))
+  const foreground = composite(resolveRgba(scoped, fg, theme), background)
+  return {
+    fgHex: toHex(foreground),
+    bgHex: toHex(background),
+    ratio: contrastRatio(foreground, background),
+  }
 }
 
-/** Prints one palette and theme's table and returns the number of failing pairs. */
+/** The inputs a recipe pair was measured with, for the table, e.g. ` (--shade-of: --teal)`. */
+function describeInputs({ inputs }) {
+  if (!inputs) return ''
+  return ` (${Object.entries(inputs).map(([name, token]) => `${name}: ${token}`).join(', ')})`
+}
+
+/** Prints one palette and theme's table and returns its failing pairs' lines. */
 function printTable(tokens, palette, theme) {
-  console.log(`\n${palette.toUpperCase()} PALETTE, ${theme.toUpperCase()} THEME`)
-  let failures = 0
+  const heading = `${palette.toUpperCase()} PALETTE, ${theme.toUpperCase()} THEME`
+  console.log(`\n${heading}`)
+  const failures = []
 
   for (const group of GROUPS) {
     if (group.themes && !group.themes.includes(theme)) continue
     console.log(`\n  ${group.title}`)
 
-    for (const { fg, bg, min } of group.pairs) {
-      const fgHex = resolveColor(tokens, fg, theme)
-      const bgHex = resolveColor(tokens, bg, theme)
-      const ratio = contrastRatio(fgHex, bgHex)
+    for (const pair of group.pairs) {
+      const { fg, bg, min } = pair
+      const { fgHex, bgHex, ratio } = measurePair(tokens, pair, theme)
       const status = ratio >= min ? 'pass' : group.knownGap ? 'known gap' : 'FAIL'
-      if (status === 'FAIL') failures++
 
       const fgCell = `${fg} ${fgHex}`.padEnd(30)
       const bgCell = `${bg} ${bgHex}`.padEnd(30)
-      console.log(`    ${fgCell} on ${bgCell} ${ratio.toFixed(2).padStart(5)}  min ${min}  ${status}`)
+      const measured = `${ratio.toFixed(2).padStart(5)}  min ${min}  ${status}${describeInputs(pair)}`
+      console.log(`    ${fgCell} on ${bgCell} ${measured}`)
+      if (status === 'FAIL') failures.push(`  ${heading}, ${group.title}:\n    ${fgCell} on ${bgCell} ${measured}`)
     }
     if (group.knownGap) console.log(`    (${group.knownGap})`)
   }
@@ -223,7 +300,7 @@ function checkFallback(tokens, fallback) {
       return [`${name} still uses light-dark()`]
     }
 
-    // Compared as text rather than with resolveColor, which rejects `transparent`.
+    // Compared as expanded text, so the fallback must repeat the light value itself.
     const light = chooseTheme(expandVars(tokens, name), 'light').toLowerCase()
     const actual = expandVars(withFallback, name).toLowerCase()
     return actual === light ? [] : [`${name} is ${actual}, light is ${light}`]
@@ -236,17 +313,23 @@ function checkFallback(tokens, fallback) {
 }
 
 function main() {
+  const resolverProblems = selfCheck()
+  resolverProblems.forEach((problem) => console.log(`RESOLVER SELF-CHECK FAIL ${problem}`))
+
   const files = TOKEN_FILES.map((file) => readFileSync(file, 'utf8'))
   const { main: mainCss, fallback: fallbackCss } = splitFallbacks(files)
   const { palettes } = splitPalettes(mainCss)
+  const recipes = parseTokens(readFileSync(RECIPE_FILE, 'utf8'))
+  const recipeTokens = RECIPES.map((name) => [name, recipes.get(name)])
   const fallbackFailures = checkFallback(palettes.get(DEFAULT_PALETTE), parseTokens(fallbackCss))
 
-  let failures = 0
-  for (const [palette, tokens] of palettes) {
-    for (const theme of THEMES) failures += printTable(tokens, palette, theme)
-  }
-  console.log(failures ? `\n${failures} pair(s) fail.` : '\nAll pairs pass.')
-  process.exitCode = failures || fallbackFailures ? 1 : 0
+  const failures = [...palettes].flatMap(([palette, tokens]) => {
+    const withRecipes = new Map([...tokens, ...recipeTokens])
+    return THEMES.flatMap((theme) => printTable(withRecipes, palette, theme))
+  })
+  if (failures.length) console.log(`\nFAILURES\n${failures.join('\n')}`)
+  console.log(failures.length ? `\n${failures.length} pair(s) fail.` : '\nAll pairs pass.')
+  process.exitCode = failures.length || fallbackFailures || resolverProblems.length ? 1 : 0
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

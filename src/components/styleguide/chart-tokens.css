@@ -11,6 +11,9 @@
   --chart-6: var(--coral);
   --chart-7: var(--grape);
   --chart-8: var(--tangerine);
+  /* A series in the background, behind the one being shown, and the grid lines */
+  --chart-context: color-mix(in srgb, var(--muted) 45%, transparent);
+  --chart-grid: color-mix(in srgb, var(--fg) 12%, transparent);
 
   /* Sequential scale: for magnitudes, from navy's tint to its text colour, so in both themes the
      strongest step stands out most from the page */

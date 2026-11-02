@@ -3,15 +3,19 @@ import {
   splitFallbacks,
   splitPalettes,
   resolveColor,
-  contrastRatio,
+  measurePair,
+  withInputs,
   THEMES,
   DEFAULT_PALETTE,
 } from '../../../scripts/check-contrast.mjs'
 import rawTokensCss from 'rk-ui/tokens.css?raw'
 import rawChartTokensCss from './chart-tokens.css?raw'
+import rawIllustrationTokensCss from './illustration-tokens.css?raw'
 
 export type Theme = 'light' | 'dark'
 export type Tokens = Map<string, string>
+/** Per-element tokens a recipe reads, each set to a token, e.g. `{ '--shade-of': '--teal' }`. */
+export type Inputs = Record<string, string>
 
 /** One contrast measurement: foreground token on background token, in one theme. */
 export interface Contrast {
@@ -21,24 +25,27 @@ export interface Contrast {
 }
 
 // The light-only fallback is left out: its plain values would hide the dark theme.
-const { shared, palettes } = splitPalettes(splitFallbacks([rawTokensCss, rawChartTokensCss]).main)
+const { shared, palettes } = splitPalettes(
+  splitFallbacks([rawTokensCss, rawChartTokensCss, rawIllustrationTokensCss]).main
+)
 
 /** The token files without their fallbacks and the page palette rules: the tokens every palette
  *  shares. */
 export const tokensCss: string = shared
 /** Each page palette's tokens, by palette name, in the order tokens.css gives them. */
 export const paletteTokens: Map<string, Tokens> = palettes
-/** The default palette's tokens. */
+/** The default palette's name and tokens. */
+export const defaultPalette: string = DEFAULT_PALETTE
 export const tokens: Tokens = palettes.get(DEFAULT_PALETTE)!
 
-/** The `#rrggbb` a token resolves to in one theme. */
-export function hexOf(allTokens: Tokens, name: string, theme: Theme): string {
-  return resolveColor(allTokens, name, theme)
+/** The `#rrggbb` (or `#rrggbbaa`) a token resolves to in one theme, with a recipe's inputs. */
+export function hexOf(allTokens: Tokens, name: string, theme: Theme, inputs?: Inputs): string {
+  return resolveColor(withInputs(allTokens, inputs), name, theme)
 }
 
 /** WCAG contrast of the `fg` token on the `bg` token, in one theme. */
 export function contrast(allTokens: Tokens, fg: string, bg: string, theme: Theme): Contrast {
-  const ratio = contrastRatio(hexOf(allTokens, fg, theme), hexOf(allTokens, bg, theme))
+  const { ratio } = measurePair(allTokens, { fg, bg }, theme)
   return { fg, bg, ratio }
 }
 
@@ -73,9 +80,15 @@ function ownLabel(fill: string): string {
   return `--on-${fill.slice(2).replace(/-solid$/, '')}`
 }
 
-/** A fill is a hue with -deep or -tint variants, or a colour with its own --on-* label. */
+/** A sticky note's fill, which carries --on-fill text. The tape is a see-through wash. */
+function isNote(name: string): boolean {
+  return name.startsWith('--note-') && name !== '--note-tape'
+}
+
+/** A fill is a hue with -deep or -tint variants, a sticky note, or a colour with its own --on-* label. */
 function isFill(allTokens: Tokens, name: string): boolean {
   if (name.startsWith('--on-')) return false
+  if (isNote(name)) return true
   const hasVariant = allTokens.has(`${name}-deep`) || allTokens.has(`${name}-tint`)
   return hasVariant || allTokens.has(ownLabel(name))
 }

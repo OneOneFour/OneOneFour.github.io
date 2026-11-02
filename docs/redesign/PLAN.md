@@ -236,13 +236,14 @@ Rules (shown on the mood board, theme switch at the top):
   dark mode, transparent in light), the "outlined slab" (option B).
   *DECIDED 2026-11-02 (Rob): B is the default, and D, own-colour extrusion, is a supported
   alternate mode.* `data-shadow="colour"` on `<html>` or any container (`shadow-colour.css`)
-  gives each raised thing with a fill a shadow in that fill darkened (75% fill, 25% `--line`);
+  gives each raised thing with a fill a shadow in that fill darkened (`--shade`: 75% fill, 25%
+  `--line`);
   navy and section buttons, checked chips and things without a fill cast `--shadow-lit`
   instead, lighter than the page. Light mode is unchanged. `data-shadow="slab"` switches back
   inside it, as `cream` does for palettes. The mode is an `@scope` from `colour` to `slab`,
   declared on every element so each one reads its own fill; browsers without `@scope` or
-  `light-dark()` keep the slab. `npm run contrast` checks `--shadow-lit` against the page under
-  every palette; the darkened fills are `color-mix()`es it doesn't resolve. The styleguide has a
+  `light-dark()` keep the slab. `npm run contrast` checks `--shadow-lit` and each fill's `--shade`
+  against the page under every palette (§5.1c). The styleguide has a
   Slab / Colour switch beside the palette switch (stored under `rk-shadow`) and keeps the two
   side by side under "Dark-mode shadows".
 - **Tints flip to deep versions** with cream text (sky, lilac, apricot are
@@ -269,7 +270,8 @@ Rules (shown on the mood board, theme switch at the top):
   `.rk-slate-greige` still opts into greige code anywhere. Browsers without `light-dark()` get
   cream light everywhere: the fallback block also applies to `[data-palette]`. `npm run contrast`
   checks every pair under each palette in both themes. The styleguide has a palette switch next
-  to the theme toggle (stored under `rk-palette`) and shows the three palettes side by side.
+  to the theme toggle (stored under `rk-palette`), and its Colours summary lists the three
+  palettes' surfaces in both themes.
 
 | Palette | surface (light / dark) | raised (light / dark) |
 |---|---|---|
@@ -301,6 +303,35 @@ about 1.2–1.4:1. That's fine for filled components, where the fill provides
 the 3:1 boundary. Outline-only components (e.g. a Reset button with no fill)
 must use the `fg` colour for their border in dark mode. The contrast
 script checks both themes.
+
+### 5.1c Colour audit *(2026-11-02)*
+
+`npm run contrast` now evaluates `color-mix()` (srgb, oklab, oklch; nested; translucent colours
+painted over what they sit on), so mixed colours are checked like the rest. Every colour defined
+outside `tokens.css`, `chart-tokens.css` and `illustration-tokens.css` was listed:
+
+- **Fine (about 900):** a plain `var()` of a token, a keyword (`transparent`, `currentColor`) or a
+  forced-colours system colour. JS and the drawings' data only name tokens.
+- **Moved into a token, same rendered colour:** the repeated recipes now form a **shading** group
+  in `tokens.css`. `--stripe` is the outline colour at 25% over whatever it crosses (progress
+  stripes, illustration hatching). `--shade` is a fill 75% / `--line` 25%: set `--shade-of` to the
+  fill. It gives the sticky-note fold and every colour-mode extrusion, and is declared on every
+  element, as the shadow tokens are. `--folder-back` (the page 8% towards `--line`) is redeclared
+  on palette containers because it mixes `--surface`. The chart's context series and grid moved to
+  `--chart-context` and `--chart-grid`.
+- **Recipes that stay in their component** (they mix a per-element value): the busy button's
+  empty part (`--water-empty`, which the contrast script reads) and wave line (`water.css`), and
+  the overflow dots (`overflow.css`, strength set by scroll position).
+- **Drift:** only the old site (`src/styles/global.css` `white`/`black`/`#888`, and
+  `ProjectItem.astro`'s `rgba(255, 255, 255, 0.3)`). It goes when the P2 shell replaces it. The
+  ORCID mark keeps its brand green and white.
+- **Near-duplicates for Rob to decide:** `--illustration-red-shade` (80% towards `--ink`) could be
+  `--shade` of red; `--wave-line` (60% towards `--line`) is a deeper `--shade`;
+  `--shadow-code-inset` (20% `--line`) is nearly `--stripe` (25%).
+- **Checks that fail, left for Rob** (`npm run contrast` lists them at the end): a busy
+  `--section` button's cream label on its empty part (2.9:1); ink icon lines on the coral note's
+  fold in dark mode (2.8:1, min 3); in the colour shadow mode, coral's shade against the dark page
+  (2.4–2.9:1) and grape's against `--raised` (2.6–2.8:1).
 
 ### 5.2 Typography — research so far
 

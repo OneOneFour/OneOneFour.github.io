@@ -1,0 +1,204 @@
+---
+import { SUMMARY, type SummaryText } from './colour-summary'
+import { defaultPalette, type Inputs, type Theme } from './colour-tokens'
+
+/**
+ * The core colours at a glance: one row per colour with a sample and the hex in each theme, its
+ * permitted shades, and its text pair with the contrast in each theme. Every value is computed
+ * from the token files, and the samples keep to the default palette and the slab shadows so they
+ * match the numbers.
+ */
+
+const THEMES: Theme[] = ['light', 'dark']
+
+/** Inline style with a token as the background in one theme, and a recipe's inputs set. */
+function paint(name: string, theme: Theme, inputs: Inputs = {}) {
+  const set = Object.entries(inputs).map(([input, token]) => `${input}: var(${token});`)
+  return `color-scheme: ${theme}; ${set.join(' ')} background: var(${name});`
+}
+
+function textStyle(pair: SummaryText, theme: Theme) {
+  return `${paint(pair.bg, theme)} color: var(${pair.fg});`
+}
+
+/** How the text column names a row's pair: the label token, or "on" the page for a text colour. */
+function pairName(name: string, text: SummaryText) {
+  return text.fg === name ? `on ${text.bg}` : text.fg
+}
+---
+
+<div class="summary" data-palette={defaultPalette} data-shadow="slab">
+  {
+    SUMMARY.map((group) => (
+      <>
+        <h3>{group.title}</h3>
+        <p class="caption">{group.caption}</p>
+        <ul class="rows">
+          {group.rows.map((row) => (
+            <li class="row">
+              <code class="name">{row.colour.label}</code>
+              {THEMES.map((theme) => (
+                <span class={`theme ${theme}`}>
+                  <span
+                    class="chip"
+                    data-palette={row.colour.palette}
+                    style={paint(row.colour.name, theme, row.colour.inputs)}
+                  />
+                  <span class="hex">
+                    {theme} {row.colour[theme]}
+                  </span>
+                </span>
+              ))}
+              {row.shades.length > 0 && (
+                <ul class="shades">
+                  {row.shades.map((shade) => (
+                    <li class="shade">
+                      <span class="mini" data-palette={shade.palette}>
+                        {THEMES.map((theme) => (
+                          <span style={paint(shade.name, theme, shade.inputs)} />
+                        ))}
+                      </span>
+                      <span class="hex">
+                        <code>{shade.label}</code> {shade.light} / {shade.dark}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {row.text && (
+                <span class="text">
+                  <span class="sample" data-palette={row.text.palette}>
+                    {THEMES.map((theme) => (
+                      <span style={textStyle(row.text!, theme)}>Aa</span>
+                    ))}
+                  </span>
+                  <span class="hex">
+                    <code>{pairName(row.colour.name, row.text)}</code> {row.text.light} / {row.text.dark}
+                  </span>
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </>
+    ))
+  }
+</div>
+
+<style>
+  .summary {
+    container-type: inline-size;
+  }
+
+  h3 {
+    margin-block: var(--space-5) var(--space-2);
+    font-size: var(--step-1);
+  }
+
+  .caption {
+    max-width: 65ch;
+    margin-block: 0 var(--space-3);
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  .rows,
+  .shades {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Narrow: the name across the top, then the two themes, the shades and the text pair. */
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'name name'
+      'light dark'
+      'shades shades'
+      'text text';
+    gap: var(--space-2) var(--space-3);
+    padding-block: var(--space-3);
+    border-block-start: 1px solid var(--muted);
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .name {
+    grid-area: name;
+    font-weight: 700;
+  }
+
+  .theme {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .light {
+    grid-area: light;
+  }
+
+  .dark {
+    grid-area: dark;
+  }
+
+  .shades {
+    display: flex;
+    flex-wrap: wrap;
+    grid-area: shades;
+    gap: var(--space-1) var(--space-3);
+  }
+
+  .shade,
+  .text {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .text {
+    grid-area: text;
+  }
+
+  .chip,
+  .mini,
+  .sample {
+    flex: none;
+    overflow: hidden;
+    border: 1px solid var(--muted);
+    border-radius: var(--radius);
+  }
+
+  .chip {
+    inline-size: 2.5rem;
+    block-size: 2rem;
+  }
+
+  /* Split samples: the light theme on the left, the dark on the right. */
+  .mini,
+  .sample {
+    display: flex;
+  }
+
+  .mini > span {
+    inline-size: 0.875rem;
+    block-size: 1.25rem;
+  }
+
+  .sample > span {
+    padding: var(--space-1) var(--space-2);
+    font-family: var(--font-display);
+    font-weight: 800;
+  }
+
+  /* Wide: one line per colour. */
+  @container (width >= 56rem) {
+    .row {
+      grid-template-columns: 9rem 9rem 9rem 1fr 15rem;
+      grid-template-areas: 'name light dark shades text';
+      align-items: center;
+    }
+  }
+</style>

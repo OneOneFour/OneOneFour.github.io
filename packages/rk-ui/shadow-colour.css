@@ -14,34 +14,41 @@
     }
 
     .rk-button {
-      --extrusion: color-mix(in oklab, var(--button-fill) 75%, var(--line));
+      --shade-of: var(--button-fill);
+      --extrusion: var(--shade);
     }
 
     :is(.rk-checkbox, .rk-radio):checked,
     .rk-dial--arc .rk-dial-face,
     .rk-clock-hand--hour .rk-clock-tag {
-      --extrusion: color-mix(in oklab, var(--selected) 75%, var(--line));
+      --shade-of: var(--selected);
+      --extrusion: var(--shade);
     }
 
     /* The range thumb and the file button are pseudo-elements, so their inputs carry the colour. */
     .rk-range {
-      --extrusion: color-mix(in oklab, var(--selected) 75%, var(--line));
+      --shade-of: var(--selected);
+      --extrusion: var(--shade);
     }
 
     .rk-input[type='file'] {
-      --extrusion: color-mix(in oklab, var(--yellow) 75%, var(--line));
+      --shade-of: var(--yellow);
+      --extrusion: var(--shade);
     }
 
     .rk-tile--colour {
-      --extrusion: color-mix(in oklab, var(--swatch) 75%, var(--line));
+      --shade-of: var(--swatch);
+      --extrusion: var(--shade);
     }
 
     .rk-badge--sticker {
-      --extrusion: color-mix(in oklab, var(--badge-fill) 75%, var(--line));
+      --shade-of: var(--badge-fill);
+      --extrusion: var(--shade);
     }
 
+    /* sticky-note.css sets the note's --shade-of, for its fold. */
     .rk-sticky-note {
-      --extrusion: color-mix(in oklab, var(--note-fill) 75%, var(--line));
+      --extrusion: var(--shade);
     }
 
     /* Darkened, these fills are too close to the page to read as a shadow. Checked chips are left
