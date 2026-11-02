@@ -137,6 +137,18 @@
   --seq-4: color-mix(in oklab, var(--navy-deep) 82%, var(--navy-tint));
   --seq-5: var(--navy-deep);
 
+  /* Vivid sequential scale (Gate 1b option): the fills from yellow through green and teal to navy,
+     in even steps of lightness. Light mode runs from yellow up to navy and dark mode from navy up
+     to yellow, so the strongest step stands out most from the page. */
+  --seq-vivid-1: light-dark(var(--yellow), color-mix(in oklab, var(--navy) 50%, var(--navy-tint)));
+  --seq-vivid-2: light-dark(var(--green), var(--navy));
+  --seq-vivid-3: light-dark(
+    color-mix(in oklab, var(--teal) 75%, var(--navy)),
+    color-mix(in oklab, var(--navy) 50%, var(--teal))
+  );
+  --seq-vivid-4: light-dark(color-mix(in oklab, var(--teal) 40%, var(--navy)), var(--green));
+  --seq-vivid-5: light-dark(var(--navy), var(--yellow));
+
   /* Diverging scale: for anomalies, navy below and coral above with a faint neutral between. The
      coral end leans towards --fg so that both ends are about as light as each other. */
   --div-cold-3: var(--navy-deep);
@@ -256,6 +268,12 @@
     --slate-tab: #dbe0ea;
     --slate-greige: #eae7e2;
     --slate-greige-tab: #e0dcd6;
+
+    --seq-vivid-1: var(--yellow);
+    --seq-vivid-2: var(--green);
+    --seq-vivid-3: color-mix(in oklab, var(--teal) 75%, var(--navy));
+    --seq-vivid-4: color-mix(in oklab, var(--teal) 40%, var(--navy));
+    --seq-vivid-5: var(--navy);
   }
 }
 
