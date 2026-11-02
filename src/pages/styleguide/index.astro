@@ -2,12 +2,10 @@
 import SpecimenLayout from '../../layouts/SpecimenLayout.astro'
 import SpecimenSection from '../../components/styleguide/SpecimenSection.astro'
 import ColourTokens from '../../components/styleguide/ColourTokens.astro'
-import HueVariants from '../../components/styleguide/HueVariants.astro'
 import TypeScale from '../../components/styleguide/TypeScale.astro'
 import FontSpecimens from '../../components/styleguide/FontSpecimens.astro'
 import MonoSpecimen from '../../components/styleguide/MonoSpecimen.astro'
 import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
-import FocusOptions from '../../components/styleguide/FocusOptions.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -20,18 +18,7 @@ import FocusOptions from '../../components/styleguide/FocusOptions.astro'
       <ColourTokens slot="dark" theme="dark" />
     </SpecimenSection>
 
-    <SpecimenSection title="Hue variants to choose">
-      <p>
-        Reply with one option per token, e.g. “teal-deep alt2”. For -deep, alt1 is closest to the
-        vivid hue and alt2 is darker in light mode and paler in dark mode. For -tint, alt1 is
-        quieter and alt2 has a stronger hue.
-      </p>
-      <HueVariants slot="light" theme="light" />
-      <HueVariants slot="dark" theme="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Type scale" stacked>
-      <p>Reply with a ratio: 1.25, 1.28 or 1.3.</p>
+    <SpecimenSection title="Type scale">
       <TypeScale slot="light" />
       <TypeScale slot="dark" />
     </SpecimenSection>
@@ -42,7 +29,6 @@ import FocusOptions from '../../components/styleguide/FocusOptions.astro'
     </SpecimenSection>
 
     <SpecimenSection title="Monospace" stacked>
-      <p>Reply with ligatures on or off.</p>
       <MonoSpecimen slot="light" />
       <MonoSpecimen slot="dark" />
     </SpecimenSection>
@@ -50,12 +36,6 @@ import FocusOptions from '../../components/styleguide/FocusOptions.astro'
     <SpecimenSection title="Shape and motion">
       <ShapeAndMotion slot="light" />
       <ShapeAndMotion slot="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Focus ring options">
-      <p>Reply with one option, e.g. “focus grape”.</p>
-      <FocusOptions slot="light" />
-      <FocusOptions slot="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>

@@ -1,11 +1,10 @@
 /**
  * Checks WCAG 2.x contrast between pairs of rk-ui colour tokens, in both themes.
  *
- * Usage: node scripts/check-contrast.mjs [extra-tokens.css]
+ * Usage: node scripts/check-contrast.mjs
  *
- * An extra file's tokens are layered over the main file. A token named `--x-alt1` is checked
- * in every pair that uses `--x`. Also checks that the light-only fallback for browsers without
- * light-dark() repeats every light-dark() token's light colour. Exits with code 1 on any failure.
+ * Also checks that the light-only fallback for browsers without light-dark() repeats every
+ * light-dark() token's light colour. Exits with code 1 on any failure.
  */
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -136,29 +135,12 @@ export function contrastRatio(hexA, hexB) {
   return (lighter + 0.05) / (darker + 0.05)
 }
 
-/** Copies of each group's pairs with every `--x-altN` token in place of `--x`. */
-function candidateGroups(tokenNames) {
-  const alternates = tokenNames.filter((name) => /-alt\d+$/.test(name))
-  const swap = (token, base, alt) => (token === base ? alt : token)
-
-  return GROUPS.map((group) => ({
-    ...group,
-    title: `${group.title} (candidates)`,
-    pairs: alternates.flatMap((alt) => {
-      const base = alt.replace(/-alt\d+$/, '')
-      return group.pairs
-        .filter(({ fg, bg }) => fg === base || bg === base)
-        .map((pair) => ({ ...pair, fg: swap(pair.fg, base, alt), bg: swap(pair.bg, base, alt) }))
-    }),
-  })).filter((group) => group.pairs.length > 0)
-}
-
 /** Prints one theme's table and returns the number of failing pairs. */
-function printTheme(tokens, groups, theme) {
+function printTheme(tokens, theme) {
   console.log(`\n${theme.toUpperCase()} THEME`)
   let failures = 0
 
-  for (const group of groups) {
+  for (const group of GROUPS) {
     if (group.themes && !group.themes.includes(theme)) continue
     console.log(`\n  ${group.title}`)
 
@@ -202,24 +184,17 @@ function checkFallback(tokens, fallback) {
   return problems.length
 }
 
-function main([extraFile]) {
+function main() {
   const css = readFileSync(TOKENS_FILE, 'utf8')
   const { main: mainCss, fallback: fallbackCss } = splitFallback(css)
   const tokens = parseTokens(mainCss)
   const fallbackFailures = checkFallback(tokens, parseTokens(fallbackCss))
-  let groups = GROUPS
 
-  if (extraFile) {
-    const extra = parseTokens(readFileSync(extraFile, 'utf8'))
-    extra.forEach((value, name) => tokens.set(name, value))
-    groups = [...GROUPS, ...candidateGroups([...extra.keys()])]
-  }
-
-  const failures = THEMES.reduce((sum, theme) => sum + printTheme(tokens, groups, theme), 0)
+  const failures = THEMES.reduce((sum, theme) => sum + printTheme(tokens, theme), 0)
   console.log(failures ? `\n${failures} pair(s) fail.` : '\nAll pairs pass.')
   process.exitCode = failures || fallbackFailures ? 1 : 0
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  main(process.argv.slice(2))
+  main()
 }
