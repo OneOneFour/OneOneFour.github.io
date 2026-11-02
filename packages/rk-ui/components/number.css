@@ -3,9 +3,9 @@
 
    Split: − and + buttons either side of the field.
    <rk-stepper class="rk-stepper rk-stepper--split">
-     <button class="rk-button" type="button" data-step="down" aria-label="Decrease"><svg class="rk-icon">…</svg></button>
+     <button class="rk-button" type="button" data-step="down" aria-label="Decrease">−</button>
      <input class="rk-input" type="number" aria-label="Label">
-     <button class="rk-button" type="button" data-step="up" aria-label="Increase"><svg class="rk-icon">…</svg></button>
+     <button class="rk-button" type="button" data-step="up" aria-label="Increase">+</button>
    </rk-stepper>
 
    Stacked: up and down arrow buttons inside the field's end. The buttons skip the tab order

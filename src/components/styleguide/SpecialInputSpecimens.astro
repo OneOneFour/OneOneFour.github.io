@@ -10,8 +10,6 @@ import SpecimenRow from './SpecimenRow.astro'
 import SwatchPicker from './SwatchPicker.astro'
 import UploadIcon from 'rk-ui/icons/upload-simple.svg'
 import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
-import MinusIcon from 'rk-ui/icons/minus.svg'
-import PlusIcon from 'rk-ui/icons/plus.svg'
 import CaretUpIcon from 'rk-ui/icons/caret-up.svg'
 import CaretDownIcon from 'rk-ui/icons/caret-down.svg'
 
@@ -196,7 +194,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
       <Specimen label={state.label}>
         <rk-stepper class="rk-stepper rk-stepper--split">
           <button class="rk-button" type="button" data-step="down" aria-label="Decrease" disabled={state.disabled}>
-            <MinusIcon class="rk-icon" aria-hidden="true" />
+            −
           </button>
           <input
             class:list={['rk-input', state.input]}
@@ -215,7 +213,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
             aria-label="Increase"
             disabled={state.disabled}
           >
-            <PlusIcon class="rk-icon" aria-hidden="true" />
+            +
           </button>
         </rk-stepper>
       </Specimen>
