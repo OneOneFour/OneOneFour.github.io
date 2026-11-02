@@ -15,7 +15,7 @@
      </figure>
    </rk-code-block>
 
-   Box variants for Gate 1b: .rk-code--outlined (B), .rk-code--tab (C). */
+   Box variant for Gate 1b: .rk-code--tab (C). */
 
 rk-code-block {
   display: block;
@@ -79,11 +79,6 @@ rk-code-block {
 
 .rk-code:has(pre:focus-visible) pre {
   outline: none;
-}
-
-/* Code box B: a flush panel with the unfilled outline. */
-.rk-code--outlined {
-  border: var(--outline-width) solid var(--line-unfilled);
 }
 
 /* Code box C: the caption is a darker strip across the top, like an editor tab. */
