@@ -382,6 +382,12 @@ settles the type scale, the monospace face and the weights actually used.
 A `/styleguide/` page renders every token and component. It is where Rob
 reviews design work.
 
+**Options instead of one-offs** *(Rob, Gate 1b)*: where more than one treatment is good, the
+package keeps them as opt-in classes rather than picking one. Text fields' hover cue is the
+first: the background sinks by default, and `.rk-hover-ring`, `.rk-hover-underline` or
+`.rk-hover-none` on a field or any ancestor swaps it. Options stay CSS classes (or attributes),
+so the plain-HTML sites and any later framework wrapper (e.g. a Vue `hover` prop) share them.
+
 
 ### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*
 
