@@ -205,6 +205,44 @@
   filter: none;
 }
 
+/* Pop and sticker looks: each assembly sits on the page with the UI's resting shadow, which
+   hands over to its parts' own shadows while it is apart. */
+.rk-explode--pop .rk-explode-assembly {
+  --rest-shadow: calc((1 - var(--explode)) * var(--shadow-offset));
+  --rest-edge: calc((1 - var(--explode)) * var(--outline-width));
+
+  filter: drop-shadow(
+      calc(var(--shadow-dx) * var(--rest-shadow)) calc(var(--shadow-dy) * var(--rest-shadow)) 0
+        var(--shadow-color)
+    )
+    drop-shadow(
+      calc(var(--shadow-dx) * var(--rest-edge)) calc(var(--shadow-dy) * var(--rest-edge)) 0
+        var(--shadow-edge)
+    );
+}
+
+/* Sticker look: a keyline of glint round each part, like a die-cut sticker, and at rest an edge
+   round each assembly's keylines, in the page's line colour. The parts' focus band replaces the
+   keyline while focused. */
+.rk-explode--sticker {
+  --keyline: calc(2 * var(--outline-width));
+}
+
+.rk-explode--sticker .rk-explode-assembly:not(:focus-visible) .rk-explode-band {
+  display: inline;
+  stroke: var(--glint);
+  stroke-width: calc(2 * (var(--outline-width) + var(--keyline)));
+}
+
+.rk-explode--sticker .rk-explode-rest {
+  opacity: calc(1 - var(--explode));
+}
+
+.rk-explode--sticker .rk-explode-rest > path {
+  stroke: var(--line-unfilled);
+  stroke-width: calc(2 * (2 * var(--outline-width) + var(--keyline)));
+}
+
 /* Reduced motion: nothing moves, but the open assembly's shadows still show, its labels show and
    the other assemblies fade back. */
 @media (prefers-reduced-motion: reduce) {
@@ -222,12 +260,16 @@
 /* Forced colours: the drawing sets its own system colours, so its shapes are outlined in
    CanvasText on Canvas, and the open assembly's in Highlight. */
 @media (forced-colors: active) {
-  :is(.rk-explode-ground, .rk-explode-part) {
+  :is(.rk-explode-ground, .rk-explode-rest, .rk-explode-part) {
     forced-color-adjust: none;
   }
 
-  .rk-explode-ground {
+  :is(.rk-explode-ground, .rk-explode--sticker .rk-explode-rest > path) {
     stroke: CanvasText;
+  }
+
+  .rk-explode--sticker .rk-explode-assembly:not(:focus-visible) .rk-explode-band {
+    stroke: Canvas;
   }
 
   .rk-explode-shape {

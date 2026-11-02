@@ -6,6 +6,8 @@
  *
  * @param illustration the parts, in assemblies, on a grid of units
  * @param theme the panel's theme, used to keep ids unique across the two panels
+ * @param look subdued (the default), pop (the UI's fills, with a resting shadow), or sticker (pop,
+ *   with a keyline round each part)
  */
 import type { ExplodedAssembly, ExplodedIllustration, ExplodedPart } from './exploded-view'
 import ExplodedViewPart from './ExplodedViewPart.astro'
@@ -16,11 +18,12 @@ import './explode.css'
 interface Props {
   illustration: ExplodedIllustration
   theme: 'light' | 'dark'
+  look?: 'subdued' | 'pop' | 'sticker'
 }
 
-const { illustration, theme } = Astro.props
+const { illustration, theme, look = 'subdued' } = Astro.props
 const { title, description, columns, rows, ground, assemblies } = illustration
-const idPrefix = `${theme}-${sectionId(title)}`
+const idPrefix = `${theme}-${look}-${sectionId(title)}`
 const viewBox = `0 0 ${columns} ${rows}`
 const groundPath = ground.dashes.map(([start, end]) => `M${start} ${ground.y}H${end}`).join('')
 const listFormat = new Intl.ListFormat('en-GB', { type: 'conjunction' })
@@ -40,7 +43,12 @@ function partStyle({ shape: { box }, fill, depth, explode }: ExplodedPart) {
 }
 ---
 
-<div class="rk-explode">
+<div
+  class:list={[
+    'rk-explode',
+    { 'rk-explode--pop': look !== 'subdued', 'rk-explode--sticker': look === 'sticker' },
+  ]}
+>
   <div
     class="rk-explode-stage"
     style={`--columns: ${columns}; --rows: ${rows}`}
