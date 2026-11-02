@@ -15,6 +15,7 @@ import CopyIcon from 'rk-ui/icons/copy.svg'
 import CLogo from '../icons/brands/languages/c.svg'
 import CppLogo from '../icons/brands/languages/cplusplus.svg'
 import FortranLogo from '../icons/brands/languages/fortran.svg'
+import JavaScriptLogo from '../icons/brands/languages/javascript.svg'
 import JsonLogo from '../icons/brands/languages/json.svg'
 import JuliaLogo from '../icons/brands/languages/julia.svg'
 import LatexLogo from '../icons/brands/languages/latex.svg'
@@ -37,6 +38,8 @@ const LOGOS: Record<string, typeof PythonLogo> = {
   'fortran-fixed-form': FortranLogo,
   'fortran-free-form': FortranLogo,
   f90: FortranLogo,
+  javascript: JavaScriptLogo,
+  js: JavaScriptLogo,
   json: JsonLogo,
   julia: JuliaLogo,
   jl: JuliaLogo,
@@ -49,12 +52,8 @@ const LOGOS: Record<string, typeof PythonLogo> = {
   rs: RustLogo,
 }
 
-/** Python's logo keeps the caption colour: the PSF asks for permission before recolouring it. */
-const FLAT_LOGOS = ['python', 'py']
-
 const { code, lang, label, class: className } = Astro.props
 const Logo = LOGOS[lang]
-const accented = !FLAT_LOGOS.includes(lang)
 ---
 
 <rk-code-block>
@@ -62,7 +61,7 @@ const accented = !FLAT_LOGOS.includes(lang)
     {
       label && (
         <figcaption class="rk-code-header">
-          <span class:list={['rk-code-lang', { accented }]}>
+          <span class="rk-code-lang">
             {Logo && <Logo class="rk-icon rk-icon--small" aria-hidden="true" />}
             {label}
           </span>
@@ -91,10 +90,6 @@ const accented = !FLAT_LOGOS.includes(lang)
     --astro-code-token-parameter: var(--fg);
     --astro-code-token-punctuation: var(--fg);
     --astro-code-token-link: var(--navy-deep);
-  }
-
-  .accented {
-    --code-lang-color: var(--coral-deep);
   }
 </style>
 

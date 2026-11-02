@@ -38,8 +38,6 @@ const GROUPS = [
   { title: 'Code text on slate', pairs: pairs(['--fg'], [...SLATES, ...TAB_STRIPS], 7) },
   { title: 'Code comments and captions on slate', pairs: pairs(['--muted'], [...SLATES, ...TAB_STRIPS], 4.5) },
   { title: 'Syntax highlighting on slate', pairs: pairs(CODE_COLOURS, SLATES, 4.5) },
-  // CodeBlock.astro's accent for language logos in the caption
-  { title: 'Language logo on slate', pairs: pairs(['--coral-deep'], [...SLATES, ...TAB_STRIPS], 3) },
   {
     title: 'Text on fills',
     pairs: [

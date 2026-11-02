@@ -25,13 +25,13 @@ licences. Simple Icons' CC0 dedication covers the SVG data, not the trademarks. 
 the site (`src/icons/brands/`), not in the design package.
 
 Programming-language logos (`src/icons/brands/languages/`) label the language of a code block,
-next to its name. They are shown in a single flat colour. The Python logo is shown in the
-caption's own text colour rather than an accent, since the PSF asks for permission before its
-logo's colours are changed. The Rust logo is a single-path version of the Rust Foundation's,
-coloured by the site's CSS. The Julia logo is a single-colour adaptation of Stefan Karpinski's
-design, shared under the same CC BY-NC-SA 4.0 licence. Only logos that still read well in one
-accent colour are used, so solid-block marks (JavaScript, TypeScript and similar) are left out.
-The C++ and Fortran marks keep only the letters from the Simple Icons paths of the Standard C++
-Foundation's and fortran-lang's logos (the hexagon and square backgrounds are removed); the C
-mark is the Simple Icons path unmodified. The Markdown mark is the outline version from its
-creator's repository.
+next to its name. They are shown in the caption's own flat grey; a page may give them an accent
+colour, except Python's, since the PSF asks for permission before its logo's colours are
+changed. The Rust logo is a single-path version of the Rust Foundation's, coloured by the site's
+CSS. The Julia logo is a single-colour adaptation of Stefan Karpinski's design, shared under the
+same CC BY-NC-SA 4.0 licence. Only logos that still read well in one colour are used, so
+solid-block marks are either left out (TypeScript and similar) or reduced to their letters: the C++,
+Fortran and JavaScript marks keep only the letters from the Simple Icons paths of the Standard
+C++ Foundation's, fortran-lang's and the community JS logos (the hexagon and square backgrounds
+are removed); the C mark is the Simple Icons path unmodified. The Markdown mark is the outline
+version from its creator's repository.
