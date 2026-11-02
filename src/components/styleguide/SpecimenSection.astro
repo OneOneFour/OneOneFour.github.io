@@ -1,11 +1,13 @@
 ---
 /**
- * A styleguide section: a heading, an optional intro (default slot), and the `light` and `dark`
+ * A styleguide section, with an anchor made from its title: a heading, an optional intro (default slot), and the `light` and `dark`
  * slots shown side by side in panels forced to each theme.
  *
  * @param title the section heading
  * @param stacked put the dark panel under the light one at every width, for wide content
  */
+import { sectionId } from './section-id'
+
 interface Props {
   title: string
   stacked?: boolean
@@ -14,7 +16,7 @@ interface Props {
 const { title, stacked = false } = Astro.props
 ---
 
-<section class="specimen-section">
+<section class="specimen-section" id={sectionId(title)}>
   <h2>{title}</h2>
   <slot />
   <div class:list={['panels', { stacked }]}>

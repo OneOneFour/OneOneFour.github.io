@@ -1,0 +1,58 @@
+---
+/**
+ * The styleguide's table of contents: each group's sections as chip links.
+ *
+ * @param groups each group's heading and the titles of its sections, as SpecimenSection has them
+ */
+import { sectionId } from './section-id'
+
+interface Props {
+  groups: { title: string; sections: string[] }[]
+}
+
+const { groups } = Astro.props
+---
+
+<nav class="contents" aria-labelledby="contents-heading">
+  <h2 id="contents-heading">Contents</h2>
+  {
+    groups.map((group) => (
+      <div class="group">
+        <h3>{group.title}</h3>
+        <ul class="rk-chip-group">
+          {group.sections.map((title) => (
+            <li>
+              <a class="rk-chip" href={`#${sectionId(title)}`}>
+                {title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</nav>
+
+<style>
+  .contents {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  h2,
+  h3 {
+    margin: 0;
+  }
+
+  h3 {
+    margin-block-end: var(--space-2);
+    color: var(--muted);
+    font-size: var(--step--1);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  ul {
+    list-style: none;
+  }
+</style>

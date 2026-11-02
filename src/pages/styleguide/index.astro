@@ -40,11 +40,58 @@ import MathsInTextSpecimens from '../../components/styleguide/MathsInTextSpecime
 import ChartPaletteSpecimens from '../../components/styleguide/ChartPaletteSpecimens.astro'
 import ChartSpecimens from '../../components/styleguide/ChartSpecimens.astro'
 import FigureSpecimens from '../../components/styleguide/FigureSpecimens.astro'
+import StyleguideContents from '../../components/styleguide/StyleguideContents.astro'
+
+const CONTENTS = [
+  {
+    title: 'Foundations',
+    sections: [
+      'Colour tokens',
+      'Type scale',
+      'Fonts',
+      'Monospace',
+      'Code',
+      'Shape and motion',
+      'Dark-mode shadows',
+      'Base styles',
+      'Icons',
+    ],
+  },
+  {
+    title: 'Controls',
+    sections: [
+      'Buttons',
+      'Text inputs and selects',
+      'Custom select list',
+      'Special inputs',
+      'Dial',
+      'Checkboxes, radios and switches',
+      'Range slider',
+      'Segmented control',
+      'Tile picker',
+      'Ballot',
+      'Chips',
+    ],
+  },
+  {
+    title: 'Components',
+    sections: ['Cards', 'Callouts', 'Badges', 'Spinners and progress', 'Tooltips and popups', 'Widget frame'],
+  },
+  {
+    title: 'Navigation and scrolling',
+    sections: ['Breadcrumbs', 'Folder tabs', 'Pagination', 'Overflow', 'Scrollbar shadow'],
+  },
+  {
+    title: 'Maths and charts',
+    sections: ['Equations', 'Maths in text', 'Chart colours', 'Charts', 'Figures and widgets'],
+  },
+]
 ---
 
 <SpecimenLayout title="Styleguide">
   <main>
     <h1>Styleguide</h1>
+    <StyleguideContents groups={CONTENTS} />
 
     <SpecimenSection title="Colour tokens">
       <p>Ratios are WCAG contrast: AA needs 4.5 for body text, 3:1 for large text and UI edges.</p>
