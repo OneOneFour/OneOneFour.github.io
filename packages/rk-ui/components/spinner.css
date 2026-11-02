@@ -1,0 +1,140 @@
+/* Spinners: a busy indicator in three options. Give it role="status" and a visually hidden label,
+   or hide it (aria-hidden) beside a visible one. Set --spinner-size to resize it.
+   A, .rk-spinner--ring: an outlined ring with a turning wedge and the hard shadow.
+   B, .rk-spinner--dots: three dots that bounce in turn.
+   C, .rk-spinner--icon: any .rk-icon, turning.
+   Under reduced motion nothing moves: each fades in and out instead.
+
+   <span class="rk-spinner rk-spinner--ring" role="status"><span class="rk-visually-hidden">Loading…</span></span>
+   <span class="rk-spinner rk-spinner--dots" role="status">
+     <span class="rk-spinner-dot"></span><span class="rk-spinner-dot"></span><span class="rk-spinner-dot"></span>
+     <span class="rk-visually-hidden">Loading…</span>
+   </span>
+   <span class="rk-spinner rk-spinner--icon" role="status"><svg class="rk-icon">…</svg><span class="rk-visually-hidden">Loading…</span></span> */
+
+.rk-spinner {
+  --spinner-size: 2rem;
+  --spinner-fill: var(--selected);
+
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+/* The wedge turns inside the ring, so the ring's shadow keeps to the light. */
+.rk-spinner--ring {
+  position: relative;
+  box-sizing: border-box;
+  inline-size: var(--spinner-size);
+  block-size: var(--spinner-size);
+  overflow: hidden;
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: 50%;
+  background: var(--raised);
+  box-shadow: var(--shadow);
+}
+
+.rk-spinner--ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(var(--spinner-fill) 0 0.25turn, transparent 0);
+  animation: rk-spin 0.9s linear infinite;
+}
+
+.rk-spinner--ring::after {
+  content: '';
+  position: absolute;
+  inset: 28%;
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.rk-spinner--dots {
+  gap: calc(var(--spinner-size) / 8);
+  block-size: var(--spinner-size);
+}
+
+.rk-spinner-dot {
+  box-sizing: border-box;
+  inline-size: calc(var(--spinner-size) / 3.5);
+  block-size: calc(var(--spinner-size) / 3.5);
+  border: var(--outline-width) solid var(--line);
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: var(--shadow-pressed);
+  animation: rk-bounce 0.9s ease-in-out infinite;
+}
+
+.rk-spinner-dot:nth-child(2) {
+  background: var(--yellow);
+  animation-delay: 0.15s;
+}
+
+.rk-spinner-dot:nth-child(3) {
+  background: var(--coral);
+  animation-delay: 0.3s;
+}
+
+.rk-spinner--icon {
+  --icon-fill: var(--spinner-fill);
+}
+
+.rk-spinner--icon .rk-icon {
+  inline-size: var(--spinner-size);
+  block-size: var(--spinner-size);
+  animation: rk-spin 1.5s linear infinite;
+}
+
+@keyframes rk-spin {
+  to {
+    rotate: 1turn;
+  }
+}
+
+@keyframes rk-bounce {
+  0%,
+  60%,
+  100% {
+    translate: 0 0;
+  }
+
+  30% {
+    translate: 0 -60%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rk-spinner--ring::before,
+  .rk-spinner-dot,
+  .rk-spinner--icon .rk-icon {
+    animation-name: rk-spinner-fade;
+    animation-duration: 1.8s;
+    animation-direction: alternate;
+  }
+}
+
+@keyframes rk-spinner-fade {
+  to {
+    opacity: 0.3;
+  }
+}
+
+/* Forced colours drop the ring's fills and its wedge, so they use system colours. */
+@media (forced-colors: active) {
+  .rk-spinner--ring {
+    --spinner-fill: Highlight;
+
+    forced-color-adjust: none;
+    border-color: CanvasText;
+    background: Canvas;
+  }
+
+  .rk-spinner--ring::after {
+    border-color: CanvasText;
+    background: Canvas;
+  }
+}

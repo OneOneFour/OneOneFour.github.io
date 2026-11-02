@@ -1,0 +1,124 @@
+---
+/**
+ * Tooltip options A and B, live and shown, and popups opened by a button (a panel and a
+ * toggletip), live and as a static copy.
+ *
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import Button from '../ui/Button.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import CopyIcon from 'rk-ui/icons/copy.svg'
+import InfoIcon from 'rk-ui/icons/info.svg'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const SPECIMEN_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'
+const OPTIONS = [
+  { label: 'A: inverted', class: '' },
+  { label: 'B: toon', class: 'rk-tooltip--toon' },
+]
+---
+
+<SpecimenRow title="Tooltips: hover or focus the button, Escape hides">
+  {
+    OPTIONS.map((option, index) => (
+      <Specimen label={option.label}>
+        <rk-tooltip class:list={['rk-tooltip', option.class]}>
+          <Button aria-describedby={`${theme}-tip-${index}`}>Button</Button>
+          <span class="rk-tooltip-bubble" id={`${theme}-tip-${index}`} role="tooltip">
+            Tooltip text
+          </span>
+        </rk-tooltip>
+      </Specimen>
+    ))
+  }
+  {
+    OPTIONS.map((option, index) => (
+      <Specimen label={`${option.label}, icon button`}>
+        <rk-tooltip class:list={['rk-tooltip', option.class]}>
+          <Button fill="teal" aria-describedby={`${theme}-icon-tip-${index}`}>
+            <CopyIcon class="rk-icon" />
+            <span class="rk-visually-hidden">Copy</span>
+          </Button>
+          <span class="rk-tooltip-bubble" id={`${theme}-icon-tip-${index}`} role="tooltip">
+            {SPECIMEN_TEXT}
+          </span>
+        </rk-tooltip>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Tooltips: shown">
+  {
+    OPTIONS.map((option) => (
+      <Specimen label={option.label}>
+        <div class="room-above">
+          <span class:list={['rk-tooltip', 'is-hover', option.class]}>
+            <Button tabindex="-1">Button</Button>
+            <span class="rk-tooltip-bubble">Tooltip text</span>
+          </span>
+        </div>
+      </Specimen>
+    ))
+  }
+  {
+    OPTIONS.map((option) => (
+      <Specimen label={`${option.label}, wrapping`}>
+        <div class="room-above room-above--tall">
+          <span class:list={['rk-tooltip', 'is-hover', option.class]}>
+            <Button tabindex="-1">Button</Button>
+            <span class="rk-tooltip-bubble">{SPECIMEN_TEXT}</span>
+          </span>
+        </div>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Popups: click the button, Escape or a click outside closes">
+  <Specimen label="panel">
+    <Button popovertarget={`${theme}-popup`}>Open</Button>
+    <div class="rk-popup" id={`${theme}-popup`} popover>
+      <p>{SPECIMEN_TEXT}</p>
+      <Button small popovertarget={`${theme}-popup`} popovertargetaction="hide">Close</Button>
+    </div>
+  </Specimen>
+  <Specimen label="toggletip">
+    <Button small fill="teal" popovertarget={`${theme}-toggletip`}>
+      <InfoIcon class="rk-icon rk-icon--small" />
+      <span class="rk-visually-hidden">More information</span>
+    </Button>
+    <div class="rk-popup" id={`${theme}-toggletip`} popover>
+      <p>{SPECIMEN_TEXT}</p>
+    </div>
+  </Specimen>
+  <Specimen label="static copy">
+    <div class="rk-popup">
+      <p>{SPECIMEN_TEXT}</p>
+      <Button small tabindex="-1">Close</Button>
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<script>
+  import 'rk-ui/tooltip.js'
+</script>
+
+<style>
+  /* The shown bubbles overhang their buttons, so give them room. */
+  .room-above {
+    display: flex;
+    justify-content: center;
+    min-inline-size: 16rem;
+    padding-block-start: var(--space-7);
+  }
+
+  .room-above--tall {
+    padding-block-start: calc(var(--space-8) + var(--space-5));
+  }
+</style>
