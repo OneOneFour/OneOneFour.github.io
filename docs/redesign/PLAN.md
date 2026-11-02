@@ -420,7 +420,8 @@ settles the type scale, the monospace face and the weights actually used.
   *Decided at Gate 1b (Rob):* every inset shadow is near-black `--line` in both themes, not the
   cream outline colour; a pressed unfilled button takes `--raised` behind it so the inset shows in
   dark mode.
-- **Deep shadows** *(built at Gate 1b at Rob's request)*: `data-depth="deep"` on `<html>`, any
+- **Deep shadows** *(built at Gate 1b at Rob's request; DECIDED 2026-11-02: approved, used only
+  where a page explicitly asks for it, with no page-wide switch)*: `data-depth="deep"` on `<html>`, any
   container or one element makes every shadow in it 1.5× as deep: resting, hover and pressed
   (6/9/3px), the inset, and the press and lift moves. `"normal"` switches back inside it, like
   `data-palette` and `data-shadow`. Its one input is a unitless `--shadow-depth`. Since custom
