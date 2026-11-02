@@ -462,6 +462,16 @@ that need no framework at all:
 - **Why not "everything in Vue":** Vue components only work in Vue sites, or in Astro via an
   integration, and they don't fit plain HTML. CSS + custom elements cover every case, and thin
   wrappers keep authoring pleasant in each framework.
+- **Consolidation (decided 2026-11-02, done after the core gates):** everything that is really
+  library code moves into the package, so it all lives in one place. That means the `.astro`
+  wrappers (under `astro/`), ThemeToggle, CodeBlock, the specimen layout, the styleguide (under
+  `styleguide/`) and `parseTokens`. The package gains a `package.json` with `exports`, the repo
+  uses npm workspaces, and an optional Astro integration (`rk-ui/integration`) inlines
+  theme-init, loads the stylesheet, sets the font inline limit and Shiki's `css-variables`
+  theme, and can serve the styleguide. The framework-free core is unchanged, so non-Astro sites
+  still copy a tagged release. Trademark logos stay in the site and are passed in as props. Vue
+  wrappers are not planned. A fresh builder does the move as pure `git mv` commits, then a
+  reviewer checks it; the styleguide's built HTML should differ only in asset hashes.
 ---
 
 ## 6. Content model *(proposed)*

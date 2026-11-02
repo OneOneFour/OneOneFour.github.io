@@ -342,6 +342,9 @@ The coordinator presents:
   highlighter band (`--focus-alt` yellow), shadow off while focused; hover-lift / press-sink
   "pop" for every clickable component; unfilled buttons discouraged and press inward; chart
   order; radio and textarea join the step 7 primitives; projects index layout open for P2.
+- 2026-11-02: Rob decided to consolidate all library code (Astro wrappers, styleguide, an optional
+  Astro integration) into `packages/rk-ui/` (PLAN §5.6). It runs **at the very end, after all
+  core gates**, as its own builder + reviewer pass.
 - **Open:**
   - `svgo` is imported by `vendor-icons.mjs` from Astro's tree; declare it as a dev dependency.
   - LinkedIn brand mark: Rob deferred it.
