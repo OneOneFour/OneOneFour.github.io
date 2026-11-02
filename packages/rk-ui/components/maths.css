@@ -1,0 +1,166 @@
+/* Maths: KaTeX's output, sized to the body font and coloured by the tokens. Load KaTeX's own
+   stylesheet before rk-ui.css, so these rules win. A display equation sits in a wrapper that
+   scrolls sideways when it is too wide (tabindex="0" lets the keyboard scroll it). Its id is the
+   anchor that equation references (\href{#eq-…}) link to.
+
+   <div class="rk-equation" id="eq-lorenz" tabindex="0">
+     <span class="katex-display">…KaTeX output, with \tag{1}…</span>
+   </div>
+
+   Opt-in modifiers on .rk-equation: --panel (a slate panel), --rule (a rule down the left) and
+   --key (a raised dashed panel for a key result). .rk-tag-pill on an equation or any ancestor
+   shows equation numbers as small pills.
+
+   Colour-coded terms: \htmlClass{rk-maths-teal}{…}, one class per chart hue. .rk-maths-tint on
+   any ancestor gives the terms a tinted background instead of coloured text. */
+
+/* KaTeX's maths italic x-height matches Xmind's at 1.15em; KaTeX's own default is 1.21em. */
+.katex {
+  font-size: var(--maths-scale, 1.15em);
+}
+
+.rk-equation {
+  margin-block: var(--space-5);
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: var(--radius);
+  scroll-margin-block: var(--space-6);
+}
+
+.rk-equation > .katex-display {
+  margin: 0;
+  padding: var(--space-2);
+}
+
+/* A wide equation keeps its full width, so the number sits after it rather than on top of it.
+   Padding on both sides keeps a short equation centred and clear of its number. */
+.rk-equation .katex-html {
+  inline-size: max-content;
+  min-inline-size: 100%;
+}
+
+.rk-equation .katex-html:has(> .katex-tag) {
+  padding-inline: 2.5em;
+}
+
+/* The focus band hugs a ring of the outline colour, as on code blocks. */
+.rk-equation:focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--outline-width);
+  box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);
+}
+
+/* The equation a reference jumped to flashes a tint, then fades back. */
+.rk-equation:is(:target, :has(:target)) {
+  animation: rk-equation-target 2s ease-in;
+}
+
+@keyframes rk-equation-target {
+  from,
+  40% {
+    background-color: var(--apricot-tint);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rk-equation:is(:target, :has(:target)) {
+    animation: none;
+    background-color: var(--apricot-tint);
+  }
+}
+
+.rk-equation--panel {
+  background: var(--slate);
+}
+
+.rk-equation--panel > .katex-display {
+  padding: var(--space-4);
+}
+
+.rk-equation--rule {
+  border-inline-start: var(--space-1) solid var(--grape);
+  border-radius: 0;
+}
+
+.rk-equation--key {
+  margin-inline-end: var(--shadow-offset);
+  border: var(--outline-width) dashed var(--line-unfilled);
+  background: var(--yellow-tint);
+  box-shadow: var(--shadow);
+}
+
+.rk-equation--key > .katex-display {
+  padding: var(--space-4);
+}
+
+/* \boxed{…}: KaTeX draws a hairline, which the toon look thickens. */
+.katex .fbox {
+  border-width: var(--outline-width);
+  border-radius: calc(var(--radius) / 2);
+}
+
+/* Each number is "(", the digits and ")"; the pill replaces the brackets. */
+.rk-tag-pill .katex-tag .mord.text {
+  padding-inline: 0.5em;
+  border-radius: var(--radius-pill);
+  background: var(--lilac-tint);
+  font-family: var(--font-body);
+  font-size: 0.75em;
+  font-weight: 600;
+}
+
+.rk-tag-pill .katex-tag .mord.text > :is(:first-child, :last-child) {
+  display: none;
+}
+
+/* Colour-coded terms: text in the hue's text variant, or the hue's tint behind --fg text. */
+.rk-maths-teal {
+  --term: var(--teal-deep);
+  --term-tint: var(--teal-tint);
+}
+
+.rk-maths-yellow {
+  --term: var(--yellow-deep);
+  --term-tint: var(--yellow-tint);
+}
+
+.rk-maths-navy {
+  --term: var(--navy-deep);
+  --term-tint: var(--navy-tint);
+}
+
+.rk-maths-green {
+  --term: var(--green-deep);
+  --term-tint: var(--green-tint);
+}
+
+.rk-maths-sky {
+  --term: var(--sky-deep);
+  --term-tint: var(--sky-tint);
+}
+
+.rk-maths-coral {
+  --term: var(--coral-deep);
+  --term-tint: var(--coral-tint);
+}
+
+.rk-maths-grape {
+  --term: var(--grape-deep);
+  --term-tint: var(--lilac-tint);
+}
+
+.rk-maths-tangerine {
+  --term: var(--tangerine-deep);
+  --term-tint: var(--apricot-tint);
+}
+
+.katex .enclosing[class*='rk-maths-'] {
+  color: var(--term);
+}
+
+.rk-maths-tint .katex .enclosing[class*='rk-maths-'] {
+  padding-inline: 0.15em;
+  border-radius: calc(var(--radius) / 2);
+  background: var(--term-tint);
+  color: inherit;
+}
