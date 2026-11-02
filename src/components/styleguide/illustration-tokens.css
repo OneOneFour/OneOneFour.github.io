@@ -1,10 +1,14 @@
 /* Illustration colours, for the styleguide's drawings only (PLAN §5.3, "Illustration style").
    Loaded after rk-ui's tokens.css, whose colours these mix. They mix only fills that keep their
-   lightness in dark mode, so the same recipe serves both themes and every page palette. */
+   lightness in dark mode, so the same recipe serves both themes and every page palette, with
+   only the grey changing to dim them a little on dark pages. */
 
 :root {
-  /* Hues: four fills, greyed down towards a mid grey */
-  --illustration-grey: color-mix(in oklab, var(--ink), var(--glint));
+  /* Hues: four fills, greyed down towards a mid grey, which is darker on dark pages to dim them */
+  --illustration-grey: light-dark(
+    color-mix(in oklab, var(--ink), var(--glint)),
+    color-mix(in oklab, var(--ink) 80%, var(--glint))
+  );
   --illustration-red: color-mix(in oklab, var(--coral) 80%, var(--illustration-grey));
   --illustration-ochre: color-mix(in oklab, var(--yellow) 75%, var(--illustration-grey));
   --illustration-steel: color-mix(
@@ -18,4 +22,11 @@
   --illustration-ochre-light: color-mix(in oklab, var(--illustration-ochre) 55%, var(--glint));
   --illustration-steel-light: color-mix(in oklab, var(--illustration-steel) 55%, var(--glint));
   --illustration-red-shade: color-mix(in oklab, var(--illustration-red) 80%, var(--ink));
+}
+
+/* Browsers without light-dark() get the light theme (tokens.css), so the light grey. */
+@supports not (color: light-dark(#000, #fff)) {
+  :root {
+    --illustration-grey: color-mix(in oklab, var(--ink), var(--glint));
+  }
 }
