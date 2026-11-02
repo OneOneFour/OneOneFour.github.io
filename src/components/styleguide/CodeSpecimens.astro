@@ -26,6 +26,15 @@ const BOXES = [
       <Specimen label="Julia, accented logo" wide>
         <CodeBlock code="σ, ρ, β = 10.0, 28.0, 8 / 3" lang="julia" label="Julia" class={box.class} />
       </Specimen>
+      <Specimen label="Fortran" wide>
+        <CodeBlock code="real :: sigma = 10.0, rho = 28.0" lang="fortran-free-form" label="Fortran" class={box.class} />
+      </Specimen>
+      <Specimen label="C++" wide>
+        <CodeBlock code="double sigma = 10.0, rho = 28.0;" lang="cpp" label="C++" class={box.class} />
+      </Specimen>
+      <Specimen label="Markdown (wide mark)" wide>
+        <CodeBlock code="**β ≈ 0.3** in the [paper](#)" lang="markdown" label="Markdown" class={box.class} />
+      </Specimen>
       <Specimen label="no caption" wide>
         <CodeBlock code="x = lorenz(1.0, 1.0, 1.0)" lang="python" class={box.class} />
       </Specimen>

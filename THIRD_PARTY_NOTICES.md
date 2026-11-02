@@ -10,6 +10,7 @@ its own licence file next to the files it covers.
 | Simple Icons | Brand, tech-stack and programming-language marks | CC0 1.0 | https://github.com/simple-icons/simple-icons |
 | Rust logo (the Simple Icons path) | Code block captions | CC BY, Rust Foundation | https://rustfoundation.org/policies/logo-policy-and-media-guide/ |
 | Julia logo (the Simple Icons path), by Stefan Karpinski | Code block captions | CC BY-NC-SA 4.0 | https://github.com/JuliaLang/julia-logo-graphics |
+| Markdown Mark (outline version), by Dustin Curtis | Code block captions | CC0 1.0 | https://github.com/dcurtis/markdown-mark |
 | Devicon | Tech-stack icon font on the legacy project pages (`public/devicon/`) | MIT | https://github.com/devicons/devicon |
 | Xmind | Body and UI typeface | SIL Open Font License 1.1 | https://github.com/xmindltd/nevermind |
 | Roboto Slab | Heading typeface | Apache License 2.0 | https://github.com/google/fonts/tree/main/apache/robotoslab |
@@ -30,3 +31,7 @@ logo's colours are changed. The Rust logo is a single-path version of the Rust F
 coloured by the site's CSS. The Julia logo is a single-colour adaptation of Stefan Karpinski's
 design, shared under the same CC BY-NC-SA 4.0 licence. Only logos that still read well in one
 accent colour are used, so solid-block marks (JavaScript, TypeScript and similar) are left out.
+The C++ and Fortran marks keep only the letters from the Simple Icons paths of the Standard C++
+Foundation's and fortran-lang's logos (the hexagon and square backgrounds are removed); the C
+mark is the Simple Icons path unmodified. The Markdown mark is the outline version from its
+creator's repository.

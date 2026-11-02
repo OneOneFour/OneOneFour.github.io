@@ -12,9 +12,13 @@
 import { Code } from 'astro:components'
 import type { ComponentProps } from 'astro/types'
 import CopyIcon from 'rk-ui/icons/copy.svg'
+import CLogo from '../icons/brands/languages/c.svg'
+import CppLogo from '../icons/brands/languages/cplusplus.svg'
+import FortranLogo from '../icons/brands/languages/fortran.svg'
 import JsonLogo from '../icons/brands/languages/json.svg'
 import JuliaLogo from '../icons/brands/languages/julia.svg'
 import LatexLogo from '../icons/brands/languages/latex.svg'
+import MarkdownLogo from '../icons/brands/languages/markdown.svg'
 import PythonLogo from '../icons/brands/languages/python.svg'
 import RustLogo from '../icons/brands/languages/rust.svg'
 
@@ -27,10 +31,18 @@ interface Props {
 
 /** Logos by Shiki language id or common alias. */
 const LOGOS: Record<string, typeof PythonLogo> = {
+  c: CLogo,
+  cpp: CppLogo,
+  'c++': CppLogo,
+  'fortran-fixed-form': FortranLogo,
+  'fortran-free-form': FortranLogo,
+  f90: FortranLogo,
   json: JsonLogo,
   julia: JuliaLogo,
   jl: JuliaLogo,
   latex: LatexLogo,
+  markdown: MarkdownLogo,
+  md: MarkdownLogo,
   python: PythonLogo,
   py: PythonLogo,
   rust: RustLogo,
