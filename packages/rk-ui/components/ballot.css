@@ -16,7 +16,9 @@
    (<svg aria-hidden="true">) or a colour (.rk-tile--colour, color.css). Its content is part of
    the option's name; wrap it in <span aria-hidden="true"> if it shouldn't be.
 
-   Add .rk-ballot--mark-end to the group to put the tiles on the right. */
+   Layout modifiers for the group, which combine freely:
+     .rk-ballot--mark-end  the tiles on the right;
+     .rk-ballot--overlap   each tile straddles its text box's edge. */
 
 .rk-ballot {
   --tile-size: 2.5rem;
@@ -66,6 +68,28 @@
   .rk-ballot-option:has(:checked) > .rk-ballot-text {
     border-color: Highlight;
   }
+}
+
+/* Overlap: a negative margin pulls the text box half under the tile, and the box pads its text
+   clear of it. The tile is positioned (tiles.css), so it paints above the box. */
+.rk-ballot--overlap .rk-ballot-option {
+  gap: 0;
+}
+
+.rk-ballot--overlap .rk-tile {
+  margin-inline-end: calc(var(--tile-size) / -2);
+}
+
+.rk-ballot--overlap .rk-ballot-text {
+  padding-inline-start: calc(var(--tile-size) / 2 + var(--space-3));
+}
+
+.rk-ballot--overlap.rk-ballot--mark-end .rk-tile {
+  margin-inline: calc(var(--tile-size) / -2) 0;
+}
+
+.rk-ballot--overlap.rk-ballot--mark-end .rk-ballot-text {
+  padding-inline: var(--space-3) calc(var(--tile-size) / 2 + var(--space-3));
 }
 
 /* Stamp options for Gate 1b: how the tile lands when its row is checked. With none, it is pushed
