@@ -33,6 +33,9 @@
 @import './components/badge.css';
 @import './components/spinner.css';
 @import './components/progress.css';
+@import './components/water.css';
+@import './components/spinner-dots.css';
+@import './components/loader.css';
 @import './components/tooltip.css';
 @import './components/popup.css';
 @import './components/breadcrumbs.css';

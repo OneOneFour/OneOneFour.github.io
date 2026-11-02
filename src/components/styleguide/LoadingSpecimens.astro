@@ -1,0 +1,138 @@
+---
+/**
+ * More loading options for Gate 1b: water and dot spinners, filling buttons, pending panels and
+ * loaders. Spinner letters carry on from the spinners above.
+ */
+import Button from '../ui/Button.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+const FILLS = [undefined, 'teal', 'navy', 'coral', 'grape'] as const
+const LEVELS = [0.25, 0.5, 0.85]
+const DOT_SPINNERS = [
+  { label: 'F: dots in a circle', class: 'rk-spinner--orbit' },
+  { label: 'G: dots in a triangle', class: 'rk-spinner--triangle' },
+  { label: 'H: dots that squash and stretch', class: 'rk-spinner--dots rk-spinner--squash' },
+]
+const LOADERS = [
+  { label: 'A: inchworm', name: 'inchworm' },
+  { label: 'B: bouncing block', name: 'bounce' },
+  { label: 'C: hopping ball', name: 'hop' },
+  { label: 'D: candy stripes', name: 'candy' },
+]
+---
+
+<SpecimenRow title="Water spinners">
+  <Specimen label="D: water, filling">
+    <span class="rk-spinner rk-spinner--water" role="status">
+      <span class="rk-water rk-water--rise" aria-hidden="true"></span>
+      <span class="rk-visually-hidden">Loading…</span>
+    </span>
+  </Specimen>
+  <Specimen label="E: water, sloshing">
+    <span class="rk-spinner rk-spinner--water" role="status">
+      <span class="rk-water rk-water--slosh" aria-hidden="true"></span>
+      <span class="rk-visually-hidden">Loading…</span>
+    </span>
+  </Specimen>
+  <Specimen label="D: large, --spinner-fill set to teal">
+    <span class="rk-spinner rk-spinner--water" style="--spinner-size: 3rem; --spinner-fill: var(--teal)" role="status">
+      <span class="rk-water rk-water--rise" aria-hidden="true"></span>
+      <span class="rk-visually-hidden">Loading…</span>
+    </span>
+  </Specimen>
+  <Specimen label="E: small, with a visible label">
+    <span class="loading" role="status">
+      <span class="rk-spinner rk-spinner--water" style="--spinner-size: 1.25rem" aria-hidden="true">
+        <span class="rk-water rk-water--slosh"></span>
+      </span>
+      Loading…
+    </span>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Dot spinners">
+  {
+    DOT_SPINNERS.map((spinner) => (
+      <Specimen label={spinner.label}>
+        <span class:list={['rk-spinner', spinner.class]} role="status">
+          <span class="rk-spinner-dot" />
+          <span class="rk-spinner-dot" />
+          <span class="rk-spinner-dot" />
+          <span class="rk-visually-hidden">Loading…</span>
+        </span>
+      </Specimen>
+    ))
+  }
+  <Specimen label="G: large">
+    <span class="rk-spinner rk-spinner--triangle" style="--spinner-size: 3rem" role="status">
+      <span class="rk-spinner-dot"></span><span class="rk-spinner-dot"></span><span
+        class="rk-spinner-dot"></span>
+      <span class="rk-visually-hidden">Loading…</span>
+    </span>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Filling buttons (aria-busy, with an .rk-water child)">
+  <Specimen label="filling: yellow, teal, navy, coral, grape">
+    {
+      FILLS.map((fill) => (
+        <Button fill={fill} aria-busy="true" aria-disabled="true">
+          <span class="rk-water rk-water--rise" aria-hidden="true" />
+          Saving…
+        </Button>
+      ))
+    }
+  </Specimen>
+  <Specimen label="set by --water-level: 0.25, 0.5, 0.85">
+    {
+      LEVELS.map((level) => (
+        <Button fill="teal" aria-busy="true" aria-disabled="true" style={`--water-level: ${level}`}>
+          <span class="rk-water" aria-hidden="true" />
+          Uploading<span class="rk-visually-hidden"> {level * 100}%</span>
+        </Button>
+      ))
+    }
+  </Specimen>
+  <Specimen label="not busy: the water is hidden">
+    <Button fill="teal">
+      <span class="rk-water" aria-hidden="true"></span>
+      Upload
+    </Button>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Pending panels">
+  <Specimen label="A: filling up" wide>
+    <div class="rk-pending" role="status">
+      <span class="rk-water rk-water--rise" aria-hidden="true"></span>
+      <p>Loading…</p>
+    </div>
+  </Specimen>
+  <Specimen label="B: sloshing along the bottom" wide>
+    <div class="rk-pending" role="status">
+      <span class="rk-water rk-water--slosh" aria-hidden="true"></span>
+      <p>Loading…</p>
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Loaders (indeterminate bars)">
+  {
+    LOADERS.map((loader) => (
+      <Specimen label={loader.label} wide>
+        <div class:list={['rk-loader', `rk-loader--${loader.name}`]} role="status">
+          <span class="rk-visually-hidden">Loading…</span>
+        </div>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<style>
+  .loading {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+</style>

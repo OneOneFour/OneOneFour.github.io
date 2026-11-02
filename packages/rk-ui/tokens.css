@@ -62,6 +62,8 @@
   --lilac: #d4c4f5;
   --tangerine: light-dark(#f58a2a, #f5923a);
   --apricot: #ffd2a6;
+  /* Glint: a highlight on toon fills, near-white in both themes */
+  --glint: var(--on-ink);
 
   /* Text on fills */
   --on-fill: var(--ink);

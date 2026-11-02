@@ -28,6 +28,17 @@
   translate: var(--press-offset-x) var(--press-offset-y);
 }
 
+/* A busy button keeps its resting shadow and doesn't pop, since it can't be used until it's done.
+   :where() keeps this below the focus band. */
+.rk-button:where([aria-busy='true']) {
+  cursor: progress;
+}
+
+.rk-button:where([aria-busy='true']):is(:hover, :active) {
+  box-shadow: var(--shadow);
+  translate: none;
+}
+
 /* Unfilled buttons sit flush. Pressed, the frame stays put and gets an inset shadow on the raised
    background (so the dark inset shows in dark mode), and the label sinks: the padding shifts by
    --press-offset, which moves the label without resizing. */

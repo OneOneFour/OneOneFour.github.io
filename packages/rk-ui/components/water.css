@@ -1,0 +1,267 @@
+/* Toon water: a flat fill with a rolling wave on top and an outline along the wave. Put an
+   .rk-water in a host that clips it; it sits behind the host's content. Set --water-level (0 to
+   1) on the host or the water for a fixed level, or add a modifier:
+   .rk-water--rise: fills and drains, for an unknown wait;
+   .rk-water--slosh: rocks from side to side.
+   Under reduced motion the water stays still and fades in and out instead.
+
+   Hosts in this file, labelled for Gate 1b:
+   spinner D, .rk-spinner--water with .rk-water--rise: a flask that fills and drains;
+   spinner E, .rk-spinner--water with .rk-water--slosh: a half-full flask that sloshes;
+   filling button: a filled .rk-button with aria-busy="true" and an .rk-water child fills with its
+   own colour. Keep it focusable with aria-disabled="true" rather than disabled, so focus isn't
+   lost, ignore its clicks while busy, and say what is happening in its label;
+   pending panel A, .rk-pending with .rk-water--rise: a dashed panel filling up while it waits;
+   pending panel B, .rk-pending with .rk-water--slosh: water sloshing along its bottom.
+
+   <span class="rk-spinner rk-spinner--water" role="status">
+     <span class="rk-water rk-water--rise" aria-hidden="true"></span>
+     <span class="rk-visually-hidden">Loading…</span>
+   </span>
+   <button class="rk-button rk-button--teal" type="button" aria-busy="true" aria-disabled="true">
+     <span class="rk-water rk-water--rise" aria-hidden="true"></span>
+     Saving…
+   </button>
+   <div class="rk-pending" role="status">
+     <span class="rk-water rk-water--slosh" aria-hidden="true"></span>
+     <p>Loading…</p>
+   </div> */
+
+/* Registered so that it can be animated, and inherited so that a host can set it. */
+@property --water-level {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0.5;
+}
+
+.rk-water {
+  --water-fill: var(--sky);
+  --wave-line: var(--line);
+  --wave-length: 2rem;
+  --wave-height: 0.5rem;
+  --wave-period: 1.2s;
+  --wave-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 12' preserveAspectRatio='none'%3E%3Cpath d='M0 6Q10 0 20 6T40 6V12H0Z'/%3E%3C/svg%3E");
+  --slosh-angle: 6deg;
+
+  position: absolute;
+  inset: 0 0 calc(-1 * var(--wave-height));
+  z-index: -1;
+  /* The top edge is the water's surface: level 0 puts the wave just below the host, 1 just
+     above it. */
+  translate: 0 calc((1 - var(--water-level)) * 100% - var(--water-level) * var(--wave-height));
+  transition: translate var(--duration-slide) var(--ease-spring);
+  pointer-events: none;
+}
+
+/* Two copies of the water with the wave along their tops: the outline colour, then the fill over
+   it, lower by the outline width, so the outline shows along the wave. */
+.rk-water::before,
+.rk-water::after {
+  content: '';
+  position: absolute;
+  inset-block: calc(-1 * var(--wave-height)) 0;
+  inset-inline-start: 0;
+  inline-size: calc(100% + var(--wave-length));
+  /* The wave, then solid water below it. A mask only reads alpha, so any opaque colour does. */
+  mask:
+    var(--wave-shape) 0 0 / var(--wave-length) var(--wave-height) repeat-x,
+    linear-gradient(var(--line) 0 0) 0 calc(var(--wave-height) - 1px) / 100% 100% no-repeat;
+  animation: rk-wave-roll var(--wave-period) linear infinite;
+}
+
+.rk-water::before {
+  inset-block-start: calc(-1 * (var(--wave-height) + var(--outline-width)));
+  background: var(--wave-line);
+}
+
+.rk-water::after {
+  background: var(--water-fill);
+}
+
+/* The animation sets the level, so the level's transition would only drag behind it. */
+.rk-water--rise {
+  transition: none;
+  animation: rk-water-rise 2.4s ease-in-out infinite alternate;
+}
+
+/* Wider than the host, so that tilting it never shows a gap at the sides. */
+.rk-water--slosh {
+  inset-inline: -25%;
+  transform-origin: 50% 0;
+  animation: rk-water-slosh 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes rk-wave-roll {
+  to {
+    translate: calc(-1 * var(--wave-length)) 0;
+  }
+}
+
+@keyframes rk-water-rise {
+  from {
+    --water-level: 0.1;
+  }
+
+  to {
+    --water-level: 0.9;
+  }
+}
+
+@keyframes rk-water-slosh {
+  from {
+    rotate: calc(-1 * var(--slosh-angle));
+  }
+
+  to {
+    rotate: var(--slosh-angle);
+  }
+}
+
+/* Spinners D and E: a round flask of water with the hard shadow, and a glint on the side the
+   light comes from. */
+.rk-spinner--water {
+  --spinner-fill: var(--sky);
+
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  inline-size: var(--spinner-size);
+  block-size: var(--spinner-size);
+  overflow: hidden;
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: 50%;
+  background: var(--raised);
+  box-shadow: var(--shadow);
+}
+
+.rk-spinner--water > .rk-water {
+  --water-fill: var(--spinner-fill);
+  --wave-length: calc(var(--spinner-size) * 0.6);
+  --wave-height: calc(var(--spinner-size) / 6);
+  --wave-period: 0.9s;
+  --slosh-angle: 14deg;
+}
+
+.rk-spinner--water::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  inline-size: 22%;
+  block-size: 22%;
+  margin: auto;
+  border-radius: 50%;
+  background: var(--glint);
+  translate: calc(var(--shadow-dx) * var(--spinner-size) * -0.2)
+    calc(var(--shadow-dy) * var(--spinner-size) * -0.2);
+}
+
+/* The filling button's empty part is its fill mixed away from the label colour, so the label
+   reads on the empty and the full part alike. */
+.rk-button {
+  --water-empty-mix: var(--glint);
+}
+
+.rk-button--navy {
+  --water-empty-mix: var(--line);
+}
+
+.rk-button--coral,
+.rk-button--grape {
+  --water-empty-mix: var(--fg);
+}
+
+.rk-button[aria-busy='true']:has(> .rk-water) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--button-fill) 45%, var(--water-empty-mix));
+}
+
+/* The wave line is a darker shade of the fill, so it doesn't muddle the label as it passes. */
+.rk-button > .rk-water {
+  --water-fill: var(--button-fill);
+  --wave-line: color-mix(in oklab, var(--button-fill) 60%, var(--line));
+  --wave-length: 1.5rem;
+  --wave-height: 0.375rem;
+}
+
+.rk-button:not([aria-busy='true']) > .rk-water {
+  display: none;
+}
+
+/* Pending panels: the dashed grouping outline, holding the place of content still to come. The
+   water is a tint, so text on it stays readable. */
+.rk-pending {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-block-size: 10rem;
+  padding: var(--space-4);
+  overflow: hidden;
+  border: var(--outline-width) dashed var(--line-unfilled);
+  border-radius: var(--radius);
+  background: var(--raised);
+  color: var(--fg);
+}
+
+.rk-pending > .rk-water {
+  --water-fill: var(--sky-tint);
+  --wave-line: var(--line-unfilled);
+  --wave-length: 4rem;
+  --wave-height: 0.75rem;
+  --wave-period: 2.4s;
+  --slosh-angle: 2deg;
+}
+
+.rk-pending > .rk-water--rise {
+  animation-duration: 4s;
+}
+
+.rk-pending > .rk-water--slosh {
+  --water-level: 0.25;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rk-water::before,
+  .rk-water::after {
+    animation: none;
+  }
+
+  .rk-water--rise,
+  .rk-water--slosh {
+    animation: rk-spinner-fade 1.8s ease-in-out infinite alternate;
+  }
+}
+
+/* Forced colours drop the fills, so the water keeps only its wave line, in a system colour. */
+@media (forced-colors: active) {
+  .rk-water,
+  .rk-pending > .rk-water {
+    --water-fill: Canvas;
+    --wave-line: CanvasText;
+
+    forced-color-adjust: none;
+  }
+
+  .rk-button > .rk-water {
+    --water-fill: ButtonFace;
+    --wave-line: ButtonText;
+  }
+
+  .rk-spinner--water {
+    --spinner-fill: Highlight;
+
+    forced-color-adjust: none;
+    border-color: CanvasText;
+    background: Canvas;
+  }
+
+  .rk-spinner--water > .rk-water {
+    --wave-line: CanvasText;
+  }
+
+  .rk-spinner--water::after {
+    display: none;
+  }
+}
