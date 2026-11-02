@@ -11,6 +11,7 @@ import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
 import BaseSpecimens from '../../components/styleguide/BaseSpecimens.astro'
 import IconSpecimens from '../../components/styleguide/IconSpecimens.astro'
 import ButtonSpecimens from '../../components/styleguide/ButtonSpecimens.astro'
+import InputSpecimens from '../../components/styleguide/InputSpecimens.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -56,6 +57,11 @@ import ButtonSpecimens from '../../components/styleguide/ButtonSpecimens.astro'
     <SpecimenSection title="Buttons">
       <ButtonSpecimens slot="light" />
       <ButtonSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Text inputs and selects">
+      <InputSpecimens slot="light" theme="light" />
+      <InputSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>

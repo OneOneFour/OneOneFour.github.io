@@ -8,4 +8,7 @@
 
 @import './components/icon.css';
 @import './components/button.css';
+@import './components/field.css';
+@import './components/input.css';
+@import './components/select.css';
 @import './components/interactive.css';
