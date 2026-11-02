@@ -1,0 +1,26 @@
+---
+/**
+ * An rk-ui callout: a tint panel with an icon. The default slot is the text.
+ *
+ * @param kind 'note' (default) or 'warning'
+ * @param title an optional bold first line
+ */
+import InfoIcon from 'rk-ui/icons/info.svg'
+import WarningIcon from 'rk-ui/icons/warning.svg'
+
+interface Props {
+  kind?: 'note' | 'warning'
+  title?: string
+}
+
+const { kind = 'note', title } = Astro.props
+const Icon = kind === 'warning' ? WarningIcon : InfoIcon
+---
+
+<div class:list={['rk-callout', `rk-callout--${kind}`]} role="note">
+  <Icon class="rk-icon" />
+  <div class="rk-callout-body">
+    {title && <p class="rk-callout-title">{title}</p>}
+    <slot />
+  </div>
+</div>

@@ -1,0 +1,39 @@
+/* Callouts: a static tint panel with an icon, as a note or a warning.
+
+   <div class="rk-callout rk-callout--note" role="note">
+     <svg class="rk-icon">…</svg>
+     <div class="rk-callout-body"><p class="rk-callout-title">Title</p><p>Text</p></div>
+   </div> */
+
+.rk-callout {
+  display: flex;
+  align-items: start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius);
+  color: var(--fg);
+}
+
+.rk-callout-body > * {
+  margin-block: 0 var(--space-2);
+}
+
+.rk-callout-body > :last-child {
+  margin-block-end: 0;
+}
+
+.rk-callout-title {
+  font-weight: 700;
+}
+
+.rk-callout--note {
+  --icon-fill: var(--teal);
+  background: var(--sky-tint);
+}
+
+/* Tangerine focus bands vanish on apricot, so focus inside a warning uses the alternate. */
+.rk-callout--warning {
+  --focus: var(--focus-alt);
+  --icon-fill: var(--tangerine);
+  background: var(--apricot-tint);
+}
