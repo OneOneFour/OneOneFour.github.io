@@ -92,6 +92,12 @@
     transform: translate(var(--press-offset), var(--press-offset));
   }
 
+  /* A flush button has no shadow to sink into, so it is pressed into the page instead. */
+  .unfilled:active {
+    box-shadow: inset var(--press-offset) var(--press-offset) 0 var(--line);
+    transform: none;
+  }
+
   button:focus-visible,
   .focused {
     outline: var(--focus-width) solid var(--focus);

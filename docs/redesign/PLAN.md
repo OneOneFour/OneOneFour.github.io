@@ -339,6 +339,9 @@ settles the type scale, the monospace face and the weights actually used.
   - 120ms, plain `ease` as on the mood board. A springy overshoot is a Gate 1b option, not
     the default.
   - Under reduced motion, the shadow still changes but nothing moves.
+- **Unfilled (outline-only) buttons are discouraged** *(Rob, 2026-11-01)*. Use a filled button
+  wherever possible. Where an unfilled one is unavoidable, it sits flush (no resting shadow), and
+  on press it gets an **inset** shadow and doesn't move, so it reads as pushed into the page.
 - **Focus**: a visible 3px `--focus` ring offset from the outline, never
   removed.
 
