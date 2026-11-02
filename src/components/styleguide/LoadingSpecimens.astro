@@ -1,7 +1,7 @@
 ---
 /**
- * More loading options for Gate 1b: water and dot spinners, filling buttons and pending panels.
- * Spinner letters carry on from the spinners above.
+ * More loading options for Gate 1b: water and dot spinners, filling buttons, pending panels and
+ * loaders. Spinner letters carry on from the spinners above.
  */
 import Button from '../ui/Button.astro'
 import Specimen from './Specimen.astro'
@@ -13,6 +13,12 @@ const DOT_SPINNERS = [
   { label: 'F: dots in a circle', class: 'rk-spinner--orbit' },
   { label: 'G: dots in a triangle', class: 'rk-spinner--triangle' },
   { label: 'H: dots that squash and stretch', class: 'rk-spinner--dots rk-spinner--squash' },
+]
+const LOADERS = [
+  { label: 'A: inchworm', name: 'inchworm' },
+  { label: 'B: bouncing block', name: 'bounce' },
+  { label: 'C: hopping ball', name: 'hop' },
+  { label: 'D: candy stripes', name: 'candy' },
 ]
 ---
 
@@ -109,6 +115,18 @@ const DOT_SPINNERS = [
       <p>Loading…</p>
     </div>
   </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Loaders (indeterminate bars)">
+  {
+    LOADERS.map((loader) => (
+      <Specimen label={loader.label} wide>
+        <div class:list={['rk-loader', `rk-loader--${loader.name}`]} role="status">
+          <span class="rk-visually-hidden">Loading…</span>
+        </div>
+      </Specimen>
+    ))
+  }
 </SpecimenRow>
 
 <style>

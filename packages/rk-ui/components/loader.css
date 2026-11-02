@@ -1,0 +1,236 @@
+/* Loaders: indeterminate bars with more character than the progress bar's, as Gate 1b options.
+   Like the spinners, give one role="status" and a visually hidden label. Set --loader-fill to
+   recolour the moving part.
+   A, .rk-loader--inchworm: a worm stretches its head along the track and pulls its tail after.
+   B, .rk-loader--bounce: a block bounces from end to end, squashing against each one.
+   C, .rk-loader--hop: a ball hops back and forth along a line, squashing as it lands.
+   D, .rk-loader--candy: candy stripes with ink edges, rolling along.
+   Under reduced motion nothing moves: each fades in and out instead.
+
+   <div class="rk-loader rk-loader--inchworm" role="status"><span class="rk-visually-hidden">Loading…</span></div> */
+
+/* A container, so the moving parts can travel the track's width in cqi. */
+.rk-loader {
+  --loader-fill: var(--selected);
+  --loader-edge: var(--line);
+
+  position: relative;
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 30rem;
+  block-size: 1rem;
+  overflow: hidden;
+  container-type: inline-size;
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: var(--radius-pill);
+  background: var(--raised);
+}
+
+.rk-loader::before {
+  content: '';
+  position: absolute;
+  box-sizing: border-box;
+  background: var(--loader-fill);
+}
+
+/* The head and tail are two animations with different easings: the head snaps forward, the tail
+   starts late and catches up. Both start and end off the track. */
+.rk-loader--inchworm {
+  --loader-fill: var(--green);
+}
+
+.rk-loader--inchworm::before {
+  inset-block: 0;
+  inset-inline: 30%;
+  border-inline: var(--outline-width) solid var(--loader-edge);
+  border-radius: var(--radius-pill);
+  animation:
+    rk-inchworm-head 1.6s var(--ease-snap) infinite,
+    rk-inchworm-tail 1.6s ease-in infinite;
+}
+
+@keyframes rk-inchworm-head {
+  from {
+    inset-inline-end: 110%;
+  }
+
+  55%,
+  to {
+    inset-inline-end: -10%;
+  }
+}
+
+@keyframes rk-inchworm-tail {
+  from,
+  30% {
+    inset-inline-start: -10%;
+  }
+
+  to {
+    inset-inline-start: 110%;
+  }
+}
+
+/* The block travels at a steady speed and squashes against the end it hits, then springs back.
+   The squash is pinned to that end; the pin swaps sides while the block is at full size. */
+.rk-loader--bounce {
+  --loader-fill: var(--coral);
+}
+
+.rk-loader--bounce::before {
+  inset-block: 0;
+  inline-size: 3rem;
+  border-inline: var(--outline-width) solid var(--loader-edge);
+  translate: calc(50cqi - 50%) 0;
+  animation:
+    rk-bounce-travel 1.4s linear infinite,
+    rk-bounce-squash 1.4s linear infinite;
+}
+
+@keyframes rk-bounce-travel {
+  from,
+  to {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: calc(100cqi - 100%) 0;
+  }
+}
+
+@keyframes rk-bounce-squash {
+  from {
+    scale: 0.6 1;
+    transform-origin: left;
+    animation-timing-function: var(--ease-spring);
+  }
+
+  8% {
+    scale: 1;
+    transform-origin: left;
+  }
+
+  42% {
+    scale: 1;
+    transform-origin: right;
+  }
+
+  50% {
+    scale: 0.6 1;
+    transform-origin: right;
+    animation-timing-function: var(--ease-spring);
+  }
+
+  58% {
+    scale: 1;
+    transform-origin: right;
+  }
+
+  92% {
+    scale: 1;
+    transform-origin: left;
+  }
+
+  to {
+    scale: 0.6 1;
+    transform-origin: left;
+  }
+}
+
+/* Hop has no track, only the ground. The ball travels, hops and squashes in three animations;
+   four hops take it from one end to the other. */
+.rk-loader--hop {
+  --loader-fill: var(--teal);
+
+  block-size: 2.25rem;
+  border-width: 0 0 var(--outline-width);
+  border-radius: 0;
+  background: none;
+}
+
+.rk-loader--hop::before {
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  border: var(--outline-width) solid var(--loader-edge);
+  border-radius: 50%;
+  transform-origin: 50% 100%;
+  translate: calc(50cqi - 50%) 0;
+  animation:
+    rk-hop-travel 2.4s linear infinite alternate,
+    rk-hop 0.6s infinite;
+}
+
+@keyframes rk-hop-travel {
+  from {
+    translate: 0 0;
+  }
+
+  to {
+    translate: calc(100cqi - 100%) 0;
+  }
+}
+
+@keyframes rk-hop {
+  from,
+  to {
+    inset-block-end: 0;
+    scale: 1.3 0.7;
+    animation-timing-function: ease-out;
+  }
+
+  15% {
+    scale: 0.9 1.1;
+  }
+
+  50% {
+    inset-block-end: 1.1rem;
+    scale: 1;
+    animation-timing-function: ease-in;
+  }
+
+  85% {
+    scale: 0.9 1.1;
+  }
+}
+
+/* Each tile holds two stripes of each colour, so the tiles join up seamlessly as they roll. */
+.rk-loader--candy {
+  --loader-stripe: var(--coral);
+  --stripe-size: 1.75rem;
+
+  background: linear-gradient(
+      45deg,
+      var(--loader-fill) 20%,
+      var(--loader-edge) 0 25%,
+      var(--loader-stripe) 0 45%,
+      var(--loader-edge) 0 50%,
+      var(--loader-fill) 0 70%,
+      var(--loader-edge) 0 75%,
+      var(--loader-stripe) 0 95%,
+      var(--loader-edge) 0
+    )
+    0 0 / var(--stripe-size) var(--stripe-size);
+  animation: rk-progress-stripes 0.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rk-loader::before,
+  .rk-loader--candy {
+    animation: rk-spinner-fade 1.8s ease-in-out infinite alternate;
+  }
+}
+
+/* Forced colours drop the fills and background images, so the loaders use system colours. */
+@media (forced-colors: active) {
+  .rk-loader {
+    --loader-fill: Highlight;
+    --loader-stripe: Canvas;
+    --loader-edge: CanvasText;
+
+    forced-color-adjust: none;
+    border-color: CanvasText;
+    background-color: Canvas;
+  }
+}
