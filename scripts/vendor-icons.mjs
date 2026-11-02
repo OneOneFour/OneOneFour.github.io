@@ -107,6 +107,10 @@ const DEFAULT_FILLS = {
   planet: 'lilac',
 }
 
+// Globes whose duotone layer is the land. They also get an ocean disc behind it, coloured by
+// --icon-ocean (default sky); `--icon-ocean: none` leaves just the land filled.
+const GLOBES = ['globe-hemisphere-west', 'globe-hemisphere-east']
+
 const SOURCE_DIR = new URL('./icon-sources/', import.meta.url)
 const OUT_DIR = new URL('../packages/rk-ui/icons/', import.meta.url)
 
@@ -115,6 +119,9 @@ const FILL_LAYER = ' opacity="0.2"'
 const SHARED_STROKE_ATTRS = / (fill="none"|stroke="currentColor"|stroke-linecap="round"|stroke-linejoin="round"|stroke-width="16")/g
 const ROOT_ATTRS =
   'fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="stroke-width:var(--icon-stroke, 16)" aria-hidden="true"'
+// Fills the globes' outline circle, so it sits behind every other shape.
+const OCEAN_DISC =
+  '<circle cx="128" cy="128" r="96" stroke="none" style="fill:var(--icon-ocean, var(--sky))"/>'
 
 /** Fetches a URL as text, failing loudly on any HTTP error. */
 async function fetchText(url) {
@@ -144,12 +151,13 @@ function recolourShape(tag, fillAttrs) {
 /** Turns a raw duotone SVG into a recolourable, SVGO-optimised one. */
 function makeRecolourable(name, rawSvg) {
   const fillAttrs = fillHook(name)
+  const ocean = GLOBES.includes(name) ? OCEAN_DISC : ''
   const svg = rawSvg
     .replace(BACKGROUND_RECT, '')
     .replace(/<(path|line|circle|ellipse|rect|polyline|polygon)\b[^>]*\/>/g, (tag) =>
       recolourShape(tag, fillAttrs)
     )
-    .replace(/<svg ([^>]*)>/, `<svg $1 ${ROOT_ATTRS}>`)
+    .replace(/<svg ([^>]*)>/, `<svg $1 ${ROOT_ATTRS}>${ocean}`)
   // convertStyleToAttrs stays off (it isn't in preset-default) so the fill hook remains a style.
   return optimize(svg, { multipass: true, plugins: ['preset-default'] }).data
 }
