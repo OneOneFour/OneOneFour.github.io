@@ -1,11 +1,18 @@
-/* Code block: a slate panel with an optional language caption and a copy button. The button
-   starts hidden and <rk-code-block> (code-block.js) shows it. It comes after the code so that
-   readers reach the code first, and the grid lifts it into the header row. Pre is a keyboard
-   scroll region for long lines (tabindex="0").
+/* Code block: a slate panel pressed into the page by a soft inner shadow, with an optional
+   language caption and a copy button. The button starts hidden and <rk-code-block>
+   (code-block.js) shows it. It comes after the code so that readers reach the code first, and
+   the grid lifts it into the header row. Pre is a keyboard scroll region for long lines
+   (tabindex="0"). The caption may start with a logo for the language, coloured by
+   --code-lang-color (default --muted).
 
    <rk-code-block>
      <figure class="rk-code">
-       <figcaption class="rk-code-header"><span class="rk-code-lang">Python</span></figcaption>
+       <figcaption class="rk-code-header">
+         <span class="rk-code-lang">
+           <svg class="rk-icon rk-icon--small" aria-hidden="true">…optional logo…</svg>
+           Python
+         </span>
+       </figcaption>
        <pre tabindex="0"><code>…</code></pre>
        <button type="button" class="rk-button rk-button--small rk-code-copy" hidden>
          <svg class="rk-icon rk-icon--small">…copy icon…</svg>
@@ -14,10 +21,16 @@
      </figure>
    </rk-code-block>
 
-   Box variants for Gate 1b: .rk-code--inset (A), .rk-code--outlined (B), .rk-code--tab (C). */
+   Opt-in modifier: .rk-code--tab puts the caption in a darker strip, like an editor tab.
+   Put .rk-slate-greige on a block or any ancestor for the greige slate, inline code included. */
 
 rk-code-block {
   display: block;
+}
+
+.rk-slate-greige {
+  --slate: var(--slate-greige);
+  --slate-tab: var(--slate-greige-tab);
 }
 
 .rk-code {
@@ -26,6 +39,7 @@ rk-code-block {
   margin: 0;
   border-radius: var(--radius);
   background: var(--slate);
+  box-shadow: var(--shadow-code-inset);
   color: var(--fg);
 }
 
@@ -38,11 +52,20 @@ rk-code-block {
 }
 
 .rk-code-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   color: var(--muted);
   font-size: var(--step--1);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+/* Single-colour logos are paths with no fill of their own. */
+.rk-code-lang svg {
+  color: var(--code-lang-color, var(--muted));
+  fill: currentColor;
 }
 
 .rk-code pre {
@@ -72,28 +95,19 @@ rk-code-block {
 .rk-code:has(pre:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--outline-width);
-  box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);
+  box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled), var(--shadow-code-inset);
 }
 
 .rk-code:has(pre:focus-visible) pre {
   outline: none;
 }
 
-/* Code box A: pressed into the page by a soft inner shadow. */
-.rk-code--inset {
-  box-shadow: var(--shadow-code-inset);
-}
-
-/* Code box B: a flush panel with the unfilled outline. */
-.rk-code--outlined {
-  border: var(--outline-width) solid var(--line-unfilled);
-}
-
-/* Code box C: the caption is a darker strip across the top, like an editor tab. */
 .rk-code--tab .rk-code-header {
   padding-block: var(--space-2);
   border-radius: var(--radius) var(--radius) 0 0;
   background: var(--slate-tab);
+  /* The strip paints over the panel's inner shadow, so it repeats it. */
+  box-shadow: var(--shadow-code-inset);
 }
 
 .rk-code--tab .rk-code-copy {
