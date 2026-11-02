@@ -1,9 +1,25 @@
 ---
 import SpecimenLayout from '../../layouts/SpecimenLayout.astro'
+import SpecimenSection from '../../components/styleguide/SpecimenSection.astro'
+import ColourTokens from '../../components/styleguide/ColourTokens.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
   <main>
     <h1>Styleguide</h1>
+
+    <SpecimenSection title="Colour tokens">
+      <p>Ratios are WCAG contrast: AA needs 4.5 for body text, 3:1 for large text and UI edges.</p>
+      <ColourTokens slot="light" theme="light" />
+      <ColourTokens slot="dark" theme="dark" />
+    </SpecimenSection>
   </main>
 </SpecimenLayout>
+
+<style>
+  main {
+    max-width: 96rem;
+    margin-inline: auto;
+    padding: var(--space-6) var(--space-4);
+  }
+</style>
