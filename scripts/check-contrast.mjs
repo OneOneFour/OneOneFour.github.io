@@ -86,6 +86,9 @@ const GROUPS = [
       bg: '--shade',
       inputs: { '--shade-of': note },
       min: 3,
+      ...(note === '--note-coral' && {
+        accepted: 'Rob, 2026-11-02: just under in dark mode; the lines also read against the note',
+      }),
     })),
   },
   { title: 'Muted labels on unselected folder tabs', pairs: pairs(['--muted'], ['--folder-back'], 4.5) },
@@ -279,12 +282,14 @@ function printTable(tokens, palette, theme) {
     for (const pair of group.pairs) {
       const { fg, bg, min } = pair
       const { fgHex, bgHex, ratio } = measurePair(tokens, pair, theme)
-      const status = ratio >= min ? 'pass' : group.knownGap ? 'known gap' : 'FAIL'
+      // A shortfall Rob has accepted is listed with his reason but doesn't fail the check.
+      const status = ratio >= min ? 'pass' : pair.accepted ? 'accepted' : group.knownGap ? 'known gap' : 'FAIL'
 
       const fgCell = `${fg} ${fgHex}`.padEnd(30)
       const bgCell = `${bg} ${bgHex}`.padEnd(30)
       const measured = `${ratio.toFixed(2).padStart(5)}  min ${min}  ${status}${describeInputs(pair)}`
       console.log(`    ${fgCell} on ${bgCell} ${measured}`)
+      if (status === 'accepted') console.log(`      (${pair.accepted})`)
       if (status === 'FAIL') failures.push(`  ${heading}, ${group.title}:\n    ${fgCell} on ${bgCell} ${measured}`)
     }
     if (group.knownGap) console.log(`    (${group.knownGap})`)

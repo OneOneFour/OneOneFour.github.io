@@ -328,10 +328,13 @@ outside `tokens.css`, `chart-tokens.css` and `illustration-tokens.css` was liste
 - **Near-duplicates for Rob to decide:** `--illustration-red-shade` (80% towards `--ink`) could be
   `--shade` of red; `--wave-line` (60% towards `--line`) is a deeper `--shade`;
   `--shadow-code-inset` (20% `--line`) is nearly `--stripe` (25%).
-- **Checks that fail, left for Rob** (`npm run contrast` lists them at the end): a busy
-  `--section` button's cream label on its empty part (2.9:1); ink icon lines on the coral note's
-  fold in dark mode (2.8:1, min 3); in the colour shadow mode, coral's shade against the dark page
-  (2.4–2.9:1) and grape's against `--raised` (2.6–2.8:1).
+- **Checks that failed, and their outcome (2026-11-02):**
+  - a busy `--section` button's cream label on its empty part (2.9:1): *fixed*, the empty part
+    keeps 70% of the fill (`--water-empty-fill`), 6.0–6.2:1;
+  - ink icon lines on the coral note's fold in dark mode (2.8:1, min 3): *accepted by Rob*; the
+    check lists it as accepted with his reason;
+  - in the colour shadow mode, coral's shade against the dark page (2.4–2.9:1) and grape's against
+    `--raised` (2.6–2.8:1): *still failing, Rob to decide*.
 
 ### 5.2 Typography — research so far
 
