@@ -165,8 +165,8 @@ raw hues, so dark mode is a token swap.
 3. **Bright hues are never used for small text on cream.** Each hue gets
    a `-deep` variant for text and links, and a `-tint` variant for panel
    backgrounds (like the pale-blue/teal sidebar tints in draft 3).
-4. Every token pair is checked by a small contrast script run in CI
-   (`scripts/check-contrast.mjs`), so palette tweaks can't silently regress.
+4. Every token pair can be checked with a small local script
+   (`npm run contrast`), so palette tweaks don't silently fail contrast.
 5. Charts in posts use the same hues in a fixed order, checked for
    colour-blind separability (use the `dataviz` skill's validator).
 
@@ -292,8 +292,8 @@ weights actually used.
 | Astro components | `Button`, `Chip`/`ChipGroup` (filter), `Card` (post / project / paper / album variants), `HeaderBand`, `Callout` (note / warning), `PullQuote`, `Sidenote`, `Figure`, `WidgetFrame` |
 | Layouts | `BaseLayout` (left bar + main), `PostLayout` (header band, breakout grid, end matter), `IndexLayout` (card grid + chips) |
 
-A hidden `/styleguide/` page renders every token and component. It is the
-acceptance surface for design work and a regression check by screenshot.
+A `/styleguide/` page renders every token and component. It is where Rob
+reviews design work.
 
 
 ### 5.5 Iconography *(recommended 2026-11-01; awaiting Rob's OK)*
@@ -335,7 +335,7 @@ that need no framework at all:
 | 3. Primitives and components | **CSS classes on plain HTML** (`.tu-button`, `.tu-chip`, `.tu-card`, `.tu-switch`, `.tu-widget-frame` ...), with documented markup | any framework, or plain HTML |
 | 4. Icons | Vendored SVG files + licences, `--icon-fill` hook | anything |
 | 5. Behaviour | Small **vanilla TS custom elements** for components that need JS (`<tu-theme-toggle>`, `<tu-lightbox>`, sliders with readouts, the Lorenz widget) | any framework, or plain HTML |
-| 6. Framework wrappers | Thin `.astro` components that write layer-3 markup. **Vue wrappers only if another site is Vue** (§10 Q8) | that framework only |
+| 6. Framework wrappers | Thin `.astro` components that write layer-3 markup. Rob's other sites are vanilla JS, so they use layers 1–5 directly. No Vue wrappers for now | that framework only |
 
 - **Where it lives:** `packages/toon-ui/` as an npm workspace inside this repo. The site depends on
   it like any other package. Move it to its own repo (or GitHub Packages) once a second site
@@ -457,19 +457,20 @@ parallel conversations.
 
 ## 9. Work packages (for future conversations and subagents)
 
+How these are executed (branch, agents, gates, code style, minimal testing) is in
+[`IMPLEMENTATION.md`](./IMPLEMENTATION.md), which overrides this table where they differ.
+
 Convention: **conversation** = needs Rob's taste or decisions in the loop.
 **subagent** = mechanical, with a clear spec and acceptance criteria.
-Every package must end with `npm run build` passing. Visual packages also
-end with screenshots of the affected pages at about 1400px and about 390px
-wide.
+Every package must end with `npm run build` passing.
 
 | WP | Phase | Mode | Task | Acceptance |
 |---|---|---|---|---|
 | WP-0 | R3 | subagent | Bring the `experimental` Phase 2 code onto the R3 branch. Add `draft` to the projects schema and mark the 4 migrated projects as drafts | Build passes; no draft project is rendered |
 | WP-1 | R1 | **conversation** | Specimen page for pairing A: type scale, monospace choice, Greek and maths, sample post paragraph, core and auxiliary colours as buttons, chips and panels, toon shadow variants | Rob signs off on the scale and mono; §5.2 updated |
-| WP-2 | R1 | subagent | `scripts/check-contrast.mjs` plus a CI step; derive `-deep`/`-tint` variants that pass | All declared text/fill pairs ≥ 4.5 (≥ 3 for large text and UI) |
-| WP-3 | R2 | subagent | `tokens.css` (light and dark, §5.1b), icon vendoring script and `src/icons/` (§5.5), no-flash theme script, type scale, primitives, Astro components, `/styleguide/` | Matches §5; styleguide screenshots in **both themes** reviewed by Rob |
-| WP-4 | R3 | **conversation** | BaseLayout and left bar, nav, responsive top bar, Home, About, Projects restyle, redirects | Rob signs off on screenshots; old URLs redirect |
+| WP-2 | R1 | subagent | `scripts/check-contrast.mjs` (local, not CI); derive `-deep`/`-tint` variants that pass | All declared text/fill pairs ≥ 4.5 (≥ 3 for large text and UI) |
+| WP-3 | R2 | subagent | `tokens.css` (light and dark, §5.1b), icon vendoring script and `packages/toon-ui/icons/` (§5.5), no-flash theme script, type scale, primitives, Astro components, `/styleguide/` | Matches §5; Rob reviews `/styleguide/` locally in **both themes** |
+| WP-4 | R3 | **conversation** | BaseLayout and left bar, nav, responsive top bar, Home, About, Projects restyle, redirects | Rob signs off locally; old URLs redirect |
 | WP-5 | R4 | conversation, then subagent | PostLayout, MDX/KaTeX/Shiki, Sidenote/Figure/WidgetFrame, RSS | Exemplar post renders, works with JS off (fallback) |
 | WP-6 | R4 | subagent | Lorenz butterfly widget (vanilla TS) | Runs at 60fps on a laptop; reduced-motion respected |
 | WP-7a | R5 | subagent | `publications` collection schema plus the `pubs:new` starter script (DOI or BibTeX → draft `.md`), §6a | `pubs:new 10.1029/2023MS004163` writes a valid draft; build passes with it |
@@ -496,8 +497,7 @@ wide.
    single accent is a token change, not a rewrite.
 7. **Iconography**: *recommended*, Phosphor duotone base, Simple Icons for brands, 2–5 custom
    icons (§5.5). Awaiting Rob's OK.
-8. **Other project sites' framework(s)**: decides whether the design package also ships Vue
-   wrappers (§5.6).
+8. ~~Other sites' framework~~: **vanilla JS** (may move to Vue later), so no Vue wrappers for now (§5.6).
 
 ## Sources
 
