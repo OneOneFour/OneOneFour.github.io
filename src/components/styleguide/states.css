@@ -213,7 +213,7 @@ a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab, .rk-eqref)).is-focu
 }
 
 .rk-eqref.is-hover {
-  box-shadow: inset 0 0 0 var(--outline-width) var(--line-unfilled);
+  box-shadow: inset 0 0 0 var(--outline-width) var(--line);
 }
 
 .rk-eqref.is-focus {
