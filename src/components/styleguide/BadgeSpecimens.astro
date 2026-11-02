@@ -1,0 +1,127 @@
+---
+/**
+ * Inline badges, solid and tint, in every hue; corner badge edge options A–C on a picture and an
+ * icon button; and status dots. The pictures are token-coloured placeholders.
+ */
+import Button from '../ui/Button.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import ImageIcon from 'rk-ui/icons/image.svg'
+import EnvelopeIcon from 'rk-ui/icons/envelope-simple.svg'
+import SparkleIcon from 'rk-ui/icons/sparkle.svg'
+
+const HUES = ['navy', 'teal', 'green', 'coral', 'grape', 'tangerine']
+const EDGES = [
+  { label: 'A: outline', class: '' },
+  { label: 'B: ring in the page colour', class: 'rk-badge--ring' },
+  { label: 'C: sticker (outline and shadow)', class: 'rk-badge--sticker' },
+]
+---
+
+<SpecimenRow title="Inline">
+  <Specimen label="default (yellow)"><span class="rk-badge">Label</span></Specimen>
+  {
+    HUES.map((hue) => (
+      <Specimen label={hue}>
+        <span class={`rk-badge rk-badge--${hue}`}>Label</span>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Inline, tint">
+  <Specimen label="default (yellow)"><span class="rk-badge rk-badge--tint">Label</span></Specimen>
+  {
+    HUES.map((hue) => (
+      <Specimen label={hue}>
+        <span class={`rk-badge rk-badge--tint rk-badge--${hue}`}>Label</span>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Inline, in text">
+  <Specimen label="solid, with an icon">
+    <p class="in-text">
+      Lorem ipsum
+      <span class="rk-badge rk-badge--grape"><SparkleIcon class="rk-icon" />Label</span>
+    </p>
+  </Specimen>
+  <Specimen label="tint, with an icon">
+    <p class="in-text">
+      Lorem ipsum
+      <span class="rk-badge rk-badge--tint rk-badge--tangerine"><SparkleIcon class="rk-icon" />Label</span>
+    </p>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="On a corner">
+  {
+    EDGES.map((edge) => (
+      <Specimen label={edge.label}>
+        <span class="rk-badge-host rk-badge-host--round">
+          <span class="picture picture--round" role="img" aria-label="Picture">
+            <ImageIcon class="rk-icon" />
+          </span>
+          <span class:list={['rk-badge', 'rk-badge--coral', 'rk-badge--corner', edge.class]}>
+            3<span class="rk-visually-hidden"> new</span>
+          </span>
+        </span>
+        <Button fill="teal" class="rk-badge-host">
+          <EnvelopeIcon class="rk-icon" />
+          <span class="rk-visually-hidden">Messages</span>
+          <span class:list={['rk-badge', 'rk-badge--coral', 'rk-badge--corner', edge.class]}>
+            12<span class="rk-visually-hidden"> new</span>
+          </span>
+        </Button>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Status dots and long counts">
+  <Specimen label="dot, bottom corner of a round picture">
+    <span class="rk-badge-host rk-badge-host--round">
+      <span class="picture picture--round" role="img" aria-label="Picture"><ImageIcon class="rk-icon" /></span>
+      <span class="rk-badge rk-badge--green rk-badge--corner rk-badge--dot rk-badge--bottom">
+        <span class="rk-visually-hidden">Online</span>
+      </span>
+    </span>
+  </Specimen>
+  <Specimen label="dot, top corner of a square picture">
+    <span class="rk-badge-host">
+      <span class="picture" role="img" aria-label="Picture"><ImageIcon class="rk-icon" /></span>
+      <span class="rk-badge rk-badge--coral rk-badge--corner rk-badge--dot">
+        <span class="rk-visually-hidden">New</span>
+      </span>
+    </span>
+  </Specimen>
+  <Specimen label="long count">
+    <span class="rk-badge-host">
+      <span class="picture" role="img" aria-label="Picture"><ImageIcon class="rk-icon" /></span>
+      <span class="rk-badge rk-badge--coral rk-badge--corner">99+</span>
+    </span>
+  </Specimen>
+</SpecimenRow>
+
+<style>
+  .in-text {
+    margin: 0;
+  }
+
+  /* A stand-in for a photo or avatar. */
+  .picture {
+    --icon-fill: var(--teal);
+
+    display: grid;
+    place-items: center;
+    inline-size: 4rem;
+    block-size: 4rem;
+    border-radius: var(--radius);
+    background: var(--teal-tint);
+  }
+
+  .picture--round {
+    border-radius: 50%;
+  }
+</style>

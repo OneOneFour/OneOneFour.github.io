@@ -29,6 +29,7 @@
 @import './components/range-ticks.css';
 @import './components/dial.css';
 @import './components/code.css';
+@import './components/badge.css';
 @import './components/spinner.css';
 @import './components/progress.css';
 @import './components/tooltip.css';

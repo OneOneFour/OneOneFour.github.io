@@ -1,0 +1,125 @@
+/* Badges: a small pill for a status or a count. Static, so inline badges have no outline.
+   Solid by default (yellow); .rk-badge--tint is the quiet version, a tint panel with --fg text.
+   The hue modifiers set both. An .rk-icon inside takes the badge's hue as its fill.
+
+   On a corner: wrap the picture or button in .rk-badge-host and add .rk-badge--corner. On a round
+   host, add .rk-badge-host--round so the badge sits on the circle's edge. .rk-badge--dot is a
+   status dot with no visible text, and .rk-badge--bottom moves a corner badge to the bottom.
+   The corner badge's edge has three options: A, the outline (default); B, .rk-badge--ring, a ring
+   in the page colour; C, .rk-badge--sticker, the outline and a small hard shadow.
+
+   <span class="rk-badge rk-badge--grape">Label</span>
+   <span class="rk-badge-host">
+     <button class="rk-button">…</button>
+     <span class="rk-badge rk-badge--coral rk-badge--corner">3<span class="rk-visually-hidden"> new</span></span>
+   </span> */
+
+.rk-badge {
+  --badge-fill: var(--yellow);
+  --badge-label: var(--on-fill);
+  --badge-tint: var(--yellow-tint);
+  --icon-fill: var(--badge-fill);
+
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: 0.125rem var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--badge-fill);
+  color: var(--badge-label);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: var(--line-height-heading);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.rk-badge .rk-icon {
+  inline-size: 1em;
+  block-size: 1em;
+  color: inherit;
+}
+
+.rk-badge--tint {
+  background: var(--badge-tint);
+  color: var(--fg);
+}
+
+/* :where() keeps the host's display below a component's own, such as a button's. */
+:where(.rk-badge-host) {
+  position: relative;
+  display: inline-flex;
+}
+
+/* 14.6% in from the box's corner is the point on a circle at 45°. */
+.rk-badge-host--round {
+  --badge-inset: 14.6%;
+}
+
+/* The badge's centre sits on the corner: it overhangs by half its height on each side. */
+.rk-badge--corner {
+  --badge-size: 1.25rem;
+
+  position: absolute;
+  inset-block-start: calc(var(--badge-inset, 0px) - var(--badge-size) / 2);
+  inset-inline-end: calc(var(--badge-inset, 0px) - var(--badge-size) / 2);
+  min-inline-size: var(--badge-size);
+  block-size: var(--badge-size);
+  padding: 0 var(--space-1);
+  border: var(--outline-width) solid var(--line);
+}
+
+.rk-badge--dot {
+  --badge-size: 0.875rem;
+
+  padding: 0;
+}
+
+.rk-badge--bottom {
+  inset-block-start: auto;
+  inset-block-end: calc(var(--badge-inset, 0px) - var(--badge-size) / 2);
+}
+
+.rk-badge--ring {
+  border-color: var(--surface);
+}
+
+.rk-badge--sticker {
+  box-shadow: var(--shadow-pressed);
+}
+
+.rk-badge--navy {
+  --badge-fill: var(--navy);
+  --badge-label: var(--on-navy);
+  --badge-tint: var(--navy-tint);
+}
+
+.rk-badge--teal {
+  --badge-fill: var(--teal);
+  --badge-tint: var(--teal-tint);
+}
+
+.rk-badge--green {
+  --badge-fill: var(--green);
+  --badge-tint: var(--green-tint);
+}
+
+.rk-badge--coral {
+  --badge-fill: var(--coral-solid);
+  --badge-label: var(--on-coral);
+  --badge-tint: var(--coral-tint);
+}
+
+.rk-badge--grape {
+  --badge-fill: var(--grape);
+  --badge-label: var(--on-grape);
+  --badge-tint: var(--lilac-tint);
+}
+
+.rk-badge--tangerine {
+  --badge-fill: var(--tangerine);
+  --badge-tint: var(--apricot-tint);
+}
