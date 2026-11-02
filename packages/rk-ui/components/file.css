@@ -17,8 +17,13 @@
   cursor: pointer;
 }
 
+/* The button moves with relative offsets rather than translate, so the filename beside it stays
+   still in every browser. */
 .rk-input[type='file']::file-selector-button {
-  margin-inline-end: var(--space-3);
+  position: relative;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  margin-inline-end: var(--space-4);
   padding: var(--space-1) var(--space-3);
   border: var(--outline-width) solid var(--line);
   border-radius: var(--radius);
@@ -30,20 +35,22 @@
   font-weight: 700;
   cursor: pointer;
   transition:
-    translate var(--duration-fast) ease,
+    inset var(--duration-fast) ease,
     box-shadow var(--duration-fast) ease;
 }
 
 @media (hover: hover) {
   .rk-input[type='file']:enabled:hover::file-selector-button {
     box-shadow: var(--shadow-hover);
-    translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+    inset-block-start: calc(-1 * var(--lift-offset));
+    inset-inline-start: calc(-1 * var(--lift-offset));
   }
 }
 
 .rk-input[type='file']:enabled:active::file-selector-button {
   box-shadow: var(--shadow-pressed);
-  translate: var(--press-offset) var(--press-offset);
+  inset-block-start: var(--press-offset);
+  inset-inline-start: var(--press-offset);
 }
 
 .rk-input[type='file']:disabled::file-selector-button {

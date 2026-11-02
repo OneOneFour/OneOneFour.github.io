@@ -93,12 +93,14 @@ a:where(:not(.rk-button)).is-focus {
 
 .rk-input[type='file'].is-hover::file-selector-button {
   box-shadow: var(--shadow-hover);
-  translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+  inset-block-start: calc(-1 * var(--lift-offset));
+  inset-inline-start: calc(-1 * var(--lift-offset));
 }
 
 .rk-input[type='file'].is-active::file-selector-button {
   box-shadow: var(--shadow-pressed);
-  translate: var(--press-offset) var(--press-offset);
+  inset-block-start: var(--press-offset);
+  inset-inline-start: var(--press-offset);
 }
 
 .rk-file-drop.is-hover {
