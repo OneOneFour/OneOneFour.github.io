@@ -25,6 +25,9 @@
   /* Where tangerine surrounds the focused element, set --focus: var(--focus-alt) */
   --focus-alt: var(--yellow);
 
+  /* Shadow C (Gate 1b option): a dark-mode shadow lighter than the page, like a block's lit side */
+  --shadow-lit: light-dark(var(--line), #6e7891);
+
   /* Fills: vivid in both themes */
   --ink: #1d232f;
   --navy: light-dark(#2c4d6e, #4a78ad);
@@ -119,6 +122,7 @@
     --fg: #1d232f;
     --muted: #5b6070;
     --line: #1d232f;
+    --shadow-lit: var(--line);
 
     --navy: #2c4d6e;
     --teal: #2ea6b1;

@@ -8,6 +8,7 @@ import TypeScale from '../../components/styleguide/TypeScale.astro'
 import FontSpecimens from '../../components/styleguide/FontSpecimens.astro'
 import MonoSpecimen from '../../components/styleguide/MonoSpecimen.astro'
 import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
+import ShadowSpecimens from '../../components/styleguide/ShadowSpecimens.astro'
 import BaseSpecimens from '../../components/styleguide/BaseSpecimens.astro'
 import IconSpecimens from '../../components/styleguide/IconSpecimens.astro'
 import ButtonSpecimens from '../../components/styleguide/ButtonSpecimens.astro'
@@ -51,6 +52,12 @@ import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen
     <SpecimenSection title="Shape and motion">
       <ShapeAndMotion slot="light" />
       <ShapeAndMotion slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Dark-mode shadows" stacked>
+      <p>Options for Gate 1b. Light mode is the same in every option.</p>
+      <ShadowSpecimens slot="light" theme="light" />
+      <ShadowSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Base styles">
