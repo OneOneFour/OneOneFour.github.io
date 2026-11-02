@@ -7,7 +7,9 @@
   --track-height: 0.75rem;
   --thumb-size: 1.5rem;
   --thumb-shadow: var(--shadow);
-  --thumb-shift: 0px;
+  /* How far the thumb sits towards the light. At rest it is one press offset off the track's
+     centre, so pressed in, it is centred. */
+  --thumb-shift: calc(-1 * var(--press-offset));
 
   appearance: none;
   inline-size: 100%;
@@ -69,13 +71,13 @@
 @media (hover: hover) {
   .rk-range:hover {
     --thumb-shadow: var(--shadow-hover);
-    --thumb-shift: calc(-1 * var(--lift-offset));
+    --thumb-shift: calc(-1 * (var(--press-offset) + var(--lift-offset)));
   }
 }
 
 .rk-range:active {
   --thumb-shadow: var(--shadow-pressed);
-  --thumb-shift: var(--press-offset);
+  --thumb-shift: 0px;
 }
 
 /* The focus band is a spread shadow on the thumb. Forced-colours mode drops shadows, so the

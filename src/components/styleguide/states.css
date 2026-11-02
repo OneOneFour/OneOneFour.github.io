@@ -69,12 +69,12 @@
 
 .rk-range.is-hover {
   --thumb-shadow: var(--shadow-hover);
-  --thumb-shift: calc(-1 * var(--lift-offset));
+  --thumb-shift: calc(-1 * (var(--press-offset) + var(--lift-offset)));
 }
 
 .rk-range.is-active {
   --thumb-shadow: var(--shadow-pressed);
-  --thumb-shift: var(--press-offset);
+  --thumb-shift: 0px;
 }
 
 .rk-range.is-focus {
@@ -115,13 +115,13 @@ a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab, .rk-eqref)).is-focu
 
 .rk-input[type='file'].is-hover::file-selector-button {
   box-shadow: var(--shadow-hover);
-  inset-block-start: calc(-1 * var(--lift-offset-y));
+  inset-block-start: calc(-1 * (var(--press-offset-y) + var(--lift-offset-y)));
   inset-inline-start: calc(-1 * var(--lift-offset-x));
 }
 
 .rk-input[type='file'].is-active::file-selector-button {
   box-shadow: var(--shadow-pressed);
-  inset-block-start: var(--press-offset-y);
+  inset-block-start: 0;
   inset-inline-start: var(--press-offset-x);
 }
 

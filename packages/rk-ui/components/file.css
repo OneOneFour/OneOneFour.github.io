@@ -18,10 +18,11 @@
 }
 
 /* The button moves with relative offsets rather than translate, so the filename beside it stays
-   still in every browser. */
+   still in every browser. At rest it sits one press offset towards the light, so pressed in, it
+   is centred in the frame. */
 .rk-input[type='file']::file-selector-button {
   position: relative;
-  inset-block-start: 0;
+  inset-block-start: calc(-1 * var(--press-offset-y));
   inset-inline-start: 0;
   margin-inline-end: var(--space-4);
   padding: var(--space-1) var(--space-3);
@@ -42,18 +43,19 @@
 @media (hover: hover) {
   .rk-input[type='file']:enabled:hover::file-selector-button {
     box-shadow: var(--shadow-hover);
-    inset-block-start: calc(-1 * var(--lift-offset-y));
+    inset-block-start: calc(-1 * (var(--press-offset-y) + var(--lift-offset-y)));
     inset-inline-start: calc(-1 * var(--lift-offset-x));
   }
 }
 
 .rk-input[type='file']:enabled:active::file-selector-button {
   box-shadow: var(--shadow-pressed);
-  inset-block-start: var(--press-offset-y);
+  inset-block-start: 0;
   inset-inline-start: var(--press-offset-x);
 }
 
 .rk-input[type='file']:disabled::file-selector-button {
+  inset-block-start: 0;
   box-shadow: none;
   cursor: not-allowed;
 }
