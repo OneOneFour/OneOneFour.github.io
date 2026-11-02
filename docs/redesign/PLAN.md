@@ -7,9 +7,9 @@ which wins wherever the two disagree. Items marked
 them starts. Items marked *(proposed)* are recommendations that stand unless
 overridden.
 
-This file is the handoff document for future conversations and subagents.
-Each work package (§9) is meant to be picked up cold: read this file, then the
-files the package lists, then do the work.
+Agents start from `IMPLEMENTATION.md`, which says which phase is next and which parts of
+this file it needs. This file describes the design and the content model, not file
+locations or schedule.
 
 ---
 
@@ -27,7 +27,8 @@ files the package lists, then do the work.
 
 This refresh **supersedes the visual layer** of the original Nuxt→Astro
 roadmap but **keeps its architecture** (static Astro, content collections,
-islands only where needed, every phase deployable).
+islands only where needed). Unlike the original roadmap, the redesign is built on a
+local branch, and the live site changes only at switchover (IMPLEMENTATION.md §1).
 
 ---
 
@@ -118,6 +119,12 @@ boundaries. Takeaways in §5.1.
   only, and each item's GUID is its canonical URL.
 - Nav entries for sections that don't exist yet stay **hidden** until their
   phase ships, so the site never has dead links.
+- **Shared URL space with Rob's other sites.** Rob's other GitHub Pages repos are served
+  from this same domain at `/<RepoName>/` (EFMLWorkshopWebsite, GW-SciArt, mythosdemo,
+  PerlinNoise, …). So the site's top-level section names (`writing`, `research`,
+  `projects`, `photos`, `about`, `styleguide`, plus `rss.xml`) are **reserved**: no
+  Pages repo may use one, and no new section may take an existing repo's name. The
+  design package's repo, if it ever moves out, must not turn Pages on under a clashing name.
 
 ---
 
@@ -161,7 +168,7 @@ boundaries. Takeaways in §5.1.
 
 ## 5. Design system
 
-All of this lives as CSS custom properties in `src/styles/tokens.css`, using
+All of this lives as CSS custom properties in the design package's tokens file (§5.6), using
 **semantic names** (`--surface`, `--ink`, `--accent-writing` …) rather than
 raw hues, so dark mode is a token swap.
 
@@ -173,7 +180,7 @@ raw hues, so dark mode is a token swap.
    carry white text.
 2. **Coral is deepened by about 10–15% lightness** for any fill that
    carries text, so it passes 4.5:1 with white. First candidate
-   `#da382f` = 4.6:1 (HLS lightness −5%, computed 2026-11-01); WP-2 may push
+   `#da382f` = 4.6:1 (HLS lightness −5%, computed 2026-11-01); Gate 1a may push
    it further for margin. The bright coral stays for large display blocks
    and header bands with no small text.
 3. **Bright hues are never used for small text on cream.** Each hue gets
@@ -197,12 +204,12 @@ are not used as general decoration.
 | Apricot | `#ffd2a6` | ink 11.3:1 | `<mark>` highlights, callout backgrounds |
 
 These four also extend the chart series order after the core hues. Check
-them for colour-blind separability in WP-2.
+them for colour-blind separability at Gate 1a.
 
 ### 5.1b Dark mode *(DECIDED 2026-11-01: ships with the new look)*
 
-Dark mode is built into the tokens in R2 and goes live with the new shell in
-R3. It follows `prefers-color-scheme` by default, with a three-way Light /
+Dark mode is built into the tokens in P1 and goes live with the new shell at
+switchover. It follows `prefers-color-scheme` by default, with a three-way Light /
 Dark / System toggle in the left bar. The choice is remembered per browser.
 To avoid a flash of the wrong theme, set the theme with a tiny inline script
 in `<head>` before first paint.
@@ -237,7 +244,7 @@ Rules (shown on the mood board, theme switch at the top):
 Known gap: in dark mode the near-black outline on a dark page is only
 about 1.2–1.4:1. That's fine for filled components, where the fill provides
 the 3:1 boundary. Outline-only components (e.g. a Reset button with no fill)
-must use the `fg` colour for their border in dark mode. WP-2's contrast
+must use the `fg` colour for their border in dark mode. The contrast
 script checks both themes.
 
 ### 5.2 Typography — research so far
@@ -254,7 +261,7 @@ fetched 2026-11-01):
 | Source Serif 4 | serif | ✓ | 200–900, opsz | ✓ | Alternative serif body |
 | Zilla Slab / Hepta Slab / Montagu Slab / Epunda Slab | slab | ✗ | — | varies | Ruled out by goal 7 |
 
-Shortlisted pairings *(proposed; to be judged on a real specimen page, WP-1)*:
+Shortlisted pairings *(proposed; to be judged on a real specimen page)*:
 
 - **A. Roboto Slab (headings) + Xmind (body and UI).** Both have Greek and
   are variable. Slab headings give character, and the sans body keeps
@@ -278,10 +285,12 @@ Supporting decisions *(proposed)*:
   file passed to KaTeX. **[OPEN]** Does Rob need cross-referenced equation numbers
   (`\label`/`\eqref`)? KaTeX supports `\tag` and numbered `align`/`equation`, but its
   docs don't list `\label`/`\eqref`. If he does, compare `rehype-mathjax` (also build-time)
-  before P3W.
-- **Monospace** (code, widget readouts): pick one with Greek, decided in WP-1.
+  before the writing track.
+- **Monospace** (code, widget readouts): pick one with Greek, decided at Gate 1a.
 - Fonts are **self-hosted** from woff2 files vendored once into the design
-  package (OFL allows redistribution), with our own `@font-face` rules. Each
+  package, with our own `@font-face` rules. Xmind is OFL (no Reserved Font Name, so subsetting
+  is fine) and Roboto Slab is **Apache-2.0**. Both allow redistribution, and each licence file
+  ships beside its fonts. Each
   file is subset by `unicode-range` (latin, greek), so the Greek file only
   downloads when a page uses Greek. Why vendored: Xmind isn't on Fontsource (npm 404,
   checked 2026-11-01), plain files also work on Rob's vanilla-JS sites, and pinning
@@ -291,9 +300,8 @@ Supporting decisions *(proposed)*:
   `pt` sizes.
 
 **DECIDED (2026-11-01): pairing A**, Roboto Slab headings with Xmind body
-and UI. Rob approved it after seeing it on the mood board. WP-1 no longer
-compares pairings. It settles the type scale, the monospace face and the
-weights actually used.
+and UI. Rob approved it after seeing it on the mood board. The Gate 1a specimen
+settles the type scale, the monospace face and the weights actually used.
 
 ### 5.3 The "toon" treatment *(proposed)*
 
@@ -323,7 +331,7 @@ A `/styleguide/` page renders every token and component. It is where Rob
 reviews design work.
 
 
-### 5.5 Iconography *(recommended 2026-11-01; awaiting Rob's OK)*
+### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*
 
 Full report: `docs/redesign/research/icons.md` (ranked sets, coverage matrix, licences, SVG/CSS template, sources).
 
@@ -336,13 +344,17 @@ Full report: `docs/redesign/research/icons.md` (ranked sets, coverage matrix, li
 - **Brands:** Simple Icons (CC0) plus `logos:jax`. Use LinkedIn's and ORCID's own official assets
   (Simple Icons dropped LinkedIn). **Brand marks stay single flat black or white.** Brand
   guidelines (GitHub, LinkedIn, ORCID) forbid recolouring them, so the colour, ink outline and
-  shadow go on the *button* around the mark.
+  shadow go on the *button* around the mark. Brand marks are trademarks, so they live in the
+  **site**, not in the MIT-licensed design package, with a trademark note in the notices file.
 - **Tech-stack chips:** Simple Icons in one colour, replacing the old devicon font.
 - **Avoid:** Remix Icon (own restrictive licence since Jan 2026), Solar and Streamline (visible
   credit required), OpenMoji (share-alike), IconPark (archived).
-- **Pipeline:** vendored SVGs in `src/icons/`, imported as Astro's built-in SVG components
-  (inlined at build, no dependency). SVGO `preset-default` keeps the `var(--icon-fill)` hook;
-  `astro-icon` is untested for that, so don't use it.
+- **Pipeline:** vendored, recoloured SVGs in the design package's icon folder, plus one
+  `sprite.svg` built from them. The hooks (`currentColor`, `var(--icon-fill)`) only work on
+  **inline** SVG or `<use>`, never on `<img>` or CSS backgrounds. So this site inlines them with
+  Astro's built-in SVG imports, and vanilla sites use `<svg><use href="…/sprite.svg#flask"/></svg>`
+  (same origin, or a copy in `vendor/`). SVGO `preset-default` keeps the hook. `astro-icon` is
+  untested for it, so don't use it.
 - **Custom drawing (optional, 2–5 icons):** a gravity-wave "signature" mark (1–3 h), and perhaps
   a climate-model icon and a monogram/favicon. Drawing the whole set by hand isn't worthwhile
   (40–100+ h for a non-designer, adds nothing the sets lack).
@@ -364,22 +376,26 @@ that need no framework at all:
 | 5. Behaviour | Small **vanilla JS custom elements (JSDoc types)** for components that need JS (`<tu-theme-toggle>`, `<tu-lightbox>`, sliders with readouts, the Lorenz widget) | any framework, or plain HTML |
 | 6. Framework wrappers | Thin `.astro` components that write layer-3 markup. Rob's other sites are vanilla JS, so they use layers 1–5 directly. No Vue wrappers for now | that framework only |
 
-- **Where it lives:** `packages/toon-ui/` as an npm workspace inside this repo. The site depends on
-  it like any other package. Move it to its own repo (or GitHub Packages) once a second site
-  needs it. Nothing about the boundary changes at that point.
+- **Where it lives:** a folder in this repo (path in IMPLEMENTATION.md) that the site consumes like
+  any other package. It may move to its own repo later; the boundary stays the same.
 - **Boundary rules for agents:** the package never imports from `src/`, holds no site copy or
   section names, and is themeable only through tokens. Site-specific choices (which hue is
   "Writing") live in the site, mapped onto `--section`.
-- **Naming [OPEN, decide before P1]:** `toon-ui` and the `tu-` prefix are working names. The
-  prefix appears in every post's MDX and every other site's HTML, so it's hard to change later.
-  Pick it independently of the package name.
-- **Distribution:** the package must work from a plain `<link rel="stylesheet">` plus
-  `<script type="module">`, with no build step: plain JS (JSDoc for types), one `toon-ui.css`
-  whose `@font-face` URLs point at vendored fonts by relative path, and raw `icons/*.svg`. npm can't
-  install a subfolder of another git repo, so other sites load a tagged version through jsDelivr
-  (`cdn.jsdelivr.net/gh/OneOneFour/<repo>@<tag>/packages/toon-ui/…`) or copy the folder.
-  **[OPEN]** Do Rob's other sites have a build step? If they do, a published npm package becomes an
-  option later.
+- **Naming [OPEN, decided at Gate 0]:** `toon-ui` and the `tu-` prefix are working names. The
+  prefix appears in every post's MDX and every other site's HTML, and it's also the namespace
+  for browser storage keys, so it's hard to change later. Pick it independently of the package
+  name.
+- **Distribution (decided 2026-11-01):** Rob's other sites are a mix: plain HTML, ES modules with
+  esbuild, Parcel, Vue CLI. So the package must work with **no build step**: plain JS (JSDoc for
+  types), one stylesheet whose `@font-face` URLs point at the vendored fonts by relative path, the
+  icon files and sprite, and one classic `theme-init.js`. Other sites **copy a tagged release into
+  their own `vendor/` folder** (mythosdemo already uses that pattern). There are no hosted or CDN
+  versions, so there's no third-party request and no permanent public URLs to maintain.
+- **Theme contract:** the theme lives in a `data-theme` attribute on `<html>` plus one namespaced
+  storage key (`<prefix>-theme`). Every site on the domain shares browser storage, so one choice
+  applies everywhere. `theme-init.js` is a tiny classic script that is **inlined in `<head>`**
+  (in Astro via a `?raw` import). Module scripts run too late and would flash the wrong theme. The
+  toggle element only changes the attribute and the key.
 - **Why not "everything in Vue":** Vue components only work in Vue sites, or in Astro via an
   integration, and they don't fit plain HTML. CSS + custom elements cover every case, and thin
   wrappers keep authoring pleasant in each framework.
@@ -394,19 +410,26 @@ in Phase 2).
 |---|---|---|
 | `posts` | `glob('**/*.{md,mdx}', base: src/content/posts)` | `title`, `date`, `updated?`, `summary`, `tags[]`, `hero?` (image), `draft`, `publication?: reference('publications')`, `project?: reference('projects')` |
 | `projects` | existing (Phase 2) | add `featured`, `status` (active / archived), `draft` |
-| `publications` | `glob('**/*.md', base: src/content/publications)`, one file per paper, hand-written (§6a) | `id` (DOI or slug), `title`, `authors[]`, `venue`, `year`, `type` (article / preprint / software / abstract / talk / thesis), `doi?`, `preprint?`, `pdf?`, `code?`, `featured`, `draft` |
+| `publications` | `glob('**/*.md', base: src/content/publications)`, one file per paper, hand-written (§6a). The **file name is the ID** (no `id` field, so DOIs never end up in URLs) | `title`, `authors[]`, `venue`, `year`, `type` (article / preprint / software / abstract / talk / thesis), `doi?`, `preprint?`, `pdf?`, `code?`, `figure?`, `figureCredit?`, `featured`, `draft` |
 | `photos` | `glob` of album folders, each an `index.md` with images beside it; `draft` | album `title`, `date`, `location?`, `cover`, `images[]` via the `image()` schema helper (astro:assets optimisation) |
 
 - **Cross-links** use `reference()` and are stored **on the post only**
   (`publication`, `project`). Paper and project pages compute their backlinks
   at build time, so the two sides can't disagree.
 - **Drafts, one rule for every collection:** `draft: true` entries render in
-  `astro dev` and are left out of `astro build`. Rob can see his drafts and
+  `astro dev` and are left out of `astro build`. Astro has no global draft filter, and
+  `reference()` resolves drafts too. So there is **one content helper** (`getPublished(name)`,
+  `resolvePublished(ref)`, which returns nothing for a draft in a production build), and pages
+  never call `getCollection`/`getEntry` directly. Otherwise a fixture leaks into the RSS feed, or
+  a live post links to a draft paper and 404s. Rob can see his drafts and
   the legacy projects under review locally, and none of them reach the live site.
 - **Placeholder entries** *(decided 2026-11-01)*: agents may add obviously fake
   entries (lorem ipsum, named `_fixture-*`, always `draft: true`) so layouts can be
   built and reviewed before Rob's content exists. They never reach the live site,
   and Rob's real entries replace them.
+- **Every committed image goes through one strip-and-resize step** (album photos, post heroes,
+  publication figures, the profile photo). It strips **all** EXIF, since keeping some fields is
+  fiddly and nothing needs them. The repo is public and history is permanent.
 - **Projects: no automatic inheritance (DECIDED 2026-11-01).** Legacy
   projects come back only after Rob reviews each one: keep, rewrite or drop.
   That includes the 4 already migrated on `experimental`. The schema gains
@@ -482,10 +505,13 @@ socials:
 Longer bio in plain Markdown…
 ```
 
-- Two collections, because one collection has only one schema: `profile` (a single-entry
-  `file()`-style loader with required name, role, photo and socials) and `pages` (body-text
-  files like `home.md`). A typo or a missing profile field fails the build with a clear message,
-  and never produces a broken page.
+- Two collections, because one collection has only one schema. `profile` is
+  `glob({ pattern: 'profile.md', base: './src/content/site' })`, with required name, role, photo
+  and socials. `pages` is `glob({ pattern: ['*.md', '!profile.md'], … })`. (Astro's `file()`
+  loader only reads JSON/YAML/TOML, so it can't hold a Markdown bio.) A typo or a missing profile
+  field fails the build with a clear message, and never produces a broken page.
+- If a `_fixture` profile and the real one both exist, the real one wins. A production build with
+  no real profile fails.
 - `socials[].kind` picks the icon, and the order in the file is the order shown. Adding or
   removing a link is a one-line edit.
 - Layouts read these files. Nothing personal is hard-coded in components, which also keeps the
@@ -522,68 +548,32 @@ Longer bio in plain Markdown…
 
 ---
 
-## 8. Roadmap (every phase ends deployable)
+## 8–9. Roadmap and work packages
 
-| # | Phase | Ships to live site | Depends on |
-|---|---|---|---|
-| R0 | ~~Land Phase 2 in legacy look~~. *Proposed:* **drop as a separate deploy**. The `experimental` code (schema, components, `/project/[slug]`) is carried into R3, with its 4 legacy projects set to `draft: true` pending Rob's review. The live splash page stays as it is until R3. | — | — |
-| R1 | **Design decisions**: font/palette specimen, contrast script, settle the [OPEN]s | `/styleguide/` (unlinked) | — |
-| R2 | **Foundation**: tokens, type, primitives, Astro components on the styleguide | `/styleguide/` (unlinked) | R1 |
-| R3 | **New shell, identity goes live**: BaseLayout with left bar and nav, Home and Projects restyled, `/project/*` → `/projects/*` redirects, About page | whole site in the new look | R0, R2 |
-| R4 | **Writing**: `posts` collection, PostLayout (breakout grid, sidenotes, end matter), MDX, KaTeX, Shiki, WidgetFrame, Lorenz exemplar post, RSS | `/writing/` | R3 |
-| R5 | **Research**: `publications` collection, chips filter, paper ↔ post links | `/research/` | R3 (R4 for links) |
-| R6 | **Photography**: `photos` collection, astro:assets, grid and lightbox | `/photos/` | R3 |
-| R7 | **Projects review and archive**: Rob-led review of the legacy projects (keep / rewrite / drop each), GitHub archive view (build-time fetch with `GITHUB_TOKEN`) | fuller `/projects/` | R3 |
-| R8 | **Cleanup**: delete dead branches (`astro`, `v3`, `old`, `page-src`, `master`), close draft PR #1, enforce HTTPS in Pages settings | — | all |
-
-R4–R7 are independent of each other once R3 lands, so they can run in
-parallel conversations.
+These moved to [`IMPLEMENTATION.md`](./IMPLEMENTATION.md) §4 (phases P0–P4 with tasks and gates),
+the single source for order, file locations and acceptance.
 
 ---
 
-## 9. Work packages (for future conversations and subagents)
+## 10. Decisions
 
-How these are executed (branch, agents, gates, code style, minimal testing) is in
-[`IMPLEMENTATION.md`](./IMPLEMENTATION.md), which overrides this table where they differ.
+**Decided (2026-11-01):**
+- Font pairing A, Roboto Slab + Xmind (§5.2).
+- Dark mode ships with the new look (§5.1b).
+- Publications entered by hand, one `.md` per paper (§6a).
+- Real photo for the avatar.
+- Per-section colours, "for now", behind `--section` tokens (§3).
+- Icons: Phosphor duotone + Simple Icons; brand marks stay in the site (§5.5).
+- Old Phase 2 deploy (R0) dropped; its code is carried into the redesign with projects as drafts.
+- Design package distribution: no build step, copied into each site's `vendor/` (§5.6).
+- URL policy, draft rule, content helper (§3, §6).
+- Licences: MIT for code, CC BY-NC 4.0 for content except where credited otherwise
+  (IMPLEMENTATION.md §1).
 
-Convention: **conversation** = needs Rob's taste or decisions in the loop.
-**subagent** = mechanical, with a clear spec and acceptance criteria.
-Every package must end with `npm run build` passing.
-
-| WP | Phase | Mode | Task | Acceptance |
-|---|---|---|---|---|
-| WP-0 | R3 | subagent | Bring the `experimental` Phase 2 code onto the R3 branch. Add `draft` to the projects schema and mark the 4 migrated projects as drafts | Build passes; no draft project is rendered |
-| WP-1 | R1 | **conversation** | Specimen page for pairing A: type scale, monospace choice, Greek and maths, sample post paragraph, core and auxiliary colours as buttons, chips and panels, toon shadow variants | Rob signs off on the scale and mono; §5.2 updated |
-| WP-2 | R1 | subagent | `scripts/check-contrast.mjs` (local, not CI); derive `-deep`/`-tint` variants that pass | All declared text/fill pairs ≥ 4.5 (≥ 3 for large text and UI) |
-| WP-3 | R2 | subagent | `tokens.css` (light and dark, §5.1b), icon vendoring script and `packages/toon-ui/icons/` (§5.5), no-flash theme script, type scale, primitives, Astro components, `/styleguide/` | Matches §5; Rob reviews `/styleguide/` locally in **both themes** |
-| WP-4 | R3 | **conversation** | BaseLayout and left bar, nav, responsive top bar, Home, About, Projects restyle, redirects | Rob signs off locally; old URLs redirect |
-| WP-5 | R4 | conversation, then subagent | PostLayout, MDX/KaTeX/Shiki, Sidenote/Figure/WidgetFrame, RSS | Exemplar post renders, works with JS off (fallback) |
-| WP-6 | R4 | subagent | Lorenz butterfly widget (vanilla JS) | Runs at 60fps on a laptop; reduced-motion respected |
-| WP-7a | R5 | subagent | `publications` collection schema plus the `pubs:new` starter script (DOI or BibTeX → draft `.md`), §6a | `pubs:new 10.1029/2023MS004163` writes a valid draft; build passes with it |
-| WP-7b | R5 | subagent | `/research/` page: publications collection, chips filter, paper ↔ post links | Every paper with a `post` shows the link both ways |
-| WP-8 | R6 | conversation | Photography: album structure, image pipeline, lightbox. **Rob supplies the prototype photos at the start** | Optimised images; Lighthouse perf ≥ 90 on an album page |
-| WP-9 | R7 | **conversation (Rob-led)** | Review legacy projects one by one (the 4 drafts plus 6 on `origin/page-src`): keep, rewrite or drop. Nothing is migrated without sign-off | Only approved projects have `draft: false` |
-| WP-10 | R7 | subagent | GitHub archive view | Builds in CI with no rate-limit failures |
-| WP-11 | R8 | subagent, with confirmation before deleting | Branch cleanup, PR close, HTTPS | Rob confirms each deletion |
-
----
-
-## 10. Open decisions (summary)
-
-1. ~~Font pairing~~: **decided, A** (Roboto Slab + Xmind), §5.2.
-2. ~~Dark mode timing~~: **decided, ships with the new look** (§5.1b).
-3. ~~Publications source~~: **decided, entered by hand** (one `.md` per paper,
-   optional DOI/BibTeX starter), §6a. ORCID confirmed.
-4. **R0**: *proposed* to drop it and carry the Phase 2 code into R3 with the
-   legacy projects as drafts (follows from "no automatic inheritance").
-5. ~~Avatar~~: **decided, real photo** (current `public/images/mugshota.png` until Rob supplies a new one).
-6. ~~Section colours~~: **decided for now, per-section colours** as in §3 and the mood-board
-   demo (2026-11-01). Rob may revisit this during the build, so keep section hues behind
-   semantic tokens (`--section`, `--on-section`, set per layout). Then a switch to a
-   single accent is a token change, not a rewrite.
-7. **Iconography**: *recommended*, Phosphor duotone base, Simple Icons for brands, 2–5 custom
-   icons (§5.5). Awaiting Rob's OK.
-8. ~~Other sites' framework~~: **vanilla JS** (may move to Vue later), so no Vue wrappers for now (§5.6).
+**Open:**
+1. Design package name and prefix, decided at Gate 0 (§5.6).
+2. Does Rob need `\label`/`\eqref` equation cross-references? (§5.2) Decide before the writing track.
+3. Photo storage: in the repo, or an R2 bucket (IMPLEMENTATION.md §8). Decide before the first photo.
 
 ## Sources
 
@@ -591,6 +581,7 @@ Every package must end with `npm run build` passing.
   https://fonts.google.com/metadata/fonts
 - Xmind on Google Fonts: https://fonts.google.com/specimen/Xmind
 - NeverMind (Xmind) source and licence (OFL): https://github.com/xmindltd/nevermind
+- Google Fonts sources and licences: `ofl/xmind`, `apache/robotoslab` in https://github.com/google/fonts
 - ORCID public API v3.0 (works for `0009-0006-1944-7787`):
   https://pub.orcid.org/v3.0/0009-0006-1944-7787/works
 - OpenAlex author and works API: https://api.openalex.org/authors/orcid:0009-0006-1944-7787
