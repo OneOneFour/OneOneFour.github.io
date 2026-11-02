@@ -67,6 +67,18 @@ const PHOSPHOR_ICONS = [
   'package', 'puzzle-piece', 'table', 'rows', 'columns', 'kanban', 'browser', 'app-window',
   'command', 'laptop', 'desktop', 'desktop-tower', 'computer-tower', 'monitor', 'gear', 'gear-six',
   'gear-fine', 'wrench', 'screwdriver', 'hammer', 'toolbox',
+  // Transport and getting around
+  'car', 'car-simple', 'car-profile', 'car-battery', 'taxi', 'jeep', 'van', 'truck',
+  'truck-trailer', 'bus', 'train', 'train-simple', 'train-regional', 'tram', 'subway', 'cable-car',
+  'bicycle', 'person-simple-bike', 'person-simple-walk', 'person-simple-hike', 'motorcycle',
+  'scooter', 'moped', 'moped-front', 'ambulance', 'fire-truck', 'police-car', 'tractor',
+  'bulldozer', 'airplane', 'airplane-tilt', 'airplane-in-flight', 'airplane-takeoff',
+  'airplane-landing', 'airplane-taxiing', 'air-traffic-control', 'drone', 'rocket-launch', 'boat',
+  'sailboat', 'anchor', 'anchor-simple', 'shipping-container', 'gas-pump', 'gas-can',
+  'charging-station', 'steering-wheel', 'speedometer', 'engine', 'tire', 'traffic-signal',
+  'traffic-sign', 'traffic-cone', 'road-horizon', 'path', 'signpost', 'navigation-arrow', 'gps',
+  'gps-fix', 'map-pin-simple', 'map-pin-line', 'map-pin-simple-line', 'map-pin-area',
+  'map-pin-simple-area',
 ]
 
 // Hand-adapted icons in Phosphor's raw duotone format, read from scripts/icon-sources/.
@@ -301,6 +313,33 @@ const DEFAULT_FILLS = {
   sparkle: 'grape',
   'magic-wand': 'grape',
   'bounding-box': 'grape',
+  // Transport and getting around
+  'car-battery': 'yellow',
+  taxi: 'yellow',
+  bicycle: 'green',
+  'person-simple-bike': 'green',
+  'fire-truck': 'tangerine',
+  tractor: 'green',
+  bulldozer: 'yellow',
+  'rocket-launch': 'teal',
+  boat: 'sky',
+  sailboat: 'sky',
+  anchor: 'sky',
+  'anchor-simple': 'sky',
+  'gas-pump': 'tangerine',
+  'gas-can': 'tangerine',
+  'charging-station': 'yellow',
+  speedometer: 'yellow',
+  'traffic-sign': 'tangerine',
+  'traffic-cone': 'tangerine',
+  'navigation-arrow': 'tangerine',
+  gps: 'tangerine',
+  'gps-fix': 'tangerine',
+  'map-pin-simple': 'tangerine',
+  'map-pin-line': 'tangerine',
+  'map-pin-simple-line': 'tangerine',
+  'map-pin-area': 'tangerine',
+  'map-pin-simple-area': 'tangerine',
 }
 
 // Globes whose duotone layer is the land. They also get an ocean disc behind it, coloured by
