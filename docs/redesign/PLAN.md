@@ -514,7 +514,7 @@ chart components, and the diagrams (`diagram.css`, `diagram.js`, `NeuralNetwork.
   and whose nodes light their links on hover or focus, and a flow chart whose steps light in turn,
   with a water fill on the slow step.
 
-**Fun elements** *(Gate 1b options, pending Rob's picks)*: flourishes that may inspire later work,
+**Fun elements** *(Gate 1b; dial ramps and the clock APPROVED 2026-11-02, as built)*: flourishes that may inspire later work,
 under "Fun elements" at the bottom of `/styleguide/`.
 - Dial ramps: `rk-dial--ramp` on either dial swaps its ticks or track for 18 blocks that light up
   to the value; unlit blocks are empty like the track, so the level reads without its colours.
@@ -533,7 +533,7 @@ under "Fun elements" at the bottom of `/styleguide/`.
   as it passes 12. The hands turn with `--ease-snap`; each tag turns back by its hand's angle, so
   it only moves and keeps its shadow on the light's side. The grabbed tag presses in.
 
-**Sticky notes** *(Gate 1b fun-element option, pending Rob)*: `sticky-note.css`, `.rk-sticky-note` on
+**Sticky notes** *(Gate 1b fun element; APPROVED 2026-11-02, as built)*: `sticky-note.css`, `.rk-sticky-note` on
 a card or a callout. A flat note with the ink outline, the hard shadow and a folded bottom-left
 corner: the corner is cut off with `clip-path` along the fold, and a flap in the note's colour
 darkened (75% fill, 25% `--line`, as the colour shadow mode's extrusion) is drawn over it with ink
@@ -545,7 +545,8 @@ A linked note card's corner lifts with the pop. Options: `--tilt` (−2°, or `-
 resting shadow is turned back by the tilt with `cos()`/`sin()` so it still falls away from the
 light; `--tape` and `--pin`. On `/styleguide/` under "Fun elements".
 
-**Exploded view** *(Gate 1b, a fun element; styleguide only, pending Rob)*: illustrations made only
+**Exploded view** *(Gate 1b, a fun element; styleguide only; the train is being redrawn in the
+illustration style, 2026-11-02)*: illustrations made only
 of flat toon shapes (rounded boxes, circles, pills), whose assemblies come apart on hover or focus
 so their parts can be inspected. "Exploded view" under "Fun elements" on `/styleguide/` shows a
 steam train (five assemblies, with an "Explode all" switch) and a one-assembly table lamp.
