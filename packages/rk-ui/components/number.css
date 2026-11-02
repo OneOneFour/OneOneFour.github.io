@@ -1,0 +1,130 @@
+/* Number inputs, in three variants for Gate 1b.
+
+   Number A: the browser's own spinners, always shown. WebKit lets them be shown, hidden or
+   replaced, but the native arrows can't be recoloured or outlined.
+   <input class="rk-input rk-input--spinners" type="number">
+
+   Number B: − and + buttons either side of the field. Needs stepper.js.
+   <rk-stepper class="rk-stepper rk-stepper--sides">
+     <button class="rk-button" type="button" data-step="down" aria-label="Decrease">−</button>
+     <input class="rk-input" type="number" aria-label="Label">
+     <button class="rk-button" type="button" data-step="up" aria-label="Increase">+</button>
+   </rk-stepper>
+
+   Number C: stacked arrow buttons inside the field's end. Needs stepper.js. The buttons skip the
+   tab order because the arrow keys already step the focused field, as with native spinners.
+   <rk-stepper class="rk-stepper rk-stepper--stacked">
+     <input class="rk-input" type="number" aria-label="Label">
+     <button type="button" tabindex="-1" data-step="up" aria-label="Increase"><svg>…</svg></button>
+     <button type="button" tabindex="-1" data-step="down" aria-label="Decrease"><svg>…</svg></button>
+   </rk-stepper> */
+
+/* Number A */
+
+.rk-input--spinners::-webkit-inner-spin-button {
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* Number B and C replace the native spinners, so hide them. */
+
+.rk-stepper .rk-input {
+  inline-size: 8rem;
+  appearance: textfield;
+}
+
+.rk-stepper .rk-input::-webkit-inner-spin-button,
+.rk-stepper .rk-input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+/* Until stepper.js runs, the buttons would do nothing. */
+.rk-stepper:not(:defined) button {
+  visibility: hidden;
+}
+
+/* Number B */
+
+.rk-stepper--sides {
+  display: inline-flex;
+  align-items: stretch;
+  gap: var(--space-2);
+}
+
+.rk-stepper--sides .rk-input {
+  text-align: center;
+}
+
+.rk-stepper--sides .rk-button {
+  --button-padding-inline: 0;
+
+  justify-content: center;
+  inline-size: 2.75rem;
+  font-size: var(--step-1);
+}
+
+/* Number C */
+
+.rk-stepper--stacked {
+  --arrow-width: 1.75rem;
+
+  position: relative;
+  display: inline-grid;
+}
+
+.rk-stepper--stacked .rk-input {
+  padding-inline-end: calc(var(--arrow-width) + var(--space-2));
+}
+
+.rk-stepper--stacked button {
+  position: absolute;
+  inset-inline-end: var(--outline-width);
+  display: grid;
+  place-items: center;
+  inline-size: var(--arrow-width);
+  block-size: calc(50% - var(--outline-width));
+  padding: 0;
+  border: 0;
+  border-inline-start: var(--outline-width) solid var(--line-unfilled);
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  transition: box-shadow var(--duration-fast) ease;
+}
+
+.rk-stepper--stacked [data-step='up'] {
+  inset-block-start: var(--outline-width);
+  border-block-end: calc(var(--outline-width) / 2) solid var(--line-unfilled);
+  border-start-end-radius: calc(var(--radius) - var(--outline-width));
+}
+
+.rk-stepper--stacked [data-step='down'] {
+  inset-block-end: var(--outline-width);
+  border-block-start: calc(var(--outline-width) / 2) solid var(--line-unfilled);
+  border-end-end-radius: calc(var(--radius) - var(--outline-width));
+}
+
+.rk-stepper--stacked svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+  --icon-stroke: 28;
+}
+
+.rk-stepper--stacked [data-step='up'] svg {
+  rotate: 180deg;
+}
+
+.rk-stepper--stacked button:enabled:hover {
+  background: var(--selected);
+  color: var(--on-selected);
+}
+
+.rk-stepper--stacked button:enabled:active {
+  box-shadow: var(--shadow-inset);
+}
+
+.rk-stepper--stacked button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

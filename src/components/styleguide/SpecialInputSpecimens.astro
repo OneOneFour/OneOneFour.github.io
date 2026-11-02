@@ -1,0 +1,359 @@
+---
+/**
+ * The special input types (file, date and time, search, number, colour, range with ticks and the
+ * plain text-like types), each in its states. Lettered variants are options for Gate 1b.
+ *
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import DownloadIcon from 'rk-ui/icons/download-simple.svg'
+import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
+import CaretIcon from 'rk-ui/icons/caret-down.svg'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const DROP_STATES = [
+  { label: "rest: click or drop a file (the name isn't shown without a script)" },
+  { label: 'hover', class: 'is-hover' },
+  { label: 'focused', class: 'is-focus' },
+  { label: 'disabled', disabled: true },
+  { label: 'error', invalid: true },
+]
+const DATE_TYPES = ['date', 'time', 'month', 'week', 'datetime-local'] as const
+const SEARCH_STATES = [
+  { label: 'rest', class: '' },
+  { label: 'with a value (hover or focus it for the clear button)', class: '', value: 'Query' },
+  { label: 'focused', class: 'is-focus', value: 'Query' },
+  { label: 'disabled', class: '', disabled: true },
+]
+const NUMBER_STATES = [
+  { label: 'rest', input: '', buttons: '' },
+  { label: 'hover on +', input: '', buttons: 'is-hover' },
+  { label: 'pressed +', input: '', buttons: 'is-active' },
+  { label: 'focused', input: 'is-focus', buttons: '' },
+  { label: 'disabled', input: '', buttons: '', disabled: true },
+  { label: 'error', input: '', buttons: '', invalid: true },
+]
+const HUES = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky', 'grape', 'tangerine', 'lilac', 'apricot']
+const SWATCH_GROUPS = [
+  { variant: 'A', label: 'rest (teal checked)' },
+  { variant: 'A', label: 'hover on navy, focus on teal', hover: 'navy', focus: 'teal' },
+  { variant: 'A', label: 'disabled', disabled: true },
+  { variant: 'B', label: 'rest (the last swatch opens the browser picker)' },
+  { variant: 'B', label: 'focused custom swatch', focusCustom: true },
+]
+const COLOUR_STATES = [
+  { label: 'rest', class: '' },
+  { label: 'hover', class: 'is-hover' },
+  { label: 'pressed', class: 'is-active' },
+  { label: 'focused', class: 'is-focus' },
+]
+const TICKS = [0, 25, 50, 75, 100]
+const TICK_STATES = [
+  { label: 'rest', class: '' },
+  { label: 'focused', class: 'is-focus' },
+  { label: 'disabled', class: '', disabled: true },
+]
+const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
+---
+
+<SpecimenRow title="File A: button and filename">
+  <Specimen label="rest" wide>
+    <input class="rk-input" type="file" aria-label="Specimen" />
+  </Specimen>
+  <Specimen label="hover" wide>
+    <input class="rk-input is-hover" type="file" aria-label="Specimen" />
+  </Specimen>
+  <Specimen label="pressed" wide>
+    <input class="rk-input is-active" type="file" aria-label="Specimen" />
+  </Specimen>
+  <Specimen label="focused" wide>
+    <input class="rk-input is-focus" type="file" aria-label="Specimen" />
+  </Specimen>
+  <Specimen label="multiple" wide>
+    <input class="rk-input" type="file" aria-label="Specimen" multiple />
+  </Specimen>
+  <Specimen label="disabled" wide>
+    <input class="rk-input" type="file" aria-label="Specimen" disabled />
+  </Specimen>
+  <Specimen label="error" wide>
+    <div class="rk-field">
+      <label for={`${theme}-file-error`}>Label</label>
+      <input
+        class="rk-input"
+        id={`${theme}-file-error`}
+        type="file"
+        aria-invalid="true"
+        aria-describedby={`${theme}-file-error-message`}
+      />
+      <span class="rk-field-message rk-field-message--error" id={`${theme}-file-error-message`}>Error message</span>
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="File B: drop panel">
+  {
+    DROP_STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <label class:list={['rk-file-drop', state.class]}>
+          <input type="file" disabled={state.disabled} aria-invalid={state.invalid ? 'true' : undefined} />
+          <DownloadIcon class="rk-icon" aria-hidden="true" />
+          <span>Choose a file or drop it here</span>
+        </label>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Date and time">
+  {
+    DATE_TYPES.map((type) => (
+      <Specimen label={type === 'date' ? "date (the popup and Firefox's icon are the browser's own)" : type} wide>
+        <input class="rk-input" type={type} aria-label="Specimen" />
+      </Specimen>
+    ))
+  }
+  <Specimen label="focused (the focused part of a real focus fills yellow)" wide>
+    <input class="rk-input is-focus" type="date" aria-label="Specimen" value="2026-11-01" />
+  </Specimen>
+  <Specimen label="disabled" wide>
+    <input class="rk-input" type="date" aria-label="Specimen" value="2026-11-01" disabled />
+  </Specimen>
+  <Specimen label="error" wide>
+    <input class="rk-input" type="time" aria-label="Specimen" value="09:30" aria-invalid="true" />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Search A: icon inside">
+  {
+    SEARCH_STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <div class="rk-search">
+          <input
+            class:list={['rk-input', state.class]}
+            type="search"
+            aria-label="Search"
+            placeholder="Search"
+            value={state.value}
+            disabled={state.disabled}
+          />
+        </div>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Search B: attached button">
+  {
+    SEARCH_STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <form class="rk-search-bar" role="search">
+          <input
+            class:list={['rk-input', state.class]}
+            type="search"
+            aria-label="Search"
+            placeholder="Search"
+            value={state.value}
+            disabled={state.disabled}
+          />
+          <button class="rk-button" type="submit" disabled={state.disabled}>
+            <SearchIcon class="rk-icon rk-icon--small" aria-hidden="true" />
+            Search
+          </button>
+        </form>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Number A: native spinners">
+  <Specimen label="rest (the arrows are the browser's own)">
+    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="3" />
+  </Specimen>
+  <Specimen label="focused">
+    <input class="rk-input rk-input--spinners is-focus" type="number" aria-label="Specimen" value="3" />
+  </Specimen>
+  <Specimen label="disabled">
+    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="3" disabled />
+  </Specimen>
+  <Specimen label="error">
+    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="30" aria-invalid="true" />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Number B: buttons either side">
+  {
+    NUMBER_STATES.map((state) => (
+      <Specimen label={state.label}>
+        <rk-stepper class="rk-stepper rk-stepper--sides">
+          <button class="rk-button" type="button" data-step="down" aria-label="Decrease" disabled={state.disabled}>
+            −
+          </button>
+          <input
+            class:list={['rk-input', state.input]}
+            type="number"
+            aria-label="Specimen"
+            value="3"
+            min="0"
+            max="10"
+            disabled={state.disabled}
+            aria-invalid={state.invalid ? 'true' : undefined}
+          />
+          <button
+            class:list={['rk-button', state.buttons]}
+            type="button"
+            data-step="up"
+            aria-label="Increase"
+            disabled={state.disabled}
+          >
+            +
+          </button>
+        </rk-stepper>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Number C: stacked arrows inside">
+  {
+    NUMBER_STATES.map((state) => (
+      <Specimen label={state.label.replace('+', 'up')}>
+        <rk-stepper class="rk-stepper rk-stepper--stacked">
+          <input
+            class:list={['rk-input', state.input]}
+            type="number"
+            aria-label="Specimen"
+            value="3"
+            min="0"
+            max="10"
+            disabled={state.disabled}
+            aria-invalid={state.invalid ? 'true' : undefined}
+          />
+          <button
+            class={state.buttons}
+            type="button"
+            tabindex="-1"
+            data-step="up"
+            aria-label="Increase"
+            disabled={state.disabled}
+          >
+            <CaretIcon aria-hidden="true" />
+          </button>
+          <button type="button" tabindex="-1" data-step="down" aria-label="Decrease" disabled={state.disabled}>
+            <CaretIcon aria-hidden="true" />
+          </button>
+        </rk-stepper>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Colour A and B: token swatches">
+  {
+    SWATCH_GROUPS.map((group, index) => (
+      <Specimen label={`colour ${group.variant}: ${group.label}`}>
+        <fieldset class="rk-swatches" disabled={group.disabled}>
+          <legend class="rk-visually-hidden">Colour</legend>
+          {HUES.map((hue) => (
+            <label
+              class:list={['rk-swatch', { 'is-hover': hue === group.hover, 'is-focus': hue === group.focus }]}
+              style={`--swatch: var(--${hue})`}
+            >
+              <input type="radio" name={`${theme}-swatch-${index}`} value={hue} checked={hue === 'teal'} />
+              <span class="rk-visually-hidden">{hue}</span>
+            </label>
+          ))}
+          {group.variant === 'B' && (
+            <label class="rk-check">
+              <input class:list={['rk-swatch', { 'is-focus': group.focusCustom }]} type="color" />
+              Custom
+            </label>
+          )}
+        </fieldset>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Colour C: native input">
+  {
+    COLOUR_STATES.map((state) => (
+      <Specimen label={state.label}>
+        <input class:list={['rk-input', state.class]} type="color" aria-label="Specimen" />
+      </Specimen>
+    ))
+  }
+  <Specimen label="disabled">
+    <input class="rk-input" type="color" aria-label="Specimen" disabled />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Ticks A: native">
+  <Specimen label="rest (drawn by the browser, where it supports them)" wide>
+    <input class="rk-range-native" type="range" list={`${theme}-ticks-a`} step="25" aria-label="Specimen" />
+    <datalist id={`${theme}-ticks-a`}>{TICKS.map((tick) => <option value={tick} />)}</datalist>
+  </Specimen>
+  <Specimen label="disabled" wide>
+    <input class="rk-range-native" type="range" list={`${theme}-ticks-a`} step="25" aria-label="Specimen" disabled />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Ticks B: tick row with labels">
+  {
+    TICK_STATES.map((state, index) => (
+      <Specimen label={state.label} wide>
+        <div class="rk-field">
+          <input
+            class:list={['rk-range', state.class]}
+            type="range"
+            list={`${theme}-ticks-b-${index}`}
+            step="25"
+            aria-label="Specimen"
+            disabled={state.disabled}
+          />
+          <datalist class="rk-range-scale" id={`${theme}-ticks-b-${index}`}>
+            {TICKS.map((tick) => <option value={tick}>{tick}</option>)}
+          </datalist>
+        </div>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Ticks C: dots on the track">
+  {
+    TICK_STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <input
+          class:list={['rk-range rk-range--dots', state.class]}
+          type="range"
+          step="25"
+          style={`--ticks: ${TICKS.length}`}
+          aria-label="Specimen"
+          disabled={state.disabled}
+        />
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Text-like types (no extra styles)">
+  {
+    TEXT_TYPES.map((type) => (
+      <Specimen label={type} wide>
+        <div class="rk-field">
+          <label for={`${theme}-${type}`}>Label</label>
+          <input class="rk-input" id={`${theme}-${type}`} type={type} />
+        </div>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<script>
+  import 'rk-ui/stepper.js'
+</script>

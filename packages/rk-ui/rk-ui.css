@@ -19,4 +19,10 @@
 @import './components/card.css';
 @import './components/callout.css';
 @import './components/widget-frame.css';
+@import './components/file.css';
+@import './components/date-time.css';
+@import './components/search.css';
+@import './components/number.css';
+@import './components/color.css';
+@import './components/range-ticks.css';
 @import './components/interactive.css';

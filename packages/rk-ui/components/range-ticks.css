@@ -1,0 +1,76 @@
+/* Range sliders with tick marks, in three variants for Gate 1b. Match the ticks to min, max and
+   step so the thumb lands on them.
+
+   Ticks A: the browser's own slider and ticks. Browsers draw datalist ticks only on an unstyled
+   slider, so this one has no toon thumb, and not every browser draws them.
+   <input class="rk-range-native" type="range" list="ticks">
+   <datalist id="ticks"><option value="0"></option>…</datalist>
+
+   Ticks B: the datalist shown as a row of ticks and value labels under an .rk-range.
+   <div class="rk-field">
+     <input class="rk-range" type="range" list="ticks">
+     <datalist class="rk-range-scale" id="ticks"><option value="0">0</option>…</datalist>
+   </div>
+
+   Ticks C: dots on the track itself. Set --ticks to the number of positions.
+   <input class="rk-range rk-range--dots" type="range" style="--ticks: 5"> */
+
+/* Ticks A */
+
+.rk-range-native {
+  inline-size: 100%;
+  margin: 0;
+  accent-color: var(--fg);
+  cursor: pointer;
+}
+
+/* Ticks B */
+
+.rk-range-scale {
+  display: flex;
+  justify-content: space-between;
+  inline-size: 100%;
+  /* Half of range.css's --thumb-size plus the track outline: where the thumb's centre stops. */
+  padding-inline: calc(0.75rem + var(--outline-width));
+}
+
+/* Each option is centred on its point: its negative margins cancel its width in the flex row. */
+.rk-range-scale option {
+  inline-size: 3rem;
+  margin-inline: -1.5rem;
+  padding: var(--space-2) 0 0;
+  background: linear-gradient(var(--muted), var(--muted)) center top / var(--outline-width) var(--space-2)
+    no-repeat;
+  color: var(--muted);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+/* Ticks C */
+
+/* Each tile has a half dot at both edges, so a dot sits on every tile boundary. The tiles start
+   at the thumb's first stop and are one step wide. */
+.rk-range--dots {
+  --dot-radius: 3px;
+  --dot-edge: calc(var(--dot-radius) + 0.5px);
+  --dots:
+    radial-gradient(circle at 0 50%, var(--fg) var(--dot-radius), transparent var(--dot-edge)),
+    radial-gradient(circle at 100% 50%, var(--fg) var(--dot-radius), transparent var(--dot-edge));
+  --dots-size: calc((100% - var(--thumb-size)) / (var(--ticks) - 1)) 100%;
+  --dots-position: calc(var(--thumb-size) / 2) center;
+}
+
+.rk-range--dots::-webkit-slider-runnable-track {
+  background-image: var(--dots);
+  background-size: var(--dots-size);
+  background-position: var(--dots-position);
+  background-repeat: repeat-x;
+}
+
+.rk-range--dots::-moz-range-track {
+  background-image: var(--dots);
+  background-size: var(--dots-size);
+  background-position: var(--dots-position);
+  background-repeat: repeat-x;
+}
