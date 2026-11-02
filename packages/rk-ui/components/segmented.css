@@ -81,7 +81,7 @@
       inset: anchor(top) anchor(right) anchor(bottom) anchor(left);
       border-radius: var(--radius-pill);
       background: var(--selected);
-      transition: inset var(--duration-slide) ease;
+      transition: inset var(--duration-slide) var(--ease-snap);
     }
   }
 }
