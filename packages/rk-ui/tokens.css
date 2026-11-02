@@ -20,6 +20,7 @@
   --muted: light-dark(#5b6070, #a3a8b6);
   --line: light-dark(#1d232f, #05070b);
   --line-unfilled: var(--fg);
+  --shadow-color: var(--line);
   --focus: var(--tangerine);
   /* Where tangerine surrounds the focused element, set --focus: var(--focus-alt) */
   --focus-alt: var(--yellow);
@@ -89,9 +90,9 @@
   --radius-pill: 999px;
   --outline-width: 2px;
   --shadow-offset: 4px;
-  --shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--line);
-  --shadow-hover: 6px 6px 0 var(--line);
-  --shadow-pressed: 2px 2px 0 var(--line);
+  --shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+  --shadow-hover: 6px 6px 0 var(--shadow-color);
+  --shadow-pressed: 2px 2px 0 var(--shadow-color);
   --shadow-inset: inset 2px 2px 0 var(--line-unfilled);
   /* Pressing moves an element onto --shadow-pressed; the move plus that shadow is --shadow. */
   --press-offset: 2px;
