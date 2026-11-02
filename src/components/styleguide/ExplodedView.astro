@@ -1,0 +1,78 @@
+---
+/**
+ * Draws an exploded illustration (explode.css) from its data: each assembly is focusable, named
+ * after its parts, and comes apart on hover or focus. With more than one assembly, an "Explode
+ * all" switch pulls them all apart.
+ *
+ * @param illustration the parts, in assemblies, on a grid of units
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import type { ExplodedAssembly, ExplodedIllustration, ExplodedPart } from './exploded-view'
+import { sectionId } from './section-id'
+import './explode.css'
+
+interface Props {
+  illustration: ExplodedIllustration
+  theme: 'light' | 'dark'
+}
+
+const { illustration, theme } = Astro.props
+const { title, description, columns, rows, assemblies } = illustration
+const descId = `${theme}-${sectionId(title)}-desc`
+const listFormat = new Intl.ListFormat('en-GB', { type: 'conjunction' })
+
+/** "Cab: cab, roof and window" */
+function assemblyLabel({ name, parts }: ExplodedAssembly) {
+  return `${name}: ${listFormat.format(parts.map((part) => part.name.toLowerCase()))}`
+}
+
+/** The custom properties that place a part and its label. */
+function partStyle({ x, y, w, h, fill, depth, explode }: ExplodedPart) {
+  return [
+    `--x: ${x}; --y: ${y}; --w: ${w}; --h: ${h}`,
+    `--part-fill: var(${fill}); --depth: ${depth}`,
+    `--explode-x: ${explode[0]}; --explode-y: ${explode[1]}`,
+  ].join('; ')
+}
+---
+
+<div class="rk-explode">
+  <div
+    class="rk-explode-stage"
+    style={`--columns: ${columns}; --rows: ${rows}`}
+    role="group"
+    aria-label={title}
+    aria-describedby={descId}
+  >
+    {
+      assemblies.map((assembly) => (
+        <div class="rk-explode-assembly" tabindex="0" role="img" aria-label={assemblyLabel(assembly)}>
+          {assembly.parts.map((part) => (
+            <span
+              class:list={[
+                'rk-explode-part',
+                part.shape && `rk-explode-part--${part.shape}`,
+                { 'rk-explode-part--glint': part.glint },
+              ]}
+              style={partStyle(part)}
+            />
+          ))}
+          {assembly.parts.map((part) => (
+            <span class="rk-explode-label rk-tooltip" style={partStyle(part)}>
+              <span class="rk-tooltip-bubble">{part.name}</span>
+            </span>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+  <p class="rk-visually-hidden" id={descId}>{description}</p>
+  {
+    assemblies.length > 1 && (
+      <label class="rk-check">
+        <input class="rk-switch rk-explode-all" type="checkbox" role="switch" />
+        Explode all
+      </label>
+    )
+  }
+</div>

@@ -1,0 +1,196 @@
+/* Exploded view: an illustration built from flat toon shapes, whose assemblies come apart while
+   they are hovered or focused, so their parts can be inspected. Each part is placed on a grid of
+   --columns × --rows units, and says how far it moves (--explode-x, --explode-y, in units) and how
+   many layers from the back it is (--depth). Exploded, a part also rises towards the light and
+   casts a longer shadow for each layer. Parts are drawn in order, back to front, so a part's
+   shadow falls on the parts behind it.
+
+   <div class="rk-explode">
+     <div class="rk-explode-stage" style="--columns: 16; --rows: 38" role="group" aria-label="…">
+       <div class="rk-explode-assembly" tabindex="0" role="img" aria-label="Lamp: stem and shade">
+         <span class="rk-explode-part" style="--x: 7; --y: 20; --w: 2; --h: 10;
+           --part-fill: var(--lilac); --depth: 0; --explode-x: 0; --explode-y: 1"></span>
+         …more parts; --round for a circle or ellipse, --pill, and --glint for a highlight
+         <span class="rk-explode-label rk-tooltip" style="…the same as its part…">
+           <span class="rk-tooltip-bubble">Stem</span>
+         </span>
+         …a label for each part, after all the parts so that none covers them
+       </div>
+     </div>
+     <label class="rk-check">                               optional: pulls every assembly apart
+       <input class="rk-switch rk-explode-all" type="checkbox" role="switch" /> Explode all
+     </label>
+   </div>
+
+   Styleguide only for now, like the diagrams. */
+
+.rk-explode {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+}
+
+/* The stage is the container, so a grid unit is a fraction of its width. Outlines and shadows
+   stay their usual size at any width. */
+.rk-explode-stage {
+  --u: calc(100cqi / var(--columns));
+
+  position: relative;
+  container-type: inline-size;
+  inline-size: 100%;
+  aspect-ratio: var(--columns) / var(--rows);
+}
+
+/* An assembly covers the whole stage, so only its parts take the pointer. It comes in front of
+   the others while it is open, and goes back once its parts have snapped home. */
+.rk-explode-assembly {
+  --explode: 0;
+  --explode-duration: var(--duration-spring);
+  --explode-ease: var(--ease-snap);
+
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: z-index 0s var(--duration-spring);
+}
+
+.rk-explode-assembly:is(:hover, :focus),
+.rk-explode:has(.rk-explode-all:checked) .rk-explode-assembly {
+  --explode: 1;
+  --explode-duration: var(--duration-slide);
+  --explode-ease: var(--ease-spring);
+}
+
+.rk-explode-assembly:is(:hover, :focus) {
+  z-index: 1;
+  transition: none;
+}
+
+/* The band goes on each part instead (below). */
+.rk-explode-assembly:focus-visible {
+  outline: none;
+}
+
+/* A label is a box the same as its part, so it moves with it. */
+.rk-explode-assembly > :is(.rk-explode-part, .rk-explode-label) {
+  --lift: calc(var(--explode) * var(--depth));
+  --move-x: calc(var(--explode) * var(--explode-x) * var(--u) - var(--lift) * var(--lift-offset-x));
+  --move-y: calc(var(--explode) * var(--explode-y) * var(--u) - var(--lift) * var(--lift-offset-y));
+
+  position: absolute;
+  inset-inline-start: calc(var(--x) * var(--u));
+  inset-block-start: calc(var(--y) * var(--u));
+  inline-size: calc(var(--w) * var(--u));
+  block-size: calc(var(--h) * var(--u));
+  translate: var(--move-x) var(--move-y);
+  transition:
+    translate var(--explode-duration) var(--explode-ease),
+    box-shadow var(--explode-duration) var(--explode-ease);
+}
+
+/* The shadow is built here rather than taken from --shadow, as its length grows by half the
+   resting offset for each layer the part has risen. It reads --shadow-color and --shadow-edge, so
+   it follows the dark-mode shadow modes, and --extrusion colours it in the colour mode. */
+.rk-explode-part {
+  --part-shadow: calc(var(--shadow-offset) * (1 + var(--lift) / 2));
+  --extrusion: color-mix(in oklab, var(--part-fill) 75%, var(--line));
+
+  box-sizing: border-box;
+  border: var(--outline-width) solid var(--line);
+  border-radius: var(--radius);
+  background: var(--part-fill);
+  box-shadow:
+    calc(var(--shadow-dx) * var(--part-shadow)) calc(var(--shadow-dy) * var(--part-shadow)) 0
+      var(--shadow-color),
+    calc(var(--shadow-dx) * var(--part-shadow)) calc(var(--shadow-dy) * var(--part-shadow)) 0
+      var(--outline-width) var(--shadow-edge);
+  pointer-events: auto;
+}
+
+.rk-explode-part--round {
+  border-radius: 50%;
+}
+
+.rk-explode-part--pill {
+  border-radius: var(--radius-pill);
+}
+
+/* A hit area that stays where the part sits at rest, so the assembly stays open while the pointer
+   is where the part was. */
+.rk-explode-part::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--outline-width));
+  border-radius: inherit;
+  translate: calc(-1 * var(--move-x)) calc(-1 * var(--move-y));
+  transition: inherit;
+}
+
+/* The glint sits towards the light, --glint-inset in from the part's edge. */
+.rk-explode-part--glint {
+  --glint-size: calc(var(--u) * 0.8);
+  --glint-inset: calc(var(--u) * 1.2);
+}
+
+.rk-explode-part--glint.rk-explode-part--round {
+  --glint-inset: 30%;
+}
+
+.rk-explode-part--glint::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: calc(50% - var(--shadow-dx) * (50% - var(--glint-inset)));
+  inset-block-start: calc(50% - var(--shadow-dy) * (50% - var(--glint-inset)));
+  inline-size: var(--glint-size);
+  block-size: var(--glint-size);
+  border-radius: 50%;
+  background: var(--glint);
+  translate: -50% -50%;
+}
+
+.rk-explode-assembly > .rk-explode-label {
+  --tooltip-gap: var(--space-1);
+
+  pointer-events: none;
+}
+
+.rk-explode-assembly:is(:hover, :focus) .rk-explode-label > .rk-tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+  translate: -50% 0;
+  transition-delay: 0s;
+}
+
+/* As elsewhere, the shadow goes while focused. */
+.rk-explode-assembly:focus-visible > .rk-explode-part {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+  box-shadow: none;
+}
+
+/* Reduced motion: nothing moves, but the open assembly's shadows still grow, its labels show and
+   the other assemblies fade back. */
+@media (prefers-reduced-motion: reduce) {
+  .rk-explode-assembly > :is(.rk-explode-part, .rk-explode-label) {
+    --move-x: 0px;
+    --move-y: 0px;
+  }
+
+  .rk-explode-stage:has(.rk-explode-assembly:is(:hover, :focus))
+    .rk-explode-assembly:not(:hover, :focus) {
+    opacity: 0.35;
+  }
+}
+
+/* Forced colours drop the fills and shadows, so the open assembly's parts are outlined in
+   Highlight. */
+@media (forced-colors: active) {
+  .rk-explode-assembly:is(:hover, :focus) > .rk-explode-part {
+    border-color: Highlight;
+  }
+
+  .rk-explode-part--glint::after {
+    display: none;
+  }
+}
