@@ -45,15 +45,9 @@ const ALL_HUES = TERM_HUES.map((hue, i) => `\\${hue}{x_${i + 1}}`).join(' + ')
 </SpecimenRow>
 
 <SpecimenRow title={String.raw`Colour-coded terms (\htmlClass{rk-maths-…}, or macros such as \teal{…})`}>
-  <Specimen label="A: coloured text (the hues' text variants)" wide>
+  <Specimen label="the hue's tint behind the term" wide>
     <Equation tex={ENERGY} />
     <p>Every hue: <Maths tex={ALL_HUES} /></p>
-  </Specimen>
-  <Specimen label="B: tinted background (.rk-maths-tint)" wide>
-    <div class="rk-maths-tint">
-      <Equation tex={ENERGY} />
-      <p>Every hue: <Maths tex={ALL_HUES} /></p>
-    </div>
   </Specimen>
 </SpecimenRow>
 

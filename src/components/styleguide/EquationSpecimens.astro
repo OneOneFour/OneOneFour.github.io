@@ -1,7 +1,7 @@
 ---
 /**
- * Display equations: the wrapper options, equation numbers, short and long references and the
- * jump target, an aligned system, a long equation that scrolls, and key results.
+ * Display equations: the wrappers, equation numbers, short and long references and the
+ * jump target, an aligned system, a long equation that scrolls, and a key result.
  *
  * @param theme the panel's theme, used to keep anchors unique across the two panels
  */
@@ -33,9 +33,9 @@ const MOMENTUM = String.raw`\frac{\partial u}{\partial t} + u \frac{\partial u}{
 const LYAPUNOV = String.raw`\lambda = \lim_{t \to \infty} \frac{1}{t} \ln \frac{\lVert \delta \mathbf{x}(t) \rVert}{\lVert \delta \mathbf{x}(0) \rVert}`
 
 const WRAPPERS = [
-  { label: 'A: bare (default)', class: undefined },
-  { label: 'B: slate panel (.rk-equation--panel)', class: 'rk-equation--panel' },
-  { label: 'C: left rule (.rk-equation--rule.rk-scroll--bar)', class: 'rk-equation--rule rk-scroll--bar' },
+  { label: 'bare (the default)', class: undefined },
+  { label: 'slate panel (.rk-equation--panel)', class: 'rk-equation--panel' },
+  { label: 'left rule (.rk-equation--rule.rk-scroll--bar)', class: 'rk-equation--rule rk-scroll--bar' },
 ]
 const flow = anchor('flow')
 const lorenz = anchor('lorenz')
@@ -52,10 +52,10 @@ const lorenz = anchor('lorenz')
 </SpecimenRow>
 
 <SpecimenRow title="Equation numbers">
-  <Specimen label="one number per row (align)" wide>
+  <Specimen label="one number per row (align, a \tag on each row)" wide>
     <Equation tex={`\\begin{align*}${LORENZ_ROWS}\\end{align*}`} />
   </Specimen>
-  <Specimen label="one number for the whole system (aligned)" wide>
+  <Specimen label="one number for the whole system (aligned, in one tagged display)" wide>
     <Equation tex={LORENZ_SYSTEM} />
   </Specimen>
 </SpecimenRow>
@@ -99,11 +99,8 @@ const lorenz = anchor('lorenz')
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title="Key results">
-  <Specimen label={String.raw`A: \boxed{…}`} wide>
-    <Equation tex={`\\boxed{${LYAPUNOV}} \\tag{6}`} />
-  </Specimen>
-  <Specimen label="B: raised dashed panel (.rk-equation--key.rk-scroll--bar)" wide>
+<SpecimenRow title="Key result">
+  <Specimen label="raised dashed panel (.rk-equation--key.rk-scroll--bar)" wide>
     <Equation tex={`${LYAPUNOV} \\tag{6}`} class="rk-equation--key rk-scroll--bar" />
   </Specimen>
 </SpecimenRow>

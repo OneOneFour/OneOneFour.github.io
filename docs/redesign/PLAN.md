@@ -356,7 +356,14 @@ Supporting decisions *(proposed)*:
     KaTeX's `trust` option allows `\href` for `#` links only.
   - Decided at Gate 1b (Rob): equation numbers and bare references are lilac pills; a long pill
     (the `function` icon and "Equation n") for references that lead a sentence.
-  - Implementation must also handle several `\label`s in one `align` block (one per row).
+  - *DECIDED 2026-11-02 (Rob): both numbering styles are supported*, so the plugin handles both:
+    a `\label` on each row of an `align` numbers each row, and a single `\label` in a display
+    holding an `aligned` or `gathered` block numbers the whole block once.
+  - *DECIDED 2026-11-02 (Rob), equation styles:* the display wrappers, bare (the default),
+    `.rk-equation--panel` and `.rk-equation--rule`, are all supported modifiers. A key result
+    takes the raised dashed panel, `.rk-equation--key`; the `\boxed{}` specimen was removed, but
+    `\boxed` still gets the thicker toon border. Colour-coded terms (`rk-maths-<hue>`) always put
+    the hue's tint behind `--fg` text; the coloured-text option and `.rk-maths-tint` were removed.
   - Scrolling uses CSS `scroll-behavior: smooth`, off under reduced motion. The target equation
     gets a brief `:target` highlight from the tokens.
 - **Monospace** (code, widget readouts): **JetBrains Mono** (OFL), with its ligatures on
