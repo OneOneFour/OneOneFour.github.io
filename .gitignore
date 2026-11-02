@@ -16,3 +16,7 @@ npm-debug.log*
 
 # macOS
 .DS_Store
+
+# Claude Code: per-user settings and agent worktrees
+.claude/settings.local.json*
+.claude/worktrees/

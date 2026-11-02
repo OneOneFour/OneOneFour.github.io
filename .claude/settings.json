@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "deny": ["Bash(git push*)"],
+    "ask": ["Bash(npm install*)"]
+  },
+  "worktree": {
+    "baseRef": "head"
+  }
+}
