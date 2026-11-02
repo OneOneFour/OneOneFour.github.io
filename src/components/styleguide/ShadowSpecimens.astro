@@ -152,7 +152,7 @@ const CURRENT = 2
                 <ol class="rk-folder-tabs">
                   {PAGES.map((page) => (
                     <li>
-                      <a class="rk-folder-tab" href="#" aria-current={page === CURRENT ? 'page' : undefined}>
+                      <a class="rk-folder-tab" href="#specimen-link" aria-current={page === CURRENT ? 'page' : undefined}>
                         {page}
                       </a>
                     </li>
@@ -166,20 +166,20 @@ const CURRENT = 2
           </Specimen>
           <Specimen label="pagination as tiles and buttons">
             <nav class="rk-pagination" aria-label="Pagination">
-              <a class="rk-button rk-button--small" href="#" rel="prev">
+              <a class="rk-button rk-button--small" href="#specimen-link" rel="prev">
                 <CaretLeftIcon class="rk-icon rk-icon--small" />
                 Previous
               </a>
               <ol class="rk-tiles rk-tiles--compact">
                 {PAGES.map((page) => (
                   <li>
-                    <a class="rk-tile" href="#" aria-current={page === CURRENT ? 'page' : undefined}>
+                    <a class="rk-tile" href="#specimen-link" aria-current={page === CURRENT ? 'page' : undefined}>
                       {page}
                     </a>
                   </li>
                 ))}
               </ol>
-              <a class="rk-button rk-button--small" href="#" rel="next">
+              <a class="rk-button rk-button--small" href="#specimen-link" rel="next">
                 Next
                 <CaretRightIcon class="rk-icon rk-icon--small" />
               </a>

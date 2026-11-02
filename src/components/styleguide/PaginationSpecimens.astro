@@ -22,7 +22,7 @@ const STATES = [
       <nav aria-label="Pagination">
         <ol class="rk-folder-tabs">
           <li>
-            <a class="rk-folder-tab" href="#" rel="prev">
+            <a class="rk-folder-tab" href="#specimen-link" rel="prev">
               <CaretLeftIcon class="rk-icon rk-icon--small" />
               <span class="rk-visually-hidden">Previous page</span>
             </a>
@@ -32,14 +32,14 @@ const STATES = [
               {page === null ? (
                 '…'
               ) : (
-                <a class="rk-folder-tab" href="#" aria-current={page === CURRENT ? 'page' : undefined}>
+                <a class="rk-folder-tab" href="#specimen-link" aria-current={page === CURRENT ? 'page' : undefined}>
                   {page}
                 </a>
               )}
             </li>
           ))}
           <li>
-            <a class="rk-folder-tab" href="#" rel="next">
+            <a class="rk-folder-tab" href="#specimen-link" rel="next">
               <CaretRightIcon class="rk-icon rk-icon--small" />
               <span class="rk-visually-hidden">Next page</span>
             </a>
@@ -58,7 +58,7 @@ const STATES = [
     STATES.map((state) => (
       <Specimen label={state.label}>
         <nav class="rk-pagination" aria-label="Pagination">
-          <a class="rk-button rk-button--small" href="#" rel="prev">
+          <a class="rk-button rk-button--small" href="#specimen-link" rel="prev">
             <CaretLeftIcon class="rk-icon rk-icon--small" />
             Previous
           </a>
@@ -70,7 +70,7 @@ const STATES = [
                 ) : (
                   <a
                     class:list={['rk-tile', page === 3 && state.class]}
-                    href="#"
+                    href="#specimen-link"
                     aria-current={page === CURRENT ? 'page' : undefined}
                   >
                     {page}
@@ -79,7 +79,7 @@ const STATES = [
               </li>
             ))}
           </ol>
-          <a class="rk-button rk-button--small" href="#" rel="next">
+          <a class="rk-button rk-button--small" href="#specimen-link" rel="next">
             Next
             <CaretRightIcon class="rk-icon rk-icon--small" />
           </a>

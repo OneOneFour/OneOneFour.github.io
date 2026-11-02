@@ -24,7 +24,7 @@ const STYLES = [
           <ol>
             {TRAIL.map((name, i) => (
               <li>
-                <a class={style.link} href="#" aria-current={i === TRAIL.length - 1 ? 'page' : undefined}>
+                <a class={style.link} href="#specimen-link" aria-current={i === TRAIL.length - 1 ? 'page' : undefined}>
                   {name}
                 </a>
               </li>
@@ -36,9 +36,9 @@ const STYLES = [
         <Specimen label={`Section ${state.label}`}>
           <nav class:list={['rk-breadcrumbs', style.nav]} aria-label="Breadcrumb">
             <ol>
-              <li><a class={style.link} href="#">Home</a></li>
-              <li><a class:list={[style.link, state.class]} href="#">Section</a></li>
-              <li><a class={style.link} href="#" aria-current="page">Page</a></li>
+              <li><a class={style.link} href="#specimen-link">Home</a></li>
+              <li><a class:list={[style.link, state.class]} href="#specimen-link">Section</a></li>
+              <li><a class={style.link} href="#specimen-link" aria-current="page">Page</a></li>
             </ol>
           </nav>
         </Specimen>
