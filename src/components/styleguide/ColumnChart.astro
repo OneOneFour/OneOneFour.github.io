@@ -4,7 +4,6 @@
  *
  * @param data the columns, left to right
  * @param label the chart's accessible name
- * @param toon the toon option: ink outlines and hard shadows on the columns
  */
 import ChartAxes from './ChartAxes.astro'
 import { columnPath, linear, niceTicks } from './chart-scale'
@@ -12,10 +11,9 @@ import { columnPath, linear, niceTicks } from './chart-scale'
 interface Props {
   data: { label: string; value: number }[]
   label: string
-  toon?: boolean
 }
 
-const { data, label, toon = false } = Astro.props
+const { data, label } = Astro.props
 const width = 480
 const height = 280
 const plot = { left: 40, top: 24, right: width - 12, bottom: height - 32 }
@@ -31,7 +29,7 @@ const xTicks = columns.map((c) => ({ at: c.centre, label: c.label }))
 ---
 
 <svg
-  class:list={['rk-chart', { 'rk-chart--toon': toon }]}
+  class="rk-chart"
   width={width}
   height={height}
   viewBox={`0 0 ${width} ${height}`}

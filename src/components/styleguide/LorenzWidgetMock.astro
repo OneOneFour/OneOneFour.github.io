@@ -42,7 +42,7 @@ const sliderId = `${theme}-lorenz-offset`
 ---
 
 <WidgetFrame title="Widget title">
-  <svg class="rk-chart rk-chart--toon" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Two trajectories">
+  <svg class="rk-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Two trajectories">
     <defs>
       {trails.map((trail) => <path id={trail.id} d={trail.d} />)}
     </defs>

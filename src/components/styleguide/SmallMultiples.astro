@@ -5,7 +5,6 @@
  *
  * @param x the x value of every point, shared by all series
  * @param series the series, one panel each, coloured in series order
- * @param toon the toon option: ink edges on the coloured lines
  */
 import ChartAxes from './ChartAxes.astro'
 import { linear, linePath, niceTicks } from './chart-scale'
@@ -14,10 +13,9 @@ import type { Series } from './chart-data'
 interface Props {
   x: number[]
   series: Series[]
-  toon?: boolean
 }
 
-const { x: xs, series, toon = false } = Astro.props
+const { x: xs, series } = Astro.props
 const width = 240
 const height = 140
 const plot = { left: 32, top: 8, right: width - 20, bottom: height - 28 }
@@ -35,7 +33,7 @@ const paths = series.map((s) => linePath(s.values.map((v, i) => [x(xs[i]), y(v)]
       <div>
         <p class="rk-chart-title">{s.name}</p>
         <svg
-          class:list={['rk-chart', { 'rk-chart--toon': toon }]}
+          class="rk-chart"
           width={width}
           height={height}
           viewBox={`0 0 ${width} ${height}`}

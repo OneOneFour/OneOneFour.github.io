@@ -4,7 +4,6 @@
  *
  * @param clusters the groups of points, coloured in series order
  * @param label the chart's accessible name
- * @param toon the toon option: ink outlines on the dots
  */
 import ChartAxes from './ChartAxes.astro'
 import { formatTick, linear, niceTicks } from './chart-scale'
@@ -13,10 +12,9 @@ import type { Cluster } from './chart-data'
 interface Props {
   clusters: Cluster[]
   label: string
-  toon?: boolean
 }
 
-const { clusters, label, toon = false } = Astro.props
+const { clusters, label } = Astro.props
 const width = 480
 const height = 320
 const plot = { left: 40, top: 28, right: width - 12, bottom: height - 32 }
@@ -34,7 +32,7 @@ const groups = clusters.map((c) => ({
 ---
 
 <svg
-  class:list={['rk-chart', { 'rk-chart--toon': toon }]}
+  class="rk-chart"
   width={width}
   height={height}
   viewBox={`0 0 ${width} ${height}`}

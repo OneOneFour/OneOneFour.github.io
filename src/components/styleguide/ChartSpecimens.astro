@@ -1,7 +1,7 @@
 ---
 /**
- * SVG charts, each shown flat (A) and with the toon option (B): lines, columns and a scatter
- * plot, then heatmaps in options A to C on each scale, small multiples and sparklines.
+ * SVG charts in the toon look: lines, columns and a scatter plot, then heatmaps in options A and
+ * B on each scale, small multiples and sparklines.
  */
 import ColumnChart from './ColumnChart.astro'
 import Heatmap from './Heatmap.astro'
@@ -24,10 +24,6 @@ import {
 } from './chart-data'
 import './chart.css'
 
-const OPTIONS = [
-  { label: 'A: flat', toon: false },
-  { label: 'B: toon (.rk-chart--toon)', toon: true },
-]
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const anomalyColumns = ANOMALY_YEARS.map((year, index) => ({ index, label: String(year) })).filter(
@@ -36,10 +32,9 @@ const anomalyColumns = ANOMALY_YEARS.map((year, index) => ({ index, label: Strin
 const hours = Array.from({ length: 24 }, (_, hour) => `${String(hour).padStart(2, '0')}:00`)
 const hourColumns = [0, 6, 12, 18].map((index) => ({ index, label: hours[index] }))
 const HEATMAP_OPTIONS = [
-  { label: 'A: flat', option: 'flat' },
-  { label: 'B: toon (.rk-chart--toon)', option: 'toon' },
-  { label: 'C: tiles (.rk-chart--tiles)', option: 'tiles' },
-] as const
+  { label: 'A: side by side, with ink gutters', tiles: false },
+  { label: 'B: tiles (.rk-chart--tiles)', tiles: true },
+]
 
 const anomalies = {
   rows: ANOMALIES,
@@ -74,43 +69,28 @@ const SCALES = [
 ---
 
 <SpecimenRow title="Lines: direct labels, with or without a legend">
-  {
-    OPTIONS.map((option) => (
-      <Specimen label={`${option.label}, legend`} wide>
-        <LineChart x={YEARS} series={TIME_SERIES} label="Four synthetic series" toon={option.toon} legend />
-      </Specimen>
-    ))
-  }
+  <Specimen label="with a legend" wide>
+    <LineChart x={YEARS} series={TIME_SERIES} label="Four synthetic series" legend />
+  </Specimen>
   <Specimen label="direct labels only" wide>
     <LineChart x={YEARS} series={TIME_SERIES} label="Four synthetic series" />
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title="Columns">
-  {
-    OPTIONS.map((option) => (
-      <Specimen label={option.label} wide>
-        <ColumnChart data={COLUMNS} label="Synthetic monthly values" toon={option.toon} />
-      </Specimen>
-    ))
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Scatter">
-  {
-    OPTIONS.map((option) => (
-      <Specimen label={option.label} wide>
-        <ScatterPlot clusters={CLUSTERS} label="Three synthetic clusters" toon={option.toon} />
-      </Specimen>
-    ))
-  }
+<SpecimenRow title="Columns and scatter">
+  <Specimen label="columns" wide>
+    <ColumnChart data={COLUMNS} label="Synthetic monthly values" />
+  </Specimen>
+  <Specimen label="scatter" wide>
+    <ScatterPlot clusters={CLUSTERS} label="Three synthetic clusters" />
+  </Specimen>
 </SpecimenRow>
 
 <SpecimenRow title="Heatmaps: diverging. Hover or focus a cell; the arrow keys move, Escape hides the value">
   {
     HEATMAP_OPTIONS.map((option) => (
       <Specimen label={option.label} wide>
-        <Heatmap {...anomalies} option={option.option} />
+        <Heatmap {...anomalies} tiles={option.tiles} />
       </Specimen>
     ))
   }
@@ -121,7 +101,7 @@ const SCALES = [
     <SpecimenRow title={`Heatmaps: ${scale.name}`}>
       {HEATMAP_OPTIONS.map((option) => (
         <Specimen label={option.label} wide>
-          <Heatmap {...week} colour={scale.colour} scale={scale.scale} option={option.option} />
+          <Heatmap {...week} colour={scale.colour} scale={scale.scale} tiles={option.tiles} />
         </Specimen>
       ))}
     </SpecimenRow>
@@ -129,13 +109,9 @@ const SCALES = [
 }
 
 <SpecimenRow title="Small multiples: one series each, on a shared scale">
-  {
-    OPTIONS.map((option) => (
-      <Specimen label={option.label} wide>
-        <SmallMultiples x={YEARS} series={TIME_SERIES} toon={option.toon} />
-      </Specimen>
-    ))
-  }
+  <Specimen label="small multiples" wide>
+    <SmallMultiples x={YEARS} series={TIME_SERIES} />
+  </Specimen>
 </SpecimenRow>
 
 <SpecimenRow title="Sparklines">

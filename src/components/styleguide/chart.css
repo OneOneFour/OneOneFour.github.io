@@ -10,31 +10,29 @@
      <line class="rk-chart-axis" … />           baseline
      <text class="rk-chart-tick" …>10</text>    tick label
      <g class="rk-chart-series-1">
-       <path class="rk-chart-casing" d="…" />  ink edge under a line, shown by the toon option
+       <path class="rk-chart-casing" d="…" />  ink edge under a line
        <path class="rk-chart-line" d="…" />
        <circle class="rk-chart-dot" … />
      </g>
-     <path class="rk-chart-shadow rk-chart-series-1" d="…" />  hard shadow, shown by the toon option
+     <path class="rk-chart-shadow rk-chart-series-1" d="…" />  hard shadow, under the bar
      <path class="rk-chart-bar rk-chart-series-1" d="…" />
      <rect class="rk-chart-cell" style="fill: var(--seq-3)" … />
      <text class="rk-chart-label" …>Series A</text>  direct label, in text colours
    </svg>
 
-   Opt-in modifier: .rk-chart--toon gives marks the ink outline and bars the hard shadow.
-   Heatmaps have three options, labelled for Gate 1b:
-   A, the default: flat cells, split by gaps in the background colour;
-   B, .rk-chart--toon: ink gutters between the cells, with a .rk-chart-shadow rect under the grid;
-   C, .rk-chart--tiles: rounded tiles (rx in the markup) with gaps between them, each outlined
-   and on a short hard shadow. Put the cells in a <g class="rk-chart-cells">.
-   Set --chart-bg on a chart or any ancestor that changes the colour behind it; the gaps and rings
-   between marks use it.
+   Marks are toon: ink outlines, and hard shadows under bars. Heatmaps have two options, labelled
+   for Gate 1b, with the cells in a <g class="rk-chart-cells">:
+   A, the default: cells side by side with ink gutters, on a .rk-chart-shadow rect under the grid;
+   B, .rk-chart--tiles: rounded tiles (rx in the markup) with gaps between them, each outlined
+   and on a short hard shadow.
+   Set --chart-bg on a chart or any ancestor that changes the colour behind it; the halos round
+   direct labels use it.
 
    Around the SVG, in HTML:
    - a legend: <ul class="rk-chart-legend"><li class="rk-chart-series-1">Series A</li>…</ul>
    - a stepped scale's legend: <p class="rk-chart-scale"><span>−1</span>
      <span class="rk-chart-scale-steps"><span style="background: var(--div-cold-3)"></span>…</span>
      <span>+1</span></p>
-   - a stepped scale's legend for options B and C adds .rk-chart-scale--toon;
    - a heatmap that pops the hovered or focused cell and shows its value: <rk-heatmap> (heatmap.js),
      with role="grid" on the SVG, its cells as role="gridcell" in role="row" groups, each with
      data-value and data-name, and after the cells:
@@ -124,7 +122,7 @@
 .rk-chart-line {
   fill: none;
   stroke: var(--series);
-  stroke-width: 2;
+  stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -134,25 +132,8 @@
   fill: var(--series);
 }
 
-/* A ring in the background colour keeps overlapping dots apart. */
-.rk-chart-dot {
-  stroke: var(--chart-bg, var(--surface));
-  stroke-width: 2;
-}
-
-.rk-chart-cell {
-  stroke: var(--chart-bg, var(--surface));
-  stroke-width: 1;
-}
-
-.rk-chart-casing,
-.rk-chart-shadow {
-  display: none;
-}
-
-/* Toon: an ink edge on every mark, and the hard shadow under bars. */
-.rk-chart--toon .rk-chart-casing {
-  display: inline;
+/* The toon look: an ink edge on every mark, and the hard shadow under bars and heatmaps. */
+.rk-chart-casing {
   fill: none;
   stroke: var(--line);
   stroke-width: 6;
@@ -160,18 +141,18 @@
   stroke-linejoin: round;
 }
 
-.rk-chart--toon .rk-chart-line {
-  stroke-width: 3;
+.rk-chart-line.rk-chart-series-context {
+  stroke-width: 1.5;
 }
 
-.rk-chart--toon :is(.rk-chart-bar, .rk-chart-dot) {
+.rk-chart-bar,
+.rk-chart-dot {
   stroke: var(--line);
   stroke-width: var(--outline-width);
 }
 
 /* As in --shadow, the shadow has a light edge in dark mode: the outer half of its stroke. */
-.rk-chart--toon .rk-chart-shadow {
-  display: inline;
+.rk-chart-shadow {
   fill: var(--shadow-color);
   stroke: var(--shadow-edge);
   stroke-width: calc(2 * var(--outline-width));
@@ -179,14 +160,14 @@
   translate: var(--shadow-offset-x) var(--shadow-offset-y);
 }
 
-/* Toon heatmap cells (B) and tiles (C): the ink outline. In B the outlines of neighbouring cells
+/* Heatmap cells have the ink outline. Side by side (A), the outlines of neighbouring cells
    overlap into gutters as wide as one outline. */
-:is(.rk-chart--toon, .rk-chart--tiles) .rk-chart-cell {
+.rk-chart-cell {
   stroke: var(--line);
   stroke-width: var(--outline-width);
 }
 
-/* One filter for all the tiles, rather than one per tile. As in tooltip.css, the second
+/* Tiles (B): one filter for all of them, rather than one per tile. As in tooltip.css, the second
    drop-shadow is the shadow's light edge in dark mode. */
 .rk-chart--tiles .rk-chart-cells {
   filter: drop-shadow(calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color))
@@ -194,11 +175,6 @@
       calc(var(--shadow-dx) * var(--outline-width)) calc(var(--shadow-dy) * var(--outline-width)) 0
         var(--shadow-edge)
     );
-}
-
-/* After the toon rules: background lines stay thin in both options. */
-.rk-chart-line.rk-chart-series-context {
-  stroke-width: 1.5;
 }
 
 .rk-chart-title {
@@ -227,7 +203,6 @@
 
 .rk-chart-scale-steps {
   display: flex;
-  gap: 1px;
 }
 
 .rk-chart-scale-steps > span {
@@ -235,8 +210,8 @@
   block-size: 0.75rem;
 }
 
-/* The legend of toon heatmaps: the steps joined by ink gutters, in an ink frame. */
-.rk-chart-scale--toon .rk-chart-scale-steps {
+/* The steps joined by ink gutters, in an ink frame, like the cells. */
+.rk-chart-scale-steps {
   gap: var(--outline-width);
   border: var(--outline-width) solid var(--line);
   border-radius: calc(var(--radius) / 2);

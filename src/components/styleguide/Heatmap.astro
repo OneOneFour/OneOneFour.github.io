@@ -11,7 +11,7 @@
  * @param format writes a value for the tooltip
  * @param scale the legend: each step's colour, and the labels at its two ends
  * @param label the chart's accessible name
- * @param option A 'flat' (the default), B 'toon' (ink gutters and the hard shadow) or C 'tiles'
+ * @param tiles option B: separate rounded tiles, rather than cells side by side (A)
  */
 interface Props {
   rows: number[][]
@@ -22,11 +22,10 @@ interface Props {
   format: (value: number) => string
   scale: { steps: string[]; from: string; to: string }
   label: string
-  option?: 'flat' | 'toon' | 'tiles'
+  tiles?: boolean
 }
 
-const { rows, rowLabels, columnNames, columnLabels, colour, format, scale, label, option = 'flat' } = Astro.props
-const tiles = option === 'tiles'
+const { rows, rowLabels, columnNames, columnLabels, colour, format, scale, label, tiles = false } = Astro.props
 const width = 640
 const cellHeight = tiles ? 22 : 16
 const tileGap = tiles ? 3 : 0
@@ -38,7 +37,7 @@ const height = plot.top + gridHeight + 28
 
 <rk-heatmap class="rk-heatmap">
   <svg
-    class:list={['rk-chart', { 'rk-chart--toon': option === 'toon', 'rk-chart--tiles': tiles }]}
+    class:list={['rk-chart', { 'rk-chart--tiles': tiles }]}
     width={width}
     height={height}
     viewBox={`0 0 ${width} ${height}`}
@@ -73,7 +72,7 @@ const height = plot.top + gridHeight + 28
       }
     </g>
     {
-      option === 'toon' && (
+      !tiles && (
         <rect class="rk-chart-shadow" x={plot.left} y={plot.top} width={plot.right - plot.left} height={gridHeight} />
       )
     }
@@ -108,7 +107,7 @@ const height = plot.top + gridHeight + 28
   <span class="rk-tooltip rk-tooltip--toon rk-heatmap-tip" aria-hidden="true">
     <span class="rk-tooltip-bubble"><strong class="rk-heatmap-value"></strong> <span class="rk-heatmap-name"></span></span>
   </span>
-  <p class:list={['rk-chart-scale', { 'rk-chart-scale--toon': option !== 'flat' }]}>
+  <p class="rk-chart-scale">
     <span>{scale.from}</span>
     <span class="rk-chart-scale-steps">{scale.steps.map((step) => <span style={`background: ${step}`} />)}</span>
     <span>{scale.to}</span>

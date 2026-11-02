@@ -5,7 +5,6 @@
  * @param x the x value of every point, shared by all series
  * @param series the lines, coloured in series order
  * @param label the chart's accessible name
- * @param toon the toon option: ink edges on the lines
  * @param legend a legend above the chart as well as the direct labels
  */
 import ChartAxes from './ChartAxes.astro'
@@ -16,11 +15,10 @@ interface Props {
   x: number[]
   series: Series[]
   label: string
-  toon?: boolean
   legend?: boolean
 }
 
-const { x: xs, series, label, toon = false, legend = false } = Astro.props
+const { x: xs, series, label, legend = false } = Astro.props
 const width = 640
 const height = 320
 const plot = { left: 40, top: 12, right: width - 88, bottom: height - 32 }
@@ -46,7 +44,7 @@ const lines = series.map((s) => {
     )
   }
   <svg
-    class:list={['rk-chart', { 'rk-chart--toon': toon }]}
+    class="rk-chart"
     width={width}
     height={height}
     viewBox={`0 0 ${width} ${height}`}
