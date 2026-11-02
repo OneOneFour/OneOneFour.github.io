@@ -81,9 +81,6 @@
   box-shadow: none;
 }
 
-.rk-segmented--deck:not(.rk-segmented--plate).is-focus {
-  outline-offset: var(--shadow-offset);
-}
 
 a.is-hover {
   text-decoration-thickness: var(--outline-width);

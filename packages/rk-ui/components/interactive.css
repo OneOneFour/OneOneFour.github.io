@@ -64,10 +64,6 @@
   box-shadow: none;
 }
 
-/* A deck with no plate has no frame, so the band stands clear of the raised keys' shadows. */
-.rk-segmented--deck:not(.rk-segmented--plate):has(:focus-visible) {
-  outline-offset: var(--shadow-offset);
-}
 
 /* Disabled: dimmed and flat, with no pop. */
 :is(.rk-button, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select, .rk-range):disabled,

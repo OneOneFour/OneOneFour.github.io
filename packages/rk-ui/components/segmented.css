@@ -105,13 +105,20 @@
    is pushed in flush with the page (interactive.css), driving past that depth before it settles;
    the key it replaces springs back up. */
 
+/* Every deck has a plate's frame, centred on where a pushed-in key sits (one shadow offset down
+   and right of a raised key). It's invisible unless .rk-segmented--plate shows it, so the focus
+   band always hugs a rounded frame. */
 .rk-segmented--deck {
   --key-overshoot: 2px;
+  --plate-padding: var(--space-2);
 
   gap: var(--space-2);
-  padding: 0;
-  border: none;
-  border-radius: 0;
+  padding: calc(var(--plate-padding) - var(--shadow-offset))
+    calc(var(--plate-padding) + var(--shadow-offset))
+    calc(var(--plate-padding) + var(--shadow-offset))
+    calc(var(--plate-padding) - var(--shadow-offset));
+  border: var(--outline-width) solid transparent;
+  border-radius: var(--radius);
   background: none;
 }
 
@@ -148,18 +155,9 @@
   }
 }
 
-/* Add .rk-segmented--plate to a deck to mount its keys on a flat outlined plate. The plate is
-   centred on where a pushed-in key sits, one shadow offset down and right of a raised key. */
-
+/* Add .rk-segmented--plate to a deck to show its frame as a flat outlined plate. */
 .rk-segmented--plate {
-  --plate-padding: var(--space-2);
-
-  padding: calc(var(--plate-padding) - var(--shadow-offset))
-    calc(var(--plate-padding) + var(--shadow-offset))
-    calc(var(--plate-padding) + var(--shadow-offset))
-    calc(var(--plate-padding) - var(--shadow-offset));
-  border: var(--outline-width) solid var(--line-unfilled);
-  border-radius: var(--radius);
+  border-color: var(--line-unfilled);
 }
 
 /* Forced colours drop the checked fill, so the checked option uses system colours. Without
