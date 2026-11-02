@@ -29,26 +29,38 @@ textarea.rk-input {
   background-color: var(--coral-tint);
 }
 
-/* Hover options for Gate 1b. Wrap inputs and selects in .rk-hover-b, -c or -d to try one; with
-   no wrapper they have no hover cue (hover A). All stay flat. */
+/* Hover cue. By default the background sinks to the page colour. Put .rk-hover-none,
+   .rk-hover-ring or .rk-hover-underline on a field or any ancestor (a form, the page) to swap
+   it. All of them stay flat. */
 
-/* Hover B: the background sinks to the page colour. */
-@media (hover: hover) {
-  .rk-hover-b :is(.rk-input, .rk-select):enabled:not([aria-invalid='true']):hover {
-    background-color: var(--surface);
-  }
+:root {
+  --input-hover-background: var(--surface);
+  --input-hover-shadow: none;
 }
 
-/* Hover C: a 1px inner ring makes the border look thicker, without moving anything. */
-@media (hover: hover) {
-  .rk-hover-c :is(.rk-input, .rk-select):enabled:hover {
-    box-shadow: inset 0 0 0 1px var(--line-unfilled);
-  }
+.rk-hover-none {
+  --input-hover-background: var(--raised);
 }
 
-/* Hover D: a teal underline inside the bottom border. */
+/* A 1px inner ring makes the border look thicker, without moving anything. */
+.rk-hover-ring {
+  --input-hover-background: var(--raised);
+  --input-hover-shadow: inset 0 0 0 1px var(--line-unfilled);
+}
+
+/* A teal underline inside the bottom border. */
+.rk-hover-underline {
+  --input-hover-background: var(--raised);
+  --input-hover-shadow: inset 0 calc(-1 * var(--outline-width)) 0 var(--teal-deep);
+}
+
 @media (hover: hover) {
-  .rk-hover-d :is(.rk-input, .rk-select):enabled:hover {
-    box-shadow: inset 0 calc(-1 * var(--outline-width)) 0 var(--teal-deep);
+  :is(.rk-input, .rk-select):enabled:hover {
+    box-shadow: var(--input-hover-shadow);
+  }
+
+  /* Fields in error keep their coral fill. */
+  :is(.rk-input, .rk-select):enabled:not([aria-invalid='true']):hover {
+    background-color: var(--input-hover-background);
   }
 }

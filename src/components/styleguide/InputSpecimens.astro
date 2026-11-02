@@ -1,6 +1,6 @@
 ---
 /**
- * Text input, textarea and select, each in every state, and the hover options for Gate 1b.
+ * Text input, textarea and select, each in every state, and the hover cue options.
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
@@ -17,10 +17,10 @@ const STATES = [
   { label: 'focused', class: 'is-focus' },
 ]
 const HOVER_OPTIONS = [
-  { label: 'hover A: none', class: '' },
-  { label: 'hover B: background sinks', class: 'rk-hover-b' },
-  { label: 'hover C: thicker border', class: 'rk-hover-c' },
-  { label: 'hover D: teal underline', class: 'rk-hover-d' },
+  { label: 'default: background sinks', class: '' },
+  { label: '.rk-hover-ring', class: 'rk-hover-ring' },
+  { label: '.rk-hover-underline', class: 'rk-hover-underline' },
+  { label: '.rk-hover-none', class: 'rk-hover-none' },
 ]
 const HOVER_MODES = [
   { label: 'live, hover each', class: '' },
