@@ -327,7 +327,8 @@ outside `tokens.css`, `chart-tokens.css` and `illustration-tokens.css` was liste
   ORCID mark keeps its brand green and white.
 - **Near-duplicates for Rob to decide:** `--illustration-red-shade` (80% towards `--ink`) could be
   `--shade` of red; `--wave-line` (60% towards `--line`) is a deeper `--shade`;
-  `--shadow-code-inset` (20% `--line`) is nearly `--stripe` (25%).
+  `--shadow-code-inset` (20% `--line`) is nearly `--stripe` (25%). *Rob, 2026-11-02:* the first
+  two stay as they are; the code inset now uses `--stripe`, a slightly darker sunken edge.
 - **Checks that failed, and their outcome (2026-11-02):**
   - a busy `--section` button's cream label on its empty part (2.9:1): *fixed*, the empty part
     keeps 70% of the fill (`--water-empty-fill`), 6.0–6.2:1;

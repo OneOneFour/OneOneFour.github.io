@@ -226,8 +226,7 @@
       var(--shadow-edge);
   --shadow-inset: inset calc(var(--shadow-dx) * var(--shadow-offset-pressed))
     calc(var(--shadow-dy) * var(--shadow-offset-pressed)) 0 var(--line);
-  --shadow-code-inset: inset var(--shadow-offset-x) var(--shadow-offset-y) 0
-    color-mix(in srgb, var(--line) 20%, transparent);
+  --shadow-code-inset: inset var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--stripe);
 }
 
 /* The shadow colours, the outlined slab. The edge is a light rim in dark mode, so the near-black
