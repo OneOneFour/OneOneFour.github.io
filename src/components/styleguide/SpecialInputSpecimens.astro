@@ -49,10 +49,12 @@ const NUMBER_STATES = [
   { label: 'error', input: '', buttons: '', invalid: true },
 ]
 const SWATCH_GROUPS = [
-  { label: 'rest (teal checked)' },
-  { label: 'hover on navy, pressed coral', states: { navy: 'is-hover', coral: 'is-active' } },
-  { label: 'focused teal', states: { teal: 'is-focus' } },
-  { label: 'disabled', disabled: true },
+  { label: 'rest (teal checked; the last tile opens the browser picker)', custom: true },
+  { label: 'hover on navy, pressed coral', custom: true, states: { navy: 'is-hover', coral: 'is-active' } },
+  { label: 'custom colour tile focused', custom: true, states: { custom: 'is-focus' } },
+  { label: 'custom colour checked', custom: true, checked: 'custom' },
+  { label: 'disabled', custom: true, disabled: true },
+  { label: 'palette only, with no custom colour tile', custom: false },
 ]
 const FLAIRS = [
   { label: 'flair A: paint brush', class: 'rk-tiles--brush' },
@@ -254,7 +256,13 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   {
     SWATCH_GROUPS.map((group, index) => (
       <Specimen label={group.label}>
-        <SwatchPicker name={`${theme}-swatch-${index}`} states={group.states} disabled={group.disabled} />
+        <SwatchPicker
+          name={`${theme}-swatch-${index}`}
+          custom={group.custom}
+          checked={group.checked}
+          states={group.states}
+          disabled={group.disabled}
+        />
       </Specimen>
     ))
   }
@@ -267,6 +275,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
         <SwatchPicker
           name={`${theme}-flair-${index}`}
           flair={flair.class}
+          custom
           paletteLegend={flair.paletteLegend}
           states={{ navy: 'is-hover' }}
         />

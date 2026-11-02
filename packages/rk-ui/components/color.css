@@ -11,14 +11,81 @@
      …
    </fieldset>
 
+   To allow any colour as well, end the group with a custom colour tile: a radio, a native colour
+   input and a paint brush icon. Wrap the group in <rk-colour-picker> (colour-picker.js) so that
+   picking a colour also checks the tile's radio. Without the script, the radio is checked only
+   from the keyboard or by clicking the tile's outline.
+   <rk-colour-picker>
+     <fieldset class="rk-tiles">
+       …
+       <label class="rk-tile rk-tile--custom-colour">
+         <input type="radio" name="colour" value="custom" aria-label="Custom colour">
+         <input type="color" aria-label="Choose custom colour">
+         <svg aria-hidden="true">…paint-brush…</svg>
+       </label>
+     </fieldset>
+   </rk-colour-picker>
+
    Without a palette: the native colour input on its own, as a swatch button that pops.
    <input class="rk-input" type="color" aria-label="Colour"> */
 
 /* Colour tiles are filled, so they take the dark outline in both themes. They keep their colours
    in forced colours, since the colour is the content. */
-.rk-tile--colour {
+:is(.rk-tile--colour, .rk-tile--custom-colour) {
   border-color: var(--line);
   forced-color-adjust: none;
+}
+
+/* The custom colour tile's native input fills it. --picker-radius rounds the input and the
+   browser's swatch inside it to match the tile. */
+
+.rk-tile--custom-colour {
+  --picker-radius: 50%;
+}
+
+.rk-tile--custom-colour > input[type='color'] {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--picker-radius);
+  background: none;
+  cursor: pointer;
+}
+
+.rk-tile--custom-colour > input[type='color']::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.rk-tile--custom-colour > input[type='color']::-webkit-color-swatch {
+  border: 0;
+  border-radius: var(--picker-radius);
+}
+
+.rk-tile--custom-colour > input[type='color']::-moz-color-swatch {
+  border: 0;
+  border-radius: var(--picker-radius);
+}
+
+/* The paint brush sits on a neutral disc in the corner, so it reads on any picked colour. Clicks
+   pass through it to the input. */
+.rk-tile--custom-colour > svg {
+  position: absolute;
+  inset-block-end: -0.375rem;
+  inset-inline-end: -0.375rem;
+  inline-size: 1.375rem;
+  block-size: 1.375rem;
+  padding: 0.125rem;
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: 50%;
+  background: var(--raised);
+  color: var(--fg);
+  forced-color-adjust: auto;
+  pointer-events: none;
+  --icon-stroke: 28;
 }
 
 /* Without a palette */
@@ -108,9 +175,14 @@
   --shadow-hover: calc(6px * var(--diagonal)) 0 0 var(--shadow-color);
   --shadow-pressed: calc(2px * var(--diagonal)) 0 0 var(--shadow-color);
   --shadow-inset: inset calc(2px * var(--diagonal)) 0 0 var(--line-unfilled);
+  --picker-radius: var(--drop-corners);
 
   border-radius: var(--drop-corners);
   rotate: 45deg;
+}
+
+.rk-tiles--drops .rk-tile--custom-colour > svg {
+  rotate: -45deg;
 }
 
 /* Flair C: add .rk-tiles--stroke for a visible legend with a palette icon and a short paint
