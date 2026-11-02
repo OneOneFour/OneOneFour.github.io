@@ -1,9 +1,11 @@
 ---
 import Swatch from './Swatch.astro'
+import PaletteSamples from './PaletteSamples.astro'
 import { colourGroups, tokens, tokensCss, type Theme } from './colour-tokens'
 
 /**
- * Every colour token in the package's tokens.css, grouped as the file groups them.
+ * Every colour token in the package's tokens.css: the page palettes, then the shared tokens
+ * grouped as the file groups them.
  *
  * @param theme the theme the hex values and ratios are computed for
  */
@@ -14,6 +16,7 @@ interface Props {
 const { theme } = Astro.props
 ---
 
+<PaletteSamples theme={theme} />
 {
   colourGroups(tokensCss).map((group) => (
     <>

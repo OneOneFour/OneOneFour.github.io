@@ -1,9 +1,11 @@
 import {
   parseTokens,
   splitFallback,
+  splitPalettes,
   resolveColor,
   contrastRatio,
   THEMES,
+  DEFAULT_PALETTE,
 } from '../../../scripts/check-contrast.mjs'
 import rawTokensCss from 'rk-ui/tokens.css?raw'
 
@@ -17,9 +19,15 @@ export interface Contrast {
   ratio: number
 }
 
-/** tokens.css without its light-only fallback, whose plain values would hide the dark theme. */
-export const tokensCss: string = splitFallback(rawTokensCss).main
-export const tokens: Tokens = parseTokens(tokensCss)
+// The light-only fallback is left out: its plain values would hide the dark theme.
+const { shared, palettes } = splitPalettes(splitFallback(rawTokensCss).main)
+
+/** tokens.css without the fallback and the page palette rules: the tokens every palette shares. */
+export const tokensCss: string = shared
+/** Each page palette's tokens, by palette name, in the order tokens.css gives them. */
+export const paletteTokens: Map<string, Tokens> = palettes
+/** The default palette's tokens. */
+export const tokens: Tokens = palettes.get(DEFAULT_PALETTE)!
 
 /** The `#rrggbb` a token resolves to in one theme. */
 export function hexOf(allTokens: Tokens, name: string, theme: Theme): string {

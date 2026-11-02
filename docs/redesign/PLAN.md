@@ -242,6 +242,26 @@ Rules (shown on the mood board, theme switch at the top):
   it, which is how `/styleguide/` shows both side by side. Tokens stay unregistered (no
   `@property`), or that breaks. Browsers without `light-dark()` (before mid-2024) get a
   light-only fallback block, which the contrast script checks against the light values.
+- **Page palettes (Gate 1b):** `data-palette="slate"` (cool grey) or `"greige"` (warm grey) on
+  `<html>` or any container swaps the cream page for a grey one, alongside `data-theme`; cream
+  is the default and `data-palette="cream"` switches back inside another palette. A palette
+  redeclares only `--surface` and `--raised` (as `light-dark()` pairs), plus `--div-mid`, the one
+  `:root` token mixed from the page colour (custom properties resolve their `var()`s where they
+  are declared, so it must be redeclared on every palette container). The values come from the
+  code slates (sRGB mixes): the light page is 60% slate (or greige) and 40% white, raised 25%
+  slate; the dark page is 70% slate and 30% black, raised 90% slate. Code panels keep the cool slate under every
+  palette: on the slate page they sit the same luminance step from it as on cream (1.08:1 light,
+  1.22:1 dark, against 1.08 and 1.28 on cream), and on greige they also differ in hue.
+  `.rk-slate-greige` still opts into greige code anywhere. Browsers without `light-dark()` get
+  cream light everywhere: the fallback block also applies to `[data-palette]`. `npm run contrast`
+  checks every pair under each palette in both themes. The styleguide has a palette switch next
+  to the theme toggle (stored under `rk-palette`) and shows the three palettes side by side.
+
+| Palette | surface (light / dark) | raised (light / dark) |
+|---|---|---|
+| cream | `#f7f3e5` / `#1a1f2b` | `#fffaf0` / `#232a39` |
+| slate | `#f1f3f8` / `#1f232b` | `#f9fafc` / `#282d37` |
+| greige | `#f2f1ee` / `#252420` | `#faf9f8` / `#302e29` |
 
 | Token | Light | Dark | Text on it (dark) |
 |---|---|---|---|
@@ -656,9 +676,9 @@ the single source for order, file locations and acceptance.
 **Open:** none.
 
 **Ideas for later (not scheduled):**
-- A warm "greige" alternate mode for the whole site, built from the greige slate Rob liked at
-  Gate 1b (kept as an opt-in `--slate` alternative for code panels). It would be a third
-  `data-theme` value or a separate attribute; nothing is built for it yet.
+- ~~A warm "greige" alternate mode for the whole site, built from the greige slate Rob liked at
+  Gate 1b.~~ *Built at Gate 1b* as the `data-palette` attribute, with a cool slate palette too
+  (§5.1b). Which palette the site ships with is still Rob's call; cream stays the default.
 - A "How this site was made" section with a credits page listing every third-party asset and
   its author/licence (icons, fonts, logos), generated from or kept in step with
   `THIRD_PARTY_NOTICES.md`. Some assets need visible credit there (e.g. the Julia logo,

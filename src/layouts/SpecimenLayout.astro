@@ -4,6 +4,7 @@ import 'katex/dist/katex.min.css'
 import 'rk-ui/rk-ui.css'
 import themeInit from 'rk-ui/theme-init.js?raw'
 import ThemeToggle from '../components/ThemeToggle.astro'
+import PaletteSwitcher from '../components/styleguide/PaletteSwitcher.astro'
 
 interface Props {
   title: string
@@ -17,12 +18,22 @@ const { title } = Astro.props
   <head>
     <meta charset="utf-8" />
     <script is:inline set:html={themeInit} />
+    <script is:inline>
+      // Inline, like the theme, so a stored palette doesn't flash cream first.
+      try {
+        const palette = localStorage.getItem('rk-palette')
+        if (palette) document.documentElement.dataset.palette = palette
+      } catch {
+        // Storage is blocked, so the page stays cream.
+      }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <title>{title}</title>
   </head>
   <body>
     <header class="specimen-header">
+      <PaletteSwitcher />
       <ThemeToggle />
     </header>
     <slot />
@@ -32,7 +43,9 @@ const { title } = Astro.props
 <style>
   .specimen-header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
+    gap: var(--space-3);
     max-width: 96rem;
     margin-inline: auto;
     padding: var(--space-4) var(--space-4) 0;

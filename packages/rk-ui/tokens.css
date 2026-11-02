@@ -12,10 +12,31 @@
   color-scheme: dark;
 }
 
-:root {
-  /* Page */
+/* Page palettes: cream by default. Set data-palette="slate" or "greige" on <html> or any
+   container for a cool or warm grey page, or "cream" to switch back inside another palette. */
+:root,
+[data-palette='cream'] {
   --surface: light-dark(#f7f3e5, #1a1f2b);
   --raised: light-dark(#fffaf0, #232a39);
+}
+
+[data-palette='slate'] {
+  --surface: light-dark(#f1f3f8, #1f232b);
+  --raised: light-dark(#f9fafc, #282d37);
+}
+
+[data-palette='greige'] {
+  --surface: light-dark(#f2f1ee, #252420);
+  --raised: light-dark(#faf9f8, #302e29);
+}
+
+/* --div-mid (below) mixes in the page colour, so each palette re-declares it to mix its own */
+[data-palette] {
+  --div-mid: color-mix(in oklab, var(--muted) 12%, var(--surface));
+}
+
+:root {
+  /* Text, lines and focus */
   --fg: light-dark(#1d232f, #f2eee2);
   --muted: light-dark(#5b6070, #a3a8b6);
   --line: light-dark(#1d232f, #05070b);
@@ -182,14 +203,15 @@
   --ease-snap: cubic-bezier(0.3, 1.5, 0.45, 1);
 }
 
-/* Browsers without light-dark() (before mid-2024) get the light theme. */
+/* Browsers without light-dark() (before mid-2024) get the light theme, on the cream page. */
 @supports not (color: light-dark(#000, #fff)) {
   :root,
   :root[data-theme] {
     color-scheme: light;
   }
 
-  :root {
+  :root,
+  [data-palette] {
     --surface: #f7f3e5;
     --raised: #fffaf0;
     --fg: #1d232f;

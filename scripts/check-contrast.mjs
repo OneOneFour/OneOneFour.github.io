@@ -1,5 +1,6 @@
 /**
- * Checks WCAG 2.x contrast between pairs of rk-ui colour tokens, in both themes.
+ * Checks WCAG 2.x contrast between pairs of rk-ui colour tokens, in both themes and under every
+ * page palette.
  *
  * Usage: node scripts/check-contrast.mjs
  *
@@ -11,6 +12,7 @@ import { fileURLToPath } from 'node:url'
 
 const TOKENS_FILE = new URL('../packages/rk-ui/tokens.css', import.meta.url)
 export const THEMES = ['light', 'dark']
+export const DEFAULT_PALETTE = 'cream'
 
 const SURFACES = ['--surface', '--raised']
 const DEEP_TEXT = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky', 'grape', 'tangerine'].map(
@@ -92,6 +94,25 @@ export function splitFallback(css) {
   return { main: css.slice(0, start) + css.slice(end), fallback: css.slice(bodyStart, end - 1) }
 }
 
+// A `[data-palette='name'] { … }` rule, with the `:root,` that the default palette's rule starts with.
+const PALETTE_RULE = /(?::root,\s*)?\[data-palette='([\w-]+)'\]\s*\{([^}]*)\}/g
+
+/**
+ * Splits the page palette rules out of the main CSS. Returns the CSS without them (the tokens
+ * every palette shares) and each palette's tokens: the shared ones, then the default palette's,
+ * then its own.
+ */
+export function splitPalettes(css) {
+  const shared = css.replace(PALETTE_RULE, '')
+  const sharedTokens = parseTokens(shared)
+  const rules = [...css.matchAll(PALETTE_RULE)].map(([, name, body]) => [name, parseTokens(body)])
+  const defaults = new Map(rules).get(DEFAULT_PALETTE)
+  const palettes = new Map(
+    rules.map(([name, own]) => [name, new Map([...sharedTokens, ...defaults, ...own])])
+  )
+  return { shared, palettes }
+}
+
 /** A token's value with every `var(--x)` replaced by the value of `--x`, recursively. */
 function expandVars(tokens, name, seen = []) {
   if (seen.includes(name)) throw new Error(`Circular reference: ${[...seen, name].join(' -> ')}`)
@@ -146,9 +167,9 @@ export function contrastRatio(hexA, hexB) {
   return (lighter + 0.05) / (darker + 0.05)
 }
 
-/** Prints one theme's table and returns the number of failing pairs. */
-function printTheme(tokens, theme) {
-  console.log(`\n${theme.toUpperCase()} THEME`)
+/** Prints one palette and theme's table and returns the number of failing pairs. */
+function printTable(tokens, palette, theme) {
+  console.log(`\n${palette.toUpperCase()} PALETTE, ${theme.toUpperCase()} THEME`)
   let failures = 0
 
   for (const group of GROUPS) {
@@ -199,10 +220,13 @@ function checkFallback(tokens, fallback) {
 function main() {
   const css = readFileSync(TOKENS_FILE, 'utf8')
   const { main: mainCss, fallback: fallbackCss } = splitFallback(css)
-  const tokens = parseTokens(mainCss)
-  const fallbackFailures = checkFallback(tokens, parseTokens(fallbackCss))
+  const { palettes } = splitPalettes(mainCss)
+  const fallbackFailures = checkFallback(palettes.get(DEFAULT_PALETTE), parseTokens(fallbackCss))
 
-  const failures = THEMES.reduce((sum, theme) => sum + printTheme(tokens, theme), 0)
+  let failures = 0
+  for (const [palette, tokens] of palettes) {
+    for (const theme of THEMES) failures += printTable(tokens, palette, theme)
+  }
   console.log(failures ? `\n${failures} pair(s) fail.` : '\nAll pairs pass.')
   process.exitCode = failures || fallbackFailures ? 1 : 0
 }
