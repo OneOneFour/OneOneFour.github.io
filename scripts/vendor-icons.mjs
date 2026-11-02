@@ -342,7 +342,6 @@ const DEFAULT_FILLS = {
   'gas-can': 'tangerine',
   'charging-station': 'yellow',
   speedometer: 'yellow',
-  engine: 'yellow',
   'traffic-sign': 'tangerine',
   'traffic-cone': 'tangerine',
   'navigation-arrow': 'tangerine',
@@ -370,6 +369,7 @@ const DEFAULT_FILLS = {
   crane: 'yellow',
   'crane-tower': 'yellow',
   'hard-hat': 'yellow',
+  'engine': 'yellow',
 }
 
 // Globes whose duotone layer is the land. They also get an ocean disc behind it, coloured by
