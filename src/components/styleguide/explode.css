@@ -167,6 +167,15 @@
   stroke-width: var(--outline-width);
 }
 
+/* Bands and hatching are drawn for light from the top left. They flip about the part's centre
+   (in grid units, where 1px is one unit) to face the light when it comes from the right or from
+   below. The light offsets come in steps of 0.001, so the nudge only makes a zero offset count as
+   the side they are drawn for. */
+.rk-explode-detail:is(.rk-explode-detail--band, .rk-explode-detail--hatch) {
+  transform-origin: calc((var(--x) + var(--w) / 2) * 1px) calc((var(--y) + var(--h) / 2) * 1px);
+  scale: sign(var(--shadow-dx) + 0.0001) sign(var(--shadow-dy) + 0.0001);
+}
+
 .rk-explode-assembly > .rk-explode-label {
   --tooltip-gap: var(--space-1);
 
