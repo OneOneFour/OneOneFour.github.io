@@ -18,6 +18,11 @@
    </svg>
 
    Opt-in modifier: .rk-chart--toon gives marks the ink outline and bars the hard shadow.
+   Heatmaps have three options, labelled for Gate 1b:
+   A, the default: flat cells, split by gaps in the background colour;
+   B, .rk-chart--toon: ink gutters between the cells, with a .rk-chart-shadow rect under the grid;
+   C, .rk-chart--tiles: rounded tiles (rx in the markup) with gaps between them, each outlined
+   and on a short hard shadow. Put the cells in a <g class="rk-chart-cells">.
    Set --chart-bg on a chart or any ancestor that changes the colour behind it; the gaps and rings
    between marks use it.
 
@@ -26,6 +31,16 @@
    - a stepped scale's legend: <p class="rk-chart-scale"><span>−1</span>
      <span class="rk-chart-scale-steps"><span style="background: var(--div-cold-3)"></span>…</span>
      <span>+1</span></p>
+   - a stepped scale's legend for options B and C adds .rk-chart-scale--toon;
+   - a heatmap that pops the hovered or focused cell and shows its value: <rk-heatmap> (heatmap.js),
+     with role="grid" on the SVG, its cells as role="gridcell" in role="row" groups, each with
+     data-value and data-name, and after the cells:
+     <g class="rk-heatmap-pop" aria-hidden="true"><rect class="rk-heatmap-pop-band" rx="4" />
+       <rect class="rk-heatmap-pop-cell" rx="4" /></g>
+     and after the SVG a toon tooltip (tooltip.css) for it to place:
+     <span class="rk-tooltip rk-tooltip--toon rk-heatmap-tip" aria-hidden="true"><span
+       class="rk-tooltip-bubble"><strong class="rk-heatmap-value"></strong>
+       <span class="rk-heatmap-name"></span></span></span>
    - small multiples: <div class="rk-chart-multiples"><div><p class="rk-chart-title">…</p><svg>…
    - a sparkline in a line of text: <svg class="rk-sparkline" viewBox="0 0 64 16">…</svg> */
 
@@ -157,6 +172,23 @@
   translate: var(--shadow-offset-x) var(--shadow-offset-y);
 }
 
+/* Toon heatmap cells (B) and tiles (C): the ink outline. In B the outlines of neighbouring cells
+   overlap into gutters as wide as one outline. */
+:is(.rk-chart--toon, .rk-chart--tiles) .rk-chart-cell {
+  stroke: var(--line);
+  stroke-width: var(--outline-width);
+}
+
+/* One filter for all the tiles, rather than one per tile. As in tooltip.css, the second
+   drop-shadow is the shadow's light edge in dark mode. */
+.rk-chart--tiles .rk-chart-cells {
+  filter: drop-shadow(calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color))
+    drop-shadow(
+      calc(var(--shadow-dx) * var(--outline-width)) calc(var(--shadow-dy) * var(--outline-width)) 0
+        var(--shadow-edge)
+    );
+}
+
 /* After the toon rules: background lines stay thin in both options. */
 .rk-chart-line.rk-chart-series-context {
   stroke-width: 1.5;
@@ -194,6 +226,80 @@
 .rk-chart-scale-steps > span {
   inline-size: 2rem;
   block-size: 0.75rem;
+}
+
+/* The legend of toon heatmaps: the steps joined by ink gutters, in an ink frame. */
+.rk-chart-scale--toon .rk-chart-scale-steps {
+  gap: var(--outline-width);
+  border: var(--outline-width) solid var(--line);
+  border-radius: calc(var(--radius) / 2);
+  overflow: hidden;
+  background: var(--line);
+}
+
+/* <rk-heatmap>: a raised copy of the hovered or focused cell pops up over it, and the tooltip shows
+   its value. Both stay a moment after the pointer leaves a cell, so crossing a gap between tiles
+   doesn't flicker them. */
+.rk-heatmap {
+  position: relative;
+  display: block;
+}
+
+/* The popped copy draws the focus band in its place. */
+.rk-heatmap .rk-chart-cell:focus {
+  outline: none;
+}
+
+.rk-heatmap-pop {
+  visibility: hidden;
+  pointer-events: none;
+  transition: visibility 0s var(--duration-fast);
+}
+
+.rk-heatmap:has(.rk-chart-cell:is(:hover, :focus-visible)) .rk-heatmap-pop {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.rk-heatmap-pop-cell {
+  stroke: var(--line);
+  stroke-width: var(--outline-width);
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color))
+    drop-shadow(
+      calc(var(--shadow-dx) * var(--outline-width)) calc(var(--shadow-dy) * var(--outline-width)) 0
+        var(--shadow-edge)
+    );
+}
+
+/* The focus band: a stroke wide enough to show --focus-width of it outside the ink outline. */
+.rk-heatmap-pop-band {
+  display: none;
+  fill: none;
+  stroke: var(--focus);
+  stroke-width: calc(var(--outline-width) + 2 * var(--focus-width));
+}
+
+.rk-heatmap:has(.rk-chart-cell:focus-visible) .rk-heatmap-pop-band {
+  display: inline;
+}
+
+.rk-heatmap:has(.rk-chart-cell:focus-visible) .rk-heatmap-pop-cell {
+  filter: none;
+}
+
+/* The tooltip's host is laid over the cell, so the bubble sits above it. */
+.rk-heatmap-tip {
+  position: absolute;
+  pointer-events: none;
+}
+
+.rk-heatmap:has(.rk-chart-cell:is(:hover, :focus-visible)) .rk-heatmap-tip:not([data-dismissed]) > .rk-tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+  translate: -50% 0;
+  transition-delay: 0s;
 }
 
 .rk-chart-legend {
