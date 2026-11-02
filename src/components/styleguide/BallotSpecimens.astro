@@ -1,7 +1,8 @@
 ---
 /**
  * The ballot with letter, empty, icon and colour tiles, as checkboxes and with the tiles on the
- * right; its states; and the layout modifiers, alone and combined.
+ * right; checked boxes tinted to match their tile; its states; and the layout modifiers, alone and
+ * combined.
  *
  * @param theme the panel's theme, used to keep input names unique across the two panels
  */
@@ -12,6 +13,8 @@ import SunIcon from 'rk-ui/icons/sun.svg'
 import CloudIcon from 'rk-ui/icons/cloud.svg'
 import CloudRainIcon from 'rk-ui/icons/cloud-rain.svg'
 import CloudLightningIcon from 'rk-ui/icons/cloud-lightning.svg'
+import MoonIcon from 'rk-ui/icons/moon.svg'
+import LeafIcon from 'rk-ui/icons/leaf.svg'
 
 interface Props {
   theme: 'light' | 'dark'
@@ -56,6 +59,25 @@ const BALLOTS = [
       colour,
       checked: colour === 'green',
     })),
+  },
+  {
+    label: 'colours, checked box tinted to match (--selected-tint)',
+    options: ['teal', 'green', 'sky', 'coral'].map((colour) => ({
+      value: colour,
+      title: colour[0].toUpperCase() + colour.slice(1),
+      colour,
+      tint: colour,
+      checked: colour === 'teal',
+    })),
+  },
+  {
+    label: 'icons, checked box tinted to match the icon (--selected-tint)',
+    options: [
+      { value: 'sun', title: 'Sun', Icon: SunIcon, tint: 'yellow' },
+      { value: 'moon', title: 'Moon', Icon: MoonIcon, tint: 'lilac', checked: true },
+      { value: 'leaf', title: 'Leaf', Icon: LeafIcon, tint: 'green' },
+      { value: 'rain', title: 'Rain', Icon: CloudRainIcon, tint: 'sky' },
+    ],
   },
   {
     label: 'numbers, checkboxes (several choices)',

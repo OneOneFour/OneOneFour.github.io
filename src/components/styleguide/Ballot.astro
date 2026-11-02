@@ -5,8 +5,9 @@
  * @param legend the group's name, visually hidden
  * @param name the inputs' name, unique on the page
  * @param options each option's value, title and optional text; its tile's content (a letter or
- *   number, an icon, a colour token's name, or nothing); whether it is checked or disabled; and
- *   a static state class for the row, e.g. 'is-hover'
+ *   number, an icon, a colour token's name, or nothing); whether it is checked or disabled;
+ *   a static state class for the row, e.g. 'is-hover'; and a colour token's name whose tint
+ *   fills its box when checked
  * @param multiple use checkboxes, so that several options can be checked
  * @param modifier the group's modifier classes, space-separated, if any
  */
@@ -22,6 +23,7 @@ interface Option {
   checked?: boolean
   disabled?: boolean
   state?: string
+  tint?: string
 }
 
 interface Props {
@@ -38,8 +40,8 @@ const { legend, name, options, multiple, modifier } = Astro.props
 <fieldset class:list={['rk-ballot', modifier]}>
   <legend class="rk-visually-hidden">{legend}</legend>
   {
-    options.map(({ value, title, text, mark, Icon, colour, checked, disabled, state }) => (
-      <label class:list={['rk-ballot-option', state]}>
+    options.map(({ value, title, text, mark, Icon, colour, checked, disabled, state, tint }) => (
+      <label class:list={['rk-ballot-option', state]} style={tint && `--selected-tint: var(--${tint}-tint)`}>
         <span
           class:list={['rk-tile', { 'rk-tile--colour': colour }]}
           style={colour && `--swatch: var(--${colour})`}

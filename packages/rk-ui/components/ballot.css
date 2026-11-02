@@ -16,6 +16,9 @@
    (<svg aria-hidden="true">) or a colour (.rk-tile--colour, color.css). Its content is part of
    the option's name; wrap it in <span aria-hidden="true"> if it shouldn't be.
 
+   The checked box's colour is --selected-tint. Set it on the group or on one option to match a
+   colour tile or an icon: <label class="rk-ballot-option" style="--selected-tint: var(--teal-tint)">.
+
    Layout modifiers for the group, which combine freely:
      .rk-ballot--mark-end  the tiles on the right;
      .rk-ballot--overlap   each tile straddles its text box's edge;
