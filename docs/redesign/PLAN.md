@@ -458,7 +458,8 @@ above the tabs, so it never comes between them and the sheet.
 *DECIDED 2026-11-02: the scrollbar stays flat for now.* Toon shadow options for it (a raised
 thumb, a sunken track, a slider groove) were tried and removed; they are in git history.
 
-**Top bar** *(Gate 1b, pending Rob's pick)*: `topbar.css`, a sticky `.rk-topbar` for controls
+**Top bar** *(Gate 1b; DECIDED 2026-11-02: both are kept, the toast is the default, and the
+flush bar is for full-width headers such as an article's title)*: `topbar.css`, a sticky `.rk-topbar` for controls
 such as the theme and palette switches, ending with a back-to-top link (`.rk-back-to-top`, a plain
 `<a href="#top">`). A, `--toast`: a raised outlined panel hanging a small gap below the top edge,
 at the end of the line, with the light-following `--shadow`. B, `--flush`: full width, an ink rule
@@ -617,7 +618,10 @@ held step, so the reader sees where it ends before it starts again.
 - `linear`: steady travel and rolling (a wave, a pulse along a link, a loader crossing its track).
 - `ease-out` going up and `ease-in` coming down: anything under gravity.
 - `ease-in-out` with `alternate`: filling, draining, sloshing.
-- `--ease-snap`: a jump to a new place or state, with one visible overshoot.
+- `--ease-snap`: a jump to a new place or state, with one visible overshoot. *Retuned
+  2026-11-02 (Rob: "a tad too snappy", overshoot "a bit much")* from `cubic-bezier(0.3, 1.5,
+  0.45, 1)` (8% overshoot, 90% of the way at a quarter of the time) to `cubic-bezier(0.35, 1.4,
+  0.5, 1)` (about 5%, 90% at a third).
 - `--ease-spring`: recovering from a squash or a press.
 
 No other curves, and no elastic, many-bounce easing.
