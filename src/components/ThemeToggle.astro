@@ -21,7 +21,7 @@ const name = uniqueId('rk-theme')
     {
       options.map(({ value, label, Icon }) => (
         <label>
-          <input type="radio" name={name} value={value} />
+          <input type="radio" name={name} value={value} checked={value === 'system'} />
           <Icon class="rk-icon" aria-hidden="true" />
           {label}
         </label>
