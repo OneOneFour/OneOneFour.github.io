@@ -3,7 +3,9 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { optimize } from 'svgo'
 
-const PHOSPHOR = 'https://raw.githubusercontent.com/phosphor-icons/core/v2.0.8'
+// Phosphor 2.1.1 has no git tag, so this pins the commit its npm release was published from.
+const PHOSPHOR_COMMIT = 'fe23e2534cdb7bec24bd8e6bd99b3676bcf0d54f'
+const PHOSPHOR = `https://raw.githubusercontent.com/phosphor-icons/core/${PHOSPHOR_COMMIT}`
 const TABLER = 'https://raw.githubusercontent.com/tabler/tabler-icons/v3.50.0'
 
 const PHOSPHOR_ICONS = [
