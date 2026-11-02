@@ -69,12 +69,12 @@ const DIALS = ['knob', 'arc']
               ))}
             </fieldset>
           </Specimen>
-          <Specimen label="deck keys in tray A">
-            <fieldset class="rk-segmented rk-segmented--deck rk-segmented--tray">
+          <Specimen label="deck keys on a plate">
+            <fieldset class="rk-segmented rk-segmented--deck rk-segmented--plate">
               <legend class="rk-visually-hidden">Specimen</legend>
               {KEYS.map((key, i) => (
                 <label>
-                  <input type="radio" name={`${prefix}-tray`} value={key} checked={i === 0} />
+                  <input type="radio" name={`${prefix}-plate`} value={key} checked={i === 0} />
                   {key}
                 </label>
               ))}
