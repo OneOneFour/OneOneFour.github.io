@@ -16,6 +16,7 @@ import IconSpecimens from '../../components/styleguide/IconSpecimens.astro'
 import ButtonSpecimens from '../../components/styleguide/ButtonSpecimens.astro'
 import InputSpecimens from '../../components/styleguide/InputSpecimens.astro'
 import SpecialInputSpecimens from '../../components/styleguide/SpecialInputSpecimens.astro'
+import SelectPickerSpecimens from '../../components/styleguide/SelectPickerSpecimens.astro'
 import DialSpecimens from '../../components/styleguide/DialSpecimens.astro'
 import ChoiceSpecimens from '../../components/styleguide/ChoiceSpecimens.astro'
 import RangeSpecimens from '../../components/styleguide/RangeSpecimens.astro'
@@ -29,6 +30,9 @@ import BadgeSpecimens from '../../components/styleguide/BadgeSpecimens.astro'
 import ProgressSpecimens from '../../components/styleguide/ProgressSpecimens.astro'
 import TooltipSpecimens from '../../components/styleguide/TooltipSpecimens.astro'
 import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen.astro'
+import BreadcrumbSpecimens from '../../components/styleguide/BreadcrumbSpecimens.astro'
+import FolderSpecimens from '../../components/styleguide/FolderSpecimens.astro'
+import PaginationSpecimens from '../../components/styleguide/PaginationSpecimens.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -96,6 +100,15 @@ import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen
     <SpecimenSection title="Text inputs and selects">
       <InputSpecimens slot="light" theme="light" />
       <InputSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Custom select list">
+      <p>
+        Open these in a browser with customizable select (appearance: base-select) to see the
+        styled list. Elsewhere they are the plain select above.
+      </p>
+      <SelectPickerSpecimens slot="light" theme="light" />
+      <SelectPickerSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Special inputs">
@@ -169,6 +182,25 @@ import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen
       </p>
       <TooltipSpecimens slot="light" theme="light" />
       <TooltipSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Breadcrumbs">
+      <BreadcrumbSpecimens slot="light" />
+      <BreadcrumbSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Folder tabs">
+      <p>
+        The live tabs follow the ARIA tabs pattern: click a tab, or focus one and use the arrow keys,
+        Home and End.
+      </p>
+      <FolderSpecimens slot="light" theme="light" />
+      <FolderSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Pagination">
+      <PaginationSpecimens slot="light" />
+      <PaginationSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Widget frame">

@@ -11,6 +11,7 @@
 @import './components/field.css';
 @import './components/input.css';
 @import './components/select.css';
+@import './components/select-picker.css';
 @import './components/checkbox.css';
 @import './components/switch.css';
 @import './components/range.css';
@@ -34,4 +35,7 @@
 @import './components/progress.css';
 @import './components/tooltip.css';
 @import './components/popup.css';
+@import './components/breadcrumbs.css';
+@import './components/folder.css';
+@import './components/pagination.css';
 @import './components/interactive.css';

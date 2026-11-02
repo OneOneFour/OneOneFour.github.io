@@ -1,0 +1,48 @@
+---
+/**
+ * Breadcrumbs in three styles (A plain links, B chips, C path bar), each with a link's states.
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+const TRAIL = ['Home', 'Section', 'Page']
+const HOVER = { label: 'hover', class: 'is-hover' }
+const PRESSED = { label: 'pressed', class: 'is-active' }
+const FOCUSED = { label: 'focused', class: 'is-focus' }
+const STYLES = [
+  { title: 'A: plain links', nav: '', link: undefined, states: [HOVER, FOCUSED] },
+  { title: 'B: chips', nav: '', link: 'rk-chip', states: [HOVER, PRESSED, FOCUSED] },
+  { title: 'C: path bar', nav: 'rk-breadcrumbs--path', link: undefined, states: [HOVER, FOCUSED] },
+]
+---
+
+{
+  STYLES.map((style) => (
+    <SpecimenRow title={style.title}>
+      <Specimen label="live">
+        <nav class:list={['rk-breadcrumbs', style.nav]} aria-label="Breadcrumb">
+          <ol>
+            {TRAIL.map((name, i) => (
+              <li>
+                <a class={style.link} href="#" aria-current={i === TRAIL.length - 1 ? 'page' : undefined}>
+                  {name}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </Specimen>
+      {style.states.map((state) => (
+        <Specimen label={`Section ${state.label}`}>
+          <nav class:list={['rk-breadcrumbs', style.nav]} aria-label="Breadcrumb">
+            <ol>
+              <li><a class={style.link} href="#">Home</a></li>
+              <li><a class:list={[style.link, state.class]} href="#">Section</a></li>
+              <li><a class={style.link} href="#" aria-current="page">Page</a></li>
+            </ol>
+          </nav>
+        </Specimen>
+      ))}
+    </SpecimenRow>
+  ))
+}

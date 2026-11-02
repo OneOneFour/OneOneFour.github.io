@@ -5,7 +5,7 @@
 /* Pop: hover lifts the element and grows its shadow; press sinks it into the shadow. A ballot row
    pops its tile from anywhere on the row; :where() keeps that below the tile's checked, focused
    and disabled states. */
-:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input) {
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input, .rk-folder-tab) {
   box-shadow: var(--shadow);
   transition:
     translate var(--duration-fast) ease,
@@ -13,7 +13,7 @@
 }
 
 @media (hover: hover) {
-  :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input):hover,
+  :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input, .rk-folder-tab):hover,
   .rk-segmented--deck label:hover,
   :where(.rk-ballot-option:hover) > .rk-tile {
     box-shadow: var(--shadow-hover);
@@ -21,7 +21,7 @@
   }
 }
 
-:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input):active,
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input, .rk-folder-tab):active,
 .rk-segmented--deck label:active,
 :where(.rk-ballot-option:active) > .rk-tile {
   box-shadow: var(--shadow-pressed);
@@ -52,16 +52,25 @@
   translate: var(--shadow-offset-x) var(--shadow-offset-y);
 }
 
-/* A checked tile is pushed in the same way, with an inset shadow instead. */
-.rk-tile:has(:checked) {
+/* A checked tile, or the current page's, is pushed in the same way, with an inset shadow
+   instead. */
+.rk-tile:is(:has(:checked), [aria-current='page']) {
   box-shadow: var(--shadow-inset);
   translate: var(--shadow-offset-x) var(--shadow-offset-y);
 }
 
+/* The selected folder tab is joined to the sheet and doesn't pop. Its shadow falls beside it and
+   above it, never onto the sheet. */
+.rk-folder-tab:is([aria-selected='true'], [aria-current='page']) {
+  box-shadow: var(--shadow-offset-x) min(0px, var(--shadow-offset-y)) 0 var(--shadow-color);
+  translate: none;
+}
+
 /* Focus band. Chips, cards, tiles, colour input frames and segmented groups (deck keys included)
    show it for the input or link inside them; a segmented group shows it on the group, never on
-   one option. */
-:is(.rk-button, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select):focus-visible,
+   one option. Chips and tiles can also be links, focused themselves. */
+:is(.rk-button, .rk-chip, .rk-tile, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select):focus-visible,
+:is(.rk-folder-tab, .rk-folder-sheet):focus-visible,
 :is(.rk-chip, .rk-card--link, .rk-segmented, .rk-tile, .rk-colour-input):has(:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-offset);

@@ -1,0 +1,83 @@
+/* Custom select list: add .rk-select--picker to a .rk-select. Where the browser supports
+   appearance: base-select, the open list is a raised panel in the toon look and options can hold
+   icons. Elsewhere it is the plain .rk-select with the browser's own list, and the icons are left
+   out.
+
+   <select class="rk-select rk-select--picker">
+     <button><selectedcontent></selectedcontent></button>
+     <option value="one"><svg class="rk-icon rk-icon--small" aria-hidden="true">…</svg> One</option>
+     …
+   </select>
+
+   The <button> line is optional: it shows the chosen option's icon in the closed select too.
+   Add .rk-select--tint to show the checked option in --selected-tint instead of --selected. */
+
+@supports (appearance: base-select) {
+  .rk-select--picker,
+  .rk-select--picker::picker(select) {
+    appearance: base-select;
+  }
+
+  /* .rk-select draws its own caret. */
+  .rk-select--picker::picker-icon {
+    display: none;
+  }
+
+  .rk-select--picker::picker(select) {
+    margin-block: var(--space-1);
+    padding: var(--space-1);
+    border: var(--outline-width) solid var(--line-unfilled);
+    border-radius: var(--radius);
+    background: var(--raised);
+    color: var(--fg);
+    box-shadow: var(--shadow);
+  }
+
+  /* The optional <button> only holds <selectedcontent>: the select draws the frame. */
+  .rk-select--picker > button {
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .rk-select--picker :is(selectedcontent, option) {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .rk-select--picker option {
+    padding: var(--space-1) var(--space-3);
+    border-radius: calc(var(--radius) / 2);
+  }
+
+  .rk-select--picker option:hover {
+    box-shadow: inset 0 0 0 var(--outline-width) var(--line-unfilled);
+  }
+
+  .rk-select--picker option:checked {
+    background: var(--selected);
+    color: var(--on-selected);
+  }
+
+  .rk-select--tint option:checked {
+    background: var(--selected-tint);
+    color: var(--fg);
+  }
+
+  /* Marker-pen focus, as on links: the list has no room for the band. The transparent outline
+     still shows in forced-colours mode. */
+  .rk-select--picker option:focus-visible {
+    outline: var(--outline-width) solid transparent;
+    background: var(--focus);
+    color: var(--ink);
+  }
+
+  @media (forced-colors: active) {
+    .rk-select--picker option:checked {
+      forced-color-adjust: none;
+      background: Highlight;
+      color: HighlightText;
+    }
+  }
+}

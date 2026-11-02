@@ -1,0 +1,28 @@
+/* Pagination: page links as tiles, with the current page's pushed in, between previous and next
+   buttons. folder.css has a folder-tab version.
+
+   <nav class="rk-pagination" aria-label="Pagination">
+     <a class="rk-button rk-button--small" href="?page=1" rel="prev">Previous</a>
+     <ol class="rk-tiles rk-tiles--compact">
+       <li><a class="rk-tile" href="?page=1">1</a></li>
+       <li><a class="rk-tile" href="?page=2" aria-current="page">2</a></li>
+       <li>…</li>
+       <li><a class="rk-tile" href="?page=9">9</a></li>
+     </ol>
+     <a class="rk-button rk-button--small" href="?page=3" rel="next">Next</a>
+   </nav> */
+
+.rk-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.rk-pagination ol {
+  list-style: none;
+}
+
+.rk-pagination .rk-tile {
+  text-decoration: none;
+}
