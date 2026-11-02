@@ -68,14 +68,14 @@ rk-code-block {
 }
 
 /* The panel shows the focus band for its scroll region: a ring of the outline colour for the band
-   to hug. */
+   to hug. The pre keeps its own focus ring in browsers without :has(). */
 .rk-code:has(pre:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--outline-width);
   box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);
 }
 
-.rk-code pre:focus-visible {
+.rk-code:has(pre:focus-visible) pre {
   outline: none;
 }
 
