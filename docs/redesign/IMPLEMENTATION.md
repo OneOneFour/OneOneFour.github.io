@@ -34,9 +34,13 @@ These go into the repo's `CLAUDE.md` and the `astro-builder` agent, word for wor
   grid, custom properties) and Astro's built-ins (content collections, `astro:assets`, SVG imports)
   before writing anything custom. Add a dependency only when it removes real code. Say why in the
   commit message.
-- **Comments are rare and short.** One line saying *why* when the why isn't obvious. No restating
-  the code, no docstrings on self-explanatory functions, no history ("ported from…", "previously…"),
-  and no reasoning written to the reader or to Claude. Git history holds the story.
+- **Comment where it helps.** Add a comment when code is unclear, when behaviour is slightly
+  surprising, or when a reasonably competent JS developer wouldn't understand it at a glance.
+  Short, basic docstrings on exported functions and components (what it does, its parameters)
+  are welcome.
+- **No design notes in the code.** No long blocks of reasoning at the top of files or inside
+  docstrings, no history ("ported from…", "previously…"), and no variables or constants (such as
+  `NOTE`) that hold thoughts or decisions. Decisions go in the plan docs or commit messages.
 - **No dead code or speculative options.** Build what the current work package needs.
 - **Consistent with what's there.** Match the existing formatting and naming. Never hard-code a colour
   outside the token files.
