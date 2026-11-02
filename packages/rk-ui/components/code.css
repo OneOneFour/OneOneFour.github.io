@@ -1,7 +1,8 @@
-/* Code block: a slate panel with an optional language caption and a copy button. The button
-   starts hidden and <rk-code-block> (code-block.js) shows it. It comes after the code so that
-   readers reach the code first, and the grid lifts it into the header row. Pre is a keyboard
-   scroll region for long lines (tabindex="0").
+/* Code block: a slate panel pressed into the page by a soft inner shadow, with an optional
+   language caption and a copy button. The button starts hidden and <rk-code-block>
+   (code-block.js) shows it. It comes after the code so that readers reach the code first, and
+   the grid lifts it into the header row. Pre is a keyboard scroll region for long lines
+   (tabindex="0").
 
    <rk-code-block>
      <figure class="rk-code">
@@ -14,7 +15,7 @@
      </figure>
    </rk-code-block>
 
-   Box variants for Gate 1b: .rk-code--inset (A), .rk-code--outlined (B), .rk-code--tab (C). */
+   Box variants for Gate 1b: .rk-code--outlined (B), .rk-code--tab (C). */
 
 rk-code-block {
   display: block;
@@ -26,6 +27,7 @@ rk-code-block {
   margin: 0;
   border-radius: var(--radius);
   background: var(--slate);
+  box-shadow: var(--shadow-code-inset);
   color: var(--fg);
 }
 
@@ -72,16 +74,11 @@ rk-code-block {
 .rk-code:has(pre:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--outline-width);
-  box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);
+  box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled), var(--shadow-code-inset);
 }
 
 .rk-code:has(pre:focus-visible) pre {
   outline: none;
-}
-
-/* Code box A: pressed into the page by a soft inner shadow. */
-.rk-code--inset {
-  box-shadow: var(--shadow-code-inset);
 }
 
 /* Code box B: a flush panel with the unfilled outline. */
@@ -94,6 +91,8 @@ rk-code-block {
   padding-block: var(--space-2);
   border-radius: var(--radius) var(--radius) 0 0;
   background: var(--slate-tab);
+  /* The strip paints over the panel's inner shadow, so it repeats it. */
+  box-shadow: var(--shadow-code-inset);
 }
 
 .rk-code--tab .rk-code-copy {

@@ -86,7 +86,7 @@
   --slate: var(--slate-a);
   /* A step further from the page than slate A, for code box C's header strip */
   --slate-tab: light-dark(#dbe0ea, #333946);
-  --shadow-code-inset: inset 3px 3px 0 color-mix(in srgb, var(--line) 20%, transparent);
+  --shadow-code-inset: inset 4px 4px 0 color-mix(in srgb, var(--line) 20%, transparent);
 
   /* Syntax highlighting on slate */
   --code-keyword: var(--navy-deep);
