@@ -54,6 +54,19 @@ const PHOSPHOR_ICONS = [
   'graph', 'bezier-curve', 'line-segment', 'line-segments', 'angle', 'compass-tool', 'sphere',
   'cube', 'cube-transparent', 'cube-focus', 'cylinder', 'grid-four', 'grid-nine', 'dice-five',
   'calculator', 'ruler', 'scales', 'notebook', 'blueprint',
+  // Programming, computing and AI
+  'terminal', 'terminal-window', 'code-block', 'code-simple', 'brackets-curly', 'brackets-square',
+  'brackets-round', 'brackets-angle', 'file-code', 'file-py', 'file-c', 'file-cpp', 'file-c-sharp',
+  'file-rs', 'file-js', 'file-ts', 'file-jsx', 'file-tsx', 'file-vue', 'file-html', 'file-css',
+  'file-svg', 'file-sql', 'file-ini', 'file-md', 'file-txt', 'file-csv', 'file-xls', 'file-image',
+  'file-zip', 'file-archive', 'file-cloud', 'file-arrow-down', 'git-branch', 'git-commit',
+  'git-merge', 'git-pull-request', 'git-diff', 'git-fork', 'bug', 'bug-beetle', 'cloud-arrow-up',
+  'cloud-arrow-down', 'cloud-check', 'cloud-slash', 'cloud-x', 'hard-drive', 'hard-drives',
+  'circuitry', 'memory', 'graphics-card', 'binary', 'head-circuit', 'sparkle', 'magic-wand',
+  'bounding-box', 'network', 'flow-arrow', 'tree-structure', 'tree-view', 'stack', 'stack-simple',
+  'package', 'puzzle-piece', 'table', 'rows', 'columns', 'kanban', 'browser', 'app-window',
+  'command', 'laptop', 'desktop', 'desktop-tower', 'computer-tower', 'monitor', 'gear', 'gear-six',
+  'gear-fine', 'wrench', 'screwdriver', 'hammer', 'toolbox',
 ]
 
 // Hand-adapted icons in Phosphor's raw duotone format, read from scripts/icon-sources/.
@@ -265,6 +278,29 @@ const DEFAULT_FILLS = {
   calculator: 'grape',
   notebook: 'sky',
   blueprint: 'sky',
+  // Programming, computing and AI
+  'file-md': 'sky',
+  'file-txt': 'sky',
+  'file-csv': 'green',
+  'file-xls': 'green',
+  'file-image': 'sky',
+  'file-cloud': 'sky',
+  'file-arrow-down': 'green',
+  bug: 'coral',
+  'bug-beetle': 'coral',
+  'cloud-arrow-up': 'sky',
+  'cloud-arrow-down': 'sky',
+  'cloud-check': 'sky',
+  'cloud-slash': 'sky',
+  'cloud-x': 'sky',
+  circuitry: 'grape',
+  memory: 'grape',
+  'graphics-card': 'grape',
+  binary: 'grape',
+  'head-circuit': 'grape',
+  sparkle: 'grape',
+  'magic-wand': 'grape',
+  'bounding-box': 'grape',
 }
 
 // Globes whose duotone layer is the land. They also get an ocean disc behind it, coloured by
@@ -276,6 +312,8 @@ const OUT_DIR = new URL('../packages/rk-ui/icons/', import.meta.url)
 
 const BACKGROUND_RECT = '<rect width="256" height="256" fill="none"/>'
 const FILL_LAYER = ' opacity="0.2"'
+// A few icons (code-block) draw their outline in a fixed colour instead of currentColor.
+const FIXED_STROKE = /stroke="#\w+"/g
 const SHARED_STROKE_ATTRS = / (fill="none"|stroke="currentColor"|stroke-linecap="round"|stroke-linejoin="round"|stroke-width="16")/g
 const ROOT_ATTRS =
   'fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="stroke-width:var(--icon-stroke, 16)" aria-hidden="true"'
@@ -323,6 +361,7 @@ function makeRecolourable(name, rawSvg) {
   const fillAttrs = fillHook(name)
   const ocean = GLOBES.includes(name) ? OCEAN_DISC : ''
   const svg = ungroupFillLayers(rawSvg)
+    .replace(FIXED_STROKE, 'stroke="currentColor"')
     .replace(BACKGROUND_RECT, '')
     .replace(/<(path|line|circle|ellipse|rect|polyline|polygon)\b[^>]*\/>/g, (tag) =>
       recolourShape(tag, fillAttrs)
