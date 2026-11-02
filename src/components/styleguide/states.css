@@ -102,3 +102,12 @@ a:where(:not(.rk-button)).is-focus {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-offset);
 }
+
+.rk-stepper--stacked button.is-hover {
+  background: var(--selected);
+  color: var(--on-selected);
+}
+
+.rk-stepper--stacked button.is-active {
+  box-shadow: var(--shadow-inset);
+}

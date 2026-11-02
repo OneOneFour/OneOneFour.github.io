@@ -9,6 +9,7 @@ import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 import DownloadIcon from 'rk-ui/icons/download-simple.svg'
 import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
+import CaretIcon from 'rk-ui/icons/caret-down.svg'
 
 interface Props {
   theme: 'light' | 'dark'
@@ -20,6 +21,14 @@ const SEARCH_STATES = [
   { label: 'with a value (hover or focus it for the clear button)', class: '', value: 'Query' },
   { label: 'focused', class: 'is-focus', value: 'Query' },
   { label: 'disabled', class: '', disabled: true },
+]
+const NUMBER_STATES = [
+  { label: 'rest', input: '', buttons: '' },
+  { label: 'hover on +', input: '', buttons: 'is-hover' },
+  { label: 'pressed +', input: '', buttons: 'is-active' },
+  { label: 'focused', input: 'is-focus', buttons: '' },
+  { label: 'disabled', input: '', buttons: '', disabled: true },
+  { label: 'error', input: '', buttons: '', invalid: true },
 ]
 const DATE_TYPES = ['date', 'time', 'month', 'week', 'datetime-local'] as const
 const DROP_STATES = [
@@ -139,3 +148,89 @@ const DROP_STATES = [
     ))
   }
 </SpecimenRow>
+
+<SpecimenRow title="Number A: native spinners">
+  <Specimen label="rest (the arrows are the browser's own)">
+    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="3" />
+  </Specimen>
+  <Specimen label="focused">
+    <input class="rk-input rk-input--spinners is-focus" type="number" aria-label="Specimen" value="3" />
+  </Specimen>
+  <Specimen label="disabled">
+    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="3" disabled />
+  </Specimen>
+  <Specimen label="error">
+    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="30" aria-invalid="true" />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Number B: buttons either side">
+  {
+    NUMBER_STATES.map((state) => (
+      <Specimen label={state.label}>
+        <rk-stepper class="rk-stepper rk-stepper--sides">
+          <button class="rk-button" type="button" data-step="down" aria-label="Decrease" disabled={state.disabled}>
+            −
+          </button>
+          <input
+            class:list={['rk-input', state.input]}
+            type="number"
+            aria-label="Specimen"
+            value="3"
+            min="0"
+            max="10"
+            disabled={state.disabled}
+            aria-invalid={state.invalid ? 'true' : undefined}
+          />
+          <button
+            class:list={['rk-button', state.buttons]}
+            type="button"
+            data-step="up"
+            aria-label="Increase"
+            disabled={state.disabled}
+          >
+            +
+          </button>
+        </rk-stepper>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Number C: stacked arrows inside">
+  {
+    NUMBER_STATES.map((state) => (
+      <Specimen label={state.label.replace('+', 'up')}>
+        <rk-stepper class="rk-stepper rk-stepper--stacked">
+          <input
+            class:list={['rk-input', state.input]}
+            type="number"
+            aria-label="Specimen"
+            value="3"
+            min="0"
+            max="10"
+            disabled={state.disabled}
+            aria-invalid={state.invalid ? 'true' : undefined}
+          />
+          <button
+            class={state.buttons}
+            type="button"
+            tabindex="-1"
+            data-step="up"
+            aria-label="Increase"
+            disabled={state.disabled}
+          >
+            <CaretIcon aria-hidden="true" />
+          </button>
+          <button type="button" tabindex="-1" data-step="down" aria-label="Decrease" disabled={state.disabled}>
+            <CaretIcon aria-hidden="true" />
+          </button>
+        </rk-stepper>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<script>
+  import 'rk-ui/stepper.js'
+</script>
