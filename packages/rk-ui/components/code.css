@@ -34,12 +34,14 @@ rk-code-block {
 }
 
 .rk-code {
+  --code-inset: var(--shadow-code-inset);
+
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   margin: 0;
   border-radius: var(--radius);
   background: var(--slate);
-  box-shadow: var(--shadow-code-inset);
+  box-shadow: var(--code-inset);
   color: var(--fg);
 }
 
@@ -98,19 +100,22 @@ rk-code-block {
 .rk-code:has(pre:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--outline-width);
-  box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled), var(--shadow-code-inset);
+  box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled), var(--code-inset);
 }
 
 .rk-code:has(pre:focus-visible) pre {
   outline: none;
 }
 
+/* The editor tab is flat: no inner shadow. A blank shadow, not none, so it can sit in a list. */
+.rk-code--tab {
+  --code-inset: 0 0 transparent;
+}
+
 .rk-code--tab .rk-code-header {
   padding-block: var(--space-2);
   border-radius: var(--radius) var(--radius) 0 0;
   background: var(--slate-tab);
-  /* The strip paints over the panel's inner shadow, so it repeats it. */
-  box-shadow: var(--shadow-code-inset);
 }
 
 .rk-code--tab .rk-code-copy {
