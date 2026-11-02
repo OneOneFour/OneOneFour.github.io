@@ -20,7 +20,7 @@
   --muted: light-dark(#5b6070, #a3a8b6);
   --line: light-dark(#1d232f, #05070b);
   --line-unfilled: var(--fg);
-  --focus: var(--navy-deep);
+  --focus: var(--yellow);
 
   /* Fills: vivid in both themes */
   --ink: #1d232f;
@@ -85,8 +85,8 @@
   --shadow: 4px 4px 0 var(--line);
   --shadow-pressed: 2px 2px 0 var(--line);
   --press-offset: 2px;
-  --focus-width: 3px;
-  --focus-offset: 2px;
+  --focus-width: 6px;
+  --focus-offset: 0;
 
   /* Motion */
   --duration-fast: 120ms;

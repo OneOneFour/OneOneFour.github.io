@@ -44,7 +44,9 @@ const GROUPS = [
     ],
   },
   { title: 'Large text on bright coral', pairs: [{ fg: '--on-coral', bg: '--coral', min: 3 }] },
-  { title: 'Focus ring and unfilled outlines', pairs: pairs(['--focus', '--line-unfilled'], SURFACES, 3) },
+  // The highlighter band hugs the ink outline, so that is the edge it must stand out from.
+  { title: 'Focus band against the outline', pairs: [{ fg: '--focus', bg: '--line', min: 3 }] },
+  { title: 'Unfilled outlines', pairs: pairs(['--line-unfilled'], SURFACES, 3) },
   { title: 'Outline against the page', themes: ['light'], pairs: pairs(['--line'], SURFACES, 3) },
   { title: 'Fill edge against the page', themes: ['dark'], pairs: pairs(FILLS, ['--surface'], 3) },
   {
