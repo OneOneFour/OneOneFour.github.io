@@ -1,0 +1,63 @@
+---
+/**
+ * A scatter plot of point clusters, each labelled at its centre.
+ *
+ * @param clusters the groups of points, coloured in series order
+ * @param label the chart's accessible name
+ * @param toon the toon option: ink outlines on the dots
+ */
+import ChartAxes from './ChartAxes.astro'
+import { formatTick, linear, niceTicks } from './chart-scale'
+import type { Cluster } from './chart-data'
+
+interface Props {
+  clusters: Cluster[]
+  label: string
+  toon?: boolean
+}
+
+const { clusters, label, toon = false } = Astro.props
+const width = 480
+const height = 320
+const plot = { left: 40, top: 28, right: width - 12, bottom: height - 32 }
+const points = clusters.flatMap((c) => c.points)
+const xValues = niceTicks(Math.min(...points.map((p) => p[0])), Math.max(...points.map((p) => p[0])))
+const yTicks = niceTicks(Math.min(...points.map((p) => p[1])), Math.max(...points.map((p) => p[1])))
+const x = linear([xValues[0], xValues.at(-1)!], [plot.left, plot.right])
+const y = linear([yTicks[0], yTicks.at(-1)!], [plot.bottom, plot.top])
+const xTicks = xValues.map((v) => ({ at: x(v), label: formatTick(v) }))
+const mean = (values: number[]) => values.reduce((sum, v) => sum + v, 0) / values.length
+const groups = clusters.map((c) => ({
+  ...c,
+  labelAt: [x(mean(c.points.map((p) => p[0]))), y(mean(c.points.map((p) => p[1])))],
+}))
+---
+
+<svg
+  class:list={['rk-chart', { 'rk-chart--toon': toon }]}
+  width={width}
+  height={height}
+  viewBox={`0 0 ${width} ${height}`}
+  role="img"
+  aria-label={label}
+>
+  <ChartAxes plot={plot} yTicks={yTicks} y={y} xTicks={xTicks} />
+  {
+    groups.map((group, i) => (
+      <g class={`rk-chart-series-${i + 1}`}>
+        {group.points.map(([px, py]) => (
+          <circle class="rk-chart-dot" cx={x(px).toFixed(1)} cy={y(py).toFixed(1)} r="4.5" />
+        ))}
+        <text
+          class="rk-chart-label"
+          x={group.labelAt[0]}
+          y={group.labelAt[1]}
+          text-anchor="middle"
+          dominant-baseline="middle"
+        >
+          {group.name}
+        </text>
+      </g>
+    ))
+  }
+</svg>

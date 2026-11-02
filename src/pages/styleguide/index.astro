@@ -31,6 +31,9 @@ import TooltipSpecimens from '../../components/styleguide/TooltipSpecimens.astro
 import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen.astro'
 import EquationSpecimens from '../../components/styleguide/EquationSpecimens.astro'
 import MathsInTextSpecimens from '../../components/styleguide/MathsInTextSpecimens.astro'
+import ChartPaletteSpecimens from '../../components/styleguide/ChartPaletteSpecimens.astro'
+import ChartSpecimens from '../../components/styleguide/ChartSpecimens.astro'
+import FigureSpecimens from '../../components/styleguide/FigureSpecimens.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -190,6 +193,25 @@ import MathsInTextSpecimens from '../../components/styleguide/MathsInTextSpecime
     <SpecimenSection title="Maths in text" stacked>
       <MathsInTextSpecimens slot="light" />
       <MathsInTextSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Chart colours">
+      <ChartPaletteSpecimens slot="light" />
+      <ChartPaletteSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Charts" stacked>
+      <p>
+        Inline SVG drawn at build time and coloured by the tokens. Options for Gate 1b: A flat, as the
+        dataviz guidance has it, and B with the toon edges and shadows.
+      </p>
+      <ChartSpecimens slot="light" />
+      <ChartSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Figures and widgets" stacked>
+      <FigureSpecimens slot="light" theme="light" />
+      <FigureSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>

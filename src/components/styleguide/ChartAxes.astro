@@ -1,0 +1,39 @@
+---
+/**
+ * Gridlines with y tick labels, and the baseline with x tick labels, for an SVG chart.
+ *
+ * @param plot the plot area
+ * @param yTicks the y values that get a gridline and a label
+ * @param y maps a y value to SVG units
+ * @param xTicks the x positions (in SVG units) and labels along the baseline
+ */
+import { formatTick, type Plot } from './chart-scale'
+
+interface Props {
+  plot: Plot
+  yTicks: number[]
+  y: (value: number) => number
+  xTicks: { at: number; label: string }[]
+}
+
+const { plot, yTicks, y, xTicks } = Astro.props
+---
+
+{
+  yTicks.map((tick) => (
+    <>
+      <line class="rk-chart-grid" x1={plot.left} x2={plot.right} y1={y(tick)} y2={y(tick)} />
+      <text class="rk-chart-tick" x={plot.left - 8} y={y(tick)} text-anchor="end" dominant-baseline="middle">
+        {formatTick(tick)}
+      </text>
+    </>
+  ))
+}
+<line class="rk-chart-axis" x1={plot.left} x2={plot.right} y1={plot.bottom} y2={plot.bottom} />
+{
+  xTicks.map((tick) => (
+    <text class="rk-chart-tick" x={tick.at} y={plot.bottom + 20} text-anchor="middle">
+      {tick.label}
+    </text>
+  ))
+}

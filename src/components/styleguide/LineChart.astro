@@ -1,0 +1,70 @@
+---
+/**
+ * A multi-series line chart with a direct label at the end of each line, and optionally a legend.
+ *
+ * @param x the x value of every point, shared by all series
+ * @param series the lines, coloured in series order
+ * @param label the chart's accessible name
+ * @param toon the toon option: ink edges on the lines
+ * @param legend a legend above the chart as well as the direct labels
+ */
+import ChartAxes from './ChartAxes.astro'
+import { linear, linePath, niceTicks } from './chart-scale'
+import type { Series } from './chart-data'
+
+interface Props {
+  x: number[]
+  series: Series[]
+  label: string
+  toon?: boolean
+  legend?: boolean
+}
+
+const { x: xs, series, label, toon = false, legend = false } = Astro.props
+const width = 640
+const height = 320
+const plot = { left: 40, top: 12, right: width - 88, bottom: height - 32 }
+const values = series.flatMap((s) => s.values)
+const yTicks = niceTicks(Math.min(...values), Math.max(...values))
+const y = linear([yTicks[0], yTicks.at(-1)!], [plot.bottom, plot.top])
+const x = linear([xs[0], xs.at(-1)!], [plot.left, plot.right])
+const xTicks = xs.filter((v) => v % 10 === 0).map((v) => ({ at: x(v), label: String(v) }))
+const lines = series.map((s) => {
+  const points = s.values.map((v, i) => [x(xs[i]), y(v)] as [number, number])
+  return { name: s.name, d: linePath(points), end: points.at(-1)! }
+})
+---
+
+<div>
+  {
+    legend && (
+      <ul class="rk-chart-legend">
+        {series.map((s, i) => (
+          <li class={`rk-chart-series-${i + 1}`}>{s.name}</li>
+        ))}
+      </ul>
+    )
+  }
+  <svg
+    class:list={['rk-chart', { 'rk-chart--toon': toon }]}
+    width={width}
+    height={height}
+    viewBox={`0 0 ${width} ${height}`}
+    role="img"
+    aria-label={label}
+  >
+    <ChartAxes plot={plot} yTicks={yTicks} y={y} xTicks={xTicks} />
+    {
+      lines.map((line, i) => (
+        <g class={`rk-chart-series-${i + 1}`}>
+          <path class="rk-chart-casing" d={line.d} />
+          <path class="rk-chart-line" d={line.d} />
+          <circle class="rk-chart-dot" cx={line.end[0]} cy={line.end[1]} r="4" />
+          <text class="rk-chart-label" x={line.end[0] + 10} y={line.end[1]} dominant-baseline="middle">
+            {line.name}
+          </text>
+        </g>
+      ))
+    }
+  </svg>
+</div>

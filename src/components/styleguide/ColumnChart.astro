@@ -1,0 +1,53 @@
+---
+/**
+ * A one-series column chart with each value printed on its column's cap.
+ *
+ * @param data the columns, left to right
+ * @param label the chart's accessible name
+ * @param toon the toon option: ink outlines and hard shadows on the columns
+ */
+import ChartAxes from './ChartAxes.astro'
+import { columnPath, linear, niceTicks } from './chart-scale'
+
+interface Props {
+  data: { label: string; value: number }[]
+  label: string
+  toon?: boolean
+}
+
+const { data, label, toon = false } = Astro.props
+const width = 480
+const height = 280
+const plot = { left: 40, top: 24, right: width - 12, bottom: height - 32 }
+const yTicks = niceTicks(0, Math.max(...data.map((d) => d.value)), 4)
+const y = linear([0, yTicks.at(-1)!], [plot.bottom, plot.top])
+const band = (plot.right - plot.left) / data.length
+const columnWidth = 24
+const columns = data.map((d, i) => {
+  const centre = plot.left + band * (i + 0.5)
+  return { ...d, centre, d: columnPath(centre - columnWidth / 2, columnWidth, y(d.value), plot.bottom) }
+})
+const xTicks = columns.map((c) => ({ at: c.centre, label: c.label }))
+---
+
+<svg
+  class:list={['rk-chart', { 'rk-chart--toon': toon }]}
+  width={width}
+  height={height}
+  viewBox={`0 0 ${width} ${height}`}
+  role="img"
+  aria-label={label}
+>
+  <ChartAxes plot={plot} yTicks={yTicks} y={y} xTicks={xTicks} />
+  <g class="rk-chart-series-1">
+    {columns.map((c) => <path class="rk-chart-shadow" d={c.d} />)}
+    {columns.map((c) => <path class="rk-chart-bar" d={c.d} />)}
+  </g>
+  {
+    columns.map((c) => (
+      <text class="rk-chart-label" x={c.centre} y={y(c.value) - 8} text-anchor="middle">
+        {c.value}
+      </text>
+    ))
+  }
+</svg>
