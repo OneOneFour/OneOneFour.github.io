@@ -1,14 +1,11 @@
 ---
 /**
- * A colour A or B swatch group for the styleguide, with teal checked.
+ * A colour picker for the styleguide: the palette as colour tiles, with teal checked.
  *
  * @param name the radios' name, unique on the page
  * @param flair a flair modifier class for the group, if any
- * @param hover the hue shown hovered
- * @param focus the hue shown focused
+ * @param states static state classes by hue, e.g. { navy: 'is-hover' }
  * @param disabled disable the whole group
- * @param custom add colour B's native colour input as a last swatch
- * @param focusCustom show that custom swatch focused
  * @param paletteLegend show the legend, with a palette icon, instead of hiding it
  */
 import PaletteIcon from 'rk-ui/icons/palette.svg'
@@ -16,15 +13,12 @@ import PaletteIcon from 'rk-ui/icons/palette.svg'
 interface Props {
   name: string
   flair?: string
-  hover?: string
-  focus?: string
+  states?: Partial<Record<string, string>>
   disabled?: boolean
-  custom?: boolean
-  focusCustom?: boolean
   paletteLegend?: boolean
 }
 
-const { name, flair, hover, focus, disabled, custom, focusCustom, paletteLegend } = Astro.props
+const { name, flair, states = {}, disabled, paletteLegend } = Astro.props
 const HUES = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky', 'grape', 'tangerine', 'lilac', 'apricot']
 // Hues that carry their own text colour; the rest take --on-fill.
 const HUES_WITH_OWN_TEXT = ['navy', 'coral', 'grape']
@@ -35,7 +29,7 @@ function swatchStyle(hue: string) {
 }
 ---
 
-<fieldset class:list={['rk-swatches', flair]} disabled={disabled}>
+<fieldset class:list={['rk-tiles', flair]} disabled={disabled}>
   {
     paletteLegend ? (
       <legend>
@@ -48,18 +42,10 @@ function swatchStyle(hue: string) {
   }
   {
     HUES.map((hue) => (
-      <label class:list={['rk-swatch', { 'is-hover': hue === hover, 'is-focus': hue === focus }]} style={swatchStyle(hue)}>
+      <label class:list={['rk-tile rk-tile--colour', states[hue]]} style={swatchStyle(hue)}>
         <input type="radio" name={name} value={hue} checked={hue === 'teal'} />
         <span class="rk-visually-hidden">{hue}</span>
       </label>
     ))
-  }
-  {
-    custom && (
-      <label class="rk-check">
-        <input class:list={['rk-swatch', { 'is-focus': focusCustom }]} type="color" />
-        Custom
-      </label>
-    )
   }
 </fieldset>

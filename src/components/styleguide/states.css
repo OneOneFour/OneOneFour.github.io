@@ -139,7 +139,6 @@ a:where(:not(.rk-button)).is-focus {
   box-shadow: var(--shadow-inset);
 }
 
-.rk-swatch.is-hover,
 .rk-input[type='color'].is-hover {
   box-shadow: var(--shadow-hover);
   translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
@@ -150,13 +149,7 @@ a:where(:not(.rk-button)).is-focus {
   translate: var(--press-offset) var(--press-offset);
 }
 
-.rk-swatch.is-focus {
-  outline: var(--focus-width) solid var(--focus);
-  outline-offset: var(--focus-offset);
-  box-shadow: none;
-}
-
-.rk-swatches--brush .rk-swatch.is-hover::after {
+.rk-tiles--brush .rk-tile--colour.is-hover::after {
   opacity: 0.7;
 }
 

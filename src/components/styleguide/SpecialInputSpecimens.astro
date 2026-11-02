@@ -49,20 +49,15 @@ const NUMBER_STATES = [
   { label: 'error', input: '', buttons: '', invalid: true },
 ]
 const SWATCH_GROUPS = [
-  { variant: 'A', label: 'rest (teal checked)' },
-  { variant: 'A', label: 'hover on navy, focus on teal', hover: 'navy', focus: 'teal' },
-  { variant: 'A', label: 'disabled', disabled: true },
-  { variant: 'B', label: 'rest (the last swatch opens the browser picker)', custom: true },
-  { variant: 'B', label: 'focused custom swatch', custom: true, focusCustom: true },
+  { label: 'rest (teal checked)' },
+  { label: 'hover on navy, pressed coral', states: { navy: 'is-hover', coral: 'is-active' } },
+  { label: 'focused teal', states: { teal: 'is-focus' } },
+  { label: 'disabled', disabled: true },
 ]
 const FLAIRS = [
-  { label: 'flair A: paint brush', class: 'rk-swatches--brush' },
-  { label: 'flair B: paint drops', class: 'rk-swatches--drops' },
-  { label: 'flair C: palette and stroke', class: 'rk-swatches--stroke', paletteLegend: true },
-]
-const FLAIR_GROUPS = [
-  { label: 'colour A, hover on navy', hover: 'navy' },
-  { label: 'colour B', custom: true },
+  { label: 'flair A: paint brush', class: 'rk-tiles--brush' },
+  { label: 'flair B: paint drops', class: 'rk-tiles--drops' },
+  { label: 'flair C: palette and stroke', class: 'rk-tiles--stroke', paletteLegend: true },
 ]
 const COLOUR_STATES = [
   { label: 'rest', class: '' },
@@ -255,42 +250,32 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   }
 </SpecimenRow>
 
-<SpecimenRow title="Colour A and B: token swatches (flair none)">
+<SpecimenRow title="Colour picker: palette tiles (flair none)">
   {
     SWATCH_GROUPS.map((group, index) => (
-      <Specimen label={`colour ${group.variant}: ${group.label}`}>
+      <Specimen label={group.label}>
+        <SwatchPicker name={`${theme}-swatch-${index}`} states={group.states} disabled={group.disabled} />
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Colour picker: flair for the checked tile">
+  {
+    FLAIRS.map((flair, index) => (
+      <Specimen label={`${flair.label}, hover on navy`}>
         <SwatchPicker
-          name={`${theme}-swatch-${index}`}
-          hover={group.hover}
-          focus={group.focus}
-          disabled={group.disabled}
-          custom={group.custom}
-          focusCustom={group.focusCustom}
+          name={`${theme}-flair-${index}`}
+          flair={flair.class}
+          paletteLegend={flair.paletteLegend}
+          states={{ navy: 'is-hover' }}
         />
       </Specimen>
     ))
   }
 </SpecimenRow>
 
-<SpecimenRow title="Colour A and B: flair">
-  {
-    FLAIRS.flatMap((flair, f) =>
-      FLAIR_GROUPS.map((group, g) => (
-        <Specimen label={`${flair.label}: ${group.label}`}>
-          <SwatchPicker
-            name={`${theme}-flair-${f}-${g}`}
-            flair={flair.class}
-            paletteLegend={flair.paletteLegend}
-            hover={group.hover}
-            custom={group.custom}
-          />
-        </Specimen>
-      ))
-    )
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Colour C: native input">
+<SpecimenRow title="Colour: native input on its own">
   {
     COLOUR_STATES.map((state) => (
       <Specimen label={state.label}>
