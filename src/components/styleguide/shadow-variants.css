@@ -1,5 +1,5 @@
 /* Dark-mode shadow options for Gate 1b, switched by a class on a wrapper. Light mode is the same in
-   every option. Shadow A, the current near-black shadow, needs no class.
+   every option.
 
    Custom properties resolve their var()s where they are declared, so --shadow and friends are
    re-declared inside each wrapper to pick up the option's --shadow-color. */
@@ -21,16 +21,8 @@
       var(--outline-width) var(--shadow-edge);
 }
 
-/* Shadow C: extruded side. The shadow is the slate --shadow-lit, lighter than the page. */
-.rk-shadow-c {
-  --shadow-color: var(--shadow-lit);
-  --shadow: var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color);
-  --shadow-hover: calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--shadow-color);
-  --shadow-pressed: calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color);
-}
-
 /* Shadow D: own-colour extrusion. An element with a fill sets --extrusion to that fill, darkened;
-   everything else falls back to the slate from shadow C. Declared on every element, so each one
+   everything else falls back to the slate --shadow-lit, lighter than the page. Declared on every element, so each one
    resolves its own --extrusion. */
 .rk-shadow-d * {
   --shadow-color: light-dark(var(--line), var(--extrusion, var(--shadow-lit)));
