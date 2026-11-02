@@ -25,6 +25,8 @@
 }
 
 .rk-widget-frame-stage {
+  --chart-bg: var(--raised);
+
   display: grid;
   place-items: center;
   overflow: hidden;

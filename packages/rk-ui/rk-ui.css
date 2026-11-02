@@ -35,4 +35,6 @@
 @import './components/tooltip.css';
 @import './components/popup.css';
 @import './components/maths.css';
+@import './components/figure.css';
+@import './components/chart.css';
 @import './components/interactive.css';
