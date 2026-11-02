@@ -79,6 +79,11 @@ const PHOSPHOR_ICONS = [
   'traffic-sign', 'traffic-cone', 'road-horizon', 'path', 'signpost', 'navigation-arrow', 'gps',
   'gps-fix', 'map-pin-simple', 'map-pin-line', 'map-pin-simple-line', 'map-pin-area',
   'map-pin-simple-area',
+  // Buildings and the city
+  'building', 'building-apartment', 'building-office', 'city', 'house-simple', 'house-line',
+  'factory', 'warehouse', 'garage', 'storefront', 'hospital', 'bank', 'bridge', 'lighthouse',
+  'park', 'picnic-table', 'tent', 'campfire', 'barricade', 'crane', 'crane-tower', 'hard-hat',
+  'cell-tower',
 ]
 
 // Hand-adapted icons in Phosphor's raw duotone format, read from scripts/icon-sources/.
@@ -340,6 +345,23 @@ const DEFAULT_FILLS = {
   'map-pin-simple-line': 'tangerine',
   'map-pin-area': 'tangerine',
   'map-pin-simple-area': 'tangerine',
+  // Buildings and the city
+  building: 'lilac',
+  'building-apartment': 'lilac',
+  'building-office': 'lilac',
+  city: 'lilac',
+  'house-simple': 'sky',
+  'house-line': 'sky',
+  hospital: 'coral',
+  lighthouse: 'yellow',
+  park: 'green',
+  'picnic-table': 'green',
+  tent: 'green',
+  campfire: 'tangerine',
+  barricade: 'tangerine',
+  crane: 'yellow',
+  'crane-tower': 'yellow',
+  'hard-hat': 'yellow',
 }
 
 // Globes whose duotone layer is the land. They also get an ocean disc behind it, coloured by
