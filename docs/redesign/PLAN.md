@@ -354,7 +354,7 @@ that need no framework at all:
 | 2. Fonts and base | Self-hosted font CSS, reset, type scale | anything with CSS |
 | 3. Primitives and components | **CSS classes on plain HTML** (`.tu-button`, `.tu-chip`, `.tu-card`, `.tu-switch`, `.tu-widget-frame` ...), with documented markup | any framework, or plain HTML |
 | 4. Icons | Vendored SVG files + licences, `--icon-fill` hook | anything |
-| 5. Behaviour | Small **vanilla TS custom elements** for components that need JS (`<tu-theme-toggle>`, `<tu-lightbox>`, sliders with readouts, the Lorenz widget) | any framework, or plain HTML |
+| 5. Behaviour | Small **vanilla JS custom elements (JSDoc types)** for components that need JS (`<tu-theme-toggle>`, `<tu-lightbox>`, sliders with readouts, the Lorenz widget) | any framework, or plain HTML |
 | 6. Framework wrappers | Thin `.astro` components that write layer-3 markup. Rob's other sites are vanilla JS, so they use layers 1–5 directly. No Vue wrappers for now | that framework only |
 
 - **Where it lives:** `packages/toon-ui/` as an npm workspace inside this repo. The site depends on
@@ -494,7 +494,7 @@ Longer bio in plain Markdown…
   or SVG slot, a controls row and Start/Reset. Controls are the *native*
   styled primitives from §5.4, so they look right whatever drives them.
 - **What drives the widget is decided per widget:**
-  - Simulations and visualisations (most cases): vanilla TS module or a
+  - Simulations and visualisations (most cases): vanilla JS module or a
     custom element on a `<canvas>`/SVG, consistent with the Phase 2
     "vanilla first" decision.
   - Genuinely stateful UIs: a Vue island (`client:visible`). Vue is already
@@ -551,7 +551,7 @@ Every package must end with `npm run build` passing.
 | WP-3 | R2 | subagent | `tokens.css` (light and dark, §5.1b), icon vendoring script and `packages/toon-ui/icons/` (§5.5), no-flash theme script, type scale, primitives, Astro components, `/styleguide/` | Matches §5; Rob reviews `/styleguide/` locally in **both themes** |
 | WP-4 | R3 | **conversation** | BaseLayout and left bar, nav, responsive top bar, Home, About, Projects restyle, redirects | Rob signs off locally; old URLs redirect |
 | WP-5 | R4 | conversation, then subagent | PostLayout, MDX/KaTeX/Shiki, Sidenote/Figure/WidgetFrame, RSS | Exemplar post renders, works with JS off (fallback) |
-| WP-6 | R4 | subagent | Lorenz butterfly widget (vanilla TS) | Runs at 60fps on a laptop; reduced-motion respected |
+| WP-6 | R4 | subagent | Lorenz butterfly widget (vanilla JS) | Runs at 60fps on a laptop; reduced-motion respected |
 | WP-7a | R5 | subagent | `publications` collection schema plus the `pubs:new` starter script (DOI or BibTeX → draft `.md`), §6a | `pubs:new 10.1029/2023MS004163` writes a valid draft; build passes with it |
 | WP-7b | R5 | subagent | `/research/` page: publications collection, chips filter, paper ↔ post links | Every paper with a `post` shows the link both ways |
 | WP-8 | R6 | conversation | Photography: album structure, image pipeline, lightbox. **Rob supplies the prototype photos at the start** | Optimised images; Lighthouse perf ≥ 90 on an album page |
