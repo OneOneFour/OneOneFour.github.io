@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "vendor-icons": "node scripts/vendor-icons.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",
