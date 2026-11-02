@@ -1,6 +1,7 @@
 ---
 /**
- * The dark-mode shadow options for Gate 1b, each on the same set of raised things.
+ * The dark-mode shadow options for Gate 1b, the default (B) and D, each on the same set of raised
+ * things.
  *
  * @param theme the panel's theme, used to keep ids and names unique across the two panels
  */
@@ -9,8 +10,14 @@ import Button from '../ui/Button.astro'
 import Card from '../ui/Card.astro'
 import Chip from '../ui/Chip.astro'
 import ChipGroup from '../ui/ChipGroup.astro'
+import Ballot from './Ballot.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
+import TilePicker from './TilePicker.astro'
+import CaretLeftIcon from 'rk-ui/icons/caret-left.svg'
+import CaretRightIcon from 'rk-ui/icons/caret-right.svg'
+import EnvelopeIcon from 'rk-ui/icons/envelope-simple.svg'
+import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
 
 interface Props {
   theme: 'light' | 'dark'
@@ -18,12 +25,21 @@ interface Props {
 
 const { theme } = Astro.props
 const VARIANTS = [
-  { name: 'b', title: 'Shadow B: outlined slab', class: 'rk-shadow-b' },
-  { name: 'd', title: 'Shadow D: own-colour extrusion', class: 'rk-shadow-d' },
+  { name: 'b', title: 'Shadow B: outlined slab (the default)', class: undefined },
+  { name: 'd', title: 'Shadow D: own-colour extrusion (.rk-shadow-d)', class: 'rk-shadow-d' },
 ]
 const FILLS = ['navy', 'coral', 'grape', 'teal'] as const
 const KEYS = ['One', 'Two', 'Three']
 const DIALS = ['knob', 'arc']
+const TILES = ['1', '2', '3'].map((number) => ({ value: number, label: number }))
+const BALLOT = ['teal', 'green'].map((colour) => ({
+  value: colour,
+  title: colour[0].toUpperCase() + colour.slice(1),
+  colour,
+  checked: colour === 'green',
+}))
+const PAGES = [1, 2, 3]
+const CURRENT = 2
 ---
 
 {
@@ -97,12 +113,128 @@ const DIALS = ['knob', 'arc']
               </Specimen>
             )
           })}
+          <Specimen label="tiles (2 checked), a ballot with colour tiles">
+            <TilePicker legend="Specimen" name={`${prefix}-tiles`} tiles={TILES} checked={['2']} />
+            <Ballot legend="Specimen" name={`${prefix}-ballot`} options={BALLOT} />
+          </Specimen>
+          <Specimen label="search bar, file button, stepper, range thumb" wide>
+            <form class="rk-search-bar" role="search">
+              <input class="rk-input" type="search" aria-label="Search" placeholder="Search" />
+              <button class="rk-button" type="submit">
+                <SearchIcon class="rk-icon rk-icon--small" aria-hidden="true" />
+                Search
+              </button>
+            </form>
+            <input class="rk-input" type="file" aria-label="Specimen" />
+            <rk-stepper class="rk-stepper rk-stepper--split">
+              <button class="rk-button" type="button" data-step="down" aria-label="Decrease">
+                −
+              </button>
+              <input class="rk-input" type="number" aria-label="Specimen" value="3" min="0" max="10" />
+              <button class="rk-button" type="button" data-step="up" aria-label="Increase">
+                +
+              </button>
+            </rk-stepper>
+            <input class="rk-range" type="range" aria-label="Specimen" />
+          </Specimen>
+          <Specimen label="folder tabs on a sheet, pagination as folder tabs" wide>
+            <div class="rk-folder">
+              <div class="rk-folder-tabs" role="tablist" aria-label="Specimen">
+                <button class="rk-folder-tab" type="button" role="tab" aria-selected="true">One</button>
+                <button class="rk-folder-tab" type="button" role="tab" aria-selected="false" tabindex="-1">
+                  Two
+                </button>
+              </div>
+              <div class="rk-folder-sheet" role="tabpanel"><p>Panel.</p></div>
+            </div>
+            <div class="rk-folder rk-folder--sloped">
+              <nav aria-label="Pagination">
+                <ol class="rk-folder-tabs">
+                  {PAGES.map((page) => (
+                    <li>
+                      <a class="rk-folder-tab" href="#" aria-current={page === CURRENT ? 'page' : undefined}>
+                        {page}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+              <div class="rk-folder-sheet">
+                <p>Page {CURRENT}</p>
+              </div>
+            </div>
+          </Specimen>
+          <Specimen label="pagination as tiles and buttons">
+            <nav class="rk-pagination" aria-label="Pagination">
+              <a class="rk-button rk-button--small" href="#" rel="prev">
+                <CaretLeftIcon class="rk-icon rk-icon--small" />
+                Previous
+              </a>
+              <ol class="rk-tiles rk-tiles--compact">
+                {PAGES.map((page) => (
+                  <li>
+                    <a class="rk-tile" href="#" aria-current={page === CURRENT ? 'page' : undefined}>
+                      {page}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+              <a class="rk-button rk-button--small" href="#" rel="next">
+                Next
+                <CaretRightIcon class="rk-icon rk-icon--small" />
+              </a>
+            </nav>
+          </Specimen>
+          <Specimen label="badges: corner sticker, inline; ring spinner">
+            <Button fill="teal" class="rk-badge-host">
+              <EnvelopeIcon class="rk-icon" />
+              <span class="rk-visually-hidden">Messages</span>
+              <span class="rk-badge rk-badge--coral rk-badge--corner rk-badge--sticker">
+                12<span class="rk-visually-hidden"> new</span>
+              </span>
+            </Button>
+            <span class="rk-badge rk-badge--grape">Label</span>
+            <span class="rk-spinner rk-spinner--ring" role="status">
+              <span class="rk-visually-hidden">Loading…</span>
+            </span>
+          </Specimen>
+          <Specimen label="popup panel (a static copy), toon tooltip (shown)">
+            <div class="rk-popup">
+              <p>Popup text.</p>
+              <Button small tabindex="-1">Close</Button>
+            </div>
+            <div class="room-above">
+              <span class="rk-tooltip rk-tooltip--toon is-hover">
+                <Button tabindex="-1">Button</Button>
+                <span class="rk-tooltip-bubble">Tooltip text</span>
+              </span>
+            </div>
+          </Specimen>
+          <Specimen label="custom select: open it for its list panel" wide>
+            <select class="rk-select rk-select--picker" aria-label="Specimen">
+              {KEYS.map((key) => (
+                <option value={key}>{key}</option>
+              ))}
+            </select>
+          </Specimen>
         </SpecimenRow>
       </div>
     )
   })
 }
 
+<style>
+  .rk-folder-sheet p {
+    margin: 0;
+  }
+
+  /* The shown tooltip overhangs its button, so give it room. */
+  .room-above {
+    padding-block-start: var(--space-7);
+  }
+</style>
+
 <script>
   import 'rk-ui/dial.js'
+  import 'rk-ui/stepper.js'
 </script>
