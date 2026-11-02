@@ -6,6 +6,7 @@
  *
  * @param illustration the parts, in assemblies, on a grid of units
  * @param theme the panel's theme, used to keep ids unique across the two panels
+ * @param sticker a demo look: at rest the whole drawing is one die-cut sticker, with one keyline
  */
 import type { ExplodedAssembly, ExplodedIllustration, ExplodedPart } from './exploded-view'
 import ExplodedViewPart from './ExplodedViewPart.astro'
@@ -16,13 +17,15 @@ import './explode.css'
 interface Props {
   illustration: ExplodedIllustration
   theme: 'light' | 'dark'
+  sticker?: boolean
 }
 
-const { illustration, theme } = Astro.props
+const { illustration, theme, sticker = false } = Astro.props
 const { title, description, columns, rows, ground, assemblies } = illustration
-const idPrefix = `${theme}-${sectionId(title)}`
+const idPrefix = `${theme}-${sticker ? 'sticker' : 'plain'}-${sectionId(title)}`
 const viewBox = `0 0 ${columns} ${rows}`
 const groundPath = ground.dashes.map(([start, end]) => `M${start} ${ground.y}H${end}`).join('')
+const restingShapes = assemblies.flatMap((assembly) => assembly.parts.map((part) => part.shape.d))
 const listFormat = new Intl.ListFormat('en-GB', { type: 'conjunction' })
 const hatchId = `${idPrefix}-hatch`
 /**
@@ -47,7 +50,7 @@ function partStyle({ shape: { box }, fill, depth, explode }: ExplodedPart) {
 }
 ---
 
-<div class="rk-explode">
+<div class:list={['rk-explode', { 'rk-explode--sticker': sticker }]}>
   <div
     class="rk-explode-stage"
     style={`--columns: ${columns}; --rows: ${rows}; --hatch: url(#${hatchId})`}
@@ -67,6 +70,22 @@ function partStyle({ shape: { box }, fill, depth, explode }: ExplodedPart) {
       </pattern>
       <path d={groundPath} />
     </svg>
+    {
+      sticker && (
+        <svg class="rk-explode-sticker" viewBox={viewBox} aria-hidden="true">
+          <g class="rk-explode-sticker-edge">
+            {restingShapes.map((d) => (
+              <path d={d} />
+            ))}
+          </g>
+          <g class="rk-explode-sticker-backing">
+            {restingShapes.map((d) => (
+              <path d={d} />
+            ))}
+          </g>
+        </svg>
+      )
+    }
     {
       assemblies.map((assembly, a) => (
         <div class="rk-explode-assembly" tabindex="0" role="img" aria-label={assemblyLabel(assembly)}>
