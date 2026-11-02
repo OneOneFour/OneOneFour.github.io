@@ -1,0 +1,82 @@
+---
+/**
+ * The custom select list (A checked option filled, B tinted), with and without icons, its states,
+ * and a text input with native suggestions.
+ *
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import SunIcon from 'rk-ui/icons/sun.svg'
+import MoonIcon from 'rk-ui/icons/moon.svg'
+import CircleHalfIcon from 'rk-ui/icons/circle-half.svg'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const OPTIONS = [
+  { value: 'one', label: 'Option one', Icon: SunIcon },
+  { value: 'two', label: 'Option two', Icon: MoonIcon },
+  { value: 'three', label: 'Option three', Icon: CircleHalfIcon },
+]
+const STYLES = [
+  { title: 'A: checked option filled', class: '' },
+  { title: 'B: checked option tinted', class: 'rk-select--tint' },
+]
+const STATES = [
+  { label: 'focused', class: 'is-focus', disabled: false },
+  { label: 'disabled', class: '', disabled: true },
+]
+---
+
+{
+  STYLES.map((style) => (
+    <SpecimenRow title={style.title}>
+      <Specimen label="text options" wide>
+        <select class:list={['rk-select rk-select--picker', style.class]} aria-label="Specimen">
+          {OPTIONS.map(({ value, label }) => (
+            <option value={value}>{label}</option>
+          ))}
+        </select>
+      </Specimen>
+      <Specimen label="with icons, shown when closed too" wide>
+        <select class:list={['rk-select rk-select--picker', style.class]} aria-label="Specimen">
+          <button>
+            <selectedcontent></selectedcontent>
+          </button>
+          {OPTIONS.map(({ value, label, Icon }) => (
+            <option value={value}>
+              <Icon class="rk-icon rk-icon--small" />
+              {label}
+            </option>
+          ))}
+        </select>
+      </Specimen>
+    </SpecimenRow>
+  ))
+}
+
+<SpecimenRow title="Select states">
+  {
+    STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <select class:list={['rk-select rk-select--picker', state.class]} aria-label="Specimen" disabled={state.disabled}>
+          {OPTIONS.map(({ value, label }) => (
+            <option value={value}>{label}</option>
+          ))}
+        </select>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Text input with suggestions (native datalist)">
+  <Specimen label="type, or open the list" wide>
+    <input class="rk-input" type="text" list={`${theme}-suggestions`} aria-label="Specimen" />
+    <datalist id={`${theme}-suggestions`}>
+      {OPTIONS.map(({ label }) => <option value={label} />)}
+    </datalist>
+  </Specimen>
+</SpecimenRow>

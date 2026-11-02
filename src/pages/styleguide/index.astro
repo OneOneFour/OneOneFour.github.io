@@ -16,6 +16,7 @@ import IconSpecimens from '../../components/styleguide/IconSpecimens.astro'
 import ButtonSpecimens from '../../components/styleguide/ButtonSpecimens.astro'
 import InputSpecimens from '../../components/styleguide/InputSpecimens.astro'
 import SpecialInputSpecimens from '../../components/styleguide/SpecialInputSpecimens.astro'
+import SelectPickerSpecimens from '../../components/styleguide/SelectPickerSpecimens.astro'
 import DialSpecimens from '../../components/styleguide/DialSpecimens.astro'
 import ChoiceSpecimens from '../../components/styleguide/ChoiceSpecimens.astro'
 import RangeSpecimens from '../../components/styleguide/RangeSpecimens.astro'
@@ -96,6 +97,15 @@ import PaginationSpecimens from '../../components/styleguide/PaginationSpecimens
     <SpecimenSection title="Text inputs and selects">
       <InputSpecimens slot="light" theme="light" />
       <InputSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Custom select list">
+      <p>
+        Open these in a browser with customizable select (appearance: base-select) to see the
+        styled list. Elsewhere they are the plain select above.
+      </p>
+      <SelectPickerSpecimens slot="light" theme="light" />
+      <SelectPickerSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Special inputs">
