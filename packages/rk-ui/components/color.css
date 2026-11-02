@@ -136,7 +136,7 @@
 
 /* Flair B: add .rk-tiles--drops for tiles shaped like paint drops: a square with one sharp
    corner, turned so that corner points up. Turning a tile turns its shadows too, so they are
-   redefined along its own x axis, which the turn points down and to the right. */
+   redefined in its own axes: the shadow direction turned back by 45deg. */
 
 .rk-tiles--drops {
   --drop-corners: 0 50% 50% 50%;
@@ -146,10 +146,13 @@
 
 .rk-tiles--drops .rk-tile {
   --diagonal: 1.4142;
-  --shadow: calc(var(--shadow-offset) * var(--diagonal)) 0 0 var(--shadow-color);
-  --shadow-hover: calc(6px * var(--diagonal)) 0 0 var(--shadow-color);
-  --shadow-pressed: calc(2px * var(--diagonal)) 0 0 var(--shadow-color);
-  --shadow-inset: inset calc(2px * var(--diagonal)) 0 0 var(--line-unfilled);
+  --drop-dx: calc((var(--shadow-dx) + var(--shadow-dy)) * var(--diagonal) / 2);
+  --drop-dy: calc((var(--shadow-dy) - var(--shadow-dx)) * var(--diagonal) / 2);
+  --shadow: calc(var(--shadow-offset) * var(--drop-dx)) calc(var(--shadow-offset) * var(--drop-dy))
+    0 var(--shadow-color);
+  --shadow-hover: calc(6px * var(--drop-dx)) calc(6px * var(--drop-dy)) 0 var(--shadow-color);
+  --shadow-pressed: calc(2px * var(--drop-dx)) calc(2px * var(--drop-dy)) 0 var(--shadow-color);
+  --shadow-inset: inset calc(2px * var(--drop-dx)) calc(2px * var(--drop-dy)) 0 var(--line-unfilled);
   --picker-radius: var(--drop-corners);
 
   border-radius: var(--drop-corners);

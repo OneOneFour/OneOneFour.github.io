@@ -105,7 +105,7 @@
    the transition springs it back up. */
 .rk-search-bar:has(.rk-button:active) {
   box-shadow: var(--shadow-pressed);
-  translate: var(--press-offset) var(--press-offset);
+  translate: var(--press-offset-x) var(--press-offset-y);
   animation: rk-search-bar-press var(--duration-spring) ease-out;
 }
 
@@ -117,8 +117,8 @@
 
   50% {
     box-shadow: none;
-    translate: calc(var(--press-offset) + var(--press-overshoot))
-      calc(var(--press-offset) + var(--press-overshoot));
+    translate: calc(var(--press-offset-x) + var(--shadow-dx) * var(--press-overshoot))
+      calc(var(--press-offset-y) + var(--shadow-dy) * var(--press-overshoot));
   }
 }
 
