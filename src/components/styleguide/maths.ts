@@ -1,6 +1,6 @@
 import katex from 'katex'
 
-/** The chart hues in series order; each has a `\name{…}` macro for colour-coded terms. */
+/** The palette hues with a term class; each has a `\name{…}` macro for colour-coded terms. */
 export const TERM_HUES = ['teal', 'yellow', 'navy', 'green', 'sky', 'coral', 'grape', 'tangerine']
 
 const termMacros = Object.fromEntries(

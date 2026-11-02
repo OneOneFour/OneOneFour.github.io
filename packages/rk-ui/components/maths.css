@@ -12,7 +12,7 @@
    side borders of their own, so they take .rk-scroll--bar too, in place of the dots. Equation
    numbers, and references to them in prose (.rk-eqref), are small lilac pills.
 
-   Colour-coded terms: \htmlClass{rk-maths-teal}{…}, one class per chart hue, put the hue's tint
+   Colour-coded terms: \htmlClass{rk-maths-teal}{…}, one class per palette hue, put the hue's tint
    behind the term. */
 
 /* KaTeX's maths italic x-height matches Xmind's at 1.15em; KaTeX's own default is 1.21em. */
