@@ -5,6 +5,7 @@
 @import './fonts.css';
 @import './type.css';
 @import './base.css';
+@import './shadow-colour.css';
 
 @import './components/icon.css';
 @import './components/button.css';

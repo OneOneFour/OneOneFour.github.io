@@ -83,7 +83,7 @@ const CONTENTS = [
       'Callouts',
       'Badges',
       'Spinners and progress',
-      'More loading options',
+      'More spinners and loaders',
       'Tooltips and popups',
       'Widget frame',
     ],
@@ -151,7 +151,11 @@ const CONTENTS = [
     </SpecimenSection>
 
     <SpecimenSection title="Dark-mode shadows" stacked>
-      <p>The default (B) against option D for Gate 1b. Light mode is the same in both.</p>
+      <p>
+        The default slab (B) against the colour mode (D): set data-shadow="colour" on &lt;html&gt; or
+        any container, or use the switch at the top for the whole page. Light mode is the same in
+        both.
+      </p>
       <ShadowSpecimens slot="light" theme="light" />
       <ShadowSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
@@ -249,8 +253,8 @@ const CONTENTS = [
       <ProgressSpecimens slot="dark" />
     </SpecimenSection>
 
-    <SpecimenSection title="More loading options">
-      <p>Options for Gate 1b, labelled with letters to pick from.</p>
+    <SpecimenSection title="More spinners and loaders">
+      <p>Spinner letters carry on from the spinners above.</p>
       <LoadingSpecimens slot="light" />
       <LoadingSpecimens slot="dark" />
     </SpecimenSection>
@@ -300,8 +304,7 @@ const CONTENTS = [
 
     <SpecimenSection title="Equations" stacked>
       <p>
-        Rendered by KaTeX at build time. Options for Gate 1b are labelled A, B and C. Click a reference to
-        jump to its equation.
+        Rendered by KaTeX at build time. Click a reference to jump to its equation.
       </p>
       <EquationSpecimens slot="light" theme="light" />
       <EquationSpecimens slot="dark" theme="dark" />

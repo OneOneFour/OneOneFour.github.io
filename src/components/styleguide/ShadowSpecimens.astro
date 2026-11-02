@@ -1,11 +1,10 @@
 ---
 /**
- * The dark-mode shadow options for Gate 1b, the default (B) and D, each on the same set of raised
- * things.
+ * The two dark-mode shadow modes, the default slab (B) and colour (D), each on the same set of
+ * raised things.
  *
  * @param theme the panel's theme, used to keep ids and names unique across the two panels
  */
-import './shadow-variants.css'
 import Button from '../ui/Button.astro'
 import Card from '../ui/Card.astro'
 import Chip from '../ui/Chip.astro'
@@ -25,8 +24,8 @@ interface Props {
 
 const { theme } = Astro.props
 const VARIANTS = [
-  { name: 'b', title: 'Shadow B: outlined slab (the default)', class: undefined },
-  { name: 'd', title: 'Shadow D: own-colour extrusion (.rk-shadow-d)', class: 'rk-shadow-d' },
+  { mode: 'slab', title: 'B: outlined slab (the default, data-shadow="slab")' },
+  { mode: 'colour', title: 'D: own-colour extrusion (data-shadow="colour")' },
 ]
 const FILLS = ['navy', 'coral', 'grape', 'teal'] as const
 const KEYS = ['One', 'Two', 'Three']
@@ -44,9 +43,9 @@ const CURRENT = 2
 
 {
   VARIANTS.map((variant) => {
-    const prefix = `${theme}-shadow-${variant.name}`
+    const prefix = `${theme}-shadow-${variant.mode}`
     return (
-      <div class={variant.class}>
+      <div data-shadow={variant.mode}>
         <SpecimenRow title={variant.title}>
           <Specimen label="buttons: yellow, navy, coral, grape, teal">
             <Button>Button</Button>

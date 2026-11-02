@@ -36,11 +36,10 @@
   --muted: light-dark(#5b6070, #a3a8b6);
   --line: light-dark(#1d232f, #05070b);
   --line-unfilled: var(--fg);
-  --shadow-color: var(--line);
   --focus: var(--tangerine);
   /* Where tangerine surrounds the focused element, set --focus: var(--focus-alt) */
   --focus-alt: var(--yellow);
-  /* Shadow D's fallback (Gate 1b option): a dark-mode shadow lighter than the page */
+  /* The colour shadow mode's shadow for things without a fill: lighter than the page in dark mode */
   --shadow-lit: light-dark(var(--line), #6e7891);
 
   /* Fills: vivid in both themes */
@@ -137,21 +136,6 @@
   --shadow-offset: 4px;
   --shadow-offset-x: calc(var(--shadow-dx) * var(--shadow-offset));
   --shadow-offset-y: calc(var(--shadow-dy) * var(--shadow-offset));
-  /* Each hard shadow is two layers: the shadow, on a copy widened by --outline-width in
-     --shadow-edge. The edge is a light rim in dark mode, so the near-black shadow shows on the
-     page, and transparent in light mode. */
-  --shadow-edge: light-dark(transparent, var(--line-unfilled));
-  --shadow:
-    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color),
-    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--outline-width) var(--shadow-edge);
-  --shadow-hover:
-    calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--shadow-color),
-    calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--outline-width)
-      var(--shadow-edge);
-  --shadow-pressed:
-    calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color),
-    calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--outline-width)
-      var(--shadow-edge);
   --shadow-inset: inset calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--line);
   /* Pressing moves an element onto --shadow-pressed; the move plus that shadow is --shadow. */
   --press-offset: 2px;
@@ -180,6 +164,28 @@
   --stagger: 0.15s;
 }
 
+/* Hard shadows, the outlined slab. Each is two layers: the shadow, on a copy widened by
+   --outline-width in --shadow-edge. The edge is a light rim in dark mode, so the near-black
+   shadow shows on the page, and transparent in light mode. Set data-shadow="colour" on <html> or
+   any container for the colour shadow mode (shadow-colour.css), or "slab" to switch back inside
+   it. */
+:root,
+[data-shadow='slab'] {
+  --shadow-color: var(--line);
+  --shadow-edge: light-dark(transparent, var(--line-unfilled));
+  --shadow:
+    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color),
+    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--outline-width) var(--shadow-edge);
+  --shadow-hover:
+    calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--shadow-color),
+    calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--outline-width)
+      var(--shadow-edge);
+  --shadow-pressed:
+    calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color),
+    calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--outline-width)
+      var(--shadow-edge);
+}
+
 /* Browsers without light-dark() (before mid-2024) get the light theme, on the cream page. */
 @supports not (color: light-dark(#000, #fff)) {
   :root,
@@ -188,7 +194,8 @@
   }
 
   :root,
-  [data-palette] {
+  [data-palette],
+  [data-shadow='slab'] {
     --surface: #f7f3e5;
     --raised: #fffaf0;
     --fg: #1d232f;

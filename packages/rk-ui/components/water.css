@@ -1,18 +1,15 @@
 /* Toon water: a flat fill with a rolling wave on top and an outline along the wave. Put an
    .rk-water in a host that clips it; it sits behind the host's content. Set --water-level (0 to
-   1) on the host or the water for a fixed level, or add a modifier:
-   .rk-water--rise: fills and drains, for an unknown wait;
-   .rk-water--slosh: rocks from side to side.
+   1) on the host or the water for a fixed level, or add .rk-water--rise to fill and drain it,
+   for an unknown wait.
    Under reduced motion the water stays still and fades in and out instead.
 
-   Hosts in this file, labelled for Gate 1b:
+   Hosts in this file:
    spinner D, .rk-spinner--water with .rk-water--rise: a flask that fills and drains;
-   spinner E, .rk-spinner--water with .rk-water--slosh: a half-full flask that sloshes;
    filling button: a filled .rk-button with aria-busy="true" and an .rk-water child fills with its
    own colour. Keep it focusable with aria-disabled="true" rather than disabled, so focus isn't
    lost, ignore its clicks while busy, and say what is happening in its label;
-   pending panel A, .rk-pending with .rk-water--rise: a dashed panel filling up while it waits;
-   pending panel B, .rk-pending with .rk-water--slosh: water sloshing along its bottom.
+   pending panel, .rk-pending with .rk-water--rise: a dashed panel filling up while it waits.
 
    <span class="rk-spinner rk-spinner--water" role="status">
      <span class="rk-water rk-water--rise" aria-hidden="true"></span>
@@ -23,7 +20,7 @@
      Saving…
    </button>
    <div class="rk-pending" role="status">
-     <span class="rk-water rk-water--slosh" aria-hidden="true"></span>
+     <span class="rk-water rk-water--rise" aria-hidden="true"></span>
      <p>Loading…</p>
    </div> */
 
@@ -41,7 +38,6 @@
   --wave-height: 0.5rem;
   --wave-period: 1.2s;
   --wave-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 12' preserveAspectRatio='none'%3E%3Cpath d='M0 6Q10 0 20 6T40 6V12H0Z'/%3E%3C/svg%3E");
-  --slosh-angle: 6deg;
 
   position: absolute;
   inset: 0 0 calc(-1 * var(--wave-height));
@@ -84,13 +80,6 @@
   animation: rk-water-rise 2.4s ease-in-out infinite alternate;
 }
 
-/* Wider than the host, so that tilting it never shows a gap at the sides. */
-.rk-water--slosh {
-  inset-inline: -25%;
-  transform-origin: 50% 0;
-  animation: rk-water-slosh 1.4s ease-in-out infinite alternate;
-}
-
 @keyframes rk-wave-roll {
   to {
     translate: calc(-1 * var(--wave-length)) 0;
@@ -107,17 +96,7 @@
   }
 }
 
-@keyframes rk-water-slosh {
-  from {
-    rotate: calc(-1 * var(--slosh-angle));
-  }
-
-  to {
-    rotate: var(--slosh-angle);
-  }
-}
-
-/* Spinners D and E: a round flask of water with the hard shadow, and a glint on the side the
+/* Spinner D: a round flask of water with the hard shadow, and a glint on the side the
    light comes from. */
 .rk-spinner--water {
   --spinner-fill: var(--sky);
@@ -139,7 +118,6 @@
   --wave-length: calc(var(--spinner-size) * 0.6);
   --wave-height: calc(var(--spinner-size) / 6);
   --wave-period: 0.9s;
-  --slosh-angle: 14deg;
 }
 
 .rk-spinner--water::after {
@@ -211,15 +189,10 @@
   --wave-length: 4rem;
   --wave-height: 0.75rem;
   --wave-period: 2.4s;
-  --slosh-angle: 2deg;
 }
 
 .rk-pending > .rk-water--rise {
   animation-duration: 4s;
-}
-
-.rk-pending > .rk-water--slosh {
-  --water-level: 0.25;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -228,8 +201,7 @@
     animation: none;
   }
 
-  .rk-water--rise,
-  .rk-water--slosh {
+  .rk-water--rise {
     animation: rk-spinner-fade 1.8s ease-in-out infinite alternate;
   }
 }

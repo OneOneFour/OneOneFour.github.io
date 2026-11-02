@@ -1,0 +1,45 @@
+---
+/**
+ * The styleguide's dark-mode shadow switch: sets data-shadow on <html> and remembers the choice
+ * under `rk-shadow`. SpecimenLayout applies the stored choice before first paint.
+ */
+const modes = ['slab', 'colour']
+---
+
+<fieldset class="rk-segmented shadow-switcher">
+  <legend class="rk-visually-hidden">Dark-mode shadows</legend>
+  {
+    modes.map((mode) => (
+      <label>
+        <input type="radio" name="rk-shadow" value={mode} />
+        {mode}
+      </label>
+    ))
+  }
+</fieldset>
+
+<style>
+  label {
+    text-transform: capitalize;
+  }
+</style>
+
+<script>
+  import { afterSlide } from 'rk-ui/segmented.js'
+
+  const STORAGE_KEY = 'rk-shadow'
+  const root = document.documentElement
+  const current = root.dataset.shadow ?? 'slab'
+
+  for (const radio of document.querySelectorAll<HTMLInputElement>('.shadow-switcher input')) {
+    radio.checked = radio.value === current
+    radio.addEventListener('change', () => {
+      afterSlide(radio, () => (root.dataset.shadow = radio.value))
+      try {
+        localStorage.setItem(STORAGE_KEY, radio.value)
+      } catch {
+        // Storage is blocked, so the choice lasts only until the page is left.
+      }
+    })
+  }
+</script>

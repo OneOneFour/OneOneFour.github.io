@@ -7,13 +7,13 @@
      <span class="katex-display">…KaTeX output, with \tag{1}…</span>
    </div>
 
-   Opt-in modifiers on .rk-equation: --panel (a slate panel), --rule (a rule down the left) and
-   --key (a raised dashed panel for a key result). --rule and --key have side borders of their
-   own, so they take .rk-scroll--bar too, in place of the dots. Equation numbers, and references
-   to them in prose (.rk-eqref), are small lilac pills.
+   A bare wrapper is the default. Modifiers on .rk-equation: --panel (a slate panel), --rule (a
+   rule down the left) and --key (a raised dashed panel for a key result). --rule and --key have
+   side borders of their own, so they take .rk-scroll--bar too, in place of the dots. Equation
+   numbers, and references to them in prose (.rk-eqref), are small lilac pills.
 
-   Colour-coded terms: \htmlClass{rk-maths-teal}{…}, one class per chart hue. .rk-maths-tint on
-   any ancestor gives the terms a tinted background instead of coloured text. */
+   Colour-coded terms: \htmlClass{rk-maths-teal}{…}, one class per chart hue, put the hue's tint
+   behind the term. */
 
 /* KaTeX's maths italic x-height matches Xmind's at 1.15em; KaTeX's own default is 1.21em. */
 .katex {
@@ -166,54 +166,41 @@
   box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);
 }
 
-/* Colour-coded terms: text in the hue's text variant, or the hue's tint behind --fg text. */
+/* Colour-coded terms: the hue's tint behind --fg text. */
 .rk-maths-teal {
-  --term: var(--teal-deep);
   --term-tint: var(--teal-tint);
 }
 
 .rk-maths-yellow {
-  --term: var(--yellow-deep);
   --term-tint: var(--yellow-tint);
 }
 
 .rk-maths-navy {
-  --term: var(--navy-deep);
   --term-tint: var(--navy-tint);
 }
 
 .rk-maths-green {
-  --term: var(--green-deep);
   --term-tint: var(--green-tint);
 }
 
 .rk-maths-sky {
-  --term: var(--sky-deep);
   --term-tint: var(--sky-tint);
 }
 
 .rk-maths-coral {
-  --term: var(--coral-deep);
   --term-tint: var(--coral-tint);
 }
 
 .rk-maths-grape {
-  --term: var(--grape-deep);
   --term-tint: var(--lilac-tint);
 }
 
 .rk-maths-tangerine {
-  --term: var(--tangerine-deep);
   --term-tint: var(--apricot-tint);
 }
 
 .katex .enclosing[class*='rk-maths-'] {
-  color: var(--term);
-}
-
-.rk-maths-tint .katex .enclosing[class*='rk-maths-'] {
   padding-inline: 0.15em;
   border-radius: calc(var(--radius) / 2);
   background: var(--term-tint);
-  color: inherit;
 }

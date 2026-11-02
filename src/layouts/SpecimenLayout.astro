@@ -5,6 +5,7 @@ import 'rk-ui/rk-ui.css'
 import themeInit from 'rk-ui/theme-init.js?raw'
 import ThemeToggle from '../components/ThemeToggle.astro'
 import PaletteSwitcher from '../components/styleguide/PaletteSwitcher.astro'
+import ShadowSwitcher from '../components/styleguide/ShadowSwitcher.astro'
 
 interface Props {
   title: string
@@ -19,12 +20,14 @@ const { title } = Astro.props
     <meta charset="utf-8" />
     <script is:inline set:html={themeInit} />
     <script is:inline>
-      // Inline, like the theme, so a stored palette doesn't flash cream first.
+      // Inline, like the theme, so a stored palette or shadow mode doesn't flash the default first.
       try {
         const palette = localStorage.getItem('rk-palette')
         if (palette) document.documentElement.dataset.palette = palette
+        const shadow = localStorage.getItem('rk-shadow')
+        if (shadow) document.documentElement.dataset.shadow = shadow
       } catch {
-        // Storage is blocked, so the page stays cream.
+        // Storage is blocked, so the page keeps the defaults.
       }
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -33,6 +36,7 @@ const { title } = Astro.props
   </head>
   <body>
     <header class="specimen-header">
+      <ShadowSwitcher />
       <PaletteSwitcher />
       <ThemeToggle />
     </header>

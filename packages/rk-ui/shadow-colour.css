@@ -1,0 +1,53 @@
+/* The colour shadow mode: set data-shadow="colour" on <html> or any container, and in dark mode
+   each raised thing with a fill casts its hard shadow in that fill, darkened, instead of the
+   outlined slab. Everything else casts --shadow-lit, lighter than the page. Light mode is
+   unchanged. data-shadow="slab" switches back inside it. Browsers without @scope or light-dark()
+   keep the slab. */
+
+@supports (color: light-dark(black, white)) {
+  @scope ([data-shadow='colour']) to ([data-shadow='slab']) {
+    /* Declared on every element, so each one resolves its own --extrusion. Shadows built outside
+       the tokens read --shadow-color and --shadow-edge themselves, so those are set here too. */
+    * {
+      --shadow-edge: transparent;
+      --shadow-color: light-dark(var(--line), var(--extrusion, var(--shadow-lit)));
+      --shadow: var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color);
+      --shadow-hover: calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0
+        var(--shadow-color);
+      --shadow-pressed: calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0
+        var(--shadow-color);
+    }
+
+    .rk-button {
+      --extrusion: color-mix(in oklab, var(--button-fill) 75%, var(--line));
+    }
+
+    :is(.rk-checkbox, .rk-radio):checked,
+    .rk-dial--arc .rk-dial-face {
+      --extrusion: color-mix(in oklab, var(--selected) 75%, var(--line));
+    }
+
+    /* The range thumb and the file button are pseudo-elements, so their inputs carry the colour. */
+    .rk-range {
+      --extrusion: color-mix(in oklab, var(--selected) 75%, var(--line));
+    }
+
+    .rk-input[type='file'] {
+      --extrusion: color-mix(in oklab, var(--yellow) 75%, var(--line));
+    }
+
+    .rk-tile--colour {
+      --extrusion: color-mix(in oklab, var(--swatch) 75%, var(--line));
+    }
+
+    .rk-badge--sticker {
+      --extrusion: color-mix(in oklab, var(--badge-fill) 75%, var(--line));
+    }
+
+    /* Darkened, these fills are too close to the page to read as a shadow. Checked chips are left
+       out for the same reason, since their default --section is ink. */
+    :is(.rk-button--navy, .rk-button--section) {
+      --extrusion: initial;
+    }
+  }
+}

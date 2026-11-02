@@ -63,7 +63,11 @@ const GROUPS = [
   { title: 'Error outline on its panel', pairs: [{ fg: '--coral-deep', bg: '--coral-tint', min: 3 }] },
   { title: 'Outline against the page', themes: ['light'], pairs: pairs(['--line'], SURFACES, 3) },
   { title: 'Fill edge against the page', themes: ['dark'], pairs: pairs(FILLS, ['--surface'], 3) },
-  { title: 'Shadow C against the page', themes: ['dark'], pairs: pairs(['--shadow-lit'], SURFACES, 3) },
+  {
+    title: 'Colour shadow mode: the shadow without a fill against the page',
+    themes: ['dark'],
+    pairs: pairs(['--shadow-lit'], SURFACES, 3),
+  },
   {
     title: 'Outline against the page',
     themes: ['dark'],

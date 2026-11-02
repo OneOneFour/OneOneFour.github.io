@@ -231,11 +231,20 @@ in `<head>` before first paint.
 Rules (shown on the mood board, theme switch at the top):
 - The page goes to a deep night blue (not black). **Fills stay vivid, and
   labels on fills stay ink.** Outlines and hard shadows become near-black,
-  so toon edges still read as depth. *Gate 1b (provisional default):* a near-black shadow is
-  hard to see on the night-blue page, so every hard shadow sits on a copy widened by the outline
-  width in `--shadow-edge` (cream in dark mode, transparent in light), the "outlined slab"
-  (option B). Rob is still weighing it against option D, own-colour extrusion, which the
-  styleguide keeps as `.rk-shadow-d` for comparison.
+  so toon edges still read as depth. A near-black shadow is hard to see on the night-blue page,
+  so every hard shadow sits on a copy widened by the outline width in `--shadow-edge` (cream in
+  dark mode, transparent in light), the "outlined slab" (option B).
+  *DECIDED 2026-11-02 (Rob): B is the default, and D, own-colour extrusion, is a supported
+  alternate mode.* `data-shadow="colour"` on `<html>` or any container (`shadow-colour.css`)
+  gives each raised thing with a fill a shadow in that fill darkened (75% fill, 25% `--line`);
+  navy and section buttons, checked chips and things without a fill cast `--shadow-lit`
+  instead, lighter than the page. Light mode is unchanged. `data-shadow="slab"` switches back
+  inside it, as `cream` does for palettes. The mode is an `@scope` from `colour` to `slab`,
+  declared on every element so each one reads its own fill; browsers without `@scope` or
+  `light-dark()` keep the slab. `npm run contrast` checks `--shadow-lit` against the page under
+  every palette; the darkened fills are `color-mix()`es it doesn't resolve. The styleguide has a
+  Slab / Colour switch beside the palette switch (stored under `rk-shadow`) and keeps the two
+  side by side under "Dark-mode shadows".
 - **Tints flip to deep versions** with cream text (sky, lilac, apricot are
   panel backgrounds and would glare in dark mode).
 - Hue-text variants (`--navy-deep` etc.) get lighter values for dark mode.
@@ -351,7 +360,14 @@ Supporting decisions *(proposed)*:
     KaTeX's `trust` option allows `\href` for `#` links only.
   - Decided at Gate 1b (Rob): equation numbers and bare references are lilac pills; a long pill
     (the `function` icon and "Equation n") for references that lead a sentence.
-  - Implementation must also handle several `\label`s in one `align` block (one per row).
+  - *DECIDED 2026-11-02 (Rob): both numbering styles are supported*, so the plugin handles both:
+    a `\label` on each row of an `align` numbers each row, and a single `\label` in a display
+    holding an `aligned` or `gathered` block numbers the whole block once.
+  - *DECIDED 2026-11-02 (Rob), equation styles:* the display wrappers, bare (the default),
+    `.rk-equation--panel` and `.rk-equation--rule`, are all supported modifiers. A key result
+    takes the raised dashed panel, `.rk-equation--key`; the `\boxed{}` specimen was removed, but
+    `\boxed` still gets the thicker toon border. Colour-coded terms (`rk-maths-<hue>`) always put
+    the hue's tint behind `--fg` text; the coloured-text option and `.rk-maths-tint` were removed.
   - Scrolling uses CSS `scroll-behavior: smooth`, off under reduced motion. The target equation
     gets a brief `:target` highlight from the tokens.
 - **Monospace** (code, widget readouts): **JetBrains Mono** (OFL), with its ligatures on
@@ -442,18 +458,27 @@ above the tabs, so it never comes between them and the sheet.
 *DECIDED 2026-11-02: the scrollbar stays flat for now.* Toon shadow options for it (a raised
 thumb, a sunken track, a slider groove) were tried and removed; they are in git history.
 
-**More loading options** *(Gate 1b)*: on `/styleguide/` under "More loading options", beside
-spinners A–C and progress bars A–B. *Rob's picks, 2026-11-02:* water spinner D and the filling
+**More loading options** *(Gate 1b)*: on `/styleguide/` under "More spinners and loaders",
+beside spinners A and B and the progress bar. *Rob's picks, 2026-11-02:* water spinner D and the filling
 buttons; dots B, G and H for general content loading; several loader bars stay as candidates,
 with C, the hopping ball, the favourite (recoloured with `--loader-fill`, and an icon can ride in a
 `.rk-loader-ball`).
-- Toon water (`water.css`, `.rk-water`, level from `--water-level`): spinners D (flask filling)
-  and E (flask sloshing); a busy filled button that fills with its own colour
-  (`aria-busy="true"` + `aria-disabled="true"`, looping or set); pending panels A (filling) and
-  B (sloshing along the bottom).
+*DECIDED 2026-11-02 (Rob): spinners.* Kept: B (three dots), D (water flask filling), G
+(triangle), H (squash) and F (orbit) as an alternate. A (ring) stays with more flair: its wedge
+rolls as if it feels gravity, slow over the top and fast through the bottom, from two mirrored
+`cubic-bezier()` half turns in the keyframes that meet at the same speed; reduced motion still
+fades it. C (turning icon) and E (water sloshing) were removed; they are in git history.
+- Toon water (`water.css`, `.rk-water`, level from `--water-level`): spinner D (flask
+  filling); a busy filled button that fills with its own colour (`aria-busy="true"` +
+  `aria-disabled="true"`, looping or set); a pending panel that fills up.
+  *DECIDED 2026-11-02 (Rob):* pending panel A (filling up) stays; B (sloshing along the bottom)
+  was removed, and with it, as nothing else used it, `.rk-water--slosh`.
 - Dot spinners (`spinner-dots.css`): F in a circle, G in a triangle, H squash and stretch.
-- Loaders, indeterminate bars (`loader.css`): A inchworm, B bouncing block, C hopping ball,
-  D candy stripes.
+- Loader, an indeterminate bar (`loader.css`): the hopping ball, `.rk-loader--hop`.
+  *DECIDED 2026-11-02 (Rob):* the hopping ball stays beside the standard progress bars and
+  meters; the inchworm, bouncing block and candy stripes were removed. The progress bar is
+  striped by default ("striped is more fun"), set and indeterminate; the flat bar, the other
+  option, stays as `.rk-progress--flat`, since a set flat bar is a plain, still bar.
 
 **Charts and diagrams** *(Rob, Gate 1b: a vibe check only)*: nothing chart-related ships in this
 version of rk-ui. Rob prefers the toon charts, so they are the only look on `/styleguide/`. All of
