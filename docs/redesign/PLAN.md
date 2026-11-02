@@ -327,6 +327,15 @@ settles the type scale, the monospace face and the weights actually used.
 - **Flat fills only**: no gradients. Illustrations follow the same rule.
 - **Motion**: short (120–200ms), springy only on press and toggle. Everything
   respects `prefers-reduced-motion`.
+- **"Pop" on hover and press** *(Rob, 2026-11-01: keep the mood board's feel throughout)*.
+  Every clickable component in the package (button, chip, card, switch, slider thumb, nav
+  item) shares one interaction, defined once from tokens rather than per component:
+  - press sinks into the shadow: the move plus the pressed shadow equals the resting shadow,
+    so the shadow's outer edge stays put (mood board: 3px move onto a 2px shadow from 5px);
+  - hover lifts: a 1px rise with the shadow growing (mood board cards: 5px to 7px);
+  - 120ms, plain `ease` as on the mood board. A springy overshoot is a Gate 1b option, not
+    the default.
+  - Under reduced motion, the shadow still changes but nothing moves.
 - **Focus**: a visible 3px `--focus` ring offset from the outline, never
   removed.
 
