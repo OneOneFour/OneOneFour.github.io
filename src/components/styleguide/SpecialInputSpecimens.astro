@@ -7,6 +7,7 @@
  */
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
+import SwatchPicker from './SwatchPicker.astro'
 import UploadIcon from 'rk-ui/icons/upload-simple.svg'
 import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
 import MinusIcon from 'rk-ui/icons/minus.svg'
@@ -41,13 +42,21 @@ const NUMBER_STATES = [
   { label: 'disabled', input: '', buttons: '', disabled: true },
   { label: 'error', input: '', buttons: '', invalid: true },
 ]
-const HUES = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky', 'grape', 'tangerine', 'lilac', 'apricot']
 const SWATCH_GROUPS = [
   { variant: 'A', label: 'rest (teal checked)' },
   { variant: 'A', label: 'hover on navy, focus on teal', hover: 'navy', focus: 'teal' },
   { variant: 'A', label: 'disabled', disabled: true },
-  { variant: 'B', label: 'rest (the last swatch opens the browser picker)' },
-  { variant: 'B', label: 'focused custom swatch', focusCustom: true },
+  { variant: 'B', label: 'rest (the last swatch opens the browser picker)', custom: true },
+  { variant: 'B', label: 'focused custom swatch', custom: true, focusCustom: true },
+]
+const FLAIRS = [
+  { label: 'flair A: paint brush', class: 'rk-swatches--brush' },
+  { label: 'flair B: paint drops', class: 'rk-swatches--drops' },
+  { label: 'flair C: palette and stroke', class: 'rk-swatches--stroke', paletteLegend: true },
+]
+const FLAIR_GROUPS = [
+  { label: 'colour A, hover on navy', hover: 'navy' },
+  { label: 'colour B', custom: true },
 ]
 const COLOUR_STATES = [
   { label: 'rest', class: '' },
@@ -240,30 +249,38 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   }
 </SpecimenRow>
 
-<SpecimenRow title="Colour A and B: token swatches">
+<SpecimenRow title="Colour A and B: token swatches (flair none)">
   {
     SWATCH_GROUPS.map((group, index) => (
       <Specimen label={`colour ${group.variant}: ${group.label}`}>
-        <fieldset class="rk-swatches" disabled={group.disabled}>
-          <legend class="rk-visually-hidden">Colour</legend>
-          {HUES.map((hue) => (
-            <label
-              class:list={['rk-swatch', { 'is-hover': hue === group.hover, 'is-focus': hue === group.focus }]}
-              style={`--swatch: var(--${hue})`}
-            >
-              <input type="radio" name={`${theme}-swatch-${index}`} value={hue} checked={hue === 'teal'} />
-              <span class="rk-visually-hidden">{hue}</span>
-            </label>
-          ))}
-          {group.variant === 'B' && (
-            <label class="rk-check">
-              <input class:list={['rk-swatch', { 'is-focus': group.focusCustom }]} type="color" />
-              Custom
-            </label>
-          )}
-        </fieldset>
+        <SwatchPicker
+          name={`${theme}-swatch-${index}`}
+          hover={group.hover}
+          focus={group.focus}
+          disabled={group.disabled}
+          custom={group.custom}
+          focusCustom={group.focusCustom}
+        />
       </Specimen>
     ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Colour A and B: flair">
+  {
+    FLAIRS.flatMap((flair, f) =>
+      FLAIR_GROUPS.map((group, g) => (
+        <Specimen label={`${flair.label}: ${group.label}`}>
+          <SwatchPicker
+            name={`${theme}-flair-${f}-${g}`}
+            flair={flair.class}
+            paletteLegend={flair.paletteLegend}
+            hover={group.hover}
+            custom={group.custom}
+          />
+        </Specimen>
+      ))
+    )
   }
 </SpecimenRow>
 

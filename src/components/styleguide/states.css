@@ -136,6 +136,10 @@ a:where(:not(.rk-button)).is-focus {
   box-shadow: none;
 }
 
+.rk-swatches--brush .rk-swatch.is-hover::after {
+  opacity: 0.7;
+}
+
 /* Input hover options */
 
 .rk-hover-b :is(.rk-input, .rk-select).is-hover {

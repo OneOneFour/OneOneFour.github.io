@@ -154,3 +154,85 @@ input.rk-swatch[type='color']::-moz-color-swatch {
   border: 0;
   border-radius: calc(var(--radius) - var(--outline-width));
 }
+
+/* Flair options for the swatches, for Gate 1b. With none, the swatches are plain (flair none). */
+
+/* Flair A: add .rk-swatches--brush for a faint paint brush on the checked and hovered swatches.
+   The brush is ink; give hues that carry white text their own colour through --swatch-on:
+   style="--swatch: var(--navy); --swatch-on: var(--on-navy)". */
+
+.rk-swatches--brush label.rk-swatch::after {
+  content: '';
+  position: absolute;
+  inset: 15%;
+  background-color: var(--swatch-on, var(--on-fill));
+  mask: url('../icons/paint-brush.svg') center / contain no-repeat;
+  opacity: 0;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.rk-swatches--brush label.rk-swatch:has(:checked)::after {
+  opacity: 0.7;
+}
+
+@media (hover: hover) {
+  .rk-swatches--brush label.rk-swatch:not(:has(:disabled)):hover::after {
+    opacity: 0.7;
+  }
+}
+
+/* Flair B: add .rk-swatches--drops for swatches shaped like paint drops: a square with one sharp
+   corner, turned so that corner points up. Turning a swatch turns its shadows too, so they are
+   redefined along its own x axis, which the turn points down and to the right. */
+
+.rk-swatches--drops {
+  --drop-corners: 0 50% 50% 50%;
+
+  padding-block-start: var(--space-2);
+}
+
+.rk-swatches--drops .rk-swatch {
+  --diagonal: 1.4142;
+  --shadow: calc(var(--shadow-offset) * var(--diagonal)) 0 0 var(--line);
+  --shadow-hover: calc(6px * var(--diagonal)) 0 0 var(--line);
+  --shadow-pressed: calc(2px * var(--diagonal)) 0 0 var(--line);
+  --shadow-inset: inset calc(2px * var(--diagonal)) 0 0 var(--line-unfilled);
+
+  border-radius: var(--drop-corners);
+  rotate: 45deg;
+}
+
+.rk-swatches--drops input.rk-swatch::-webkit-color-swatch {
+  border-radius: var(--drop-corners);
+}
+
+.rk-swatches--drops input.rk-swatch::-moz-color-swatch {
+  border-radius: var(--drop-corners);
+}
+
+/* Flair C: add .rk-swatches--stroke for a visible legend with a palette icon and a short paint
+   stroke in the checked colour under the checked swatch.
+   <legend><svg class="rk-icon rk-icon--small" aria-hidden="true">…</svg> Colour</legend> */
+
+.rk-swatches--stroke {
+  padding-block-end: var(--space-4);
+}
+
+.rk-swatches--stroke legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-end: var(--space-2);
+  padding: 0;
+  font-weight: 600;
+}
+
+.rk-swatches--stroke label.rk-swatch:has(:checked)::after {
+  content: '';
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-2));
+  inset-inline: calc(-1 * var(--space-2));
+  block-size: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--swatch);
+}
