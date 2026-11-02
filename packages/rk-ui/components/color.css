@@ -26,24 +26,42 @@
      </fieldset>
    </rk-colour-picker>
 
-   Without a palette: the native colour input on its own, as a swatch button that pops.
-   <input class="rk-input" type="color" aria-label="Colour"> */
+   Without a palette: the native colour input on its own, in a frame that pops, with the same
+   paint brush.
+   <span class="rk-colour-input">
+     <input type="color" aria-label="Colour">
+     <svg aria-hidden="true">…paint-brush…</svg>
+   </span> */
 
-/* Colour tiles are filled, so they take the dark outline in both themes. They keep their colours
-   in forced colours, since the colour is the content. */
-:is(.rk-tile--colour, .rk-tile--custom-colour) {
+/* Colour tiles and the standalone frame are filled, so they take the dark outline in both themes.
+   They keep their colours in forced colours, since the colour is the content. */
+:is(.rk-tile--colour, .rk-tile--custom-colour, .rk-colour-input) {
   border-color: var(--line);
   forced-color-adjust: none;
 }
 
-/* The custom colour tile's native input fills it. --picker-radius rounds the input and the
-   browser's swatch inside it to match the tile. */
+/* The standalone frame pops like a button (interactive.css). */
+.rk-colour-input {
+  --picker-radius: calc(var(--radius) - var(--outline-width));
+
+  position: relative;
+  display: inline-block;
+  inline-size: 3.5rem;
+  block-size: 2.5rem;
+  border-width: var(--outline-width);
+  border-style: solid;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
 
 .rk-tile--custom-colour {
   --picker-radius: 50%;
 }
 
-.rk-tile--custom-colour > input[type='color'] {
+/* The native input fills the custom colour tile or the standalone frame, which shows the focus
+   band for it. --picker-radius rounds the input and the browser's swatch inside it to match. */
+
+:is(.rk-tile--custom-colour, .rk-colour-input) > input[type='color'] {
   appearance: none;
   position: absolute;
   inset: 0;
@@ -52,27 +70,28 @@
   padding: 0;
   border: 0;
   border-radius: var(--picker-radius);
+  outline: none;
   background: none;
-  cursor: pointer;
+  cursor: inherit;
 }
 
-.rk-tile--custom-colour > input[type='color']::-webkit-color-swatch-wrapper {
+:is(.rk-tile--custom-colour, .rk-colour-input) > input[type='color']::-webkit-color-swatch-wrapper {
   padding: 0;
 }
 
-.rk-tile--custom-colour > input[type='color']::-webkit-color-swatch {
+:is(.rk-tile--custom-colour, .rk-colour-input) > input[type='color']::-webkit-color-swatch {
   border: 0;
   border-radius: var(--picker-radius);
 }
 
-.rk-tile--custom-colour > input[type='color']::-moz-color-swatch {
+:is(.rk-tile--custom-colour, .rk-colour-input) > input[type='color']::-moz-color-swatch {
   border: 0;
   border-radius: var(--picker-radius);
 }
 
 /* The paint brush sits on a neutral disc in the corner, so it reads on any picked colour. Clicks
    pass through it to the input. */
-.rk-tile--custom-colour > svg {
+:is(.rk-tile--custom-colour, .rk-colour-input) > svg {
   position: absolute;
   inset-block-end: -0.375rem;
   inset-inline-end: -0.375rem;
@@ -86,50 +105,6 @@
   forced-color-adjust: auto;
   pointer-events: none;
   --icon-stroke: 28;
-}
-
-/* Without a palette */
-
-.rk-input[type='color'] {
-  appearance: none;
-  inline-size: 3.5rem;
-  block-size: 2.5rem;
-  padding: 0;
-  border-color: var(--line);
-  background: transparent;
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  forced-color-adjust: none;
-  transition:
-    translate var(--duration-fast) ease,
-    box-shadow var(--duration-fast) ease;
-}
-
-/* :where() keeps these as specific as the shared focus and disabled states, which come later. */
-@media (hover: hover) {
-  .rk-input:where([type='color']):hover {
-    box-shadow: var(--shadow-hover);
-    translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
-  }
-}
-
-.rk-input:where([type='color']):active {
-  box-shadow: var(--shadow-pressed);
-  translate: var(--press-offset) var(--press-offset);
-}
-
-.rk-input[type='color']::-webkit-color-swatch-wrapper {
-  padding: 0;
-}
-
-.rk-input[type='color']::-webkit-color-swatch {
-  border: 0;
-  border-radius: calc(var(--radius) - var(--outline-width));
-}
-
-.rk-input[type='color']::-moz-color-swatch {
-  border: 0;
-  border-radius: calc(var(--radius) - var(--outline-width));
 }
 
 /* Flair options for colour tiles, for Gate 1b. With none, the tiles are plain (flair none). Each

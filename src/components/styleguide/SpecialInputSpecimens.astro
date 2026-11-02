@@ -12,6 +12,7 @@ import UploadIcon from 'rk-ui/icons/upload-simple.svg'
 import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
 import CaretUpIcon from 'rk-ui/icons/caret-up.svg'
 import CaretDownIcon from 'rk-ui/icons/caret-down.svg'
+import PaintBrushIcon from 'rk-ui/icons/paint-brush.svg'
 
 interface Props {
   theme: 'light' | 'dark'
@@ -66,6 +67,7 @@ const COLOUR_STATES = [
   { label: 'hover', class: 'is-hover' },
   { label: 'pressed', class: 'is-active' },
   { label: 'focused', class: 'is-focus' },
+  { label: 'disabled', class: '', disabled: true },
 ]
 const TICKS = [0, 25, 50, 75, 100]
 const TICK_STATES = [
@@ -284,17 +286,17 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   }
 </SpecimenRow>
 
-<SpecimenRow title="Colour: native input on its own">
+<SpecimenRow title="Colour: native input on its own, with no palette">
   {
     COLOUR_STATES.map((state) => (
       <Specimen label={state.label}>
-        <input class:list={['rk-input', state.class]} type="color" aria-label="Specimen" />
+        <span class:list={['rk-colour-input', state.class]}>
+          <input type="color" aria-label="Specimen" disabled={state.disabled} />
+          <PaintBrushIcon aria-hidden="true" />
+        </span>
       </Specimen>
     ))
   }
-  <Specimen label="disabled">
-    <input class="rk-input" type="color" aria-label="Specimen" disabled />
-  </Specimen>
 </SpecimenRow>
 
 <SpecimenRow title="Ticks A: native">
