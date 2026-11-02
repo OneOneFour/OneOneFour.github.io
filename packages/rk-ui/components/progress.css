@@ -1,0 +1,170 @@
+/* Progress bar and meter on the native elements, drawn as a pill track like the range slider's.
+   The track is the element itself; WebKit and Firefox name the fill differently, so each fill is
+   styled twice. A <progress> without a value is indeterminate: a block slides along the track.
+   Option A is flat; option B (.rk-progress--striped) is striped.
+
+   <label class="rk-field">Uploading <progress class="rk-progress" max="100" value="40">40%</progress></label>
+   <label class="rk-field">Loading <progress class="rk-progress"></progress></label>
+   <label class="rk-field">Disk <meter class="rk-meter" min="0" max="1" low="0.6" high="0.85" optimum="0.2" value="0.7"></meter></label> */
+
+.rk-progress,
+.rk-meter {
+  --progress-track: var(--raised);
+
+  appearance: none;
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 30rem;
+  block-size: 0.875rem;
+  overflow: hidden;
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: var(--radius-pill);
+  background: var(--progress-track);
+}
+
+.rk-progress {
+  --progress-fill: var(--selected);
+}
+
+.rk-progress--striped {
+  --stripe: color-mix(in srgb, var(--line) 25%, transparent);
+  --stripe-size: 1rem;
+  --stripes: linear-gradient(
+    45deg,
+    var(--stripe) 25%,
+    transparent 0 50%,
+    var(--stripe) 0 75%,
+    transparent 0
+  );
+}
+
+.rk-progress::-webkit-progress-bar {
+  background: transparent;
+}
+
+/* The fill's leading edge gets the outline, so it reads as a solid block against the track. */
+.rk-progress::-webkit-progress-value {
+  border-inline-end: var(--outline-width) solid var(--line);
+  background: var(--progress-fill);
+}
+
+.rk-progress::-moz-progress-bar {
+  border-inline-end: var(--outline-width) solid var(--line);
+  background: var(--progress-fill);
+}
+
+.rk-progress--striped::-webkit-progress-value {
+  background: var(--stripes) 0 0 / var(--stripe-size) var(--stripe-size), var(--progress-fill);
+}
+
+.rk-progress--striped::-moz-progress-bar {
+  background: var(--stripes) 0 0 / var(--stripe-size) var(--stripe-size), var(--progress-fill);
+}
+
+/* Indeterminate: the fills are hidden and the track's own background moves. */
+.rk-progress:indeterminate::-webkit-progress-value {
+  background: transparent;
+}
+
+.rk-progress:indeterminate::-moz-progress-bar {
+  background: transparent;
+}
+
+.rk-progress:indeterminate {
+  background: linear-gradient(var(--progress-fill) 0 0) 0 0 / 35% 100% no-repeat
+    var(--progress-track);
+  animation: rk-progress-slide 1.2s ease-in-out infinite alternate;
+}
+
+.rk-progress--striped:indeterminate {
+  background: var(--stripes) 0 0 / var(--stripe-size) var(--stripe-size), var(--progress-fill);
+  animation: rk-progress-stripes 0.6s linear infinite;
+}
+
+@keyframes rk-progress-slide {
+  to {
+    background-position-x: 100%;
+  }
+}
+
+@keyframes rk-progress-stripes {
+  to {
+    background-position-x: var(--stripe-size);
+  }
+}
+
+/* Meter: the fill's colour says whether the value is in the good, middling or bad range. */
+.rk-meter::-webkit-meter-bar {
+  border: 0;
+  background: transparent;
+}
+
+.rk-meter::-webkit-meter-optimum-value {
+  border-inline-end: var(--outline-width) solid var(--line);
+  background: var(--green);
+}
+
+.rk-meter::-webkit-meter-suboptimum-value {
+  border-inline-end: var(--outline-width) solid var(--line);
+  background: var(--yellow);
+}
+
+.rk-meter::-webkit-meter-even-less-good-value {
+  border-inline-end: var(--outline-width) solid var(--line);
+  background: var(--coral);
+}
+
+.rk-meter::-moz-meter-bar {
+  border-inline-end: var(--outline-width) solid var(--line);
+  background: var(--green);
+}
+
+.rk-meter:-moz-meter-sub-optimum::-moz-meter-bar {
+  background: var(--yellow);
+}
+
+.rk-meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+  background: var(--coral);
+}
+
+/* Under reduced motion, an indeterminate bar stays still and fades in and out instead. */
+@media (prefers-reduced-motion: reduce) {
+  .rk-progress:indeterminate {
+    animation: rk-progress-fade 2s ease-in-out infinite alternate;
+  }
+
+  .rk-progress:indeterminate:not(.rk-progress--striped) {
+    background-size: 100% 100%;
+  }
+}
+
+@keyframes rk-progress-fade {
+  to {
+    opacity: 0.4;
+  }
+}
+
+/* Forced colours drop the fills and background images, so the fills use system colours. */
+@media (forced-colors: active) {
+  .rk-progress,
+  .rk-meter {
+    --progress-track: Canvas;
+    --progress-fill: Highlight;
+    --stripe: Canvas;
+
+    forced-color-adjust: none;
+    border-color: CanvasText;
+  }
+
+  .rk-meter::-webkit-meter-optimum-value,
+  .rk-meter::-webkit-meter-suboptimum-value,
+  .rk-meter::-webkit-meter-even-less-good-value {
+    background: Highlight;
+  }
+
+  .rk-meter::-moz-meter-bar,
+  .rk-meter:-moz-meter-sub-optimum::-moz-meter-bar,
+  .rk-meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+    background: Highlight;
+  }
+}
