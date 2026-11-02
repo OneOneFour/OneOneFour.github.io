@@ -166,9 +166,13 @@
   stroke-width: var(--outline-width);
 }
 
+/* As in --shadow, the shadow has a light edge in dark mode: the outer half of its stroke. */
 .rk-chart--toon .rk-chart-shadow {
   display: inline;
   fill: var(--shadow-color);
+  stroke: var(--shadow-edge);
+  stroke-width: calc(2 * var(--outline-width));
+  paint-order: stroke;
   translate: var(--shadow-offset-x) var(--shadow-offset-y);
 }
 
