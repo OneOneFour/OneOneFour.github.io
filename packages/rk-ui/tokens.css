@@ -86,6 +86,16 @@
   --lilac-tint: light-dark(#d4c4f5, #342c55);
   --apricot-tint: light-dark(#ffd2a6, #4a3324);
 
+  /* Sticky notes: a tint in light mode and the vivid fill in dark, both carrying --on-fill text.
+     The tape that holds one is a see-through wash of the glint. */
+  --note-yellow: light-dark(var(--yellow-tint), var(--yellow));
+  --note-sky: var(--sky);
+  --note-tangerine: light-dark(var(--apricot-tint), var(--tangerine));
+  --note-green: light-dark(var(--green-tint), var(--green));
+  --note-coral: light-dark(var(--coral-tint), var(--coral));
+  --note-grape: light-dark(var(--lilac-tint), var(--grape));
+  --note-tape: color-mix(in srgb, var(--glint) 60%, transparent);
+
   /* Icon fills: the quiet default for interface icons, a pale wash of the outline colour */
   --icon-fill-neutral: color-mix(in srgb, currentColor 20%, transparent);
 
@@ -256,6 +266,12 @@
     --sky-tint: #8fd3f7;
     --lilac-tint: #d4c4f5;
     --apricot-tint: #ffd2a6;
+
+    --note-yellow: var(--yellow-tint);
+    --note-tangerine: var(--apricot-tint);
+    --note-green: var(--green-tint);
+    --note-coral: var(--coral-tint);
+    --note-grape: var(--lilac-tint);
 
     --slate: #e7ebf3;
     --slate-tab: #dbe0ea;

@@ -44,6 +44,7 @@ import ChartPaletteSpecimens from '../../components/styleguide/ChartPaletteSpeci
 import ChartSpecimens from '../../components/styleguide/ChartSpecimens.astro'
 import DiagramSpecimens from '../../components/styleguide/DiagramSpecimens.astro'
 import FigureSpecimens from '../../components/styleguide/FigureSpecimens.astro'
+import StickyNoteSpecimens from '../../components/styleguide/StickyNoteSpecimens.astro'
 import StyleguideContents from '../../components/styleguide/StyleguideContents.astro'
 
 const CONTENTS = [
@@ -99,6 +100,7 @@ const CONTENTS = [
     title: 'Maths and charts',
     sections: ['Equations', 'Maths in text', 'Chart colours', 'Charts', 'Diagrams', 'Figures and widgets'],
   },
+  { title: 'Fun elements', sections: ['Sticky notes'] },
 ]
 ---
 
@@ -363,6 +365,15 @@ const CONTENTS = [
     <SpecimenSection title="Figures and widgets" stacked>
       <FigureSpecimens slot="light" theme="light" />
       <FigureSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Sticky notes">
+      <p>
+        Fun elements are options for Gate 1b. Turn the light above to see the tilted notes' shadows
+        follow it.
+      </p>
+      <StickyNoteSpecimens slot="light" />
+      <StickyNoteSpecimens slot="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>

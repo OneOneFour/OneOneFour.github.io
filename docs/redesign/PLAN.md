@@ -514,6 +514,18 @@ chart components, and the diagrams (`diagram.css`, `diagram.js`, `NeuralNetwork.
   and whose nodes light their links on hover or focus, and a flow chart whose steps light in turn,
   with a water fill on the slow step.
 
+**Sticky notes** *(Gate 1b fun-element option, pending Rob)*: `sticky-note.css`, `.rk-sticky-note` on
+a card or a callout. A flat note with the ink outline, the hard shadow and a folded bottom-left
+corner: the corner is cut off with `clip-path` along the fold, and a flap in the note's colour
+darkened (75% fill, 25% `--line`, as the colour shadow mode's extrusion) is drawn over it with ink
+on all three edges. The default light falls along that fold, so the shadow's corner is cut on the
+same line; when the light turns away from it, the shadow loses a thin strip along the fold. Notes
+are a tint in light mode and the vivid fill in dark (`--note-*` tokens), with ink text in both;
+yellow by default, sky for a note callout, tangerine for a warning, and hue modifiers for the rest.
+A linked note card's corner lifts with the pop. Options: `--tilt` (−2°, or `--note-tilt`), whose
+resting shadow is turned back by the tilt with `cos()`/`sin()` so it still falls away from the
+light; `--tape` and `--pin`. On `/styleguide/` under "Fun elements".
+
 
 ### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*
 

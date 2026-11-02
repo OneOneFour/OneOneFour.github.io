@@ -1,0 +1,184 @@
+/* Sticky notes: a card or a callout drawn as a sticky note, with the outline, the hard shadow and
+   a folded bottom-left corner. Yellow by default; a note callout is sky and a warning tangerine,
+   and the hue modifiers set any colour. Options: .rk-sticky-note--tilt turns the note slightly
+   (--note-tilt sets the angle), and .rk-sticky-note--tape or --pin holds it to the page. A linked
+   card's corner lifts as it pops.
+
+   <article class="rk-card rk-card--link rk-sticky-note">…</article>
+   <div class="rk-callout rk-callout--warning rk-sticky-note rk-sticky-note--tape" role="note">…</div>
+   <article class="rk-card rk-sticky-note rk-sticky-note--tilt" style="--note-tilt: 1.5deg">…</article> */
+
+.rk-sticky-note {
+  --note-fill: var(--note-yellow);
+  --note-fold-fill: color-mix(in oklab, var(--note-fill) 75%, var(--line));
+  --note-fold: var(--space-4);
+  --note-pin: var(--coral);
+  --icon-fill: var(--note-fold-fill);
+
+  position: relative;
+  overflow: visible;
+  border: var(--outline-width) solid var(--line);
+  background: var(--note-fill);
+  color: var(--on-fill);
+  box-shadow: var(--shadow);
+  /* Cuts the folded corner off along the fold, reaching far past the box elsewhere so the shadow,
+     the focus band and the tape aren't cut. The light falls along the fold by default, so the
+     shadow's own corner is cut on the same line. */
+  clip-path: polygon(
+    -100vmax -100vmax,
+    calc(100% + 100vmax) -100vmax,
+    calc(100% + 100vmax) calc(100% + 100vmax),
+    calc(var(--note-fold) + 100vmax) calc(100% + 100vmax),
+    -100vmax calc(100% - var(--note-fold) - 100vmax)
+  );
+}
+
+/* The fold's flap, the cut corner turned over onto the note. Its inner half is in the cut-off
+   corner, so only the flap shows: a hard-stop gradient draws the ink along the fold, and the
+   borders its two paper edges. Physical sides, like the clip. */
+.rk-sticky-note::after {
+  content: '';
+  position: absolute;
+  bottom: calc(-1 * var(--outline-width));
+  left: calc(-1 * var(--outline-width));
+  box-sizing: border-box;
+  width: var(--note-fold);
+  height: var(--note-fold);
+  border: 0 solid var(--line);
+  border-top-width: var(--outline-width);
+  border-right-width: var(--outline-width);
+  background: linear-gradient(
+      to bottom left,
+      var(--note-fold-fill) calc(50% - var(--outline-width)),
+      var(--line) 0
+    )
+    border-box;
+  pointer-events: none;
+}
+
+/* Ink text in both themes, so links and meta lines take it too. */
+:where(.rk-sticky-note) a,
+.rk-sticky-note .rk-card-meta {
+  color: inherit;
+}
+
+.rk-callout.rk-sticky-note,
+.rk-sticky-note .rk-card-body {
+  padding: var(--space-5);
+}
+
+/* The note doesn't clip its content, so the card's image rounds its own top corners. */
+.rk-sticky-note .rk-card-image {
+  border-start-start-radius: calc(var(--radius) - var(--outline-width));
+  border-start-end-radius: calc(var(--radius) - var(--outline-width));
+  border-block-end: var(--outline-width) solid var(--line);
+}
+
+/* Prompts: callout kinds pick a colour; :where() lets a hue modifier override it. */
+.rk-sticky-note:where(.rk-callout--note) {
+  --note-fill: var(--note-sky);
+}
+
+.rk-sticky-note:where(.rk-callout--warning) {
+  --note-fill: var(--note-tangerine);
+}
+
+.rk-sticky-note--yellow {
+  --note-fill: var(--note-yellow);
+}
+
+.rk-sticky-note--sky {
+  --note-fill: var(--note-sky);
+}
+
+/* Tangerine focus bands vanish on tangerine, so focus inside uses the alternate. */
+.rk-sticky-note--tangerine {
+  --note-fill: var(--note-tangerine);
+  --focus: var(--focus-alt);
+}
+
+.rk-sticky-note--green {
+  --note-fill: var(--note-green);
+}
+
+.rk-sticky-note--coral {
+  --note-fill: var(--note-coral);
+  --note-pin: var(--navy);
+}
+
+.rk-sticky-note--grape {
+  --note-fill: var(--note-grape);
+}
+
+/* The tilt turns the note's shadow with it, so the shadow's offset is turned back by the same
+   angle and still falls away from the light. A linked note pops with the usual shadows, which
+   turn with it, by under a quarter pixel at a slight tilt. */
+.rk-sticky-note--tilt {
+  --note-tilt: -2deg;
+  --note-shadow-x: calc(
+    var(--shadow-offset-x) * cos(var(--note-tilt)) + var(--shadow-offset-y) * sin(var(--note-tilt))
+  );
+  --note-shadow-y: calc(
+    var(--shadow-offset-y) * cos(var(--note-tilt)) - var(--shadow-offset-x) * sin(var(--note-tilt))
+  );
+
+  rotate: var(--note-tilt);
+  box-shadow:
+    var(--note-shadow-x) var(--note-shadow-y) 0 var(--shadow-color),
+    var(--note-shadow-x) var(--note-shadow-y) 0 var(--outline-width) var(--shadow-edge);
+}
+
+/* A strip of see-through tape across the top edge. */
+.rk-sticky-note--tape::before {
+  content: '';
+  position: absolute;
+  inset-block-start: calc(var(--space-5) / -2);
+  inset-inline: 0;
+  inline-size: var(--space-7);
+  block-size: var(--space-5);
+  margin-inline: auto;
+  border: var(--outline-width) solid var(--line);
+  background: var(--note-tape);
+  pointer-events: none;
+}
+
+/* A pin's round head, just inside the top edge. */
+.rk-sticky-note--pin::before {
+  content: '';
+  position: absolute;
+  inset-block-start: var(--space-2);
+  inset-inline: 0;
+  box-sizing: border-box;
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+  margin-inline: auto;
+  border: var(--outline-width) solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--note-pin);
+  pointer-events: none;
+}
+
+/* A linked note's corner lifts with the pop and goes flat again when pressed. The transitions
+   repeat the pop's own from interactive.css, which this replaces. */
+.rk-sticky-note.rk-card--link {
+  transition:
+    translate var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease,
+    clip-path var(--duration-fast) ease;
+}
+
+.rk-sticky-note.rk-card--link::after {
+  transition:
+    width var(--duration-fast) ease,
+    height var(--duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .rk-sticky-note.rk-card--link:hover {
+    --note-fold: var(--space-5);
+  }
+}
+
+.rk-sticky-note.rk-card--link:active {
+  --note-fold: var(--space-4);
+}

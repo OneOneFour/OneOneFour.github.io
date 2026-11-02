@@ -45,6 +45,10 @@
   text-decoration: underline;
 }
 
+.rk-sticky-note.rk-card--link.is-hover {
+  --note-fold: var(--space-5);
+}
+
 .rk-segmented label.is-hover {
   box-shadow: inset 0 0 0 var(--outline-width) var(--line-unfilled);
 }
