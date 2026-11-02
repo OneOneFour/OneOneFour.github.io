@@ -26,6 +26,7 @@ const TINTS = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky', 'lilac', 'apri
 )
 const INK_LABEL_FILLS = ['--teal', '--yellow', '--green', '--sky', '--lilac', '--tangerine', '--apricot']
 const FILLS = ['--navy', '--coral', '--grape', ...INK_LABEL_FILLS]
+const STICKY_NOTES = ['yellow', 'sky', 'tangerine', 'green', 'coral', 'grape'].map((hue) => `--note-${hue}`)
 const SLATES = ['--slate', '--slate-greige']
 const TAB_STRIPS = ['--slate-tab', '--slate-greige-tab']
 const CODE_COLOURS = ['--code-keyword', '--code-function', '--code-string', '--code-number', '--code-comment']
@@ -56,6 +57,7 @@ const GROUPS = [
       { fg: '--on-section', bg: '--section', min: 4.5 },
     ],
   },
+  { title: 'Text on sticky notes', pairs: pairs(['--on-fill'], STICKY_NOTES, 4.5) },
   { title: 'Large text on bright coral', pairs: [{ fg: '--on-coral', bg: '--coral', min: 3 }] },
   // The highlighter band hugs the ink outline, so that is the edge it must stand out from.
   { title: 'Focus band against the outline', pairs: pairs(['--focus', '--focus-alt'], ['--line'], 3) },
