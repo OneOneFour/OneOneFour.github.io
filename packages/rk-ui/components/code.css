@@ -2,11 +2,17 @@
    language caption and a copy button. The button starts hidden and <rk-code-block>
    (code-block.js) shows it. It comes after the code so that readers reach the code first, and
    the grid lifts it into the header row. Pre is a keyboard scroll region for long lines
-   (tabindex="0").
+   (tabindex="0"). The caption may start with a logo for the language, coloured by
+   --code-lang-color (default --muted).
 
    <rk-code-block>
      <figure class="rk-code">
-       <figcaption class="rk-code-header"><span class="rk-code-lang">Python</span></figcaption>
+       <figcaption class="rk-code-header">
+         <span class="rk-code-lang">
+           <svg class="rk-icon rk-icon--small" aria-hidden="true">…optional logo…</svg>
+           Python
+         </span>
+       </figcaption>
        <pre tabindex="0"><code>…</code></pre>
        <button type="button" class="rk-button rk-button--small rk-code-copy" hidden>
          <svg class="rk-icon rk-icon--small">…copy icon…</svg>
@@ -46,11 +52,20 @@ rk-code-block {
 }
 
 .rk-code-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   color: var(--muted);
   font-size: var(--step--1);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+/* Single-colour logos are paths with no fill of their own. */
+.rk-code-lang svg {
+  color: var(--code-lang-color, var(--muted));
+  fill: currentColor;
 }
 
 .rk-code pre {
