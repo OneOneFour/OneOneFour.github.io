@@ -78,7 +78,7 @@ rk-code-block {
   margin: 0;
   padding: var(--space-4);
   overflow-x: auto;
-  background: none;
+  background-color: transparent;
   font-size: var(--step--1);
   line-height: var(--line-height-body);
 }
@@ -96,7 +96,8 @@ rk-code-block {
 }
 
 /* The panel shows the focus band for its scroll region: a ring of the outline colour for the band
-   to hug. The pre keeps its own focus ring in browsers without :has(). */
+   to hug. The pre keeps its own focus ring in browsers without :has(), and drops a scroll
+   region's ring (overflow.css) but not its edges. */
 .rk-code:has(pre:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--outline-width);
@@ -105,6 +106,7 @@ rk-code-block {
 
 .rk-code:has(pre:focus-visible) pre {
   outline: none;
+  box-shadow: var(--scroll-edges, none);
 }
 
 /* The editor tab is flat: no inner shadow. A blank shadow, not none, so it can sit in a list. */

@@ -33,6 +33,7 @@ import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen
 import BreadcrumbSpecimens from '../../components/styleguide/BreadcrumbSpecimens.astro'
 import FolderSpecimens from '../../components/styleguide/FolderSpecimens.astro'
 import PaginationSpecimens from '../../components/styleguide/PaginationSpecimens.astro'
+import OverflowSpecimens from '../../components/styleguide/OverflowSpecimens.astro'
 import EquationSpecimens from '../../components/styleguide/EquationSpecimens.astro'
 import MathsInTextSpecimens from '../../components/styleguide/MathsInTextSpecimens.astro'
 import ChartPaletteSpecimens from '../../components/styleguide/ChartPaletteSpecimens.astro'
@@ -211,6 +212,16 @@ import FigureSpecimens from '../../components/styleguide/FigureSpecimens.astro'
     <SpecimenSection title="Widget frame">
       <WidgetFrameSpecimen slot="light" />
       <WidgetFrameSpecimen slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Overflow" stacked>
+      <p>
+        Options for Gate 1b, labelled A to D. Each hint shows only on the side with more to see, and
+        not at all when everything fits. Scroll, or tab into a block and use the arrow keys. B and C
+        need scroll-driven animations; other browsers show only their own scrollbar.
+      </p>
+      <OverflowSpecimens slot="light" />
+      <OverflowSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Equations" stacked>

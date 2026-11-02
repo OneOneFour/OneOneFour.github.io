@@ -1,0 +1,113 @@
+---
+/**
+ * Scroll regions: today's plain scrolling, then each overflow hint option (A to D) on a long code
+ * line, a code block that fits, a long equation, a wide table and a narrow strip of folder tabs.
+ */
+import CodeBlock from '../CodeBlock.astro'
+import Equation from './Equation.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import { LORENZ_JS } from './code-samples'
+
+const OPTIONS = [
+  { title: 'Today: no hint (.rk-scroll)', class: 'rk-scroll' },
+  { title: 'A: toon scrollbar (.rk-scroll--bar)', class: 'rk-scroll rk-scroll--bar' },
+  { title: 'B: dots (.rk-scroll--dots)', class: 'rk-scroll rk-scroll--dots' },
+  { title: 'C: hard edge (.rk-scroll--edge)', class: 'rk-scroll rk-scroll--edge' },
+  {
+    title: 'D: dots, and the scrollbar on hover and focus (.rk-scroll--dots.rk-scroll--hover-bar)',
+    class: 'rk-scroll rk-scroll--dots rk-scroll--hover-bar',
+  },
+]
+
+const LONG_EQUATION = String.raw`\frac{\partial u}{\partial t} + u\frac{\partial u}{\partial x} + v\frac{\partial u}{\partial y} + w\frac{\partial u}{\partial z} = -\frac{1}{\rho}\frac{\partial p}{\partial x} + \nu\left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2}\right) + fv`
+
+const TABLE_HEAD = ['Run', 'σ', 'ρ', 'β', 'Δt', 'Steps', 'x₀', 'y₀', 'z₀', 'λ₁', 'max |x|', 'Wall time']
+const TABLE_ROWS = [
+  ['a', '10', '28', '2.667', '0.01', '10 000', '1.0', '1.0', '1.0', '0.906', '19.6', '0.8 s'],
+  ['b', '10', '99.96', '2.667', '0.005', '20 000', '0.1', '0.0', '0.0', '1.42', '41.3', '1.7 s'],
+  ['c', '16', '45.92', '4.0', '0.01', '10 000', '−5.0', '5.0', '20.0', '1.50', '27.8', '0.9 s'],
+]
+
+const TABS = ['Tab one', 'Tab two', 'Tab three', 'Tab four', 'Tab five', 'Tab six']
+---
+
+{
+  OPTIONS.map((option) => (
+    <SpecimenRow title={option.title}>
+      <Specimen label="long code line" wide>
+        <CodeBlock code={LORENZ_JS} lang="javascript" label="JavaScript" preClass={option.class} />
+      </Specimen>
+      <Specimen label="code that fits: no hint" wide>
+        <CodeBlock code="x = lorenz(1.0, 1.0, 1.0)" lang="python" preClass={option.class} />
+      </Specimen>
+      <Specimen label="long equation" wide>
+        <Equation tex={LONG_EQUATION} class={option.class} />
+      </Specimen>
+      <Specimen label="wide table" wide>
+        <div class:list={[option.class, 'table-scroll']} tabindex="0" role="region" aria-label="Wide table">
+          <table>
+            <thead>
+              <tr>
+                {TABLE_HEAD.map((heading) => (
+                  <th scope="col">{heading}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {TABLE_ROWS.map((row) => (
+                <tr>
+                  {row.map((cell) => (
+                    <td>{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Specimen>
+      <Specimen label="folder tabs, 16rem wide" wide>
+        <div class="narrow rk-folder">
+          <nav aria-label="Specimen pages">
+            <ol class:list={['rk-folder-tabs', option.class]}>
+              {TABS.map((name, i) => (
+                <li>
+                  <a class="rk-folder-tab" href="#" aria-current={i === 0 ? 'page' : undefined}>
+                    {name}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+          <div class="rk-folder-sheet">Sheet</div>
+        </div>
+      </Specimen>
+    </SpecimenRow>
+  ))
+}
+
+<style>
+  .table-scroll {
+    padding-block-end: var(--space-2);
+  }
+
+  table {
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  th,
+  td {
+    padding: var(--space-1) var(--space-3);
+    text-align: start;
+    white-space: nowrap;
+  }
+
+  th {
+    border-block-end: var(--outline-width) solid var(--line-unfilled);
+  }
+
+  .narrow {
+    max-inline-size: 16rem;
+  }
+</style>
