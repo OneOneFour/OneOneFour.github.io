@@ -148,12 +148,8 @@ a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab)).is-focus {
 
 /* Folder tabs */
 
-.rk-folder-tab.is-hover {
+.rk-folder-tab:is(.is-hover, .is-focus):not([aria-selected='true']) {
   z-index: 2;
-}
-
-.rk-folder-tab.is-focus {
-  z-index: 5;
 }
 
 /* Input hover cue */

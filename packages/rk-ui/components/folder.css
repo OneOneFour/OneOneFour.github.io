@@ -28,8 +28,8 @@
    Add .rk-folder--sloped for overlapping tabs with sloped sides, like a manila folder's, and
    .rk-folder--tinted for a sheet in --selected-tint.
 
-   Stacking, back to front: tabs (1), a hovered tab (2), the sheet (3), the selected tab (4), a
-   focused tab (5). */
+   Stacking, back to front: tabs (1), a hovered or focused tab (2), the sheet (3), the selected
+   tab (4). */
 
 .rk-folder {
   --folder-sheet: var(--raised);
@@ -91,7 +91,7 @@
   color: inherit;
 }
 
-.rk-folder-tab:hover {
+.rk-folder-tab:is(:hover, :focus-visible) {
   z-index: 2;
 }
 
@@ -113,10 +113,6 @@
   inset-block-start: 100%;
   block-size: var(--outline-width);
   background: var(--folder-sheet);
-}
-
-.rk-folder-tab:focus-visible {
-  z-index: 5;
 }
 
 .rk-folder-sheet {
