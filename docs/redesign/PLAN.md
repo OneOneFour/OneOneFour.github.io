@@ -228,7 +228,11 @@ in `<head>` before first paint.
 Rules (shown on the mood board, theme switch at the top):
 - The page goes to a deep night blue (not black). **Fills stay vivid, and
   labels on fills stay ink.** Outlines and hard shadows become near-black,
-  so toon edges still read as depth.
+  so toon edges still read as depth. *Gate 1b (provisional default):* a near-black shadow is
+  hard to see on the night-blue page, so every hard shadow sits on a copy widened by the outline
+  width in `--shadow-edge` (cream in dark mode, transparent in light), the "outlined slab"
+  (option B). Rob is still weighing it against option D, own-colour extrusion, which the
+  styleguide keeps as `.rk-shadow-d` for comparison.
 - **Tints flip to deep versions** with cream text (sky, lilac, apricot are
   panel backgrounds and would glare in dark mode).
 - Hue-text variants (`--navy-deep` etc.) get lighter values for dark mode.
