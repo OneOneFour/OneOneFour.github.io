@@ -1,0 +1,58 @@
+---
+/** Linked and static cards, with and without an image, and the linked card's states. */
+import Card from '../ui/Card.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import CloudLightningIcon from 'rk-ui/icons/cloud-lightning.svg'
+
+const STATES = [
+  { label: 'hover', class: 'is-hover' },
+  { label: 'pressed', class: 'is-active' },
+  { label: 'focused', class: 'is-focus' },
+]
+---
+
+<SpecimenRow title="Variants">
+  <Specimen label="linked, with image" wide>
+    <Card title="Card title" href="#cards" meta="Meta line">
+      <div slot="image" class="rk-card-image image-placeholder"><CloudLightningIcon class="rk-icon" /></div>
+      <p>Body text. Pack my box with five dozen liquor jugs.</p>
+    </Card>
+  </Specimen>
+  <Specimen label="linked, no image" wide>
+    <Card title="Card title" href="#cards" meta="Meta line">
+      <p>Body text. The quick brown fox jumps over the lazy dog.</p>
+    </Card>
+  </Specimen>
+  <Specimen label="static (no link, no outline, no pop)" wide>
+    <Card title="Card title" meta="Meta line">
+      <p>Body text. Sphinx of black quartz, judge my vow.</p>
+    </Card>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Linked card states">
+  {
+    STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <Card title="Card title" href="#cards" meta="Meta line" class={state.class}>
+          <p>Body text.</p>
+        </Card>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<style>
+  .image-placeholder {
+    display: grid;
+    place-items: center;
+    background: var(--teal-tint);
+    --icon-fill: var(--teal);
+  }
+
+  .image-placeholder :global(.rk-icon) {
+    inline-size: 4rem;
+    block-size: 4rem;
+  }
+</style>

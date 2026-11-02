@@ -1,0 +1,29 @@
+---
+/**
+ * An rk-ui card. With `href` the whole card is one link (its title); without, it is a static panel.
+ * Slots: `image` (an <img class="rk-card-image"> or similar) and the default slot for the body.
+ *
+ * @param title the card's title, and the link text when linked
+ * @param href where the card links to
+ * @param meta a short line under the title
+ */
+interface Props {
+  title: string
+  href?: string
+  meta?: string
+  class?: string
+}
+
+const { title, href, meta, class: className } = Astro.props
+---
+
+<article class:list={['rk-card', { 'rk-card--link': href }, className]}>
+  <slot name="image" />
+  <div class="rk-card-body">
+    <h3 class="rk-card-title">
+      {href ? <a class="rk-card-link" href={href}>{title}</a> : title}
+    </h3>
+    {meta && <p class="rk-card-meta">{meta}</p>}
+    <slot />
+  </div>
+</article>
