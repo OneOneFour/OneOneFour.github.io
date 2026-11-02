@@ -1,5 +1,11 @@
-import { parseTokens, resolveColor, contrastRatio, THEMES } from '../../../scripts/check-contrast.mjs'
-import tokensCss from 'rk-ui/tokens.css?raw'
+import {
+  parseTokens,
+  splitFallback,
+  resolveColor,
+  contrastRatio,
+  THEMES,
+} from '../../../scripts/check-contrast.mjs'
+import rawTokensCss from 'rk-ui/tokens.css?raw'
 
 export type Theme = 'light' | 'dark'
 export type Tokens = Map<string, string>
@@ -11,6 +17,8 @@ export interface Contrast {
   ratio: number
 }
 
+/** tokens.css without its light-only fallback, whose plain values would hide the dark theme. */
+export const tokensCss: string = splitFallback(rawTokensCss).main
 export const tokens: Tokens = parseTokens(tokensCss)
 
 /** The `#rrggbb` a token resolves to in one theme. */

@@ -95,6 +95,52 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* Browsers without light-dark() (before mid-2024) get the light theme. */
+@supports not (color: light-dark(#000, #fff)) {
+  :root,
+  :root[data-theme] {
+    color-scheme: light;
+  }
+
+  :root {
+    --surface: #f7f3e5;
+    --raised: #fffaf0;
+    --fg: #1d232f;
+    --muted: #5b6070;
+    --line: #1d232f;
+
+    --navy: #2c4d6e;
+    --teal: #2ea6b1;
+    --coral: #de4d45;
+    --coral-solid: var(--coral-deep);
+    --green: #7bba3d;
+    --grape: #7b4fc9;
+    --tangerine: #f58a2a;
+
+    --on-ink: #f7f3e5;
+    --on-coral: #ffffff;
+    --on-grape: #ffffff;
+
+    --navy-deep: #2c4d6e;
+    --teal-deep: #176f78;
+    --coral-deep: #c8322a;
+    --yellow-deep: #856000;
+    --green-deep: #3a7016;
+    --sky-deep: #216b9a;
+    --grape-deep: #7b4fc9;
+    --tangerine-deep: #a14c0a;
+
+    --navy-tint: #c7d5e6;
+    --teal-tint: #a6dfe3;
+    --coral-tint: #f6c1bb;
+    --yellow-tint: #fbdf94;
+    --green-tint: #c8e5a8;
+    --sky-tint: #8fd3f7;
+    --lilac-tint: #d4c4f5;
+    --apricot-tint: #ffd2a6;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0ms;
