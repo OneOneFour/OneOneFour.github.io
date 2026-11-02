@@ -1,0 +1,41 @@
+---
+/**
+ * Exploded views: a steam train of five assemblies, and a lamp that is one, both drawn by
+ * ExplodedView from their data.
+ *
+ * @param theme the panel's theme, passed on to keep ids unique
+ */
+import ExplodedView from './ExplodedView.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import { steamTrain } from './steam-train'
+import { tableLamp } from './table-lamp'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+---
+
+<SpecimenRow title="Steam train: hover or focus an assembly to take it apart">
+  <Specimen label="apart on --ease-spring, home on --ease-snap; the switch pulls every assembly apart" wide>
+    <div class="train"><ExplodedView illustration={steamTrain} theme={theme} /></div>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Lamp: the same parts, one assembly">
+  <Specimen label="nearer parts rise further and cast longer shadows">
+    <div class="lamp"><ExplodedView illustration={tableLamp} theme={theme} /></div>
+  </Specimen>
+</SpecimenRow>
+
+<style>
+  .train {
+    max-inline-size: 44rem;
+  }
+
+  .lamp {
+    inline-size: 9rem;
+  }
+</style>

@@ -43,6 +43,7 @@ import ChartPaletteSpecimens from '../../components/styleguide/ChartPaletteSpeci
 import ChartSpecimens from '../../components/styleguide/ChartSpecimens.astro'
 import DiagramSpecimens from '../../components/styleguide/DiagramSpecimens.astro'
 import FigureSpecimens from '../../components/styleguide/FigureSpecimens.astro'
+import ExplodedViewSpecimens from '../../components/styleguide/ExplodedViewSpecimens.astro'
 import StyleguideContents from '../../components/styleguide/StyleguideContents.astro'
 
 const CONTENTS = [
@@ -97,6 +98,7 @@ const CONTENTS = [
     title: 'Maths and charts',
     sections: ['Equations', 'Maths in text', 'Chart colours', 'Charts', 'Diagrams', 'Figures and widgets'],
   },
+  { title: 'Fun elements', sections: ['Exploded view'] },
 ]
 ---
 
@@ -352,6 +354,16 @@ const CONTENTS = [
     <SpecimenSection title="Figures and widgets" stacked>
       <FigureSpecimens slot="light" theme="light" />
       <FigureSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Exploded view">
+      <p>
+        Illustrations made only of flat toon shapes, whose assemblies come apart on hover or focus.
+        Each part says how far it moves and how many layers from the back it is. Try the light, the
+        palettes and the shadow modes.
+      </p>
+      <ExplodedViewSpecimens slot="light" theme="light" />
+      <ExplodedViewSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>
