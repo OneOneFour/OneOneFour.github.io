@@ -23,7 +23,7 @@ export function band(shape: Shape, fill: IllustrationColour): Detail {
   return { kind: 'band', shape, fill }
 }
 
-/** Outline-coloured hatching (`hatching()`), for shade where a part has no shade step. */
+/** A region of diagonal stripes, like the striped progress bar's, for shade without a shade step. */
 export function hatch(shape: Shape): Detail {
   return { kind: 'hatch', shape }
 }

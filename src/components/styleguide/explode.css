@@ -6,8 +6,14 @@
    order, back to front, so a part's shadow falls on the parts behind it.
 
    <div class="rk-explode">
-     <div class="rk-explode-stage" style="--columns: 16; --rows: 38" role="group" aria-label="…">
-       <svg class="rk-explode-ground" viewBox="0 0 16 38" aria-hidden="true"><path d="…" /></svg>
+     <div class="rk-explode-stage" style="--columns: 16; --rows: 38; --hatch: url(#…)" role="group"
+       aria-label="…">
+       <svg class="rk-explode-ground" viewBox="0 0 16 38" aria-hidden="true">
+         <pattern id="…" …>                                 the hatching's diagonal stripes
+           <rect class="rk-explode-hatch" … />
+         </pattern>
+         <path d="…" />                                      the ground line
+       </svg>
        <div class="rk-explode-assembly" tabindex="0" role="img" aria-label="Lamp: stem and shade">
          <svg class="rk-explode-rest" viewBox="0 0 16 38">…each part's shape</svg>
          <svg class="rk-explode-part" viewBox="7 20 2 10" style="--x: 7; --y: 20; --w: 2; --h: 10;
@@ -18,7 +24,7 @@
            <g clip-path="url(#…)">                       details, cut off at the shape's edge
              <path class="rk-explode-detail rk-explode-detail--band" d="…" style="--detail-fill: …" />
              <path class="rk-explode-detail rk-explode-detail--stroke" d="…" />
-             …also --hatch (outline-coloured strokes) and --piece (an outlined, filled shape)
+             …also --hatch (the stage's stripes) and --piece (an outlined, filled shape)
            </g>
          </svg>
          …more parts
@@ -162,9 +168,19 @@
   fill: var(--detail-fill, none);
 }
 
-.rk-explode-detail:not(.rk-explode-detail--band) {
+.rk-explode-detail:is(.rk-explode-detail--piece, .rk-explode-detail--stroke) {
   stroke: var(--line);
   stroke-width: var(--illustration-outline);
+}
+
+/* Hatching is the stage's stripe pattern (--hatch), drawn in each part's grid units. */
+.rk-explode-detail--hatch {
+  fill: var(--hatch);
+}
+
+.rk-explode-hatch {
+  fill: var(--illustration-stripe);
+  stroke: none;
 }
 
 /* Bands and hatching are drawn for light from the top left. They flip about the part's centre
@@ -281,7 +297,7 @@
     fill: Canvas;
   }
 
-  .rk-explode-detail:not(.rk-explode-detail--band) {
+  .rk-explode-detail:is(.rk-explode-detail--piece, .rk-explode-detail--stroke) {
     stroke: CanvasText;
   }
 

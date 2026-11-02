@@ -1,5 +1,5 @@
 import { band, hatch, piece, stroke, type ExplodedIllustration, type ExplodedPart } from './exploded-view'
-import { circle, dome, ellipse, hatching, line, polygon, rect, union } from './illustration-shapes'
+import { circle, dome, ellipse, line, polygon, rect, union } from './illustration-shapes'
 
 /** A wheel: a steel tyre round a red disc, with a steel hub. */
 function wheel(
@@ -130,7 +130,7 @@ export const steamTrain: ExplodedIllustration = {
           fill: 'ochre',
           details: [
             band(rect(32, 19.5, 22.5, 2.2), 'ochre-light'),
-            hatch(hatching(33, 27, 21, 2.5, 2.2)),
+            hatch(rect(32, 26.8, 22.5, 2.7)),
             stroke(line(39.5, 19.5, 39.5, 29.5)),
             stroke(line(47, 19.5, 47, 29.5)),
           ],
@@ -141,7 +141,7 @@ export const steamTrain: ExplodedIllustration = {
           name: 'Smokebox',
           shape: rect(54, 19, 6.5, 11, 0.8),
           fill: 'steel',
-          details: [band(rect(54, 19, 6.5, 1.8), 'steel-light'), hatch(hatching(54.6, 27.5, 6, 2.5, 2.2))],
+          details: [band(rect(54, 19, 6.5, 1.8), 'steel-light'), hatch(rect(54, 27.3, 6.5, 2.7))],
           depth: 1,
           explode: [3, 0],
         },
