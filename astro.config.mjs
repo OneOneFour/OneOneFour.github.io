@@ -7,4 +7,11 @@ export default defineConfig({
   site: 'https://www.robertcking.com',
 
   integrations: [vue(), mdx()],
+
+  vite: {
+    build: {
+      // Keep fonts as files: inlined, every unicode-range subset would load on every page.
+      assetsInlineLimit: (filePath) => (filePath.endsWith('.woff2') ? false : undefined),
+    },
+  },
 })
