@@ -231,16 +231,15 @@ the shared pieces up first:
 - hidden nav entries;
 - every new dependency.
 
-The photo album schema can only be finalised once the photo storage decision (§8) is made. Leave it
-minimal until then.
+Photos are stored in R2 (§8), so the album schema holds image keys, dimensions and alt text, not image files.
 
 After that, run **at most two tracks at a time**. Rob's review is the bottleneck anyway.
 
 | Track | Tasks | Needs from Rob | Gate |
 |---|---|---|---|
-| **Writing** | [B] `posts` collection, PostLayout (header band, breakout grid, sidenotes, end matter), MDX, KaTeX with a shared macros file, Shiki themed from tokens, RSS (summary-only). ‖ [B] **Interactive widget library** in the package's `widgets/` folder: vanilla custom elements (widget frame, slider with readout, start/pause/reset controls), and the Lorenz widget built on them, with reduced motion and a static fallback. Each widget loads its simulation with `import()` from a **relative path** (e.g. `` import(`../sims/${name}.js`) ``) so Vite bundles it. A path read from an attribute wouldn't be bundled. **This is the only place Playwright is used:** a few smoke tests per widget (renders, controls change state, works with reduced motion). | **C2**: first post | Post renders in both themes; widget works; smoke tests pass |
+| **Writing** | [B] `posts` collection, PostLayout (header band, breakout grid, sidenotes, end matter), MDX, KaTeX with a shared macros file, the equation-reference plugin (PLAN §5.2), Shiki themed from tokens, RSS (summary-only). ‖ [B] **Interactive widget library** in the package's `widgets/` folder: vanilla custom elements (widget frame, slider with readout, start/pause/reset controls), and the Lorenz widget built on them, with reduced motion and a static fallback. Each widget loads its simulation with `import()` from a **relative path** (e.g. `` import(`../sims/${name}.js`) ``) so Vite bundles it. A path read from an attribute wouldn't be bundled. **This is the only place Playwright is used:** a few smoke tests per widget (renders, controls change state, works with reduced motion). | **C2**: first post | Post renders in both themes; widget works; smoke tests pass |
 | **Research** | [G] `publications` schema (file name = ID, `figureCredit`) + `npm run pubs:new -- <doi or file.bib>` starter. [B] `/research/` with chips and backlinks | **C3**: Rob writes the publication files | Page lists Rob's entries; a post with `publication:` shows the link on both pages |
-| **Photography** · **[OPEN] photo storage, see §8** | [G] One image script, `npm run img:add`, using `sharp`. It resizes, strips **all** EXIF, and writes or uploads (depending on §8). It's used for **every** committed image (albums, post heroes, figures, profile photo). **Originals are never committed.** [B] `photos` collection, album grid, lightbox on native `<dialog>` | **C4**: photos, as they come in | Images optimised; no EXIF in the repo; lightbox works by keyboard |
+| **Photography** (storage: R2, §8) | [G] One image script, `npm run img:add`, using `sharp`. It resizes, strips **all** EXIF, and writes or uploads (depending on §8). It's used for **every** committed image (albums, post heroes, figures, profile photo). **Originals are never committed.** [B] `photos` collection, album grid, lightbox on native `<dialog>` | **C4**: photos, as they come in | Images optimised; no EXIF in the repo; lightbox works by keyboard |
 | **Projects review** | Rob-led conversation, one project at a time. Each keep/drop decision also updates the redirect map (PLAN §3) | Rob's decision per project | Only approved projects are non-draft; every legacy slug redirects |
 
 ### P4 Switchover and cleanup
@@ -309,12 +308,14 @@ The coordinator presents:
   - Licence corrections: Roboto Slab is Apache-2.0, brand marks stay in the site, and the content
     licence has a credit carve-out.
   - Publications use the file name as ID.
-- **Open:** package name/prefix (Gate 0); `\eqref` need (before the writing track); photo storage (§8).
+- 2026-11-01: Rob activated R2 on his Cloudflare account, so **photo storage is option B**. Equation
+  references are decided: a small plugin before KaTeX, prototyped successfully (PLAN §5.2).
+- **Open:** package name/prefix (Gate 0).
 - **Next:** P0 in a fresh conversation: "Run phase P0 of `docs/redesign/IMPLEMENTATION.md`".
 
 ---
 
-## 8. Open: where photos are stored *(raised 2026-11-01, decide before the first photo)*
+## 8. Photo storage *(DECIDED 2026-11-01: option B, Cloudflare R2)*
 
 Whatever the choice, **originals never leave Rob's own library**, and only resized,
 EXIF-stripped web versions are published. This decision is hard to undo, because photos
@@ -334,3 +335,10 @@ so `robertcking.com` is already a Cloudflare zone. That removes option B's main 
 connecting `photos.robertcking.com` to an R2 bucket is a dashboard step in the same account.
 Check that the bucket is in the same Cloudflare account as the zone. Leave the existing
 `www` CNAME to GitHub Pages untouched.
+
+**Setup Rob does at the start of the photography track** (not before; nothing needs it earlier):
+1. Create a bucket (e.g. `robertcking-photos`) in the same Cloudflare account as the zone.
+2. Connect the custom domain `photos.robertcking.com` to it (bucket Settings → Custom Domains).
+3. Create an R2 API token scoped to **that bucket only**, with Object Read & Write.
+4. Put the token's values in a local `.env` (already gitignored), which `img:add` reads. Never
+   paste them into a chat, commit them, or add them to CI.

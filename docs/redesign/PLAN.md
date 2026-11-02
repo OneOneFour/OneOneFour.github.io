@@ -282,10 +282,21 @@ Supporting decisions *(proposed)*:
   `unified()` is a maintained, first-class processor option in Astro 7
   (`@astrojs/markdown-remark` 7.3.5); only the old top-level `markdown.remarkPlugins`
   keys are legacy. Site-wide TeX macros (e.g. `\R`, `\dd`) live in one shared macros
-  file passed to KaTeX. **[OPEN]** Does Rob need cross-referenced equation numbers
-  (`\label`/`\eqref`)? KaTeX supports `\tag` and numbered `align`/`equation`, but its
-  docs don't list `\label`/`\eqref`. If he does, compare `rehype-mathjax` (also build-time)
-  before the writing track.
+  file passed to KaTeX.
+- **Equation references** *(decided 2026-11-01; Rob wants clickable references)*. Authoring is
+  standard LaTeX: `\label{lorenz}` inside a display equation, and `\eqref{lorenz}` anywhere in
+  inline or display maths. The result: labelled equations are numbered in order (1), (2), …;
+  each gets an anchor `#eq-lorenz`; every `\eqref` renders as a link `(1)` that jumps to it, and
+  forward references work. An unknown or duplicate label **fails the build**.
+  - Neither off-the-shelf option does this (spike, 2026-11-01): `rehype-mathjax` 7.1.0 with
+    `tags: 'ams'` renders each reference as "(???)" linking to `#`, because each equation is
+    typeset on its own; `rehype-katex` 7.0.1 produces no anchors or links.
+  - So a small rehype plugin (about 50 lines in the spike) runs **before** KaTeX. It numbers
+    labels, replaces `\label` with `\tag{n}`, inserts the anchor, and rewrites `\eqref{k}` to
+    `\href{#eq-k}{(n)}`. KaTeX's `trust` option allows `\href` for `#` links only.
+  - Implementation must also handle several `\label`s in one `align` block (one per row).
+  - Scrolling uses CSS `scroll-behavior: smooth`, off under reduced motion. The target equation
+    gets a brief `:target` highlight from the tokens.
 - **Monospace** (code, widget readouts): pick one with Greek, decided at Gate 1a.
 - Fonts are **self-hosted** from woff2 files vendored once into the design
   package, with our own `@font-face` rules. Xmind is OFL (no Reserved Font Name, so subsetting
@@ -567,13 +578,13 @@ the single source for order, file locations and acceptance.
 - Old Phase 2 deploy (R0) dropped; its code is carried into the redesign with projects as drafts.
 - Design package distribution: no build step, copied into each site's `vendor/` (§5.6).
 - URL policy, draft rule, content helper (§3, §6).
+- Clickable equation references via a small plugin before KaTeX (§5.2).
+- Photo storage: Cloudflare R2 behind `photos.robertcking.com` (IMPLEMENTATION.md §8).
 - Licences: MIT for code, CC BY-NC 4.0 for content except where credited otherwise
   (IMPLEMENTATION.md §1).
 
 **Open:**
 1. Design package name and prefix, decided at Gate 0 (§5.6).
-2. Does Rob need `\label`/`\eqref` equation cross-references? (§5.2) Decide before the writing track.
-3. Photo storage: in the repo, or an R2 bucket (IMPLEMENTATION.md §8). Decide before the first photo.
 
 ## Sources
 
