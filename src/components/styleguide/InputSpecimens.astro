@@ -1,6 +1,6 @@
 ---
 /**
- * Text input, textarea and select, each in every state.
+ * Text input, textarea and select, each in every state, and the hover options for Gate 1b.
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
@@ -15,6 +15,16 @@ const { theme } = Astro.props
 const STATES = [
   { label: 'rest', class: '' },
   { label: 'focused', class: 'is-focus' },
+]
+const HOVER_OPTIONS = [
+  { label: 'hover A: none', class: '' },
+  { label: 'hover B: background sinks', class: 'rk-hover-b' },
+  { label: 'hover C: thicker border', class: 'rk-hover-c' },
+  { label: 'hover D: teal underline', class: 'rk-hover-d' },
+]
+const HOVER_MODES = [
+  { label: 'live, hover each', class: '' },
+  { label: 'static hover', class: 'is-hover' },
 ]
 ---
 
@@ -82,3 +92,28 @@ const STATES = [
     <select class="rk-select" aria-label="Specimen" aria-invalid="true"><option>Option one</option></select>
   </Specimen>
 </SpecimenRow>
+
+<SpecimenRow title="Hover options">
+  {
+    HOVER_OPTIONS.flatMap((option) =>
+      HOVER_MODES.map((mode) => (
+        <Specimen label={`${option.label}: ${mode.label}`} wide>
+          <div class:list={['hover-demo', option.class]}>
+            <input class:list={['rk-input', mode.class]} type="text" placeholder="Placeholder" aria-label="Specimen" />
+            <select class:list={['rk-select', mode.class]} aria-label="Specimen">
+              <option>Option one</option>
+            </select>
+            <textarea class:list={['rk-input', mode.class]} aria-label="Specimen" placeholder="Placeholder"></textarea>
+          </div>
+        </Specimen>
+      ))
+    )
+  }
+</SpecimenRow>
+
+<style>
+  .hover-demo {
+    display: grid;
+    gap: var(--space-2);
+  }
+</style>

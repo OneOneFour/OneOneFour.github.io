@@ -13,6 +13,8 @@ const PHOSPHOR_ICONS = [
   'play', 'pause', 'arrow-counter-clockwise', 'download-simple', 'arrow-square-out',
   'list', 'x', 'caret-right', 'caret-down', 'magnifying-glass', 'funnel', 'copy',
   'sun', 'moon', 'circle-half', 'info', 'warning', 'envelope-simple', 'rss',
+  'calendar-blank', 'clock', 'upload-simple', 'plus', 'minus', 'caret-up',
+  'paint-brush', 'palette', 'drop',
 ]
 
 // Hand-adapted icons in Phosphor's raw duotone format, read from scripts/icon-sources/.

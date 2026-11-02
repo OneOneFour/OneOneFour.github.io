@@ -7,9 +7,13 @@
  */
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import DownloadIcon from 'rk-ui/icons/download-simple.svg'
+import SwatchPicker from './SwatchPicker.astro'
+import UploadIcon from 'rk-ui/icons/upload-simple.svg'
 import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
-import CaretIcon from 'rk-ui/icons/caret-down.svg'
+import MinusIcon from 'rk-ui/icons/minus.svg'
+import PlusIcon from 'rk-ui/icons/plus.svg'
+import CaretUpIcon from 'rk-ui/icons/caret-up.svg'
+import CaretDownIcon from 'rk-ui/icons/caret-down.svg'
 
 interface Props {
   theme: 'light' | 'dark'
@@ -38,13 +42,21 @@ const NUMBER_STATES = [
   { label: 'disabled', input: '', buttons: '', disabled: true },
   { label: 'error', input: '', buttons: '', invalid: true },
 ]
-const HUES = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky', 'grape', 'tangerine', 'lilac', 'apricot']
 const SWATCH_GROUPS = [
   { variant: 'A', label: 'rest (teal checked)' },
   { variant: 'A', label: 'hover on navy, focus on teal', hover: 'navy', focus: 'teal' },
   { variant: 'A', label: 'disabled', disabled: true },
-  { variant: 'B', label: 'rest (the last swatch opens the browser picker)' },
-  { variant: 'B', label: 'focused custom swatch', focusCustom: true },
+  { variant: 'B', label: 'rest (the last swatch opens the browser picker)', custom: true },
+  { variant: 'B', label: 'focused custom swatch', custom: true, focusCustom: true },
+]
+const FLAIRS = [
+  { label: 'flair A: paint brush', class: 'rk-swatches--brush' },
+  { label: 'flair B: paint drops', class: 'rk-swatches--drops' },
+  { label: 'flair C: palette and stroke', class: 'rk-swatches--stroke', paletteLegend: true },
+]
+const FLAIR_GROUPS = [
+  { label: 'colour A, hover on navy', hover: 'navy' },
+  { label: 'colour B', custom: true },
 ]
 const COLOUR_STATES = [
   { label: 'rest', class: '' },
@@ -101,7 +113,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
       <Specimen label={state.label} wide>
         <label class:list={['rk-file-drop', state.class]}>
           <input type="file" disabled={state.disabled} aria-invalid={state.invalid ? 'true' : undefined} />
-          <DownloadIcon class="rk-icon" aria-hidden="true" />
+          <UploadIcon class="rk-icon" aria-hidden="true" />
           <span>Choose a file or drop it here</span>
         </label>
       </Specimen>
@@ -170,28 +182,13 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   }
 </SpecimenRow>
 
-<SpecimenRow title="Number A: native spinners">
-  <Specimen label="rest (the arrows are the browser's own)">
-    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="3" />
-  </Specimen>
-  <Specimen label="focused">
-    <input class="rk-input rk-input--spinners is-focus" type="number" aria-label="Specimen" value="3" />
-  </Specimen>
-  <Specimen label="disabled">
-    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="3" disabled />
-  </Specimen>
-  <Specimen label="error">
-    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="30" aria-invalid="true" />
-  </Specimen>
-</SpecimenRow>
-
-<SpecimenRow title="Number B: buttons either side">
+<SpecimenRow title="Number stepper, split: buttons either side">
   {
     NUMBER_STATES.map((state) => (
       <Specimen label={state.label}>
-        <rk-stepper class="rk-stepper rk-stepper--sides">
+        <rk-stepper class="rk-stepper rk-stepper--split">
           <button class="rk-button" type="button" data-step="down" aria-label="Decrease" disabled={state.disabled}>
-            −
+            <MinusIcon class="rk-icon" aria-hidden="true" />
           </button>
           <input
             class:list={['rk-input', state.input]}
@@ -210,7 +207,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
             aria-label="Increase"
             disabled={state.disabled}
           >
-            +
+            <PlusIcon class="rk-icon" aria-hidden="true" />
           </button>
         </rk-stepper>
       </Specimen>
@@ -218,7 +215,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   }
 </SpecimenRow>
 
-<SpecimenRow title="Number C: stacked arrows inside">
+<SpecimenRow title="Number stepper, stacked: arrows inside">
   {
     NUMBER_STATES.map((state) => (
       <Specimen label={state.label.replace('+', 'up')}>
@@ -241,10 +238,10 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
             aria-label="Increase"
             disabled={state.disabled}
           >
-            <CaretIcon aria-hidden="true" />
+            <CaretUpIcon aria-hidden="true" />
           </button>
           <button type="button" tabindex="-1" data-step="down" aria-label="Decrease" disabled={state.disabled}>
-            <CaretIcon aria-hidden="true" />
+            <CaretDownIcon aria-hidden="true" />
           </button>
         </rk-stepper>
       </Specimen>
@@ -252,30 +249,38 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   }
 </SpecimenRow>
 
-<SpecimenRow title="Colour A and B: token swatches">
+<SpecimenRow title="Colour A and B: token swatches (flair none)">
   {
     SWATCH_GROUPS.map((group, index) => (
       <Specimen label={`colour ${group.variant}: ${group.label}`}>
-        <fieldset class="rk-swatches" disabled={group.disabled}>
-          <legend class="rk-visually-hidden">Colour</legend>
-          {HUES.map((hue) => (
-            <label
-              class:list={['rk-swatch', { 'is-hover': hue === group.hover, 'is-focus': hue === group.focus }]}
-              style={`--swatch: var(--${hue})`}
-            >
-              <input type="radio" name={`${theme}-swatch-${index}`} value={hue} checked={hue === 'teal'} />
-              <span class="rk-visually-hidden">{hue}</span>
-            </label>
-          ))}
-          {group.variant === 'B' && (
-            <label class="rk-check">
-              <input class:list={['rk-swatch', { 'is-focus': group.focusCustom }]} type="color" />
-              Custom
-            </label>
-          )}
-        </fieldset>
+        <SwatchPicker
+          name={`${theme}-swatch-${index}`}
+          hover={group.hover}
+          focus={group.focus}
+          disabled={group.disabled}
+          custom={group.custom}
+          focusCustom={group.focusCustom}
+        />
       </Specimen>
     ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Colour A and B: flair">
+  {
+    FLAIRS.flatMap((flair, f) =>
+      FLAIR_GROUPS.map((group, g) => (
+        <Specimen label={`${flair.label}: ${group.label}`}>
+          <SwatchPicker
+            name={`${theme}-flair-${f}-${g}`}
+            flair={flair.class}
+            paletteLegend={flair.paletteLegend}
+            hover={group.hover}
+            custom={group.custom}
+          />
+        </Specimen>
+      ))
+    )
   }
 </SpecimenRow>
 
