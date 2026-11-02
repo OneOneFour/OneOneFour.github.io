@@ -10,7 +10,9 @@
    spinner E, .rk-spinner--water with .rk-water--slosh: a half-full flask that sloshes;
    filling button: a filled .rk-button with aria-busy="true" and an .rk-water child fills with its
    own colour. Keep it focusable with aria-disabled="true" rather than disabled, so focus isn't
-   lost, ignore its clicks while busy, and say what is happening in its label.
+   lost, ignore its clicks while busy, and say what is happening in its label;
+   pending panel A, .rk-pending with .rk-water--rise: a dashed panel filling up while it waits;
+   pending panel B, .rk-pending with .rk-water--slosh: water sloshing along its bottom.
 
    <span class="rk-spinner rk-spinner--water" role="status">
      <span class="rk-water rk-water--rise" aria-hidden="true"></span>
@@ -19,7 +21,11 @@
    <button class="rk-button rk-button--teal" type="button" aria-busy="true" aria-disabled="true">
      <span class="rk-water rk-water--rise" aria-hidden="true"></span>
      Saving…
-   </button> */
+   </button>
+   <div class="rk-pending" role="status">
+     <span class="rk-water rk-water--slosh" aria-hidden="true"></span>
+     <p>Loading…</p>
+   </div> */
 
 /* Registered so that it can be animated, and inherited so that a host can set it. */
 @property --water-level {
@@ -182,6 +188,39 @@
   display: none;
 }
 
+/* Pending panels: the dashed grouping outline, holding the place of content still to come. The
+   water is a tint, so text on it stays readable. */
+.rk-pending {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-block-size: 10rem;
+  padding: var(--space-4);
+  overflow: hidden;
+  border: var(--outline-width) dashed var(--line-unfilled);
+  border-radius: var(--radius);
+  background: var(--raised);
+  color: var(--fg);
+}
+
+.rk-pending > .rk-water {
+  --water-fill: var(--sky-tint);
+  --wave-line: var(--line-unfilled);
+  --wave-length: 4rem;
+  --wave-height: 0.75rem;
+  --wave-period: 2.4s;
+  --slosh-angle: 2deg;
+}
+
+.rk-pending > .rk-water--rise {
+  animation-duration: 4s;
+}
+
+.rk-pending > .rk-water--slosh {
+  --water-level: 0.25;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rk-water::before,
   .rk-water::after {
@@ -196,7 +235,8 @@
 
 /* Forced colours drop the fills, so the water keeps only its wave line, in a system colour. */
 @media (forced-colors: active) {
-  .rk-water {
+  .rk-water,
+  .rk-pending > .rk-water {
     --water-fill: Canvas;
     --wave-line: CanvasText;
 

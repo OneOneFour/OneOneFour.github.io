@@ -1,7 +1,7 @@
 ---
 /**
- * More loading options for Gate 1b: water spinners and filling buttons. Spinner letters carry on
- * from the spinners above.
+ * More loading options for Gate 1b: water spinners, filling buttons and pending panels. Spinner
+ * letters carry on from the spinners above.
  */
 import Button from '../ui/Button.astro'
 import Specimen from './Specimen.astro'
@@ -66,6 +66,21 @@ const LEVELS = [0.25, 0.5, 0.85]
       <span class="rk-water" aria-hidden="true"></span>
       Upload
     </Button>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Pending panels">
+  <Specimen label="A: filling up" wide>
+    <div class="rk-pending" role="status">
+      <span class="rk-water rk-water--rise" aria-hidden="true"></span>
+      <p>Loading…</p>
+    </div>
+  </Specimen>
+  <Specimen label="B: sloshing along the bottom" wide>
+    <div class="rk-pending" role="status">
+      <span class="rk-water rk-water--slosh" aria-hidden="true"></span>
+      <p>Loading…</p>
+    </div>
   </Specimen>
 </SpecimenRow>
 
