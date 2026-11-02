@@ -13,7 +13,7 @@ open it locally (it fetches Google Fonts, so needs network). Icon research is in
 
 | Decision | Consequence |
 |---|---|
-| Prototype lives on a **separate branch, local only** (reaffirmed after review) | All work happens on branch `redesign` (based on `experimental`, so it includes the Phase 2 code). `main` and the live site stay untouched until a single **switchover** merge that Rob triggers. Preview with `npm run dev` locally. Accepted risk: nothing builds on Linux, where file names are case-sensitive, until switchover. Mitigation: the naming rules in §2, `core.ignorecase false`, and a Linux build of the committed tree at every gate (§5). |
+| Prototype lives on a **separate branch, local only** (reaffirmed after review) | All work happens on branch `redesign` (based on `experimental`, so it includes the Phase 2 code). `main` and the live site stay untouched until a single **switchover** merge that Rob triggers. Preview with `npm run dev` locally. Accepted risk: nothing builds on Linux, where file names are case-sensitive, until switchover. Mitigation: the naming rules in §2, `core.ignorecase false`, and a Linux build of the committed tree before switchover (§5). |
 | **Rob pushes to GitHub** | Agents commit locally and never push. (Rob allowed one push of `redesign` on 2026-11-01 as a backup; that doesn't carry over.) |
 | **Rob writes all content**, including photography as it comes in | Agents never write site copy, posts, captions or publication summaries, and never source photos. Styleguide specimen text is fine. |
 | **Rob commits his own content** | Before saying "go" at a gate, Rob commits his content with a `content:` prefix. Worktrees only see committed files, and coordinators must never sweep up Rob's half-written files (§3.2). |
@@ -155,7 +155,7 @@ design package name and the class/element prefix** (PLAN §5.6). P1 writes the f
 names, so this has to be settled first.
 
 ### P1 Foundation: design package
-The design package lives in `packages/<name>/` (name from Gate 0). Everything below goes there,
+The design package lives in `packages/rk-ui/`, with the `rk-` prefix (decided at Gate 0). Everything below goes there,
 except the `/styleguide/` page and brand marks, which are site code.
 
 Lane A:
@@ -258,10 +258,11 @@ Before the gate, Rob's content is committed and the main checkout is clean (§3.
 The coordinator presents:
 1. What was built, with the merge commits on `redesign`, so Rob can read
    `git log -p` or `git diff <before>..redesign`.
-2. Confirmation that `npm run build` passes locally **and on Linux**, from the committed tree:
+2. Confirmation that `npm run build` passes locally, and the reviewer's pass/fail list.
+   **Before switchover only** (Gate 2 if Rob switches then, otherwise P4), also build the
+   committed tree on Linux, where file names are case-sensitive:
    `git archive HEAD | docker run -i --rm node:22 sh -c 'mkdir /s && cd /s && tar x && npm ci && npm run build'`.
    (A bind mount wouldn't catch case errors, because it inherits the Mac's case-insensitivity.)
-   Also the reviewer's pass/fail list.
 3. Which local pages to open (`npm run dev`) and what to look for.
 4. Deviations from PLAN.md, and decisions Rob needs to make.
 5. Rob replies **approve** or lists changes. Changes go back to the builders. The next phase doesn't
@@ -310,8 +311,24 @@ The coordinator presents:
   - Publications use the file name as ID.
 - 2026-11-01: Rob activated R2 on his Cloudflare account, so **photo storage is option B**. Equation
   references are decided: a small plugin before KaTeX, prototyped successfully (PLAN §5.2).
-- **Open:** package name/prefix (Gate 0).
-- **Next:** P0 in a fresh conversation: "Run phase P0 of `docs/redesign/IMPLEMENTATION.md`".
+- 2026-11-01: **Gate 0 approved** (tag `gate-0`). P0 commits `8d85c24..gate-0`:
+  - `CLAUDE.md`, committed `.claude/settings.json` (deny `git push*`, ask on `npm install*`,
+    `worktree.baseRef: "head"`), `.gitignore` additions; the matching allow rules were removed
+    from Rob's `settings.local.json`.
+  - Housekeeping: `core.ignorecase false`, `origin/HEAD` → `main`, stale worktree removed.
+  - `LICENSE`, `CONTENT-LICENSE.md`, `THIRD_PARTY_NOTICES.md`.
+  - `astro-builder` and `reviewer` agents.
+  - `draft` field (default `false`) and `src/lib/content.ts`; the 4 migrated projects are drafts,
+    so `npm run build` has no project pages until the projects review.
+  - Phase 2 comments trimmed.
+
+  Decisions: package **`rk-ui`**, prefix **`rk-`**. The Linux build check runs before switchover
+  only, not at every gate.
+
+  Known issue left for P2: project page titles contain a literal `---` (`[slug].astro`).
+- **Open:** none.
+- **Next:** P1 in a fresh conversation: "Run phase P1 of `docs/redesign/IMPLEMENTATION.md`". Start
+  with `git diff gate-0..redesign`.
 
 ---
 

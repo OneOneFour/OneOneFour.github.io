@@ -382,9 +382,9 @@ that need no framework at all:
 |---|---|---|
 | 1. Tokens | `tokens.css` (custom properties, light and dark), with a `tokens.json` source if a 2nd format is ever needed | anything with CSS |
 | 2. Fonts and base | Self-hosted font CSS, reset, type scale | anything with CSS |
-| 3. Primitives and components | **CSS classes on plain HTML** (`.tu-button`, `.tu-chip`, `.tu-card`, `.tu-switch`, `.tu-widget-frame` ...), with documented markup | any framework, or plain HTML |
+| 3. Primitives and components | **CSS classes on plain HTML** (`.rk-button`, `.rk-chip`, `.rk-card`, `.rk-switch`, `.rk-widget-frame` ...), with documented markup | any framework, or plain HTML |
 | 4. Icons | Vendored SVG files + licences, `--icon-fill` hook | anything |
-| 5. Behaviour | Small **vanilla JS custom elements (JSDoc types)** for components that need JS (`<tu-theme-toggle>`, `<tu-lightbox>`, sliders with readouts, the Lorenz widget) | any framework, or plain HTML |
+| 5. Behaviour | Small **vanilla JS custom elements (JSDoc types)** for components that need JS (`<rk-theme-toggle>`, `<rk-lightbox>`, sliders with readouts, the Lorenz widget) | any framework, or plain HTML |
 | 6. Framework wrappers | Thin `.astro` components that write layer-3 markup. Rob's other sites are vanilla JS, so they use layers 1–5 directly. No Vue wrappers for now | that framework only |
 
 - **Where it lives:** a folder in this repo (path in IMPLEMENTATION.md) that the site consumes like
@@ -392,10 +392,10 @@ that need no framework at all:
 - **Boundary rules for agents:** the package never imports from `src/`, holds no site copy or
   section names, and is themeable only through tokens. Site-specific choices (which hue is
   "Writing") live in the site, mapped onto `--section`.
-- **Naming [OPEN, decided at Gate 0]:** `toon-ui` and the `tu-` prefix are working names. The
-  prefix appears in every post's MDX and every other site's HTML, and it's also the namespace
-  for browser storage keys, so it's hard to change later. Pick it independently of the package
-  name.
+- **Naming (DECIDED 2026-11-01, Gate 0):** the package is **`rk-ui`** (`packages/rk-ui/`) and the
+  class/element prefix is **`rk-`**. The prefix appears in every post's MDX and every other site's
+  HTML, and it's also the namespace for browser storage keys (`rk-theme`), so it's hard to change
+  later.
 - **Distribution (decided 2026-11-01):** Rob's other sites are a mix: plain HTML, ES modules with
   esbuild, Parcel, Vue CLI. So the package must work with **no build step**: plain JS (JSDoc for
   types), one stylesheet whose `@font-face` URLs point at the vendored fonts by relative path, the
@@ -544,7 +544,7 @@ Longer bio in plain Markdown…
   - Genuinely stateful UIs: a Vue island (`client:visible`). Vue is already
     installed.
 - **Load only on view**: `client:visible` only works on framework components, and
-  fails the build on a custom element (verified on Astro 7.0.7). So `<tu-widget>` is
+  fails the build on a custom element (verified on Astro 7.0.7). So `<rk-widget>` is
   defined up front (it's tiny), and uses `IntersectionObserver` to `import()` its
   simulation module the first time it scrolls into view. A post with five widgets doesn't
   load five sims up front. `client:visible` is kept for the rare Vue island.
@@ -582,9 +582,9 @@ the single source for order, file locations and acceptance.
 - Photo storage: Cloudflare R2 behind `photos.robertcking.com` (IMPLEMENTATION.md §8).
 - Licences: MIT for code, CC BY-NC 4.0 for content except where credited otherwise
   (IMPLEMENTATION.md §1).
+- Design package `rk-ui`, prefix `rk-` (§5.6).
 
-**Open:**
-1. Design package name and prefix, decided at Gate 0 (§5.6).
+**Open:** none.
 
 ## Sources
 
