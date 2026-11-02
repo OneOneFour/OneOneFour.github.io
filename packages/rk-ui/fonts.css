@@ -1,0 +1,142 @@
+/* Self-hosted fonts (latin and greek subsets only) and the font-family tokens. */
+
+/* Roboto Slab */
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./fonts/roboto-slab/roboto-slab-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./fonts/roboto-slab/roboto-slab-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+/* Xmind */
+@font-face {
+  font-family: 'Xmind';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./fonts/xmind/xmind-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Xmind';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./fonts/xmind/xmind-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+@font-face {
+  font-family: 'Xmind';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./fonts/xmind/xmind-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Xmind';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./fonts/xmind/xmind-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+/* JetBrains Mono (mono candidate) */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('./fonts/jetbrains-mono/jetbrains-mono-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('./fonts/jetbrains-mono/jetbrains-mono-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('./fonts/jetbrains-mono/jetbrains-mono-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('./fonts/jetbrains-mono/jetbrains-mono-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+/* Roboto Mono (mono candidate) */
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url('./fonts/roboto-mono/roboto-mono-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url('./fonts/roboto-mono/roboto-mono-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: italic;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url('./fonts/roboto-mono/roboto-mono-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: italic;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url('./fonts/roboto-mono/roboto-mono-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+/* Font families */
+:root {
+  --font-display: 'Roboto Slab', Rockwell, 'DejaVu Serif', Georgia, serif;
+  --font-body: 'Xmind', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Both mono candidates stay until Rob picks one at Gate 1a. */
+  --font-jetbrains-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+  --font-roboto-mono: 'Roboto Mono', ui-monospace, Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+  --font-mono: var(--font-jetbrains-mono);
+}
