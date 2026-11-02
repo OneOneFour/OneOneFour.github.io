@@ -1,7 +1,7 @@
 ---
 /**
  * The segmented control and its deck keys variant, live with icons and text-only, and their option
- * states.
+ * states. Deck key groupings (tray A and B) are options for Gate 1b.
  *
  * @param theme the panel's theme, used to keep radio names unique across the two panels
  */
@@ -32,6 +32,11 @@ const DECK_OPTIONS = [
 const STATES = [
   { label: 'hover', class: 'is-hover' },
   { label: 'pressed', class: 'is-active' },
+]
+const DECK_GROUPS = [
+  { label: 'tray none', class: '' },
+  { label: 'tray A: recessed tray', class: 'rk-segmented--tray' },
+  { label: 'tray B: baseplate', class: 'rk-segmented--plate' },
 ]
 ---
 
@@ -155,4 +160,36 @@ const STATES = [
       <label><input type="radio" name={`${theme}-deck-disabled`} disabled /> Two</label>
     </fieldset>
   </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Deck keys, grouped">
+  {
+    DECK_GROUPS.map((group, g) => (
+      <>
+        <Specimen label={`${group.label}: live`}>
+          <fieldset class:list={['rk-segmented rk-segmented--deck', group.class]}>
+            <legend class="rk-visually-hidden">Specimen</legend>
+            {DECK_OPTIONS.map(({ value, label, Icon }, i) => (
+              <label>
+                <input type="radio" name={`${theme}-deck-group-${g}`} value={value} checked={i === 0} />
+                <Icon class="rk-icon" />
+                {label}
+              </label>
+            ))}
+          </fieldset>
+        </Specimen>
+        <Specimen label={`${group.label}: hover on Two, focus on Three`}>
+          <fieldset class:list={['rk-segmented rk-segmented--deck', group.class]}>
+            <legend class="rk-visually-hidden">Specimen</legend>
+            {OPTIONS.map(({ value, label }, i) => (
+              <label class:list={{ 'is-hover': i === 1, 'is-focus': i === 2 }}>
+                <input type="radio" name={`${theme}-deck-group-states-${g}`} value={value} checked={i === 0} />
+                {label}
+              </label>
+            ))}
+          </fieldset>
+        </Specimen>
+      </>
+    ))
+  }
 </SpecimenRow>
