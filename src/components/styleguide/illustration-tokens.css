@@ -1,10 +1,25 @@
 /* Illustration colours, for the styleguide's drawings only (PLAN §5.3, "Illustration style").
-   Loaded after rk-ui's tokens.css, whose colours these mix. They mix only fills that keep their
-   lightness in dark mode, so the same recipe serves both themes and every page palette. */
+   Loaded after rk-ui's tokens.css, whose colours these mix. The subdued hues mix only fills that
+   keep their lightness in dark mode, so the same recipe serves both themes and every page
+   palette, with only the grey changing to dim them a little on dark pages. */
 
 :root {
-  /* Hues: four fills, greyed down towards a mid grey */
-  --illustration-grey: color-mix(in oklab, var(--ink), var(--glint));
+  /* A mid grey, darker on dark pages to dim the subdued hues there */
+  --illustration-grey: light-dark(
+    color-mix(in oklab, var(--ink), var(--glint)),
+    color-mix(in oklab, var(--ink) 80%, var(--glint))
+  );
+
+  /* A drawing's outline: a little heavier than the interface's */
+  --illustration-outline: calc(1.25 * var(--outline-width));
+  /* Hatching stripes: translucent ink, as on the striped progress bar */
+  --illustration-stripe: color-mix(in srgb, var(--line) 25%, transparent);
+}
+
+/* Declared on each drawing too, so that its steps mix the hues of its look. */
+:root,
+.rk-explode {
+  /* Hues, subdued: four fills, greyed down towards the mid grey */
   --illustration-red: color-mix(in oklab, var(--coral) 80%, var(--illustration-grey));
   --illustration-ochre: color-mix(in oklab, var(--yellow) 75%, var(--illustration-grey));
   --illustration-steel: color-mix(
@@ -14,22 +29,23 @@
   );
   --illustration-navy: color-mix(in oklab, var(--navy) 85%, var(--illustration-grey));
 
-  /* Light steps: highlights, each hue towards the glint */
-  --illustration-red-light: color-mix(in oklab, var(--illustration-red) 55%, var(--glint));
+  /* One more step for the lighter hues, towards the glint, and a shade for red, towards ink */
   --illustration-ochre-light: color-mix(in oklab, var(--illustration-ochre) 55%, var(--glint));
   --illustration-steel-light: color-mix(in oklab, var(--illustration-steel) 55%, var(--glint));
-  --illustration-navy-light: color-mix(in oklab, var(--illustration-navy) 55%, var(--glint));
-
-  /* Shade steps: each hue towards ink. Ochre leans into the red instead, as ink makes it olive. */
   --illustration-red-shade: color-mix(in oklab, var(--illustration-red) 80%, var(--ink));
-  --illustration-ochre-shade: color-mix(
-    in oklab,
-    var(--illustration-ochre) 60%,
-    var(--illustration-red)
-  );
-  --illustration-steel-shade: color-mix(in oklab, var(--illustration-steel) 80%, var(--ink));
-  --illustration-navy-shade: color-mix(in oklab, var(--illustration-navy) 80%, var(--ink));
+}
 
-  /* A drawing's outline: heavier than the interface's, the same at any size */
-  --illustration-outline: calc(1.5 * var(--outline-width));
+/* The pop and sticker looks use the UI's own fills. */
+.rk-explode--pop {
+  --illustration-red: var(--coral);
+  --illustration-ochre: var(--yellow);
+  --illustration-steel: var(--sky);
+  --illustration-navy: var(--navy);
+}
+
+/* Browsers without light-dark() get the light theme (tokens.css), so the light grey. */
+@supports not (color: light-dark(#000, #fff)) {
+  :root {
+    --illustration-grey: color-mix(in oklab, var(--ink), var(--glint));
+  }
 }

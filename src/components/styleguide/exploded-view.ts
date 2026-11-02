@@ -1,33 +1,41 @@
 import type { Shape } from './illustration-shapes'
 
-/** The illustration hues of illustration-tokens.css */
-export const ILLUSTRATION_HUES = ['red', 'ochre', 'steel', 'navy'] as const
-type Hue = (typeof ILLUSTRATION_HUES)[number]
+/** The colours of illustration-tokens.css (`--illustration-<colour>`): each hue, then its step */
+export const ILLUSTRATION_COLOURS = [
+  ['red', 'red-shade'],
+  ['ochre', 'ochre-light'],
+  ['steel', 'steel-light'],
+  ['navy'],
+] as const
 
-/** A hue, or its lighter or darker step: `--illustration-<colour>` */
-export type IllustrationColour = Hue | `${Hue}-light` | `${Hue}-shade`
+export type IllustrationColour = (typeof ILLUSTRATION_COLOURS)[number][number]
 
 /** Something drawn on a part, inside its outline. */
 export interface Detail {
+  kind: 'band' | 'hatch' | 'piece' | 'stroke'
   shape: Shape
-  /** Left out for a line */
+  /** Bands and pieces only */
   fill?: IllustrationColour
-  outlined: boolean
 }
 
 /** A flat band of colour with no outline of its own, such as a highlight. */
 export function band(shape: Shape, fill: IllustrationColour): Detail {
-  return { shape, fill, outlined: false }
+  return { kind: 'band', shape, fill }
+}
+
+/** A region of diagonal stripes, like the striped progress bar's, for shade without a shade step. */
+export function hatch(shape: Shape): Detail {
+  return { kind: 'hatch', shape }
 }
 
 /** A smaller outlined shape on a part, such as a wheel's hub. */
 export function piece(shape: Shape, fill: IllustrationColour): Detail {
-  return { shape, fill, outlined: true }
+  return { kind: 'piece', shape, fill }
 }
 
 /** An outline-coloured line, such as a boiler band. */
 export function stroke(shape: Shape): Detail {
-  return { shape, outlined: true }
+  return { kind: 'stroke', shape }
 }
 
 /** One outlined shape of an exploded illustration, with its details. Lengths are grid units. */

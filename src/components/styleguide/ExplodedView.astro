@@ -6,6 +6,8 @@
  *
  * @param illustration the parts, in assemblies, on a grid of units
  * @param theme the panel's theme, used to keep ids unique across the two panels
+ * @param look subdued (the default), pop (the UI's fills, with a resting shadow), or sticker (pop,
+ *   with a keyline round each part)
  */
 import type { ExplodedAssembly, ExplodedIllustration, ExplodedPart } from './exploded-view'
 import ExplodedViewPart from './ExplodedViewPart.astro'
@@ -16,14 +18,22 @@ import './explode.css'
 interface Props {
   illustration: ExplodedIllustration
   theme: 'light' | 'dark'
+  look?: 'subdued' | 'pop' | 'sticker'
 }
 
-const { illustration, theme } = Astro.props
+const { illustration, theme, look = 'subdued' } = Astro.props
 const { title, description, columns, rows, ground, assemblies } = illustration
-const idPrefix = `${theme}-${sectionId(title)}`
+const idPrefix = `${theme}-${look}-${sectionId(title)}`
 const viewBox = `0 0 ${columns} ${rows}`
 const groundPath = ground.dashes.map(([start, end]) => `M${start} ${ground.y}H${end}`).join('')
 const listFormat = new Intl.ListFormat('en-GB', { type: 'conjunction' })
+const hatchId = `${idPrefix}-hatch`
+/**
+ * A hatching stripe and its gap, across the stripes, in grid units. The striped progress bar's
+ * 1rem tile is about 1.6 units with the train at full width, and its stripes repeat every
+ * tile ÷ √2.
+ */
+const HATCH_PITCH = 1.6 / Math.SQRT2
 
 /** "Cab: cab, roof and window" */
 function assemblyLabel({ name, parts }: ExplodedAssembly) {
@@ -40,15 +50,31 @@ function partStyle({ shape: { box }, fill, depth, explode }: ExplodedPart) {
 }
 ---
 
-<div class="rk-explode">
+<div
+  class:list={[
+    'rk-explode',
+    { 'rk-explode--pop': look !== 'subdued', 'rk-explode--sticker': look === 'sticker' },
+  ]}
+>
   <div
     class="rk-explode-stage"
-    style={`--columns: ${columns}; --rows: ${rows}`}
+    style={`--columns: ${columns}; --rows: ${rows}; --hatch: url(#${hatchId})`}
     role="group"
     aria-label={title}
     aria-describedby={`${idPrefix}-desc`}
   >
-    <svg class="rk-explode-ground" viewBox={viewBox} aria-hidden="true"><path d={groundPath} /></svg>
+    <svg class="rk-explode-ground" viewBox={viewBox} aria-hidden="true">
+      <pattern
+        id={hatchId}
+        patternUnits="userSpaceOnUse"
+        width={HATCH_PITCH}
+        height={HATCH_PITCH}
+        patternTransform="rotate(-45)"
+      >
+        <rect class="rk-explode-hatch" width={HATCH_PITCH / 2} height={HATCH_PITCH} />
+      </pattern>
+      <path d={groundPath} />
+    </svg>
     {
       assemblies.map((assembly, a) => (
         <div class="rk-explode-assembly" tabindex="0" role="img" aria-label={assemblyLabel(assembly)}>

@@ -6,8 +6,14 @@
    order, back to front, so a part's shadow falls on the parts behind it.
 
    <div class="rk-explode">
-     <div class="rk-explode-stage" style="--columns: 16; --rows: 38" role="group" aria-label="…">
-       <svg class="rk-explode-ground" viewBox="0 0 16 38" aria-hidden="true"><path d="…" /></svg>
+     <div class="rk-explode-stage" style="--columns: 16; --rows: 38; --hatch: url(#…)" role="group"
+       aria-label="…">
+       <svg class="rk-explode-ground" viewBox="0 0 16 38" aria-hidden="true">
+         <pattern id="…" …>                                 the hatching's diagonal stripes
+           <rect class="rk-explode-hatch" … />
+         </pattern>
+         <path d="…" />                                      the ground line
+       </svg>
        <div class="rk-explode-assembly" tabindex="0" role="img" aria-label="Lamp: stem and shade">
          <svg class="rk-explode-rest" viewBox="0 0 16 38">…each part's shape</svg>
          <svg class="rk-explode-part" viewBox="7 20 2 10" style="--x: 7; --y: 20; --w: 2; --h: 10;
@@ -16,8 +22,9 @@
            <path class="rk-explode-band" d="…" />       the focus band, then the outlined shape
            <path class="rk-explode-shape" d="…" />
            <g clip-path="url(#…)">                       details, cut off at the shape's edge
-             <path class="rk-explode-detail" d="…" style="--detail-fill: …" />   a flat band
-             <path class="rk-explode-detail rk-explode-detail--outlined" d="…" />   a line
+             <path class="rk-explode-detail rk-explode-detail--band" d="…" style="--detail-fill: …" />
+             <path class="rk-explode-detail rk-explode-detail--stroke" d="…" />
+             …also --hatch (the stage's stripes) and --piece (an outlined, filled shape)
            </g>
          </svg>
          …more parts
@@ -161,9 +168,28 @@
   fill: var(--detail-fill, none);
 }
 
-.rk-explode-detail--outlined {
+.rk-explode-detail:is(.rk-explode-detail--piece, .rk-explode-detail--stroke) {
   stroke: var(--line);
   stroke-width: var(--illustration-outline);
+}
+
+/* Hatching is the stage's stripe pattern (--hatch), drawn in each part's grid units. */
+.rk-explode-detail--hatch {
+  fill: var(--hatch);
+}
+
+.rk-explode-hatch {
+  fill: var(--illustration-stripe);
+  stroke: none;
+}
+
+/* Bands and hatching are drawn for light from the top left. They flip about the part's centre
+   (in grid units, where 1px is one unit) to face the light when it comes from the right or from
+   below. The light offsets come in steps of 0.001, so the nudge only makes a zero offset count as
+   the side they are drawn for. */
+.rk-explode-detail:is(.rk-explode-detail--band, .rk-explode-detail--hatch) {
+  transform-origin: calc((var(--x) + var(--w) / 2) * 1px) calc((var(--y) + var(--h) / 2) * 1px);
+  scale: sign(var(--shadow-dx) + 0.0001) sign(var(--shadow-dy) + 0.0001);
 }
 
 .rk-explode-assembly > .rk-explode-label {
@@ -195,6 +221,44 @@
   filter: none;
 }
 
+/* Pop and sticker looks: each assembly sits on the page with the UI's resting shadow, which
+   hands over to its parts' own shadows while it is apart. */
+.rk-explode--pop .rk-explode-assembly {
+  --rest-shadow: calc((1 - var(--explode)) * var(--shadow-offset));
+  --rest-edge: calc((1 - var(--explode)) * var(--outline-width));
+
+  filter: drop-shadow(
+      calc(var(--shadow-dx) * var(--rest-shadow)) calc(var(--shadow-dy) * var(--rest-shadow)) 0
+        var(--shadow-color)
+    )
+    drop-shadow(
+      calc(var(--shadow-dx) * var(--rest-edge)) calc(var(--shadow-dy) * var(--rest-edge)) 0
+        var(--shadow-edge)
+    );
+}
+
+/* Sticker look: a keyline of glint round each part, like a die-cut sticker, and at rest an edge
+   round each assembly's keylines, in the page's line colour. The parts' focus band replaces the
+   keyline while focused. */
+.rk-explode--sticker {
+  --keyline: calc(2 * var(--outline-width));
+}
+
+.rk-explode--sticker .rk-explode-assembly:not(:focus-visible) .rk-explode-band {
+  display: inline;
+  stroke: var(--glint);
+  stroke-width: calc(2 * (var(--illustration-outline) + var(--keyline)));
+}
+
+.rk-explode--sticker .rk-explode-rest {
+  opacity: calc(1 - var(--explode));
+}
+
+.rk-explode--sticker .rk-explode-rest > path {
+  stroke: var(--line-unfilled);
+  stroke-width: calc(2 * (2 * var(--illustration-outline) + var(--keyline)));
+}
+
 /* Reduced motion: nothing moves, but the open assembly's shadows still show, its labels show and
    the other assemblies fade back. */
 @media (prefers-reduced-motion: reduce) {
@@ -212,12 +276,16 @@
 /* Forced colours: the drawing sets its own system colours, so its shapes are outlined in
    CanvasText on Canvas, and the open assembly's in Highlight. */
 @media (forced-colors: active) {
-  :is(.rk-explode-ground, .rk-explode-part) {
+  :is(.rk-explode-ground, .rk-explode-rest, .rk-explode-part) {
     forced-color-adjust: none;
   }
 
-  .rk-explode-ground {
+  :is(.rk-explode-ground, .rk-explode--sticker .rk-explode-rest > path) {
     stroke: CanvasText;
+  }
+
+  .rk-explode--sticker .rk-explode-assembly:not(:focus-visible) .rk-explode-band {
+    stroke: Canvas;
   }
 
   .rk-explode-shape {
@@ -229,7 +297,7 @@
     fill: Canvas;
   }
 
-  .rk-explode-detail--outlined {
+  .rk-explode-detail:is(.rk-explode-detail--piece, .rk-explode-detail--stroke) {
     stroke: CanvasText;
   }
 

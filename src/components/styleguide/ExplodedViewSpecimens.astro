@@ -1,12 +1,12 @@
 ---
 /**
- * Exploded views: a steam train of five assemblies, and a lamp that is one, both drawn by
- * ExplodedView from their data, with the illustration colours they are drawn in.
+ * Exploded views: a steam train of five assemblies in three looks, and a lamp that is one, both
+ * drawn by ExplodedView from their data, with the subdued illustration colours.
  *
  * @param theme the panel's theme, passed on to keep ids unique
  */
 import ExplodedView from './ExplodedView.astro'
-import { ILLUSTRATION_HUES } from './exploded-view'
+import { ILLUSTRATION_COLOURS } from './exploded-view'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 import { steamTrain } from './steam-train'
@@ -18,15 +18,20 @@ interface Props {
 }
 
 const { theme } = Astro.props
-const STEPS = ['-light', '', '-shade']
 ---
 
 <SpecimenRow title="Steam train: hover or focus an assembly to take it apart">
   <Specimen
-    label="flat at rest; apart on --ease-spring, home on --ease-snap; the switch pulls every assembly apart"
+    label="A: subdued (the default): flat at rest; apart on --ease-spring, home on --ease-snap; the switch pulls every assembly apart"
     wide
   >
     <div class="train"><ExplodedView illustration={steamTrain} theme={theme} /></div>
+  </Specimen>
+  <Specimen label="B: pop: the UI's fills, and each assembly casts the resting shadow" wide>
+    <div class="train"><ExplodedView illustration={steamTrain} theme={theme} look="pop" /></div>
+  </Specimen>
+  <Specimen label="C: sticker: pop, with a glint keyline round each part and an edge round each assembly" wide>
+    <div class="train"><ExplodedView illustration={steamTrain} theme={theme} look="sticker" /></div>
   </Specimen>
 </SpecimenRow>
 
@@ -36,13 +41,13 @@ const STEPS = ['-light', '', '-shade']
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title="Illustration colours: each hue with its light and shade steps">
+<SpecimenRow title="Subdued illustration colours: four hues, three of them with one light or shade step">
   {
-    ILLUSTRATION_HUES.map((hue) => (
-      <Specimen label={`--illustration-${hue}`}>
+    ILLUSTRATION_COLOURS.map((colours) => (
+      <Specimen label={colours.map((colour) => `--illustration-${colour}`).join(', ')}>
         <div class="steps">
-          {STEPS.map((step) => (
-            <span class="step" style={`background: var(--illustration-${hue}${step})`} />
+          {colours.map((colour) => (
+            <span class="step" style={`background: var(--illustration-${colour})`} />
           ))}
         </div>
       </Specimen>
@@ -62,7 +67,7 @@ const STEPS = ['-light', '', '-shade']
   .steps {
     display: flex;
     overflow: hidden;
-    border: var(--illustration-outline) solid var(--line);
+    border: var(--outline-width) solid var(--line);
     border-radius: var(--radius);
   }
 

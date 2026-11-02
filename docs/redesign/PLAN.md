@@ -440,40 +440,84 @@ settles the type scale, the monospace face and the weights actually used.
     apricot panels), set `--focus: var(--focus-alt)` (yellow). Components with such a fill
     variant do this themselves.
 
-#### Illustration style *(proposed 2026-11-02)*
+#### Illustration style *(proposed 2026-11-02; revised the same day after Rob's review)*
 
 How custom illustrations are drawn, from a flat cartoon locomotive Rob shared as a style reference
 (not copied). First used by the exploded-view train and lamp (§5.4).
-- **Palette**: four subdued hues in the styleguide's `illustration-tokens.css`:
-  `--illustration-red`, `-ochre`, `-steel` and `-navy`. They are the coral, yellow, sky-with-lilac
-  and navy fills, greyed towards `--illustration-grey` (halfway between `--ink` and `--glint`).
-  Each hue has two more steps:
-  - `-light` (55% hue, the rest glint), for highlights;
-  - `-shade` (80% hue, the rest ink), for shade. Ochre's shade leans into the red instead, as
-    ink turns yellow olive.
 
-  A drawing fills with only these twelve colours, never the vivid UI fills. The same recipe
-  serves both themes, as the fills it mixes keep their lightness in dark mode. It doesn't use
-  `--surface`, so every page palette gets the same drawing. It has no `light-dark()`, so it needs
-  no fallback.
-- **Outline**: `--illustration-outline` (1.5 × `--outline-width`, 3px) in `--line`, with round
-  joins and caps, the same on-screen width at any size. Every shape has one, outside its edge, so
-  overlapping shapes (a puff of steam) outline as one. Lines inside a shape (boiler bands, panel
-  lining) are the same width. Lines on the page itself, such as the ground, use `--line-unfilled`
-  so they show in dark mode.
-- **Shading**: flat and two-tone, in discrete steps. A shape is its hue, with at most a `-light`
-  band on the lit side and a `-shade` band on the other, cut off at its outline. No gradients,
-  blur or transparency. The shading is drawn for light from above (a little to the left, like the
-  default light) and doesn't turn with the light; the sun mode always lights from above.
-- **Detail**: a little more than the UI's, still simple geometry: boxes, rounded boxes, circles,
-  domes and polygons with round joins. Bands, lining, highlight strips in windows, a disc and hub
-  in a wheel. Nothing much under half a grid unit, so a drawing still reads at phone width.
-- **Shadows**: none at rest. The drawing is flat and calm, standing on a dashed ground line. A
-  hard toon shadow appears only when something lifts off the page (an exploded part), built from
-  the shadow tokens so it follows the light, the depth and the dark-mode shadow modes.
+*Decided 2026-11-02 (Rob):* two tones per part, a third only where shading is needed, or
+hatching instead (striped like the progress bar); outlines slightly heavier than the UI's 2px,
+at 2.5px; the shading drawn for light from above is
+acceptable, and now also flips with the light; fills dim a little on dark pages; flat at rest,
+with shadows only when exploded.
+
+*Pending Rob's pick (2026-11-02): the look.* Rob found the subdued drawing too quiet beside the
+poppy UI, so the styleguide shows the same train in three looks (`ExplodedView`'s `look`). The
+rules below describe A; B and C change only the colours, the resting shadow and the keyline.
+- **A, subdued** (the default): the greyed palette below, flat at rest.
+- **B, pop**: the UI's own fills (`--coral`, `--yellow`, `--sky`, `--navy`) with the same steps,
+  and each assembly casts the UI's resting shadow, handing over to its parts' shadows while apart,
+  so the drawing sits on the page like a card. Inspired by neo-brutalist graphics: flat saturated
+  fills, black outlines and unblurred offset shadows
+  ([NN/G](https://www.nngroup.com/articles/neobrutalism/)).
+- **C, sticker**: B with a `--glint` keyline round each part, like a die-cut sticker, and at
+  rest an edge round each assembly in `--line-unfilled`. From the sticker cut line, an outward
+  offset of the merged silhouette with round joins
+  ([CustomStickers.com](https://customstickers.com/community/blog/creating-cut-lines-for-sticker-files-in-illustrator)).
+
+Not built: a two-ink retro print look (two inks on a paper tone, with tints from hatching), as in
+[this Tuts+ tutorial](https://design.tutsplus.com/tutorials/create-a-limited-color-vintage-poster-design-in-adobe-illustrator--cms-23583).
+Once Rob picks, the losing looks and their CSS go, and the lamp follows the winner.
+
+The rules, for all three looks unless they say otherwise:
+- **Palette**: seven colours in the styleguide's `illustration-tokens.css`. Four subdued hues,
+  `--illustration-red`, `-ochre`, `-steel` and `-navy`, are (in A) the coral, yellow,
+  sky-with-lilac and navy fills, greyed towards `--illustration-grey` (halfway between `--ink`
+  and `--glint`); in B and C they are the fills themselves. Each hue has at most one more step:
+  - `--illustration-ochre-light` and `--illustration-steel-light` (55% hue, the rest glint), for
+    highlights on the lighter hues;
+  - `--illustration-red-shade` (80% red, the rest ink), for shade on red;
+  - navy has none: it is the darkest fill and is never shaded.
+
+  A drawing fills with only these colours. In A, the same recipe serves both
+  themes, as the fills it mixes keep their lightness in dark mode, except that on dark pages the
+  grey is darker (80% ink), which dims every fill a little. That grey is a `light-dark()`, so
+  browsers without it get the light grey, as in `tokens.css`. It doesn't use `--surface`, so
+  every page palette gets the same drawing.
+- **Outline**: `--illustration-outline` (1.25 × `--outline-width`, 2.5px: slightly heavier than
+  the UI's 2px) in `--line`, with round joins and caps, the same on-screen width at any size.
+  Every shape has one, outside its edge, so overlapping shapes (a puff of steam) outline as one.
+  Lines inside a shape (boiler bands, panel lining) are the same width. Lines on the page itself,
+  such as the ground, use `--line-unfilled` so they show in dark mode.
+- **Tones**: two per part by default, the fill plus one light or shade band, never both. Flat
+  sides (a tank, a cab, a frame) can stay one tone; round forms (a dome, a roof, a bulb) get the
+  second. A third tone only where shading is needed to read the form, and hatching is the
+  alternative (the boiler and smokebox). Bands are flat, cut off at the outline: no gradients or
+  blur.
+- **Hatching**: the striped progress bar's stripes, so the drawing and the UI share one hatching:
+  even 45° hard-edged stripes in `--illustration-stripe` (25% `--line`, the progress bar's
+  `--stripe`), over the fill and cut off at the outline, never animated. It is an SVG pattern in
+  grid units, so its pitch matches the progress bar's 1rem tile with the train at full width
+  (about 10px a unit) and shrinks with the drawing on narrower screens.
+- **Light**: the shading is drawn for light from the top left, like the default light. Bands and
+  hatching flip about their part's centre to face the light, by quadrant: across when the light
+  comes from the right, up and down when it comes from below. It jumps rather than slides, as toon
+  shading is in steps, and costs one CSS rule (`scale` from the sign of `--shadow-dx/-dy`), with no
+  JavaScript. Browsers without `sign()` keep the drawn side.
+- **Detail**: cartoony: bolder and fuller than a toy, but well short of a technical drawing.
+  Simple geometry (boxes, rounded boxes, circles, domes and polygons with round joins) and only
+  the details that make the thing read: on the train, the boiler with two bands, the chimney and
+  dome, the cab with its window, wheels with a tyre and hub, the coupling rod, the cowcatcher and
+  the steam. No rivets, bosses or small strips, and nothing much under half a grid unit, so a
+  drawing still reads at phone width.
+- **Shadows**: none at rest in A. The drawing is flat and calm, standing on a dashed ground
+  line. A hard toon shadow appears when something lifts off the page (an exploded part), built
+  from the shadow tokens so it follows the light, the depth and the dark-mode shadow modes. B and
+  C also cast the resting shadow under each assembly.
 - **Next to the UI**: the same family (ink outlines, flat fills, hard shadows that follow the
-  light), but quieter: muted hues, a heavier outline and no resting shadow. A drawing never looks
-  clickable, and the controls stay the brightest things on the page.
+  light). A is quieter: muted hues, few tones and no resting shadow, so the controls stay the
+  brightest things on the page. B and C match the UI's energy instead, which is the open
+  question. Either way a drawing has no hover lift or press, so it never looks like a button.
 
 ### 5.4 Component inventory
 
@@ -581,23 +625,27 @@ resting shadow is turned back by the tilt with `cos()`/`sin()` so it still falls
 light; `--tape` and `--pin`. On `/styleguide/` under "Fun elements".
 
 **Exploded view** *(Gate 1b, a fun element; styleguide only; redrawn in the illustration style,
-§5.3, 2026-11-02)*: illustrations whose assemblies come apart on hover or focus so their parts can
-be inspected. "Exploded view" under "Fun elements" on `/styleguide/` shows a steam train (five
-assemblies, with an "Explode all" switch), a one-assembly table lamp, and the illustration
-colours.
+§5.3, 2026-11-02, then cut to two tones per part with less detail the same day)*: illustrations
+whose assemblies come apart on hover or focus so their parts can be inspected. "Exploded view"
+under "Fun elements" on `/styleguide/` shows a steam train (five assemblies, with an "Explode
+all" switch) in the three looks A/B/C pending Rob's pick (§5.3), a one-assembly table lamp in the
+default look, and the subdued illustration colours.
 - Building blocks, in `src/components/styleguide/`:
   - `explode.css`: a stage of `--columns` × `--rows` units sized from its width, a dashed ground
     line, focusable assemblies, parts placed with `--x --y --w --h`, filled with `--part-fill`,
     with `--depth` and `--explode-x/-y`, and labels in the default tooltip bubble;
   - `ExplodedView.astro` and `ExplodedViewPart.astro`, which write that markup from data
-    (`exploded-view.ts`);
+    (`exploded-view.ts`), with a `look` (subdued, pop or sticker) as `.rk-explode--pop` and
+    `.rk-explode--sticker`;
   - `illustration-shapes.ts`: `rect`, `circle`, `ellipse`, `dome`, `polygon`, `line` and `union`,
     as SVG paths with their boxes;
-  - `illustration-tokens.css`: the illustration colours and outline (§5.3).
+  - `illustration-tokens.css`: the illustration colours, outline and hatching stripe (§5.3).
 
   A part is one outlined shape, with details cut off at its edge: `band` (a flat light or shade
-  step), `piece` (a smaller outlined shape, such as a hub) and `stroke` (a line). A new
-  illustration is a new data file, like `steam-train.ts`. No JavaScript.
+  step), `hatch` (a region of the drawing's stripe pattern, for shade without a third tone),
+  `piece` (a smaller outlined shape, such as a hub) and `stroke` (a line). Bands and hatching flip
+  to face the light (§5.3, "Light"). A new illustration is a new data file, like
+  `steam-train.ts`. No JavaScript.
 - An HTML stage with a small inline SVG for each part *(changed 2026-11-02 from boxes styled with
   CSS)*:
   - SVG gives polygons, domes, round joins, and bands clipped to a shape without losing its
