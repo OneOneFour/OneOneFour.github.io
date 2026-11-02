@@ -158,11 +158,21 @@ function recolourShape(tag, fillAttrs) {
   return tag.replace('/>', ' fill="currentColor" stroke="none"/>')
 }
 
+/**
+ * Some icons wrap their fill layer in `<g opacity="0.2">`. Moves the opacity onto each shape in
+ * the group and drops the group, so those shapes are recoloured like any other fill layer.
+ */
+function ungroupFillLayers(svg) {
+  return svg.replace(/<g opacity="0.2">(.*?)<\/g>/g, (_, shapes) =>
+    shapes.replaceAll('/>', `${FILL_LAYER}/>`)
+  )
+}
+
 /** Turns a raw duotone SVG into a recolourable, SVGO-optimised one. */
 function makeRecolourable(name, rawSvg) {
   const fillAttrs = fillHook(name)
   const ocean = GLOBES.includes(name) ? OCEAN_DISC : ''
-  const svg = rawSvg
+  const svg = ungroupFillLayers(rawSvg)
     .replace(BACKGROUND_RECT, '')
     .replace(/<(path|line|circle|ellipse|rect|polyline|polygon)\b[^>]*\/>/g, (tag) =>
       recolourShape(tag, fillAttrs)
