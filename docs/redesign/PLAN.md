@@ -514,6 +514,25 @@ chart components, and the diagrams (`diagram.css`, `diagram.js`, `NeuralNetwork.
   and whose nodes light their links on hover or focus, and a flow chart whose steps light in turn,
   with a water fill on the slow step.
 
+**Fun elements** *(Gate 1b options, pending Rob's picks)*: flourishes that may inspire later work,
+under "Fun elements" at the bottom of `/styleguide/`.
+- Dial ramps: `rk-dial--ramp` on either dial swaps its ticks or track for 18 blocks that light up
+  to the value; unlit blocks are empty like the track, so the level reads without its colours.
+  The default ramp is cool to warm (navy, teal, green, yellow, tangerine, coral), and
+  `rk-dial--ramp-heat` is yellow, tangerine, coral. Any ramp is `--dial-ramp-steps` plus
+  `--dial-ramp-1…n`, in equal runs of blocks. A one-hue ramp (tint, hue, deep) was left out:
+  the tints sit too close to the empty blocks, about 1.2:1 in dark mode.
+- Clock (`clock.css`, `clock.js`, `<rk-clock class="rk-clock">`): an outlined face with the hard
+  shadow over a native `<input type="time">`, which stays visible and is the control for the
+  keyboard, screen readers and forms; without JS it is the input alone. The hour hand goes round
+  once a day on a ring split into day (`--clock-day`, sky, 6:00 to 18:00 over the top) and night
+  (`--clock-night`, navy), with optional day and night icons (`.rk-clock-day-icon`,
+  `.rk-clock-night-icon`) at noon and midnight. The values sit on the hands' tags rather than at
+  12, 3, 6 and 9, as on a once-a-day face those numbers would mean different things for each hand.
+  Dragging a tag snaps minutes to the input's `step`, and the minute hand carries into the hour
+  as it passes 12. The hands turn with `--ease-snap`; each tag turns back by its hand's angle, so
+  it only moves and keeps its shadow on the light's side. The grabbed tag presses in.
+
 **Sticky notes** *(Gate 1b fun-element option, pending Rob)*: `sticky-note.css`, `.rk-sticky-note` on
 a card or a callout. A flat note with the ink outline, the hard shadow and a folded bottom-left
 corner: the corner is cut off with `clip-path` along the fold, and a flap in the note's colour

@@ -1,0 +1,43 @@
+---
+/**
+ * The dial's ramp modifier on both dials, with the two ramps rk-ui has.
+ *
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const DIALS = [
+  { name: 'knob', classes: 'rk-dial--knob', caption: 'knob, cool to warm' },
+  { name: 'arc', classes: 'rk-dial--arc', caption: 'arc, cool to warm' },
+  { name: 'heat', classes: 'rk-dial--arc rk-dial--ramp-heat', caption: 'arc, rk-dial--ramp-heat' },
+]
+---
+
+<SpecimenRow title="Ramps (rk-dial--ramp)">
+  {
+    DIALS.map((dial) => {
+      const id = `${theme}-dial-ramp-${dial.name}`
+      return (
+        <Specimen label={dial.caption}>
+          <rk-dial class:list={['rk-dial', 'rk-dial--ramp', dial.classes]}>
+            <label for={id}>Temperature</label>
+            <input class="rk-range" type="range" id={id} min="10" max="30" step="0.5" value="21" />
+            <output class="rk-output" for={id}>
+              21
+            </output>
+          </rk-dial>
+        </Specimen>
+      )
+    })
+  }
+</SpecimenRow>
+
+<script>
+  import 'rk-ui/dial.js'
+</script>

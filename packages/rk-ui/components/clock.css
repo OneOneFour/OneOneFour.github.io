@@ -1,0 +1,243 @@
+/* Clock: a settable clock face over a time input. Needs clock.js, which draws the face; without
+   it, the label and the time input show on their own.
+
+   <rk-clock class="rk-clock">
+     <label for="t">Label</label>
+     <input class="rk-input" id="t" type="time" step="300" value="07:30">
+     <svg class="rk-icon rk-clock-day-icon">…</svg>    (optional, e.g. icons/sun.svg)
+     <svg class="rk-icon rk-clock-night-icon">…</svg>  (optional, e.g. icons/moon.svg)
+   </rk-clock>
+
+   The face's SVG is 200 units square. The hands turn, but each tag turns back by its hand's
+   angle, so it stays upright with its shadow on the light's side. */
+
+.rk-clock {
+  --clock-size: 15rem;
+  --clock-day: var(--sky);
+  --clock-night: var(--navy);
+
+  display: grid;
+  gap: var(--space-2);
+  max-inline-size: 30rem;
+}
+
+.rk-clock > label {
+  font-weight: 600;
+}
+
+/* Until clock.js puts them on the face */
+.rk-clock > :is(.rk-clock-day-icon, .rk-clock-night-icon) {
+  display: none;
+}
+
+.rk-clock:has(> .rk-clock-face) {
+  grid-template-columns: var(--clock-size);
+  justify-items: center;
+}
+
+.rk-clock-face {
+  display: grid;
+  position: relative;
+  box-sizing: border-box;
+  inline-size: var(--clock-size);
+  aspect-ratio: 1;
+  margin-block-end: var(--space-2);
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: 50%;
+  background: var(--raised);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+}
+
+.rk-clock-face > svg {
+  grid-area: 1 / 1;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.rk-clock-day,
+.rk-clock-night {
+  fill: none;
+}
+
+.rk-clock-day {
+  stroke: var(--clock-day);
+}
+
+.rk-clock-night {
+  stroke: var(--clock-night);
+}
+
+.rk-clock-ring-edge {
+  fill: none;
+  stroke: var(--line-unfilled);
+  stroke-width: var(--outline-width);
+}
+
+.rk-clock-tick {
+  stroke: var(--muted);
+  stroke-width: 2px;
+  stroke-linecap: round;
+}
+
+.rk-clock-tick--quarter {
+  stroke: var(--fg);
+  stroke-width: 3px;
+}
+
+/* Centred on the point clock.js sets */
+.rk-clock-face > .rk-icon {
+  --icon-size: calc(var(--clock-size) * 0.1);
+
+  position: absolute;
+  left: var(--clock-x);
+  top: var(--clock-y);
+  inline-size: var(--icon-size);
+  block-size: var(--icon-size);
+  margin: calc(var(--icon-size) / -2) 0 0 calc(var(--icon-size) / -2);
+  color: var(--ink);
+  pointer-events: none;
+}
+
+/* A hand covers the face and turns about its centre. Its bar runs from the centre to the tip. */
+.rk-clock-hand {
+  --hand-width: 0.375rem;
+
+  position: absolute;
+  inset: 0;
+  rotate: var(--hand-angle, 0deg);
+  transition: rotate var(--duration-spring) var(--ease-snap);
+  pointer-events: none;
+}
+
+.rk-clock-hand--minute {
+  --hand-width: 0.25rem;
+}
+
+.rk-clock-hand::before {
+  content: '';
+  position: absolute;
+  left: calc(50% - var(--hand-width) / 2);
+  bottom: 50%;
+  inline-size: var(--hand-width);
+  block-size: var(--hand-length);
+  border-radius: var(--radius-pill);
+  background: var(--fg);
+}
+
+/* A point at the hand's tip, turning back as the hand turns, on the same timing. */
+.rk-clock-tip {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - var(--hand-length));
+  rotate: calc(-1 * var(--hand-angle, 0deg));
+  transition: rotate var(--duration-spring) var(--ease-snap);
+}
+
+/* The tag is the part that pops; translate is free for it, as the tip does the turning. */
+.rk-clock-tag {
+  --tag-size: calc(var(--clock-size) * 0.14);
+  --tag-shadow: var(--shadow);
+  --tag-shift: 0px;
+
+  display: grid;
+  place-items: center;
+  position: absolute;
+  left: calc(var(--tag-size) / -2);
+  top: calc(var(--tag-size) / -2);
+  box-sizing: border-box;
+  inline-size: var(--tag-size);
+  aspect-ratio: 1;
+  border: var(--outline-width) solid var(--line);
+  border-radius: 50%;
+  background: var(--selected);
+  color: var(--on-selected);
+  box-shadow: var(--tag-shadow);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: auto;
+  translate: calc(var(--shadow-dx) * var(--tag-shift)) calc(var(--shadow-dy) * var(--tag-shift));
+  transition:
+    translate var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+/* As on an unchecked checkbox: in dark mode the outline, not the raised fill, stands out. */
+.rk-clock-hand--minute .rk-clock-tag {
+  --tag-size: calc(var(--clock-size) * 0.12);
+
+  border-color: var(--line-unfilled);
+  background: var(--raised);
+  color: var(--fg);
+}
+
+.rk-clock-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  inline-size: 8%;
+  aspect-ratio: 1;
+  margin: -4% 0 0 -4%;
+  border-radius: 50%;
+  background: var(--fg);
+}
+
+/* States */
+
+@media (hover: hover) {
+  .rk-clock-tag:hover {
+    --tag-shadow: var(--shadow-hover);
+    --tag-shift: calc(-1 * var(--lift-offset));
+  }
+}
+
+.rk-clock-hand[data-grabbed] {
+  z-index: 1;
+}
+
+.rk-clock-hand[data-grabbed] .rk-clock-tag {
+  --tag-shadow: var(--shadow-pressed);
+  --tag-shift: var(--press-offset);
+}
+
+.rk-clock:has(> input:disabled) > .rk-clock-face {
+  opacity: 0.45;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.rk-clock:has(> input:disabled) .rk-clock-tag {
+  --tag-shadow: none;
+  --tag-shift: 0px;
+
+  pointer-events: none;
+}
+
+/* Forced colours: the SVG and the hands keep their own colours, so the time stays visible. */
+@media (forced-colors: active) {
+  .rk-clock-face > svg,
+  .rk-clock-hand::before,
+  .rk-clock-hub {
+    forced-color-adjust: none;
+  }
+
+  .rk-clock-day,
+  .rk-clock-night {
+    stroke: Canvas;
+  }
+
+  .rk-clock-ring-edge,
+  .rk-clock-tick {
+    stroke: CanvasText;
+  }
+
+  .rk-clock-hand::before,
+  .rk-clock-hub {
+    background: CanvasText;
+  }
+}

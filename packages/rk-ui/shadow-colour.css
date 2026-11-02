@@ -18,7 +18,8 @@
     }
 
     :is(.rk-checkbox, .rk-radio):checked,
-    .rk-dial--arc .rk-dial-face {
+    .rk-dial--arc .rk-dial-face,
+    .rk-clock-hand--hour .rk-clock-tag {
       --extrusion: color-mix(in oklab, var(--selected) 75%, var(--line));
     }
 

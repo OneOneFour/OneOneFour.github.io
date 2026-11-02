@@ -20,6 +20,8 @@ import InputSpecimens from '../../components/styleguide/InputSpecimens.astro'
 import SpecialInputSpecimens from '../../components/styleguide/SpecialInputSpecimens.astro'
 import SelectPickerSpecimens from '../../components/styleguide/SelectPickerSpecimens.astro'
 import DialSpecimens from '../../components/styleguide/DialSpecimens.astro'
+import DialRampSpecimens from '../../components/styleguide/DialRampSpecimens.astro'
+import ClockSpecimens from '../../components/styleguide/ClockSpecimens.astro'
 import ChoiceSpecimens from '../../components/styleguide/ChoiceSpecimens.astro'
 import RangeSpecimens from '../../components/styleguide/RangeSpecimens.astro'
 import SegmentedSpecimens from '../../components/styleguide/SegmentedSpecimens.astro'
@@ -100,7 +102,10 @@ const CONTENTS = [
     title: 'Maths and charts',
     sections: ['Equations', 'Maths in text', 'Chart colours', 'Charts', 'Diagrams', 'Figures and widgets'],
   },
-  { title: 'Fun elements', sections: ['Sticky notes'] },
+  {
+    title: 'Fun elements',
+    sections: ['Dial ramps', 'Clock', 'Sticky notes'],
+  },
 ]
 ---
 
@@ -365,6 +370,25 @@ const CONTENTS = [
     <SpecimenSection title="Figures and widgets" stacked>
       <FigureSpecimens slot="light" theme="light" />
       <FigureSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Dial ramps">
+      <p>
+        Options for Gate 1b: the dials above with rk-dial--ramp, a ring of blocks that light up to the
+        value in discrete token colours.
+      </p>
+      <DialRampSpecimens slot="light" theme="light" />
+      <DialRampSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Clock">
+      <p>
+        An option for Gate 1b. Drag a hand's tag to set the time: the hour hand goes round once a
+        day, on a ring with day over the top and night under it. The time input below the face stays
+        the control for the keyboard and screen readers.
+      </p>
+      <ClockSpecimens slot="light" theme="light" />
+      <ClockSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Sticky notes">
