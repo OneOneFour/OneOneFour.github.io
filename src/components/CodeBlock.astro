@@ -5,21 +5,53 @@
  *
  * @param code the source to show
  * @param lang the Shiki language id, e.g. "python"
- * @param label the language name shown in the caption; leave it out for no caption
+ * @param label the language name shown in the caption, after the language's logo if it has one;
+ *   leave it out for no caption
  * @param class extra classes for the figure, e.g. a box variant
  */
 import { Code } from 'astro:components'
 import type { ComponentProps } from 'astro/types'
 import CopyIcon from 'rk-ui/icons/copy.svg'
+import BashLogo from '../icons/brands/languages/gnu-bash.svg'
+import FortranLogo from '../icons/brands/languages/fortran.svg'
+import JavaScriptLogo from '../icons/brands/languages/javascript.svg'
+import JsonLogo from '../icons/brands/languages/json.svg'
+import LatexLogo from '../icons/brands/languages/latex.svg'
+import PythonLogo from '../icons/brands/languages/python.svg'
+import RustLogo from '../icons/brands/languages/rust.svg'
+import TypeScriptLogo from '../icons/brands/languages/typescript.svg'
 
 interface Props {
   code: string
-  lang: ComponentProps<typeof Code>['lang']
+  lang: Extract<ComponentProps<typeof Code>['lang'], string>
   label?: string
   class?: string
 }
 
+/** Logos by Shiki language id or common alias. */
+const LOGOS: Record<string, typeof PythonLogo> = {
+  bash: BashLogo,
+  'fortran-fixed-form': FortranLogo,
+  'fortran-free-form': FortranLogo,
+  f90: FortranLogo,
+  javascript: JavaScriptLogo,
+  js: JavaScriptLogo,
+  json: JsonLogo,
+  latex: LatexLogo,
+  python: PythonLogo,
+  py: PythonLogo,
+  rust: RustLogo,
+  rs: RustLogo,
+  typescript: TypeScriptLogo,
+  ts: TypeScriptLogo,
+}
+
+/** Python's logo keeps the caption colour: the PSF asks for permission before recolouring it. */
+const FLAT_LOGOS = ['python', 'py']
+
 const { code, lang, label, class: className } = Astro.props
+const Logo = LOGOS[lang]
+const accented = !FLAT_LOGOS.includes(lang)
 ---
 
 <rk-code-block>
@@ -27,7 +59,10 @@ const { code, lang, label, class: className } = Astro.props
     {
       label && (
         <figcaption class="rk-code-header">
-          <span class="rk-code-lang">{label}</span>
+          <span class:list={['rk-code-lang', { accented }]}>
+            {Logo && <Logo class="rk-icon rk-icon--small" aria-hidden="true" />}
+            {label}
+          </span>
         </figcaption>
       )
     }
@@ -53,6 +88,10 @@ const { code, lang, label, class: className } = Astro.props
     --astro-code-token-parameter: var(--fg);
     --astro-code-token-punctuation: var(--fg);
     --astro-code-token-link: var(--navy-deep);
+  }
+
+  .accented {
+    --code-lang-color: var(--coral-deep);
   }
 </style>
 
