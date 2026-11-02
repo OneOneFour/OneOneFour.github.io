@@ -618,7 +618,9 @@ light; `--tape` and `--pin`. On `/styleguide/` under "Fun elements".
 whose assemblies come apart on hover or focus so their parts can be inspected. "Exploded view"
 under "Fun elements" on `/styleguide/` shows a steam train (five assemblies, with an "Explode
 all" switch) in the pop look (§5.3), a one-assembly table lamp, and the illustration
-colours.
+colours. Beside the train, a *demo pending Rob's view* (2026-11-02): ExplodedView's `sticker`
+(`.rk-explode--sticker`), one die-cut keyline (glint, edged in `--line-unfilled`) round the whole
+drawing's silhouette, which casts the one resting shadow and stays put while the parts come apart.
 - Building blocks, in `src/components/styleguide/`:
   - `explode.css`: a stage of `--columns` × `--rows` units sized from its width, a dashed ground
     line, focusable assemblies, parts placed with `--x --y --w --h`, filled with `--part-fill`,
