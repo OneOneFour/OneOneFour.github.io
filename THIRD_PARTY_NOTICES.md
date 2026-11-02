@@ -11,6 +11,8 @@ its own licence file next to the files it covers.
 | Devicon | Tech-stack icon font on the legacy project pages (`public/devicon/`) | MIT | https://github.com/devicons/devicon |
 | Xmind | Body and UI typeface | SIL Open Font License 1.1 | https://github.com/xmindltd/nevermind |
 | Roboto Slab | Heading typeface | Apache License 2.0 | https://github.com/google/fonts/tree/main/apache/robotoslab |
+| JetBrains Mono | Monospace candidate (one is chosen at Gate 1a) | SIL Open Font License 1.1 | https://github.com/google/fonts/tree/main/ofl/jetbrainsmono |
+| Roboto Mono | Monospace candidate (one is chosen at Gate 1a) | SIL Open Font License 1.1 | https://github.com/google/fonts/tree/main/ofl/robotomono |
 
 ## Trademarks
 
