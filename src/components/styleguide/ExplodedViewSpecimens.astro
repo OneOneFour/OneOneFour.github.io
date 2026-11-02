@@ -1,25 +1,31 @@
 ---
 /**
  * Exploded views: a steam train of five assemblies, and a lamp that is one, both drawn by
- * ExplodedView from their data.
+ * ExplodedView from their data, with the illustration colours they are drawn in.
  *
  * @param theme the panel's theme, passed on to keep ids unique
  */
 import ExplodedView from './ExplodedView.astro'
+import { ILLUSTRATION_HUES } from './exploded-view'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 import { steamTrain } from './steam-train'
 import { tableLamp } from './table-lamp'
+import './illustration-tokens.css'
 
 interface Props {
   theme: 'light' | 'dark'
 }
 
 const { theme } = Astro.props
+const STEPS = ['-light', '', '-shade']
 ---
 
 <SpecimenRow title="Steam train: hover or focus an assembly to take it apart">
-  <Specimen label="apart on --ease-spring, home on --ease-snap; the switch pulls every assembly apart" wide>
+  <Specimen
+    label="flat at rest; apart on --ease-spring, home on --ease-snap; the switch pulls every assembly apart"
+    wide
+  >
     <div class="train"><ExplodedView illustration={steamTrain} theme={theme} /></div>
   </Specimen>
 </SpecimenRow>
@@ -30,6 +36,20 @@ const { theme } = Astro.props
   </Specimen>
 </SpecimenRow>
 
+<SpecimenRow title="Illustration colours: each hue with its light and shade steps">
+  {
+    ILLUSTRATION_HUES.map((hue) => (
+      <Specimen label={`--illustration-${hue}`}>
+        <div class="steps">
+          {STEPS.map((step) => (
+            <span class="step" style={`background: var(--illustration-${hue}${step})`} />
+          ))}
+        </div>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
 <style>
   .train {
     max-inline-size: 44rem;
@@ -37,5 +57,17 @@ const { theme } = Astro.props
 
   .lamp {
     inline-size: 9rem;
+  }
+
+  .steps {
+    display: flex;
+    overflow: hidden;
+    border: var(--illustration-outline) solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .step {
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
   }
 </style>
