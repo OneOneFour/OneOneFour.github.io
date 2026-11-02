@@ -15,6 +15,9 @@ const PHOSPHOR_ICONS = [
   'sun', 'moon', 'circle-half', 'info', 'warning', 'envelope-simple', 'rss',
   'calendar-blank', 'clock', 'upload-simple', 'plus', 'minus', 'caret-up',
   'paint-brush', 'palette', 'drop',
+  'arrow-left', 'arrow-right', 'caret-left', 'check', 'link', 'tag',
+  'book-open-text', 'graduation-cap', 'file-pdf', 'presentation-chart', 'quotes', 'lightbulb',
+  'image', 'images', 'atom',
 ]
 
 // Hand-adapted icons in Phosphor's raw duotone format, read from scripts/icon-sources/.
@@ -54,6 +57,17 @@ const DEFAULT_FILLS = {
   'paint-brush': 'coral',
   palette: 'apricot',
   drop: 'sky',
+  check: 'green',
+  tag: 'apricot',
+  'book-open-text': 'sky',
+  'graduation-cap': 'navy',
+  'file-pdf': 'coral',
+  'presentation-chart': 'apricot',
+  quotes: 'coral',
+  lightbulb: 'yellow',
+  image: 'sky',
+  images: 'yellow',
+  atom: 'teal',
 }
 
 const SOURCE_DIR = new URL('./icon-sources/', import.meta.url)
@@ -95,7 +109,7 @@ function makeRecolourable(name, rawSvg) {
   const fillAttrs = fillHook(name)
   const svg = rawSvg
     .replace(BACKGROUND_RECT, '')
-    .replace(/<(path|line|circle|rect|polyline|polygon)\b[^>]*\/>/g, (tag) =>
+    .replace(/<(path|line|circle|ellipse|rect|polyline|polygon)\b[^>]*\/>/g, (tag) =>
       recolourShape(tag, fillAttrs)
     )
     .replace(/<svg ([^>]*)>/, `<svg $1 ${ROOT_ATTRS}>`)
