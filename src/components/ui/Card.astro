@@ -6,23 +6,26 @@
  * @param title the card's title, and the link text when linked
  * @param href where the card links to
  * @param meta a short line under the title
+ * @param headingLevel the title's heading level, to fit the page outline; 3 when left out
  */
 interface Props {
   title: string
   href?: string
   meta?: string
+  headingLevel?: 2 | 3 | 4
   class?: string
 }
 
-const { title, href, meta, class: className } = Astro.props
+const { title, href, meta, headingLevel = 3, class: className } = Astro.props
+const Heading = `h${headingLevel}` as const
 ---
 
 <article class:list={['rk-card', { 'rk-card--link': href }, className]}>
   <slot name="image" />
   <div class="rk-card-body">
-    <h3 class="rk-card-title">
+    <Heading class="rk-card-title">
       {href ? <a class="rk-card-link" href={href}>{title}</a> : title}
-    </h3>
+    </Heading>
     {meta && <p class="rk-card-meta">{meta}</p>}
     <slot />
   </div>
