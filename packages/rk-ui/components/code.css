@@ -1,9 +1,9 @@
 /* Code block: a slate panel pressed into the page by a soft inner shadow, with an optional
    language caption and a copy button. The button starts hidden and <rk-code-block>
    (code-block.js) shows it. It comes after the code so that readers reach the code first, and
-   the grid lifts it into the header row. Pre is a keyboard scroll region for long lines
-   (tabindex="0"). The caption may start with a logo for the language, coloured by
-   --code-lang-color (default --muted).
+   the grid lifts it into the header row. Pre is a scroll region for long lines (overflow.css),
+   which the keyboard can scroll (tabindex="0"). The caption may start with a logo for the
+   language, coloured by --code-lang-color (default --muted).
 
    <rk-code-block>
      <figure class="rk-code">
@@ -13,7 +13,7 @@
            Python
          </span>
        </figcaption>
-       <pre tabindex="0"><code>…</code></pre>
+       <pre class="rk-scroll" tabindex="0"><code>…</code></pre>
        <button type="button" class="rk-button rk-button--small rk-code-copy" hidden>
          <svg class="rk-icon rk-icon--small">…copy icon…</svg>
          <span class="rk-code-copy-label">Copy</span>
@@ -21,7 +21,8 @@
      </figure>
    </rk-code-block>
 
-   Opt-in modifier: .rk-code--tab puts the caption in a darker strip, like an editor tab.
+   Opt-in modifiers: .rk-scroll--bar on the pre keeps its scrollbar visible, and .rk-code--tab
+   puts the caption in a darker strip, like an editor tab.
    Put .rk-slate-greige on a block or any ancestor for the greige slate, inline code included. */
 
 rk-code-block {
@@ -73,11 +74,13 @@ rk-code-block {
   fill: currentColor;
 }
 
+/* The scroll region's dot gutters (overflow.css) take the outer part of the side padding, so the
+   code stays in line with the caption. */
 .rk-code pre {
   grid-column: 1 / -1;
   margin: 0;
   padding: var(--space-4);
-  overflow-x: auto;
+  padding-inline: calc(var(--space-4) - var(--scroll-gutter));
   background-color: transparent;
   font-size: var(--step--1);
   line-height: var(--line-height-body);
@@ -96,8 +99,7 @@ rk-code-block {
 }
 
 /* The panel shows the focus band for its scroll region: a ring of the outline colour for the band
-   to hug. The pre keeps its own focus ring in browsers without :has(), and drops a scroll
-   region's ring (overflow.css) but not its edges. */
+   to hug. The pre keeps its own focus ring (overflow.css) in browsers without :has(). */
 .rk-code:has(pre:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--outline-width);
@@ -106,7 +108,7 @@ rk-code-block {
 
 .rk-code:has(pre:focus-visible) pre {
   outline: none;
-  box-shadow: var(--scroll-edges, none);
+  box-shadow: none;
 }
 
 /* The editor tab is flat: no inner shadow. A blank shadow, not none, so it can sit in a list. */

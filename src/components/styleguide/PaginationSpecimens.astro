@@ -20,7 +20,7 @@ const STATES = [
   <Specimen label="index-card tabs" wide>
     <div class="rk-folder">
       <nav aria-label="Pagination">
-        <ol class="rk-folder-tabs">
+        <ol class="rk-folder-tabs rk-scroll">
           <li>
             <a class="rk-folder-tab" href="#specimen-link" rel="prev">
               <CaretLeftIcon class="rk-icon rk-icon--small" />
@@ -94,3 +94,7 @@ const STATES = [
     margin: 0;
   }
 </style>
+
+<script>
+  import 'rk-ui/folder-scrollbar.js'
+</script>

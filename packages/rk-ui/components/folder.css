@@ -1,9 +1,13 @@
 /* Folder: tabs standing on a sheet of paper, like a folder's index tabs. The selected tab is joined
    to the sheet in front; the others are tucked behind it.
 
+   The strip of tabs is a scroll region (overflow.css) for when the tabs don't fit. It hides its
+   own scrollbar, which would come between the tabs and the sheet, and folder-scrollbar.js adds
+   one above the tabs instead.
+
    As tabs, with <rk-tabs> (tabs.js) for the keyboard. Without JavaScript, every panel shows.
    <rk-tabs class="rk-folder">
-     <div class="rk-folder-tabs" role="tablist" aria-label="Topics">
+     <div class="rk-folder-tabs rk-scroll" role="tablist" aria-label="Topics">
        <button class="rk-folder-tab" type="button" role="tab" id="tab-a" aria-controls="panel-a"
          aria-selected="true">One</button>
        <button class="rk-folder-tab" type="button" role="tab" id="tab-b" aria-controls="panel-b"
@@ -17,7 +21,7 @@
    As pagination, with links:
    <div class="rk-folder">
      <nav aria-label="Pagination">
-       <ol class="rk-folder-tabs">
+       <ol class="rk-folder-tabs rk-scroll">
          <li><a class="rk-folder-tab" href="?page=1">1</a></li>
          <li><a class="rk-folder-tab" href="?page=2" aria-current="page">2</a></li>
        </ol>
@@ -44,17 +48,43 @@
   --folder-sheet: var(--selected-tint);
 }
 
-/* Scrolls sideways when the tabs don't fit. The top padding leaves room for the focus band and a
-   lifted tab's shadow. The gap is wider than a lifted tab's shadow at any light angle, so the
-   shadow never falls on a neighbour. */
+/* Scrolls sideways when the tabs don't fit. The padding, inside the dots' gutters, leaves room
+   for the focus band and a lifted tab's shadow. The gap is wider than a lifted tab's shadow at
+   any light angle, so the shadow never falls on a neighbour. */
 .rk-folder-tabs {
   display: flex;
   align-items: flex-end;
   gap: var(--space-3);
   margin: 0 0 calc(-1 * var(--folder-tuck));
-  padding: var(--space-2) var(--space-3) 0;
+  padding: var(--space-2) var(--space-2) 0;
   overflow: auto hidden;
+  scrollbar-width: none;
   list-style: none;
+}
+
+.rk-folder-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* The scrollbar above the tabs (folder-scrollbar.js): a scroller with an empty spacer. */
+.rk-folder-scrollbar {
+  block-size: var(--scroll-bar-size);
+  overflow: auto hidden;
+}
+
+/* The spacer needs some height to count towards the scroll width. */
+.rk-folder-scrollbar > div {
+  block-size: 1px;
+}
+
+/* Like a scroll region's own scrollbar, it waits for hover or keyboard focus, on the tabs or on
+   itself, wherever the dots can show. */
+@supports (animation-timeline: scroll()) {
+  @media (forced-colors: none) {
+    .rk-folder-scrollbar:not(:hover, :has(+ .rk-folder-tabs:is(:hover, :has(:focus-visible)))) {
+      opacity: 0;
+    }
+  }
 }
 
 .rk-folder-tabs > li {

@@ -8,7 +8,7 @@
  * @param label the language name shown in the caption, after the language's logo if it has one;
  *   leave it out for no caption
  * @param class extra classes for the figure, e.g. a box variant
- * @param preClass extra classes for the scrolling <pre>, e.g. an rk-scroll option
+ * @param preClass extra classes for the scrolling <pre>: rk-scroll--bar keeps its scrollbar visible
  */
 import { Code } from 'astro:components'
 import type { ComponentProps } from 'astro/types'
@@ -70,7 +70,7 @@ const Logo = LOGOS[lang]
         </figcaption>
       )
     }
-    <Code code={code} lang={lang} theme="css-variables" class={preClass} />
+    <Code code={code} lang={lang} theme="css-variables" class:list={['rk-scroll', preClass]} />
     <button type="button" class="rk-button rk-button--small rk-code-copy" hidden>
       <CopyIcon class="rk-icon rk-icon--small" />
       <span class="rk-code-copy-label">Copy</span>

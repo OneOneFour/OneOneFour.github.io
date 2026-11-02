@@ -200,7 +200,14 @@ a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab, .rk-eqref)).is-focu
   translate: -50% 0;
 }
 
-/* Maths */
+/* Scroll regions and maths */
+
+.rk-scroll.is-focus {
+  --scroll-track: var(--raised);
+  --scroll-track-edge: var(--line-unfilled);
+  --scroll-thumb: var(--selected);
+  --scroll-thumb-edge: var(--line);
+}
 
 .rk-equation.is-focus {
   outline: var(--focus-width) solid var(--focus);
@@ -208,7 +215,7 @@ a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab, .rk-eqref)).is-focu
   box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);
 }
 
-.rk-equation.is-target {
+.rk-equation.is-target > .katex-display {
   background-color: var(--apricot-tint);
 }
 

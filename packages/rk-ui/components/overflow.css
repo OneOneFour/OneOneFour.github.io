@@ -2,31 +2,103 @@
    wide equation or table, or a strip of tabs. Put .rk-scroll on the element that scrolls, with
    tabindex="0" so the keyboard can scroll it (and, outside a component, a role and a label).
 
-   <div class="rk-scroll rk-scroll--dots" tabindex="0" role="region" aria-label="…">
+   <div class="rk-scroll" tabindex="0" role="region" aria-label="…">
      <table>…</table>
    </div>
 
-   Options for showing that there is more to see (Gate 1b), each only on the side where content
-   remains and never when everything fits:
-   A .rk-scroll--bar        a toon scrollbar that stays visible
-   B .rk-scroll--dots       three dots in a narrow gutter at each edge
-   C .rk-scroll--edge       a hard ink edge with a flat wash beside it
-   D .rk-scroll--hover-bar  with B or C: A's scrollbar, shown on hover and focus
+   Three dots in a narrow gutter at each edge show that there is more to see, on that side only
+   and never when everything fits. A toon scrollbar shows on hover and keyboard focus; its space
+   is kept while it is hidden, so the content doesn't move when it shows.
 
-   B and C follow the scroll position with a scroll-driven animation. Browsers without one show
-   no hint, only their own scrollbar. B's gutters are borders, so B can't share an element with
-   a border of its own (.rk-equation--rule or --key). */
+   Opt-in modifier: .rk-scroll--bar keeps the scrollbar visible, with no dots. Use it on an element
+   with side borders of its own, which the dots' gutters would replace.
+
+   The dots follow the scroll position with a scroll-driven animation. Browsers without one show
+   the scrollbar at all times instead. */
 
 .rk-scroll {
+  --scroll-bar-size: 0.875rem;
+  --scroll-track: var(--raised);
+  --scroll-track-edge: var(--line-unfilled);
+  --scroll-thumb: var(--selected);
+  --scroll-thumb-edge: var(--line);
+
   overflow-x: auto;
 }
 
 .rk-scroll:focus-visible {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--outline-width);
-  box-shadow:
-    0 0 0 var(--outline-width) var(--line-unfilled),
-    var(--scroll-edges, 0 0 transparent);
+  box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);
+}
+
+/* The scrollbar: a pill track with an outlined thumb, like the range slider. A styled WebKit
+   scrollbar is always drawn, even where the system hides scrollbars until you scroll (macOS).
+   Firefox can't style the parts, so it gets the colours only. */
+.rk-scroll::-webkit-scrollbar {
+  height: var(--scroll-bar-size);
+}
+
+.rk-scroll::-webkit-scrollbar-track {
+  margin-inline: var(--radius);
+  border: var(--outline-width) solid var(--scroll-track-edge);
+  border-radius: var(--radius-pill);
+  background: var(--scroll-track);
+}
+
+.rk-scroll::-webkit-scrollbar-thumb {
+  border: var(--outline-width) solid var(--scroll-thumb-edge);
+  border-radius: var(--radius-pill);
+  background: var(--scroll-thumb);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .rk-scroll {
+    scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+  }
+}
+
+/* The width of the dots' gutters, and 0 where there are none. Not inherited, so a region nested
+   in another doesn't take its gutters. */
+@property --scroll-gutter {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+/* The dots. The gutters are borders because content is clipped inside the border, so it never
+   runs under the dots. Each dot is a background layer; a scroll container's background stays put
+   while its content scrolls. */
+.rk-scroll:not(.rk-scroll--bar) {
+  --scroll-gutter: 0.75rem;
+  --dot-size: 0.3rem;
+  --dot-spacing: 0.55rem;
+  --dot-inset: calc((var(--scroll-gutter) - var(--dot-size)) / 2);
+  --dot-start: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--line-unfilled) calc(var(--scroll-more-start) * 100%), transparent) 90%,
+    transparent
+  );
+  --dot-end: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--line-unfilled) calc(var(--scroll-more-end) * 100%), transparent) 90%,
+    transparent
+  );
+
+  border-inline: var(--scroll-gutter) solid transparent;
+  background-image:
+    var(--dot-start), var(--dot-start), var(--dot-start), var(--dot-end), var(--dot-end),
+    var(--dot-end);
+  background-position:
+    left var(--dot-inset) top calc(50% - var(--dot-spacing)),
+    left var(--dot-inset) center,
+    left var(--dot-inset) top calc(50% + var(--dot-spacing)),
+    right var(--dot-inset) top calc(50% - var(--dot-spacing)),
+    right var(--dot-inset) center,
+    right var(--dot-inset) top calc(50% + var(--dot-spacing));
+  background-size: var(--dot-size) var(--dot-size);
+  background-repeat: no-repeat;
+  background-origin: border-box;
 }
 
 /* 1 while there is more to scroll to on that side, and 0 at that end. Registered so that the
@@ -61,7 +133,7 @@
   }
 }
 
-/* Forced colours drop gradients and box shadows, so B and C show a system-colour edge instead. */
+/* Forced colours drop gradients, so the dots become a system-colour edge instead. */
 @keyframes rk-scroll-more-forced {
   from {
     border-inline-start-color: Canvas;
@@ -91,104 +163,23 @@
     animation-timeline: scroll(self inline);
   }
 
+  /* The dots show that there is more, so the scrollbar waits for hover or keyboard focus. Forced
+     colours keep it visible. */
+  @media (forced-colors: none) {
+    .rk-scroll:not(.rk-scroll--bar, :hover, :focus-visible, :has(:focus-visible)) {
+      --scroll-track: transparent;
+      --scroll-track-edge: transparent;
+      --scroll-thumb: transparent;
+      --scroll-thumb-edge: transparent;
+    }
+  }
+
   @media (forced-colors: active) {
-    .rk-scroll:is(.rk-scroll--dots, .rk-scroll--edge) {
-      border-inline: var(--space-1) solid Canvas;
+    .rk-scroll:not(.rk-scroll--bar) {
+      --scroll-gutter: var(--space-1);
+
+      border-inline-color: Canvas;
       animation-name: rk-scroll-more, rk-scroll-more-forced;
     }
   }
-}
-
-/* A and D: a pill track with an outlined thumb, like the range slider. A styled WebKit scrollbar
-   is always drawn, even where the system hides scrollbars until you scroll (macOS). Firefox can't
-   style the parts, so it gets the colours only. */
-.rk-scroll:is(.rk-scroll--bar, .rk-scroll--hover-bar) {
-  --scroll-track: var(--raised);
-  --scroll-track-edge: var(--line-unfilled);
-  --scroll-thumb: var(--selected);
-  --scroll-thumb-edge: var(--line);
-}
-
-@media (forced-colors: none) {
-  .rk-scroll--hover-bar:not(:hover, :focus-visible, :has(:focus-visible)) {
-    --scroll-track: transparent;
-    --scroll-track-edge: transparent;
-    --scroll-thumb: transparent;
-    --scroll-thumb-edge: transparent;
-  }
-}
-
-.rk-scroll:is(.rk-scroll--bar, .rk-scroll--hover-bar)::-webkit-scrollbar {
-  height: 0.875rem;
-}
-
-.rk-scroll:is(.rk-scroll--bar, .rk-scroll--hover-bar)::-webkit-scrollbar-track {
-  margin-inline: var(--radius);
-  border: var(--outline-width) solid var(--scroll-track-edge);
-  border-radius: var(--radius-pill);
-  background: var(--scroll-track);
-}
-
-.rk-scroll:is(.rk-scroll--bar, .rk-scroll--hover-bar)::-webkit-scrollbar-thumb {
-  border: var(--outline-width) solid var(--scroll-thumb-edge);
-  border-radius: var(--radius-pill);
-  background: var(--scroll-thumb);
-}
-
-@supports not selector(::-webkit-scrollbar) {
-  .rk-scroll:is(.rk-scroll--bar, .rk-scroll--hover-bar) {
-    scrollbar-color: var(--scroll-thumb) var(--scroll-track);
-  }
-}
-
-/* B: the gutters are borders because content is clipped inside the border, so it never runs
-   under the dots. Each dot is a background layer; a scroll container's background stays put
-   while its content scrolls. */
-.rk-scroll--dots {
-  --dot-size: 0.3rem;
-  --dot-spacing: 0.55rem;
-  --dot-gutter: 0.75rem;
-  --dot-inset: calc((var(--dot-gutter) - var(--dot-size)) / 2);
-  --dot-start: radial-gradient(
-    closest-side,
-    color-mix(in srgb, var(--line-unfilled) calc(var(--scroll-more-start) * 100%), transparent) 90%,
-    transparent
-  );
-  --dot-end: radial-gradient(
-    closest-side,
-    color-mix(in srgb, var(--line-unfilled) calc(var(--scroll-more-end) * 100%), transparent) 90%,
-    transparent
-  );
-
-  border-inline: var(--dot-gutter) solid transparent;
-  background-image:
-    var(--dot-start), var(--dot-start), var(--dot-start), var(--dot-end), var(--dot-end),
-    var(--dot-end);
-  background-position:
-    left var(--dot-inset) top calc(50% - var(--dot-spacing)),
-    left var(--dot-inset) center,
-    left var(--dot-inset) top calc(50% + var(--dot-spacing)),
-    right var(--dot-inset) top calc(50% - var(--dot-spacing)),
-    right var(--dot-inset) center,
-    right var(--dot-inset) top calc(50% + var(--dot-spacing));
-  background-size: var(--dot-size) var(--dot-size);
-  background-repeat: no-repeat;
-  background-origin: border-box;
-}
-
-/* C: an ink line at the edge, like the edge of a sheet, over a wash the width of a small space.
-   The wash is flat and translucent, as in the code block's inner shadow. */
-.rk-scroll--edge {
-  --edge-wash: calc(var(--outline-width) + var(--space-2));
-  --scroll-edges:
-    inset var(--outline-width) 0 0
-      color-mix(in srgb, var(--line-unfilled) calc(var(--scroll-more-start) * 100%), transparent),
-    inset var(--edge-wash) 0 0
-      color-mix(in srgb, var(--line) calc(var(--scroll-more-start) * 20%), transparent),
-    inset calc(-1 * var(--outline-width)) 0 0
-      color-mix(in srgb, var(--line-unfilled) calc(var(--scroll-more-end) * 100%), transparent),
-    inset calc(-1 * var(--edge-wash)) 0 0
-      color-mix(in srgb, var(--line) calc(var(--scroll-more-end) * 20%), transparent);
-
-  box-shadow: var(--scroll-edges);
 }

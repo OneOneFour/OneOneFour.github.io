@@ -48,7 +48,7 @@ const STATES: StaticFolder[] = [
       return (
         <Specimen label={sheet.label} wide>
           <rk-tabs class:list={['rk-folder', sheet.class]}>
-            <div class="rk-folder-tabs" role="tablist" aria-label="Specimen">
+            <div class="rk-folder-tabs rk-scroll" role="tablist" aria-label="Specimen">
               {TABS.map((name, i) => (
                 <button
                   class="rk-folder-tab"
@@ -91,7 +91,7 @@ const STATES: StaticFolder[] = [
       {row.specimens.map((specimen) => (
         <Specimen label={specimen.label}>
           <div class:list={['rk-folder', { 'rk-folder--tinted': specimen.tinted }]}>
-            <div class="rk-folder-tabs" role="tablist" aria-label="Specimen">
+            <div class="rk-folder-tabs rk-scroll" role="tablist" aria-label="Specimen">
               {STATIC_TABS.map((name, i) => (
                 <button
                   class:list={['rk-folder-tab', specimen.state?.tab === i && specimen.state.class]}
@@ -121,5 +121,6 @@ const STATES: StaticFolder[] = [
 </style>
 
 <script>
+  import 'rk-ui/folder-scrollbar.js'
   import 'rk-ui/tabs.js'
 </script>
