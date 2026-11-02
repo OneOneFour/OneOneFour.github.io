@@ -114,9 +114,13 @@
 }
 
 /* An equation reference in prose is a pill like the equation's number. Its brackets are in spans,
-   so it still reads "(2)" without CSS:
-   <a class="rk-eqref" href="#eq-lorenz"><span>(</span>2<span>)</span></a> */
+   so it still reads "(2)" without CSS. A reference that starts or carries a sentence puts the word
+   in the link, optionally after an .rk-icon:
+   <a class="rk-eqref" href="#eq-lorenz"><span>(</span>2<span>)</span></a>
+   <a class="rk-eqref" href="#eq-lorenz">Equation <span>(</span>2<span>)</span></a> */
 .rk-eqref {
+  --icon-fill: var(--lilac-tint);
+
   padding-inline: 0.5em;
   border-radius: var(--radius-pill);
   background: var(--lilac-tint);
@@ -130,6 +134,17 @@
 
 .rk-eqref > span {
   display: none;
+}
+
+/* Sized to the pill's text and lowered to sit on its baseline like a letter, so neither the pill
+   nor the line grows. */
+.rk-eqref .rk-icon {
+  inline-size: 1em;
+  block-size: 1em;
+  margin-inline-end: 0.25em;
+  color: inherit;
+  vertical-align: -0.125em;
+  --icon-stroke: 28;
 }
 
 .rk-eqref:hover {
