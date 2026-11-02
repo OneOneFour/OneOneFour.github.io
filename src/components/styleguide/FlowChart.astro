@@ -1,0 +1,260 @@
+---
+/**
+ * A flow chart in the toon style, with a decision and a loop back. The steps light up in turn as a
+ * token travels the arrows between them, and the slow step fills with water while it runs.
+ *
+ * @param theme the panel's theme, used to keep SVG ids unique across the two panels
+ */
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const width = 640
+const height = 200
+const row = { y: 40, height: 40 }
+const run = { x: 400, width: 90 }
+
+/** A box or pill. `slot` is its turn in the sequence; nodes without one never light. */
+interface FlowNode {
+  label: string
+  x: number
+  y?: number
+  width: number
+  radius: number
+  fill: string
+  litFill?: string
+  slot?: number
+  water?: boolean
+}
+
+const NODES: FlowNode[] = [
+  { label: 'Start', x: 20, width: 80, radius: 20, fill: '--teal', slot: 0 },
+  { label: 'Step 1', x: 140, width: 90, radius: 10, fill: '--sky', slot: 1 },
+  { label: 'Step 2', ...run, radius: 10, fill: '--sky', slot: 3, water: true },
+  { label: 'Done', x: 530, width: 80, radius: 20, fill: '--teal', litFill: '--green', slot: 4 },
+  { label: 'Fix', x: 270, y: 140, width: 90, radius: 10, fill: '--sky' },
+]
+const check = { label: 'Check', cx: 315, cy: 60, halfWidth: 45, halfHeight: 34, fill: '--lilac', slot: 2 }
+const diamond = [
+  [check.cx, check.cy - check.halfHeight],
+  [check.cx + check.halfWidth, check.cy],
+  [check.cx, check.cy + check.halfHeight],
+  [check.cx - check.halfWidth, check.cy],
+].join(' ')
+const ARROWS = [
+  { d: 'M100 60H140', slot: 0 },
+  { d: 'M230 60H270', slot: 1 },
+  { d: 'M360 60H400', slot: 2 },
+  { d: 'M490 60H530', slot: 3 },
+  { d: 'M315 94V140' },
+  { d: 'M270 160H185V80' },
+]
+const NOTES = [
+  { text: 'yes', x: 380, y: 50, anchor: 'middle' },
+  { text: 'no', x: 323, y: 120, anchor: 'start' },
+]
+
+// The water's surface: a wave 20 wide, a little wider than the step either side so that it can
+// roll, with the water below it. Its level moves it from under the step to over it.
+const waveCount = Math.ceil((run.width + 40) / 20)
+const wave = `M${run.x - 20} 0${'q5 -3 10 0t10 0'.repeat(waveCount)}V60H${run.x - 20}Z`
+const waterTop = row.y - 4
+const waterDepth = row.height + 8
+
+const arrowId = `${theme}-flow-arrow`
+const clipId = `${theme}-flow-water`
+const titleId = `${theme}-flow-title`
+const descId = `${theme}-flow-desc`
+---
+
+<svg
+  class="rk-diagram flow"
+  width={width}
+  height={height}
+  viewBox={`0 0 ${width} ${height}`}
+  role="img"
+  aria-labelledby={titleId}
+  aria-describedby={descId}
+>
+  <title id={titleId}>A flow chart</title>
+  <desc id={descId}>
+    Start, then step 1, then a check. If the check passes, step 2 and then done; if not, fix and back
+    to step 1. The steps light up in turn, and step 2 fills with water while it runs.
+  </desc>
+  <defs>
+    <marker
+      id={arrowId}
+      viewBox="0 0 10 10"
+      refX="10"
+      refY="5"
+      markerWidth="10"
+      markerHeight="10"
+      markerUnits="userSpaceOnUse"
+      orient="auto"
+    >
+      <path class="rk-diagram-arrowhead" d="M0 0L10 5L0 10Z" />
+    </marker>
+    <clipPath id={clipId}>
+      <rect x={run.x} y={row.y} width={run.width} height={row.height} rx="10" />
+    </clipPath>
+  </defs>
+
+  {ARROWS.map((arrow) => <path class="rk-diagram-edge" d={arrow.d} marker-end={`url(#${arrowId})`} />)}
+  {NOTES.map((note) => <text class="rk-diagram-note" x={note.x} y={note.y} text-anchor={note.anchor}>{note.text}</text>)}
+  {
+    ARROWS.filter((arrow) => arrow.slot !== undefined).map((arrow) => (
+      <g class="rk-diagram-pulse flow-token" style={`--slot: ${arrow.slot}`}>
+        <path class="rk-diagram-pulse-casing" pathLength="1" d={arrow.d} />
+        <path class="rk-diagram-pulse-dot" pathLength="1" d={arrow.d} />
+      </g>
+    ))
+  }
+
+  {
+    NODES.map((node) => {
+      const y = node.y ?? row.y
+      const style = [`--node-fill: var(${node.fill})`]
+      if (node.slot !== undefined) style.push(`--lit-fill: var(${node.litFill ?? '--selected'})`, `--slot: ${node.slot}`)
+      return (
+        <g class:list={['rk-diagram-node', { 'flow-step': node.slot !== undefined }]} style={style.join('; ')}>
+          <rect class="rk-diagram-shape" x={node.x} y={y} width={node.width} height={row.height} rx={node.radius} />
+          {node.water && (
+            <g clip-path={`url(#${clipId})`}>
+              <g class="flow-water" style={`--slot: ${node.slot}; --water-top: ${waterTop}px; --water-depth: ${waterDepth}px`}>
+                <path class="flow-wave" d={wave} />
+              </g>
+            </g>
+          )}
+          <text class="rk-diagram-label" x={node.x + node.width / 2} y={y + row.height / 2}>
+            {node.label}
+          </text>
+        </g>
+      )
+    })
+  }
+  <g
+    class="rk-diagram-node flow-step"
+    style={`--node-fill: var(${check.fill}); --lit-fill: var(--selected); --slot: ${check.slot}`}
+  >
+    <polygon class="rk-diagram-shape" points={diamond} />
+    <text class="rk-diagram-label" x={check.cx} y={check.cy}>{check.label}</text>
+  </g>
+</svg>
+
+<style>
+  /* Six steps per --loop-panel: one for each node on the path and one to hold at the end. Each
+     node's turn is the first sixth of its own loop, which starts --slot steps in. */
+  .flow {
+    --step: calc(var(--loop-panel) / 6);
+  }
+
+  .flow-step {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: flow-pop var(--loop-panel) calc(var(--slot) * var(--step)) infinite;
+  }
+
+  .flow-step > .rk-diagram-shape {
+    animation: flow-light var(--loop-panel) calc(var(--slot) * var(--step)) infinite;
+  }
+
+  /* Not clickable, so a lit step pops up in place rather than lifting off the page. */
+  @keyframes flow-pop {
+    0% {
+      scale: 1;
+      animation-timing-function: var(--ease-snap);
+    }
+
+    4%,
+    14% {
+      scale: 1.08;
+    }
+
+    16.667%,
+    100% {
+      scale: 1;
+    }
+  }
+
+  @keyframes flow-light {
+    0% {
+      fill: var(--node-fill);
+    }
+
+    1%,
+    14% {
+      fill: var(--lit-fill);
+    }
+
+    16.667%,
+    100% {
+      fill: var(--node-fill);
+    }
+  }
+
+  /* The token leaves for the next node in the last 40% of each node's step. */
+  .flow-token {
+    animation: flow-token var(--loop-panel) linear calc((var(--slot) + 0.6) * var(--step)) infinite;
+  }
+
+  @keyframes flow-token {
+    0% {
+      stroke-dashoffset: 0;
+    }
+
+    6.667% {
+      stroke-dashoffset: -1;
+    }
+
+    6.677%,
+    100% {
+      stroke-dashoffset: 0.5;
+    }
+  }
+
+  /* --water-level is the registered property from water.css. The water rises through the step's
+     turn, then drains as the next one lights. */
+  .flow-water {
+    --water-level: 0;
+
+    translate: 0 calc(var(--water-top) + (1 - var(--water-level)) * var(--water-depth));
+    animation: flow-fill var(--loop-panel) ease-in-out calc(var(--slot) * var(--step)) infinite;
+  }
+
+  @keyframes flow-fill {
+    0% {
+      --water-level: 0;
+    }
+
+    14%,
+    17% {
+      --water-level: 1;
+    }
+
+    22%,
+    100% {
+      --water-level: 0;
+    }
+  }
+
+  /* rk-wave-roll is water.css's: it moves the wave one --wave-length to the left. */
+  .flow-wave {
+    --wave-length: 20px;
+
+    fill: var(--teal);
+    stroke: var(--line);
+    stroke-width: var(--outline-width);
+    animation: rk-wave-roll 1.2s linear infinite;
+  }
+
+  /* Under reduced motion the steps still light in turn, but nothing moves. */
+  @media (prefers-reduced-motion: reduce) {
+    .flow-step,
+    .flow-token,
+    .flow-water,
+    .flow-wave {
+      animation: none;
+    }
+  }
+</style>

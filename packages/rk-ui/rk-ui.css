@@ -43,6 +43,6 @@
 @import './components/pagination.css';
 @import './components/maths.css';
 @import './components/figure.css';
-@import './components/chart.css';
 @import './components/overflow.css';
+@import './components/motion.css';
 @import './components/interactive.css';

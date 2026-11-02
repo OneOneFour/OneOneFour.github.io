@@ -1,7 +1,7 @@
 ---
 /**
- * Static SVG charts, each shown flat (A) and with the toon option (B): lines, columns and a
- * scatter plot, then heatmaps on both scales, small multiples and sparklines.
+ * SVG charts in the toon look: lines, columns and a scatter plot, then heatmaps in options A and
+ * B on each scale, small multiples and sparklines.
  */
 import ColumnChart from './ColumnChart.astro'
 import Heatmap from './Heatmap.astro'
@@ -11,7 +11,7 @@ import SmallMultiples from './SmallMultiples.astro'
 import Sparkline from './Sparkline.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import { DIVERGING, SEQUENTIAL, divergingColour, sequentialColour } from './chart-scale'
+import { DIVERGING, SEQUENTIAL, SEQUENTIAL_VIVID, divergingColour, formatTick, sequentialColour } from './chart-scale'
 import {
   ANOMALIES,
   ANOMALY_YEARS,
@@ -22,83 +22,96 @@ import {
   WEEK_BY_HOUR,
   YEARS,
 } from './chart-data'
+import './chart.css'
 
-const OPTIONS = [
-  { label: 'A: flat', toon: false },
-  { label: 'B: toon (.rk-chart--toon)', toon: true },
-]
-const MONTHS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D']
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const anomalyColumns = ANOMALY_YEARS.map((year, index) => ({ index, label: String(year) })).filter(
   (column) => column.index % 5 === 4,
 )
-const hourColumns = [0, 6, 12, 18].map((index) => ({ index, label: `${String(index).padStart(2, '0')}:00` }))
+const hours = Array.from({ length: 24 }, (_, hour) => `${String(hour).padStart(2, '0')}:00`)
+const hourColumns = [0, 6, 12, 18].map((index) => ({ index, label: hours[index] }))
+const HEATMAP_OPTIONS = [
+  { label: 'A: side by side, with ink gutters', tiles: false },
+  { label: 'B: tiles (.rk-chart--tiles)', tiles: true },
+]
+
+const anomalies = {
+  rows: ANOMALIES,
+  rowLabels: MONTHS,
+  columnNames: ANOMALY_YEARS.map(String),
+  columnLabels: anomalyColumns,
+  colour: (value: number) => divergingColour(value, 0.5),
+  format: (value: number) => `${value < 0 ? '' : '+'}${formatTick(Number(value.toFixed(2)))} K`,
+  scale: { steps: DIVERGING.map((step) => `var(${step})`), from: '≤ −1.25 K', to: '≥ +1.25 K' },
+  label: 'Synthetic monthly anomalies, 1991 to 2020',
+}
+const week = {
+  rows: WEEK_BY_HOUR,
+  rowLabels: DAYS,
+  columnNames: hours,
+  columnLabels: hourColumns,
+  format: (value: number) => value.toFixed(2),
+  label: 'A synthetic value for every hour of a week',
+}
+const SCALES = [
+  {
+    name: 'sequential',
+    colour: (value: number) => sequentialColour(value),
+    scale: { steps: SEQUENTIAL.map((step) => `var(${step})`), from: '0', to: '1' },
+  },
+  {
+    name: 'vivid sequential (--seq-vivid-*)',
+    colour: (value: number) => sequentialColour(value, SEQUENTIAL_VIVID),
+    scale: { steps: SEQUENTIAL_VIVID.map((step) => `var(${step})`), from: '0', to: '1' },
+  },
+]
 ---
 
 <SpecimenRow title="Lines: direct labels, with or without a legend">
-  {
-    OPTIONS.map((option) => (
-      <Specimen label={`${option.label}, legend`} wide>
-        <LineChart x={YEARS} series={TIME_SERIES} label="Four synthetic series" toon={option.toon} legend />
-      </Specimen>
-    ))
-  }
+  <Specimen label="with a legend" wide>
+    <LineChart x={YEARS} series={TIME_SERIES} label="Four synthetic series" legend />
+  </Specimen>
   <Specimen label="direct labels only" wide>
     <LineChart x={YEARS} series={TIME_SERIES} label="Four synthetic series" />
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title="Columns">
+<SpecimenRow title="Columns and scatter">
+  <Specimen label="columns" wide>
+    <ColumnChart data={COLUMNS} label="Synthetic monthly values" />
+  </Specimen>
+  <Specimen label="scatter" wide>
+    <ScatterPlot clusters={CLUSTERS} label="Three synthetic clusters" />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Heatmaps: diverging. Hover or focus a cell; the arrow keys move, Escape hides the value">
   {
-    OPTIONS.map((option) => (
+    HEATMAP_OPTIONS.map((option) => (
       <Specimen label={option.label} wide>
-        <ColumnChart data={COLUMNS} label="Synthetic monthly values" toon={option.toon} />
+        <Heatmap {...anomalies} tiles={option.tiles} />
       </Specimen>
     ))
   }
 </SpecimenRow>
 
-<SpecimenRow title="Scatter">
-  {
-    OPTIONS.map((option) => (
-      <Specimen label={option.label} wide>
-        <ScatterPlot clusters={CLUSTERS} label="Three synthetic clusters" toon={option.toon} />
-      </Specimen>
-    ))
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Heatmaps">
-  <Specimen label="diverging: anomalies, each step 0.5 K wide" wide>
-    <Heatmap
-      rows={ANOMALIES}
-      rowLabels={MONTHS}
-      columnLabels={anomalyColumns}
-      colour={(value) => divergingColour(value, 0.5)}
-      scale={{ steps: DIVERGING.map((step) => `var(${step})`), from: '≤ −1.25 K', to: '≥ +1.25 K' }}
-      label="Synthetic monthly anomalies, 1991 to 2020"
-    />
-  </Specimen>
-  <Specimen label="sequential: magnitude" wide>
-    <Heatmap
-      rows={WEEK_BY_HOUR}
-      rowLabels={DAYS}
-      columnLabels={hourColumns}
-      colour={sequentialColour}
-      scale={{ steps: SEQUENTIAL.map((step) => `var(${step})`), from: '0', to: '1' }}
-      label="A synthetic value for every hour of a week"
-    />
-  </Specimen>
-</SpecimenRow>
+{
+  SCALES.map((scale) => (
+    <SpecimenRow title={`Heatmaps: ${scale.name}`}>
+      {HEATMAP_OPTIONS.map((option) => (
+        <Specimen label={option.label} wide>
+          <Heatmap {...week} colour={scale.colour} scale={scale.scale} tiles={option.tiles} />
+        </Specimen>
+      ))}
+    </SpecimenRow>
+  ))
+}
 
 <SpecimenRow title="Small multiples: one series each, on a shared scale">
-  {
-    OPTIONS.map((option) => (
-      <Specimen label={option.label} wide>
-        <SmallMultiples x={YEARS} series={TIME_SERIES} toon={option.toon} />
-      </Specimen>
-    ))
-  }
+  <Specimen label="small multiples" wide>
+    <SmallMultiples x={YEARS} series={TIME_SERIES} />
+  </Specimen>
 </SpecimenRow>
 
 <SpecimenRow title="Sparklines">

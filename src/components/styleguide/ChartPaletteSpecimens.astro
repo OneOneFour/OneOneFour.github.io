@@ -2,7 +2,8 @@
 /** The chart colours: the series in their fixed order, and the sequential and diverging scales. */
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import { DIVERGING, SEQUENTIAL } from './chart-scale'
+import { DIVERGING, SEQUENTIAL, SEQUENTIAL_VIVID } from './chart-scale'
+import './chart.css'
 
 const SERIES = ['teal', 'yellow', 'navy', 'green', 'sky', 'coral', 'grape', 'tangerine']
 ---
@@ -26,6 +27,11 @@ const SERIES = ['teal', 'yellow', 'navy', 'green', 'sky', 'coral', 'grape', 'tan
   <Specimen label="sequential (--seq-1 to --seq-5): magnitude" wide>
     <ol class="steps">
       {SEQUENTIAL.map((step) => <li><span class="chip" style={`background: var(${step})`} />{step}</li>)}
+    </ol>
+  </Specimen>
+  <Specimen label="vivid sequential (--seq-vivid-1 to --seq-vivid-5): option for Gate 1b" wide>
+    <ol class="steps">
+      {SEQUENTIAL_VIVID.map((step) => <li><span class="chip" style={`background: var(${step})`} />{step}</li>)}
     </ol>
   </Specimen>
   <Specimen label="diverging (--div-cold-3 to --div-warm-3): anomalies, neutral in the middle" wide>

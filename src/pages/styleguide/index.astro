@@ -9,6 +9,7 @@ import FontSpecimens from '../../components/styleguide/FontSpecimens.astro'
 import MonoSpecimen from '../../components/styleguide/MonoSpecimen.astro'
 import CodeSpecimens from '../../components/styleguide/CodeSpecimens.astro'
 import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
+import MotionSpecimens from '../../components/styleguide/MotionSpecimens.astro'
 import LightDirection from '../../components/styleguide/LightDirection.astro'
 import ShadowSpecimens from '../../components/styleguide/ShadowSpecimens.astro'
 import BaseSpecimens from '../../components/styleguide/BaseSpecimens.astro'
@@ -39,6 +40,7 @@ import EquationSpecimens from '../../components/styleguide/EquationSpecimens.ast
 import MathsInTextSpecimens from '../../components/styleguide/MathsInTextSpecimens.astro'
 import ChartPaletteSpecimens from '../../components/styleguide/ChartPaletteSpecimens.astro'
 import ChartSpecimens from '../../components/styleguide/ChartSpecimens.astro'
+import DiagramSpecimens from '../../components/styleguide/DiagramSpecimens.astro'
 import FigureSpecimens from '../../components/styleguide/FigureSpecimens.astro'
 import StyleguideContents from '../../components/styleguide/StyleguideContents.astro'
 
@@ -52,6 +54,7 @@ const CONTENTS = [
       'Monospace',
       'Code',
       'Shape and motion',
+      'Motion',
       'Dark-mode shadows',
       'Base styles',
       'Icons',
@@ -91,7 +94,7 @@ const CONTENTS = [
   },
   {
     title: 'Maths and charts',
-    sections: ['Equations', 'Maths in text', 'Chart colours', 'Charts', 'Figures and widgets'],
+    sections: ['Equations', 'Maths in text', 'Chart colours', 'Charts', 'Diagrams', 'Figures and widgets'],
   },
 ]
 ---
@@ -136,6 +139,15 @@ const CONTENTS = [
       <LightDirection />
       <ShapeAndMotion slot="light" />
       <ShapeAndMotion slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Motion">
+      <p>
+        The patterns of the motion policy (PLAN §5.7). Turn the light above to see the shadows and the
+        glint follow it while things move.
+      </p>
+      <MotionSpecimens slot="light" />
+      <MotionSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Dark-mode shadows" stacked>
@@ -307,11 +319,20 @@ const CONTENTS = [
 
     <SpecimenSection title="Charts" stacked>
       <p>
-        Inline SVG drawn at build time and coloured by the tokens. Options for Gate 1b: A flat, as the
-        dataviz guidance has it, and B with the toon edges and shadows.
+        A vibe check, not part of rk-ui in this version: inline SVG drawn at build time, in the toon
+        look and coloured by the styleguide's chart tokens. The heatmaps have options for Gate 1b.
       </p>
       <ChartSpecimens slot="light" />
       <ChartSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Diagrams" stacked>
+      <p>
+        A vibe check like the charts: inline SVG in the toon look, animated by the motion policy
+        (PLAN §5.7). Try them with the palette switch and the light.
+      </p>
+      <DiagramSpecimens slot="light" theme="light" />
+      <DiagramSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Figures and widgets" stacked>

@@ -1,6 +1,6 @@
 import {
   parseTokens,
-  splitFallback,
+  splitFallbacks,
   splitPalettes,
   resolveColor,
   contrastRatio,
@@ -8,6 +8,7 @@ import {
   DEFAULT_PALETTE,
 } from '../../../scripts/check-contrast.mjs'
 import rawTokensCss from 'rk-ui/tokens.css?raw'
+import rawChartTokensCss from './chart-tokens.css?raw'
 
 export type Theme = 'light' | 'dark'
 export type Tokens = Map<string, string>
@@ -20,9 +21,10 @@ export interface Contrast {
 }
 
 // The light-only fallback is left out: its plain values would hide the dark theme.
-const { shared, palettes } = splitPalettes(splitFallback(rawTokensCss).main)
+const { shared, palettes } = splitPalettes(splitFallbacks([rawTokensCss, rawChartTokensCss]).main)
 
-/** tokens.css without the fallback and the page palette rules: the tokens every palette shares. */
+/** The token files without their fallbacks and the page palette rules: the tokens every palette
+ *  shares. */
 export const tokensCss: string = shared
 /** Each page palette's tokens, by palette name, in the order tokens.css gives them. */
 export const paletteTokens: Map<string, Tokens> = palettes

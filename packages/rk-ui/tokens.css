@@ -30,11 +30,6 @@
   --raised: light-dark(#faf9f8, #302e29);
 }
 
-/* --div-mid (below) mixes in the page colour, so each palette re-declares it to mix its own */
-[data-palette] {
-  --div-mid: color-mix(in oklab, var(--muted) 12%, var(--surface));
-}
-
 :root {
   /* Text, lines and focus */
   --fg: light-dark(#1d232f, #f2eee2);
@@ -119,34 +114,6 @@
   --code-number: var(--tangerine-deep);
   --code-comment: var(--muted);
 
-  /* Chart series: in a fixed order that keeps neighbours apart for colour-blind readers */
-  --chart-1: var(--teal);
-  --chart-2: var(--yellow);
-  --chart-3: var(--navy);
-  --chart-4: var(--green);
-  --chart-5: var(--sky);
-  --chart-6: var(--coral);
-  --chart-7: var(--grape);
-  --chart-8: var(--tangerine);
-
-  /* Sequential scale: for magnitudes, from navy's tint to its text colour, so in both themes the
-     strongest step stands out most from the page */
-  --seq-1: color-mix(in oklab, var(--navy-deep) 27%, var(--navy-tint));
-  --seq-2: color-mix(in oklab, var(--navy-deep) 45%, var(--navy-tint));
-  --seq-3: color-mix(in oklab, var(--navy-deep) 63%, var(--navy-tint));
-  --seq-4: color-mix(in oklab, var(--navy-deep) 82%, var(--navy-tint));
-  --seq-5: var(--navy-deep);
-
-  /* Diverging scale: for anomalies, navy below and coral above with a faint neutral between. The
-     coral end leans towards --fg so that both ends are about as light as each other. */
-  --div-cold-3: var(--navy-deep);
-  --div-cold-2: color-mix(in oklab, var(--navy-deep) 67%, var(--navy-tint));
-  --div-cold-1: color-mix(in oklab, var(--navy-deep) 33%, var(--navy-tint));
-  --div-mid: color-mix(in oklab, var(--muted) 12%, var(--surface));
-  --div-warm-1: color-mix(in oklab, var(--div-warm-3) 33%, var(--coral-tint));
-  --div-warm-2: color-mix(in oklab, var(--div-warm-3) 67%, var(--coral-tint));
-  --div-warm-3: color-mix(in oklab, var(--coral-deep) 70%, var(--fg));
-
   /* Spacing */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -203,6 +170,14 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   /* Fast start, then a visible swing past the target before settling */
   --ease-snap: cubic-bezier(0.3, 1.5, 0.45, 1);
+  /* Loops: one cycle of an animation that repeats on its own. Short for small busy marks, long
+     for fills and sloshes, panel for large areas and diagrams. */
+  --loop-short: 0.9s;
+  --loop-medium: 1.6s;
+  --loop-long: 2.4s;
+  --loop-panel: 4s;
+  /* The delay between neighbours that move in turn */
+  --stagger: 0.15s;
 }
 
 /* Browsers without light-dark() (before mid-2024) get the light theme, on the cream page. */

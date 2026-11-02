@@ -32,6 +32,7 @@ export function formatTick(value: number): string {
 }
 
 export const SEQUENTIAL = ['--seq-1', '--seq-2', '--seq-3', '--seq-4', '--seq-5']
+export const SEQUENTIAL_VIVID = ['--seq-vivid-1', '--seq-vivid-2', '--seq-vivid-3', '--seq-vivid-4', '--seq-vivid-5']
 export const DIVERGING = [
   '--div-cold-3',
   '--div-cold-2',
@@ -42,10 +43,10 @@ export const DIVERGING = [
   '--div-warm-3',
 ]
 
-/** The sequential step for a value from 0 to 1, as a CSS colour. */
-export function sequentialColour(value: number): string {
-  const step = Math.min(SEQUENTIAL.length - 1, Math.floor(value * SEQUENTIAL.length))
-  return `var(${SEQUENTIAL[Math.max(0, step)]})`
+/** The step of a sequential scale (`SEQUENTIAL` unless given) for a value from 0 to 1, as a CSS colour. */
+export function sequentialColour(value: number, steps = SEQUENTIAL): string {
+  const step = Math.min(steps.length - 1, Math.floor(value * steps.length))
+  return `var(${steps[Math.max(0, step)]})`
 }
 
 /** The diverging step for a value, in bins `width` wide with the middle one centred on zero. */

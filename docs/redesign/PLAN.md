@@ -201,6 +201,9 @@ raw hues, so dark mode is a token swap.
    apart for protan/deutan viewers in both themes (worst ΔE 19.2; the old order put green next
    to yellow, ΔE 2.6 in dark). In light mode yellow, sky, teal, green and tangerine marks are
    under 3:1 on cream, so chart marks need the ink outline or direct labels.
+   *Gate 1b (Rob):* charts are a styleguide vibe check in this version, not part of rk-ui. The
+   chart tokens (`--chart-*`, `--seq-*`, `--div-*`) live in
+   `src/components/styleguide/chart-tokens.css`, which `npm run contrast` also reads (§5.4).
 
 ### 5.1a Auxiliary colours *(approved direction 2026-11-01)*
 
@@ -246,8 +249,9 @@ Rules (shown on the mood board, theme switch at the top):
   `<html>` or any container swaps the cream page for a grey one, alongside `data-theme`; cream
   is the default (*DECIDED 2026-11-02: the site ships cream*; slate and greige stay available
   as opt-ins) and `data-palette="cream"` switches back inside another palette. A palette
-  redeclares only `--surface` and `--raised` (as `light-dark()` pairs), plus `--div-mid`, the one
-  `:root` token mixed from the page colour (custom properties resolve their `var()`s where they
+  redeclares only `--surface` and `--raised` (as `light-dark()` pairs), plus `--div-mid` (in the
+  styleguide's chart tokens), the one `:root` token mixed from the page colour (custom
+  properties resolve their `var()`s where they
   are declared, so it must be redeclared on every palette container). The values come from the
   code slates (sRGB mixes): the light page is 60% slate (or greige) and 40% white, raised 25%
   slate; the dark page is 70% slate and 30% black, raised 90% slate. Code panels keep the cool slate under every
@@ -384,7 +388,7 @@ settles the type scale, the monospace face and the weights actually used.
   toggles and slider tracks.
 - **Flat fills only**: no gradients. Illustrations follow the same rule.
 - **Motion**: short (120–200ms), springy only on press and toggle. Everything
-  respects `prefers-reduced-motion`.
+  respects `prefers-reduced-motion`. The full policy is §5.7.
 - **"Pop" on hover and press** *(Rob, 2026-11-01: keep the mood board's feel throughout)*.
   Every clickable component in the package (button, chip, card, switch, slider thumb, nav
   item) shares one interaction, defined once from tokens rather than per component:
@@ -450,6 +454,19 @@ with C, the hopping ball, the favourite (recoloured with `--loader-fill`, and an
 - Dot spinners (`spinner-dots.css`): F in a circle, G in a triangle, H squash and stretch.
 - Loaders, indeterminate bars (`loader.css`): A inchworm, B bouncing block, C hopping ball,
   D candy stripes.
+
+**Charts and diagrams** *(Rob, Gate 1b: a vibe check only)*: nothing chart-related ships in this
+version of rk-ui. Rob prefers the toon charts, so they are the only look on `/styleguide/`. All of
+it lives in `src/components/styleguide/`: `chart.css`, `chart-tokens.css`, `heatmap.js` and the
+chart components, and the diagrams (`diagram.css`, `diagram.js`, `NeuralNetwork.astro`,
+`FlowChart.astro`).
+- Heatmaps: hovering or focusing a cell pops a raised copy and shows its value in a toon tooltip;
+  the arrow keys move between cells. Pending Rob's picks: A, cells side by side with ink gutters,
+  or B, `.rk-chart--tiles`; and the navy sequential scale or the vivid one (`--seq-vivid-*`,
+  yellow to navy in light mode and navy to yellow in dark, ColorBrewer's YlGnBu order).
+- Diagrams ("Diagrams" on `/styleguide/`): a neural network whose pulses travel a layer at a time
+  and whose nodes light their links on hover or focus, and a flow chart whose steps light in turn,
+  with a water fill on the slow step.
 
 
 ### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*
@@ -530,6 +547,126 @@ that need no framework at all:
   still copy a tagged release. Trademark logos stay in the site and are passed in as props. Vue
   wrappers are not planned. A fresh builder does the move as pure `git mv` commits, then a
   reviewer checks it; the styleguide's built HTML should differ only in asset hashes.
+
+### 5.7 Motion *(proposed, Gate 1b)*
+
+How anything moves: the package's components, the styleguide's charts and diagrams, and any
+bespoke or third-party element not built yet. "Motion" on `/styleguide/` shows the core patterns.
+
+**When things move.** Motion explains something: it answers input, shows that something is under
+way (waiting, running, filling), or shows how a change happens (a pulse travelling from cause to
+effect). It is never there only to decorate.
+- **Never moves:** text while it can be read (no marquees, no scroll-linked text), the layout and
+  the scroll position (no scroll-jacking; smooth scrolling only for in-page jumps, and off under
+  reduced motion), the light and the side shadows fall on, the outline width, and the focus band,
+  which appears and goes at once.
+- **Things move but never turn**, so hard shadows stay on the light's side and glints opposite.
+  The only turning parts are a spinner's wedge and icon, which have no shadow of their own.
+- **Only clickable things lift and sink** (the pop, §5.3). Something that isn't clickable shows
+  emphasis with its fill and a small pop in place (scale up to 1.08 on `--ease-snap`), as the flow
+  chart's steps do.
+
+**Input responses and ambient loops.**
+
+| | Input response | Ambient loop |
+|---|---|---|
+| Starts | on input, in the same frame | by itself, while a state lasts |
+| Length | `--duration-fast` 120ms (hover, press, pop); `--duration-spring` 180ms (toggles, snapping into place); `--duration-slide` 320ms (something travelling across, a panel opening) | `--loop-short` 0.9s (small busy marks); `--loop-medium` 1.6s; `--loop-long` 2.4s (fills, sloshes, a forward pass); `--loop-panel` 4s (large panels and diagrams) |
+| Repeats | never | until the state ends, or the reader pauses it |
+
+A sequence, such as a diagram's steps, splits one loop into equal steps of 0.6–1s and ends on a
+held step, so the reader sees where it ends before it starts again.
+
+**Easing.**
+- Plain `ease`: input responses (the pop).
+- `linear`: steady travel and rolling (a wave, a pulse along a link, a loader crossing its track).
+- `ease-out` going up and `ease-in` coming down: anything under gravity.
+- `ease-in-out` with `alternate`: filling, draining, sloshing.
+- `--ease-snap`: a jump to a new place or state, with one visible overshoot.
+- `--ease-spring`: recovering from a squash or a press.
+
+No other curves, and no elastic, many-bounce easing.
+
+**Toon phases.** Moves happen in clear phases (wind-up, go, overshoot, settle) with holds between
+them, not as smooth constant motion. A loop usually holds for a third or more of its cycle.
+
+**Squash, stretch and overshoot.**
+- Up to 1.3 × 0.7 on impact, 0.8–0.9 × 1.1–1.25 on take-off and fall, 0.95 × 1.05 to settle,
+  then rest.
+- The area stays about the same (width × height within about 10% of 1), and the scale is pinned
+  to the contact point: `transform-origin` on the side that touches (`transform-box: fill-box`
+  in SVG).
+- Overshoot comes only from `--ease-snap` or `--ease-spring`, or from one keyframe past the
+  target (about 10% at most, as in the 1.08 pop). One swing, never a wobble.
+
+**Shadows and light while moving.**
+- Shadow offsets always come from `--shadow-dx` and `--shadow-dy` (the shadow tokens, or
+  `calc(var(--shadow-dx) * 4px)`), never a literal offset in a keyframe, so a moving thing's
+  shadow follows the light the reader set.
+- A lift rises towards the light as the shadow grows (4px to 6px); a press sinks by the press
+  offset onto the 2px shadow, so the shadow's outer edge stays put.
+- Glints sit opposite the shadow: `translate: calc(var(--shadow-dx) * -5px) …`.
+- In SVG a hard shadow is a `drop-shadow()` filter on the shape or its group, plus a second one in
+  `--shadow-edge` for dark mode (as in `tooltip.css`). The filter is drawn before transforms, so a
+  squashed shape's shadow squashes with it, which is fine for a brief impact. One filter on a group
+  costs less than one per element.
+
+**Staggering.** Neighbours start `--stagger` (0.15s) apart, with
+`animation-delay: calc(var(--i) * var(--stagger))`, in reading order or in the order a cause
+travels (a network's layers). An entrance's whole spread stays under about 0.6s (about five
+items; stagger groups beyond that). Staggered loops share one period, so they stay in step. During
+a positive delay an animation doesn't apply, so the element's own style is its resting pose.
+
+**Third-party widgets and canvases.**
+- Colours come from tokens only. For an SVG or DOM library (D3, Observable Plot, Mermaid), give
+  its marks classes and colour them in CSS with tokens, so a theme or palette change needs no
+  redraw; override any colours the library writes inline.
+- On a canvas or WebGL, read the tokens in JS. `getComputedStyle(el).getPropertyValue('--teal')`
+  returns the token's text, which may be `light-dark(…)` or `color-mix(…)`, not a colour, so
+  resolve it through a real colour property on an element inside the widget:
+  `probe.style.color = 'var(--teal)'` then `getComputedStyle(probe).color` gives `rgb(…)` (or
+  `oklab(…)` for a mix, which current canvases accept). Reading inside the widget, not on
+  `<html>`, honours a container's own `color-scheme` or `data-palette`. Times (`--duration-*`,
+  `--loop-*`) read as text such as `180ms` or `2.4s` and need converting (the styleguide's
+  `heatmap.js` does it); easings read as `cubic-bezier(…)`, which the Web Animations API accepts.
+- Re-read the tokens and redraw when `data-theme` or `data-palette` changes on `<html>` or the
+  container (a `MutationObserver` on those attributes), when the system theme changes
+  (`matchMedia('(prefers-color-scheme: dark)')`), when the light turns (`light-direction.js` sets
+  `--shadow-dx` and `--shadow-dy` in the `style` attribute of `<html>`), and when the
+  reduced-motion setting changes.
+- Match the look: ink outlines (`--line`, `--outline-width`), flat fills, hard shadows, labels in
+  text tokens; no gradients, blur or soft shadows. Turn off a library's own tooltips and
+  animations, or time them with the tokens.
+
+**Reduced motion, forced colours and pausing.**
+- Under `prefers-reduced-motion` nothing translates, turns or scales. The tokens already zero the
+  durations and the lift and press offsets, so input responses keep their colour and shadow
+  change without moving. Loops that show a state (spinners, loaders, pending panels) become a
+  gentle fade (`rk-spinner-fade`, 1.8s, `alternate`) in a still pose. Illustrative loops stop
+  (the network's pulses); a sequence may still change colour in turn (the flow chart). JS
+  animations check `matchMedia` and listen for changes; Web Animations timed by the tokens drop
+  to zero by themselves.
+- Under `forced-colors` fills and shadows go, so meaning must survive in system colours:
+  `CanvasText` outlines, `Highlight` for moving or lit parts, `Canvas` behind
+  (`forced-color-adjust: none` where a component sets them itself). Motion is never the only
+  signal.
+- Anything that moves by itself for more than five seconds, other than a loading indicator, gets a
+  pause control (WCAG 2.2.2). `<rk-motion>` gives one, and also pauses its contents while they are
+  off-screen. JS loops stop their `requestAnimationFrame` while paused, off-screen or
+  `document.hidden`; timers keep running in hidden tabs, so stop them too.
+
+**Performance.**
+- Animate `transform` (`translate`, `scale`) and `opacity`, which the compositor runs. SVG paint
+  properties (`fill`, `stroke-dashoffset`) and registered custom properties (`--water-level`) are
+  fine on a few elements, not hundreds. Never animate layout (`width`, `height`, `top`) in a loop.
+- One set of keyframes shared by many elements, each with its own delay, beats JS timers; use JS
+  only to place things in answer to input.
+- **Position offsets at a join.** An element that must stay joined to a neighbour (a folder tab
+  against its sheet) moves with inset offsets (`top`, `left`), not `translate`. A `translate`
+  transition puts the element on its own compositor layer, which snaps to whole pixels and can
+  open a hairline seam at the join (found on folder tabs at Gate 1b). Use offsets for 1–2px moves
+  at a join, and `translate` everywhere else.
+- No permanent `will-change`.
 ---
 
 ## 6. Content model *(proposed)*

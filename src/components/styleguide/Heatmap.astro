@@ -1,36 +1,52 @@
 ---
 /**
- * A heatmap: a grid of cells coloured by a stepped scale, with a scale legend under it.
+ * A heatmap: a grid of cells coloured by a stepped scale, with a scale legend under it. Hovering
+ * or focusing a cell pops it and shows its value; the arrow keys move between cells.
  *
  * @param rows the values, one array per row
  * @param rowLabels a label for every row
+ * @param columnNames a name for every column, for the tooltip and each cell's accessible name
  * @param columnLabels the columns that get a label, by index
  * @param colour maps a value to a CSS colour
+ * @param format writes a value for the tooltip
  * @param scale the legend: each step's colour, and the labels at its two ends
  * @param label the chart's accessible name
+ * @param tiles option B: separate rounded tiles, rather than cells side by side (A)
  */
 interface Props {
   rows: number[][]
   rowLabels: string[]
+  columnNames: string[]
   columnLabels: { index: number; label: string }[]
   colour: (value: number) => string
+  format: (value: number) => string
   scale: { steps: string[]; from: string; to: string }
   label: string
+  tiles?: boolean
 }
 
-const { rows, rowLabels, columnLabels, colour, scale, label } = Astro.props
+const { rows, rowLabels, columnNames, columnLabels, colour, format, scale, label, tiles = false } = Astro.props
 const width = 640
-const cellHeight = 16
+const cellHeight = tiles ? 22 : 16
+const tileGap = tiles ? 3 : 0
 const plot = { left: 40, top: 4, right: width - 16 }
 const cellWidth = (plot.right - plot.left) / rows[0].length
-const height = plot.top + rows.length * cellHeight + 28
+const gridHeight = rows.length * cellHeight
+const height = plot.top + gridHeight + 28
 ---
 
-<div>
-  <svg class="rk-chart" width={width} height={height} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
-    {
-      rows.map((row, r) => (
-        <>
+<rk-heatmap class="rk-heatmap">
+  <svg
+    class:list={['rk-chart', { 'rk-chart--tiles': tiles }]}
+    width={width}
+    height={height}
+    viewBox={`0 0 ${width} ${height}`}
+    role="grid"
+    aria-label={label}
+  >
+    <g aria-hidden="true">
+      {
+        rowLabels.map((rowLabel, r) => (
           <text
             class="rk-chart-tick"
             x={plot.left - 8}
@@ -38,37 +54,66 @@ const height = plot.top + rows.length * cellHeight + 28
             text-anchor="end"
             dominant-baseline="middle"
           >
-            {rowLabels[r]}
+            {rowLabel}
           </text>
-          {row.map((value, c) => (
-            <rect
-              class="rk-chart-cell"
-              x={(plot.left + c * cellWidth).toFixed(1)}
-              y={plot.top + r * cellHeight}
-              width={cellWidth.toFixed(1)}
-              height={cellHeight}
-              style={`fill: ${colour(value)}`}
-            />
-          ))}
-        </>
-      ))
-    }
+        ))
+      }
+      {
+        columnLabels.map((column) => (
+          <text
+            class="rk-chart-tick"
+            x={plot.left + (column.index + 0.5) * cellWidth}
+            y={plot.top + gridHeight + 20}
+            text-anchor="middle"
+          >
+            {column.label}
+          </text>
+        ))
+      }
+    </g>
     {
-      columnLabels.map((column) => (
-        <text
-          class="rk-chart-tick"
-          x={plot.left + (column.index + 0.5) * cellWidth}
-          y={plot.top + rows.length * cellHeight + 20}
-          text-anchor="middle"
-        >
-          {column.label}
-        </text>
-      ))
+      !tiles && (
+        <rect class="rk-chart-shadow" x={plot.left} y={plot.top} width={plot.right - plot.left} height={gridHeight} />
+      )
     }
+    <g class="rk-chart-cells">
+      {
+        rows.map((row, r) => (
+          <g role="row">
+            {row.map((value, c) => (
+              <rect
+                class="rk-chart-cell"
+                role="gridcell"
+                aria-label={`${rowLabels[r]} ${columnNames[c]}: ${format(value)}`}
+                data-name={`${rowLabels[r]} ${columnNames[c]}`}
+                data-value={format(value)}
+                x={(plot.left + c * cellWidth + tileGap / 2).toFixed(1)}
+                y={plot.top + r * cellHeight + tileGap / 2}
+                width={(cellWidth - tileGap).toFixed(1)}
+                height={cellHeight - tileGap}
+                rx={tiles ? 4 : undefined}
+                style={`fill: ${colour(value)}`}
+              />
+            ))}
+          </g>
+        ))
+      }
+    </g>
+    <g class="rk-heatmap-pop" aria-hidden="true">
+      <rect class="rk-heatmap-pop-band" rx="4" />
+      <rect class="rk-heatmap-pop-cell" rx="4" />
+    </g>
   </svg>
+  <span class="rk-tooltip rk-tooltip--toon rk-heatmap-tip" aria-hidden="true">
+    <span class="rk-tooltip-bubble"><strong class="rk-heatmap-value"></strong> <span class="rk-heatmap-name"></span></span>
+  </span>
   <p class="rk-chart-scale">
     <span>{scale.from}</span>
     <span class="rk-chart-scale-steps">{scale.steps.map((step) => <span style={`background: ${step}`} />)}</span>
     <span>{scale.to}</span>
   </p>
-</div>
+</rk-heatmap>
+
+<script>
+  import './heatmap.js'
+</script>

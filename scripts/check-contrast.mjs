@@ -1,6 +1,6 @@
 /**
  * Checks WCAG 2.x contrast between pairs of rk-ui colour tokens, in both themes and under every
- * page palette.
+ * page palette. Reads the styleguide's chart tokens too, so their fallback is checked.
  *
  * Usage: node scripts/check-contrast.mjs
  *
@@ -10,7 +10,10 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
-const TOKENS_FILE = new URL('../packages/rk-ui/tokens.css', import.meta.url)
+const TOKEN_FILES = [
+  new URL('../packages/rk-ui/tokens.css', import.meta.url),
+  new URL('../src/components/styleguide/chart-tokens.css', import.meta.url),
+]
 export const THEMES = ['light', 'dark']
 export const DEFAULT_PALETTE = 'cream'
 
@@ -92,6 +95,15 @@ export function splitFallback(css) {
     else if (css[end] === '}') depth--
   }
   return { main: css.slice(0, start) + css.slice(end), fallback: css.slice(bodyStart, end - 1) }
+}
+
+/** Splits each token file's CSS as splitFallback does, and joins the parts in file order. */
+export function splitFallbacks(files) {
+  const parts = files.map(splitFallback)
+  return {
+    main: parts.map((part) => part.main).join('\n'),
+    fallback: parts.map((part) => part.fallback).join('\n'),
+  }
 }
 
 // A `[data-palette='name'] { … }` rule, with the `:root,` that the default palette's rule starts with.
@@ -218,8 +230,8 @@ function checkFallback(tokens, fallback) {
 }
 
 function main() {
-  const css = readFileSync(TOKENS_FILE, 'utf8')
-  const { main: mainCss, fallback: fallbackCss } = splitFallback(css)
+  const files = TOKEN_FILES.map((file) => readFileSync(file, 'utf8'))
+  const { main: mainCss, fallback: fallbackCss } = splitFallbacks(files)
   const { palettes } = splitPalettes(mainCss)
   const fallbackFailures = checkFallback(palettes.get(DEFAULT_PALETTE), parseTokens(fallbackCss))
 
