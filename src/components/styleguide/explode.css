@@ -238,28 +238,6 @@
     );
 }
 
-/* The sticker alternate: a keyline of glint round each part, like a die-cut sticker, and at rest an edge
-   round each assembly's keylines, in the page's line colour. The parts' focus band replaces the
-   keyline while focused. */
-.rk-explode--sticker {
-  --keyline: calc(2 * var(--outline-width));
-}
-
-.rk-explode--sticker .rk-explode-assembly:not(:focus-visible) .rk-explode-band {
-  display: inline;
-  stroke: var(--glint);
-  stroke-width: calc(2 * (var(--illustration-outline) + var(--keyline)));
-}
-
-.rk-explode--sticker .rk-explode-rest {
-  opacity: calc(1 - var(--explode));
-}
-
-.rk-explode--sticker .rk-explode-rest > path {
-  stroke: var(--line-unfilled);
-  stroke-width: calc(2 * (2 * var(--illustration-outline) + var(--keyline)));
-}
-
 /* Reduced motion: nothing moves, but the open assembly's shadows still show, its labels show and
    the other assemblies fade back. */
 @media (prefers-reduced-motion: reduce) {
@@ -281,12 +259,8 @@
     forced-color-adjust: none;
   }
 
-  :is(.rk-explode-ground, .rk-explode--sticker .rk-explode-rest > path) {
+  .rk-explode-ground {
     stroke: CanvasText;
-  }
-
-  .rk-explode--sticker .rk-explode-assembly:not(:focus-visible) .rk-explode-band {
-    stroke: Canvas;
   }
 
   .rk-explode-shape {

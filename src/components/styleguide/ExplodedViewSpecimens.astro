@@ -1,6 +1,6 @@
 ---
 /**
- * Exploded views: a steam train of five assemblies, plain and as stickers, and a lamp that is one,
+ * Exploded views: a steam train of five assemblies and a lamp that is one,
  * both drawn by ExplodedView from their data, with the illustration colours.
  *
  * @param theme the panel's theme, passed on to keep ids unique
@@ -26,9 +26,6 @@ const { theme } = Astro.props
     wide
   >
     <div class="train"><ExplodedView illustration={steamTrain} theme={theme} /></div>
-  </Specimen>
-  <Specimen label="alternate, sticker: a glint keyline round each part and an edge round each assembly" wide>
-    <div class="train"><ExplodedView illustration={steamTrain} theme={theme} sticker /></div>
   </Specimen>
 </SpecimenRow>
 

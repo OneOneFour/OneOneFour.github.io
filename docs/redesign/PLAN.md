@@ -458,11 +458,8 @@ while apart, so the drawing sits on the page like a card. This draws on neo-brut
 flat saturated fills, black outlines and unblurred offset shadows
 ([NN/G](https://www.nngroup.com/articles/neobrutalism/)). This replaces the earlier "flat at rest"
 and dark-page dimming, which belonged to the subdued look; like the buttons, the fills are not
-dimmed in dark mode. The sticker look stays as an alternate (`ExplodedView`'s `sticker`,
-`.rk-explode--sticker`): a `--glint` keyline round each part, like a die-cut sticker, and at rest
-an edge round each assembly in `--line-unfilled`, from the sticker cut line
-([CustomStickers.com](https://customstickers.com/community/blog/creating-cut-lines-for-sticker-files-in-illustrator)).
-The subdued look is removed (it is in git history). Not built: a two-ink retro print look, as in
+dimmed in dark mode. The sticker look (a keyline round each part) was removed the same day:
+Rob wants a sticker look, if any, only round the whole finished drawing, as one outline. The subdued look is removed (it is in git history). Not built: a two-ink retro print look, as in
 [this Tuts+ tutorial](https://design.tutsplus.com/tutorials/create-a-limited-color-vintage-poster-design-in-adobe-illustrator--cms-23583).
 
 The rules:
@@ -620,14 +617,14 @@ light; `--tape` and `--pin`. On `/styleguide/` under "Fun elements".
 §5.3, 2026-11-02, then cut to two tones per part with less detail the same day)*: illustrations
 whose assemblies come apart on hover or focus so their parts can be inspected. "Exploded view"
 under "Fun elements" on `/styleguide/` shows a steam train (five assemblies, with an "Explode
-all" switch) in the pop look, with the sticker alternate beside it (§5.3), a one-assembly table
-lamp, and the illustration colours.
+all" switch) in the pop look (§5.3), a one-assembly table lamp, and the illustration
+colours.
 - Building blocks, in `src/components/styleguide/`:
   - `explode.css`: a stage of `--columns` × `--rows` units sized from its width, a dashed ground
     line, focusable assemblies, parts placed with `--x --y --w --h`, filled with `--part-fill`,
     with `--depth` and `--explode-x/-y`, and labels in the default tooltip bubble;
   - `ExplodedView.astro` and `ExplodedViewPart.astro`, which write that markup from data
-    (`exploded-view.ts`), with `sticker` for the alternate look (`.rk-explode--sticker`);
+    (`exploded-view.ts`);
   - `illustration-shapes.ts`: `rect`, `circle`, `ellipse`, `dome`, `polygon`, `line` and `union`,
     as SVG paths with their boxes;
   - `illustration-tokens.css`: the illustration colours, outline and hatching stripe (§5.3).
