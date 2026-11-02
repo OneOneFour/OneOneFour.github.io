@@ -1,6 +1,8 @@
 # robertcking.com — visual refresh & expansion plan
 
-Status: **DRAFT, 2026-11-01** — abstract plan, not yet approved. Items marked
+Status: **DRAFT, 2026-11-01, revised after plan review.** **What** to build lives here.
+**Where files go and when work happens** lives in [`IMPLEMENTATION.md`](./IMPLEMENTATION.md),
+which wins wherever the two disagree. Items marked
 **[OPEN]** need a decision from Rob before the work package that depends on
 them starts. Items marked *(proposed)* are recommendations that stand unless
 overridden.
@@ -16,7 +18,7 @@ files the package lists, then do the work.
 - `main` (live): Astro 7 scaffold, GitHub Actions → Pages deploy, splash page
   in the legacy black/white style. Custom domain via `public/CNAME`, no `base`
   path (see comment in `astro.config.mjs` — do not change).
-- `experimental` (local, unpushed, `db8b982`): "Phase 2" — `projects` content
+- `experimental` (`db8b982`, now also on `origin/redesign`): "Phase 2" — `projects` content
   collection (`src/content.config.ts`), project grid + `/project/[slug]` pages,
   4 of 10 legacy projects migrated, two-column homepage restored. Still in the
   legacy visual style. No Vue islands used (vanilla JS/CSS only).
@@ -100,8 +102,20 @@ boundaries. Takeaways in §5.1.
   (draft 2), its chips and its card accents. This turns the palette into a
   wayfinding system as well as decoration.
 - **URL change:** `/project/[slug]` (Phase 2) becomes `/projects/[slug]/`.
-  Add redirects for the old paths (Astro `redirects` config) since they may
-  be linked from the CV.
+  The old Nuxt site served 10 project slugs (aihack19, impvis, ising, masters,
+  perlin, predatorprey, procterrain, sciart, snooker, timetable), and the CV may
+  link to them. Use an **explicit redirect map** for all 10: to
+  `/projects/<slug>/` if the project is kept, otherwise to `/projects/`. A
+  dynamic `[slug]` redirect generates nothing for draft or dropped projects
+  (verified on Astro 7.0.7).
+- **Existing public files keep their URLs.** Files under `public/` that already
+  have a URL (e.g. `/masters/MSci_Report.pdf`, `/ising/IROP_Report.pdf`) are
+  never moved or deleted without Rob's OK.
+- **URL policy** *(decided 2026-11-01)*: `trailingSlash: 'always'`. One folder
+  per post (`posts/<slug>/index.mdx`, with its assets beside it); the folder name is
+  the permanent slug and is never renamed. No dates in URLs. The same rule applies
+  to publication files and photo albums. The RSS feed is at `/rss.xml`, summaries
+  only, and each item's GUID is its canonical URL.
 - Nav entries for sections that don't exist yet stay **hidden** until their
   phase ships, so the site never has dead links.
 
@@ -252,14 +266,20 @@ Shortlisted pairings *(proposed; to be judged on a real specimen page, WP-1)*:
   families means more weight and more pairing risk.
 
 Supporting decisions *(proposed)*:
-- **Math** is rendered with KaTeX at build time (`remark-math` +
-  `rehype-katex`). It uses KaTeX's own math fonts, so the body font only
-  needs Greek for *inline prose*, not for equations. No runtime JS.
+- **Math** is rendered with KaTeX at build time. Astro 7 defaults to the Sätteri
+  Markdown processor, which has no KaTeX renderer. So the site sets
+  `markdown.processor` to `unified()` from `@astrojs/markdown-remark` with
+  `remark-math` + `rehype-katex`, and MDX inherits it. Maths syntax in posts is
+  `$…$` inline and `$$…$$` for display. KaTeX uses its own math fonts, so the body
+  font only needs Greek for *inline prose*. No runtime JS.
 - **Monospace** (code, widget readouts): pick one with Greek, decided in WP-1.
-- Fonts are **self-hosted** via `@fontsource-variable/*` (or Astro's
-  font tooling, if it is stable in Astro 7) rather than the Google CSS link,
-  for privacy and no third-party request. Subset by `unicode-range` so the
-  Greek file only downloads when a page uses Greek.
+- Fonts are **self-hosted** from woff2 files vendored once into the design
+  package (OFL allows redistribution), with our own `@font-face` rules. Each
+  file is subset by `unicode-range` (latin, greek), so the Greek file only
+  downloads when a page uses Greek. Why vendored: Xmind isn't on Fontsource (npm 404,
+  checked 2026-11-01), plain files also work on Rob's vanilla-JS sites, and pinning
+  protects against changes to this very new font. The site may serve the same files
+  through Astro 7's stable `fonts` config (`local` provider) for preload hints.
 - A modular **type scale** (≈1.25 ratio) and `rem` units replace the legacy
   `pt` sizes.
 
@@ -343,8 +363,16 @@ that need no framework at all:
 - **Boundary rules for agents:** the package never imports from `src/`, holds no site copy or
   section names, and is themeable only through tokens. Site-specific choices (which hue is
   "Writing") live in the site, mapped onto `--section`.
-- **Naming:** `toon-ui` is a working name; Rob can rename it. A `tu-` prefix on classes and
-  elements avoids collisions on host sites.
+- **Naming [OPEN, decide before P1]:** `toon-ui` and the `tu-` prefix are working names. The
+  prefix appears in every post's MDX and every other site's HTML, so it's hard to change later.
+  Pick it independently of the package name.
+- **Distribution:** the package must work from a plain `<link rel="stylesheet">` plus
+  `<script type="module">`, with no build step: plain JS (JSDoc for types), one `toon-ui.css`
+  whose `@font-face` URLs point at vendored fonts by relative path, and raw `icons/*.svg`. npm can't
+  install a subfolder of another git repo, so other sites load a tagged version through jsDelivr
+  (`cdn.jsdelivr.net/gh/OneOneFour/<repo>@<tag>/packages/toon-ui/…`) or copy the folder.
+  **[OPEN]** Do Rob's other sites have a build step? If they do, a published npm package becomes an
+  option later.
 - **Why not "everything in Vue":** Vue components only work in Vue sites, or in Astro via an
   integration, and they don't fit plain HTML. CSS + custom elements cover every case, and thin
   wrappers keep authoring pleasant in each framework.
@@ -358,18 +386,25 @@ in Phase 2).
 | Collection | Loader | Key fields |
 |---|---|---|
 | `posts` | `glob('**/*.{md,mdx}', base: src/content/posts)` | `title`, `date`, `updated?`, `summary`, `tags[]`, `hero?` (image), `draft`, `publication?: reference('publications')`, `project?: reference('projects')` |
-| `projects` | existing (Phase 2) | add `featured`, `status` (active / archived), `post?: reference('posts')` |
-| `publications` | `glob('**/*.md', base: src/content/publications)`, one file per paper, hand-written (§6a) | `id` (DOI or slug), `title`, `authors[]`, `venue`, `year`, `type` (article / preprint / software / abstract / talk / thesis), `doi?`, `preprint?`, `pdf?`, `code?`, `featured`, `post?: reference('posts')` |
-| `photos` | `glob` of album folders, each an `index.md` with images beside it | album `title`, `date`, `location?`, `cover`, `images[]` via the `image()` schema helper (astro:assets optimisation) |
+| `projects` | existing (Phase 2) | add `featured`, `status` (active / archived), `draft` |
+| `publications` | `glob('**/*.md', base: src/content/publications)`, one file per paper, hand-written (§6a) | `id` (DOI or slug), `title`, `authors[]`, `venue`, `year`, `type` (article / preprint / software / abstract / talk / thesis), `doi?`, `preprint?`, `pdf?`, `code?`, `featured`, `draft` |
+| `photos` | `glob` of album folders, each an `index.md` with images beside it; `draft` | album `title`, `date`, `location?`, `cover`, `images[]` via the `image()` schema helper (astro:assets optimisation) |
 
-- **Cross-links** use `reference()` (present in this Astro 7.0.7 install).
-  Store the link on one side only and compute the reverse at build time, so
-  the two sides can't disagree.
+- **Cross-links** use `reference()` and are stored **on the post only**
+  (`publication`, `project`). Paper and project pages compute their backlinks
+  at build time, so the two sides can't disagree.
+- **Drafts, one rule for every collection:** `draft: true` entries render in
+  `astro dev` and are left out of `astro build`. Rob can see his drafts and
+  the legacy projects under review locally, and none of them reach the live site.
+- **Placeholder entries** *(decided 2026-11-01)*: agents may add obviously fake
+  entries (lorem ipsum, named `_fixture-*`, always `draft: true`) so layouts can be
+  built and reviewed before Rob's content exists. They never reach the live site,
+  and Rob's real entries replace them.
 - **Projects: no automatic inheritance (DECIDED 2026-11-01).** Legacy
   projects come back only after Rob reviews each one: keep, rewrite or drop.
   That includes the 4 already migrated on `experimental`. The schema gains
-  `draft: boolean` (default `true` for anything migrated), and draft entries
-  are excluded from the build.
+  `draft: boolean` (default `true` for anything migrated), and follows the
+  draft rule above.
 - **Content:** Rob writes **all** content (copy, posts, publication summaries, captions) and
   supplies all photography as it comes in. Agents never draft final copy or source stand-in photos.
 
@@ -391,13 +426,13 @@ doi: 10.1029/2023MS004163
 preprint: 10.22541/essoar.170365299.96491153/v1
 links: { pdf: …, code: …, slides: … }
 figure: ./bhm-figure.png          # optional, optimised via astro:assets
-post: bayesian-history-matching   # optional companion blog post
 featured: true
 ---
 Optional plain-language summary in Markdown, shown on the research page.
 ```
 
 - Uses the `glob` loader like `posts` and `projects`. The schema is the field list in §6, plus `figure` and a Markdown body.
+- A companion post links to its paper from the post side (`publication: <file name>`). The research page shows the backlink.
 - **Optional one-off starter, not a pipeline:** `npm run pubs:new -- <doi | file.bib>` writes a
   pre-filled draft file (fields from Crossref/OpenAlex for a DOI, or from a BibTeX entry, e.g. a
   Scholar export) for Rob to edit and finish. There's no cron, no sync and no network access during the build.
@@ -440,8 +475,10 @@ socials:
 Longer bio in plain Markdown…
 ```
 
-- A `site` collection (glob loader) with a Zod schema. A typo or a missing field fails the build
-  with a clear message, and never produces a broken page.
+- Two collections, because one collection has only one schema: `profile` (a single-entry
+  `file()`-style loader with required name, role, photo and socials) and `pages` (body-text
+  files like `home.md`). A typo or a missing profile field fails the build with a clear message,
+  and never produces a broken page.
 - `socials[].kind` picks the icon, and the order in the file is the order shown. Adding or
   removing a link is a one-line edit.
 - Layouts read these files. Nothing personal is hard-coded in components, which also keeps the
@@ -462,10 +499,14 @@ Longer bio in plain Markdown…
     "vanilla first" decision.
   - Genuinely stateful UIs: a Vue island (`client:visible`). Vue is already
     installed.
-- **Load only on view**: widgets hydrate with `client:visible`, so a post
-  with five widgets doesn't load five sims up front.
-- Every widget gets a **static fallback** (poster image or caption), so the
-  post reads correctly with JS off and in RSS.
+- **Load only on view**: `client:visible` only works on framework components, and
+  fails the build on a custom element (verified on Astro 7.0.7). So `<tu-widget>` is
+  defined up front (it's tiny), and uses `IntersectionObserver` to `import()` its
+  simulation module the first time it scrolls into view. A post with five widgets doesn't
+  load five sims up front. `client:visible` is kept for the rare Vue island.
+- Every widget gets a **static fallback** (its light-DOM children: a poster image or
+  caption), so the post reads correctly with JS off. RSS is summary-only, so widgets
+  never need to render in feed readers.
 - **Exemplar to build alongside the post template:** a Lorenz-system
   "butterfly effect" widget (two trajectories, a slider for the initial-
   condition offset, Start/Reset). It's the draft-2 concept, it exercises
