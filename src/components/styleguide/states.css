@@ -12,14 +12,16 @@
 }
 
 .rk-folder-tab.is-hover {
-  inset-block-start: calc(-1 * var(--lift-offset-y));
-  inset-inline-start: calc(-1 * var(--lift-offset-x));
+  --folder-tab-x: calc(-1 * var(--lift-offset-x));
+  --folder-tab-y: calc(-1 * var(--lift-offset-y));
+
   box-shadow: var(--shadow-hover);
 }
 
 .rk-folder-tab.is-active {
-  inset-block-start: var(--press-offset-y);
-  inset-inline-start: var(--press-offset-x);
+  --folder-tab-x: var(--press-offset-x);
+  --folder-tab-y: var(--press-offset-y);
+
   box-shadow: var(--shadow-pressed);
 }
 

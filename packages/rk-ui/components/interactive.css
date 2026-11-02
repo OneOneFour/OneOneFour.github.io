@@ -63,28 +63,31 @@
 
 /* Folder tabs pop with their position offsets instead of translate. A translate transition puts
    the tab on its own compositor layer, which snaps to whole pixels and can open a hairline at the
-   join with the sheet. */
+   join with the sheet. The clip at the sheet's edge (folder.css) moves with the offsets. */
 .rk-folder-tab {
-  inset-block-start: 0;
-  inset-inline-start: 0;
+  inset-block-start: var(--folder-tab-y);
+  inset-inline-start: var(--folder-tab-x);
   box-shadow: var(--shadow);
   transition:
     inset-block-start var(--duration-fast) ease,
     inset-inline-start var(--duration-fast) ease,
+    clip-path var(--duration-fast) ease,
     box-shadow var(--duration-fast) ease;
 }
 
 @media (hover: hover) {
   .rk-folder-tab:hover {
-    inset-block-start: calc(-1 * var(--lift-offset-y));
-    inset-inline-start: calc(-1 * var(--lift-offset-x));
+    --folder-tab-x: calc(-1 * var(--lift-offset-x));
+    --folder-tab-y: calc(-1 * var(--lift-offset-y));
+
     box-shadow: var(--shadow-hover);
   }
 }
 
 .rk-folder-tab:active {
-  inset-block-start: var(--press-offset-y);
-  inset-inline-start: var(--press-offset-x);
+  --folder-tab-x: var(--press-offset-x);
+  --folder-tab-y: var(--press-offset-y);
+
   box-shadow: var(--shadow-pressed);
 }
 
@@ -92,8 +95,9 @@
    (folder.css). It takes the selected state at once, so the press it was clicked with doesn't
    ease back across the join. */
 .rk-folder-tab:is([aria-selected='true'], [aria-current='page']) {
-  inset-block-start: 0;
-  inset-inline-start: 0;
+  --folder-tab-x: 0px;
+  --folder-tab-y: 0px;
+
   box-shadow: none;
   transition: none;
 }
@@ -122,7 +126,12 @@
   clip-path: inset(-100vmax -100vmax 0);
 }
 
-/* A focused sheet loses its shadow, so its selected tab does too. */
+/* A focused sheet comes in front of the tabs, so its whole focus band shows, and loses its
+   shadow, so its selected tab does too. */
+.rk-folder-sheet:focus-visible {
+  z-index: 3;
+}
+
 .rk-folder:has(> .rk-folder-sheet:focus-visible) > .rk-folder-tabs .rk-folder-tab::before {
   box-shadow: none;
 }

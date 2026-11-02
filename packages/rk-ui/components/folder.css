@@ -31,13 +31,14 @@
 
    Add .rk-folder--tinted for a sheet in --selected-tint.
 
-   Stacking, back to front: the other tabs (1), whatever their state; the sheet (2); the selected
-   tab (3). */
+   The whole strip sits in front of the sheet, so the join never depends on tabs inside a scroll
+   container stacking either side of something outside it (Safari draws such a strip as one
+   layer). The other tabs look tucked behind the sheet because they are clipped at its top edge. */
 
 .rk-folder {
   --folder-sheet: var(--raised);
   --folder-back: color-mix(in srgb, var(--surface), var(--line) 8%);
-  /* How far the tabs reach down behind the sheet, so a lift or press never shows a gap */
+  /* How far the tabs reach down past the sheet's top edge, so a lift or press never shows a gap */
   --folder-tuck: calc(var(--outline-width) + var(--space-1));
 
   display: block;
@@ -55,6 +56,8 @@
   display: flex;
   align-items: flex-end;
   gap: var(--space-3);
+  position: relative;
+  z-index: 2;
   margin: 0 0 calc(-1 * var(--folder-tuck));
   padding: var(--space-2) var(--space-2) 0;
   overflow: auto hidden;
@@ -96,9 +99,13 @@
   padding-block-end: calc(var(--space-2) + var(--folder-tuck));
 }
 
+/* --folder-tab-x and -y are the pop's offsets (interactive.css). The clip follows the tab as it
+   moves, so it always cuts the tab, its shadow and its focus band at the sheet's top edge. */
 .rk-folder-tab {
+  --folder-tab-x: 0px;
+  --folder-tab-y: 0px;
+
   position: relative;
-  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -115,6 +122,7 @@
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
+  clip-path: inset(-100vmax -100vmax calc(var(--folder-tuck) + var(--folder-tab-y)));
 }
 
 .rk-folder-tab .rk-icon {
@@ -125,12 +133,12 @@
    between the tab's sides, joining the two. The cover reaches a pixel past the outline each way,
    so a sub-pixel offset never leaves a hairline of it. */
 .rk-folder-tab:is([aria-selected='true'], [aria-current='page']) {
-  z-index: 3;
   margin-block-end: var(--folder-tuck);
   padding-block-end: var(--space-2);
   background: var(--folder-sheet);
   color: var(--fg);
   cursor: default;
+  clip-path: none;
 }
 
 .rk-folder-tab:is([aria-selected='true'], [aria-current='page'])::after {
@@ -156,7 +164,7 @@
 
 .rk-folder-sheet {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   padding: var(--space-4);
   border: var(--outline-width) solid var(--line-unfilled);
   border-radius: var(--radius);
