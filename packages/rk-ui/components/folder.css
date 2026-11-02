@@ -25,8 +25,7 @@
      <div class="rk-folder-sheet">…</div>
    </div>
 
-   Add .rk-folder--sloped for overlapping tabs with sloped sides, like a manila folder's, and
-   .rk-folder--tinted for a sheet in --selected-tint.
+   Add .rk-folder--tinted for a sheet in --selected-tint.
 
    Stacking, back to front: tabs (1), a hovered or focused tab (2), the sheet (3), the selected
    tab (4). */
@@ -129,20 +128,4 @@
   .rk-folder-sheet[role='tabpanel'][hidden] {
     display: block;
   }
-}
-
-/* corner-shape: bevel straightens the tabs' top corners into slopes; without it they stay
-   curved. The vertical radius of 100% runs each slope from the top to the bottom of the tab. */
-.rk-folder--sloped .rk-folder-tabs {
-  gap: 0;
-}
-
-.rk-folder--sloped .rk-folder-tab {
-  --tab-slope: var(--space-4);
-
-  margin-inline-end: calc(-1 * var(--tab-slope) / 2);
-  padding-inline: calc(var(--space-3) + var(--tab-slope));
-  border-start-start-radius: var(--tab-slope) 100%;
-  border-start-end-radius: var(--tab-slope) 100%;
-  corner-shape: bevel;
 }
