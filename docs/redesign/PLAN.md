@@ -656,6 +656,11 @@ the single source for order, file locations and acceptance.
   its author/licence (icons, fonts, logos), generated from or kept in step with
   `THIRD_PARTY_NOTICES.md`. Some assets need visible credit there (e.g. the Julia logo,
   CC BY-NC-SA).
+- A PowerPoint template in the toon style, generated from `tokens.css` so it stays in step: a
+  `.thmx` theme (theme colours with the chart order as accents 1–6, Roboto Slab/Xmind theme
+  fonts, a default shape with a 2pt ink outline and a hard zero-blur shadow), light and dark
+  masters, and an icon export with token colours baked in (PowerPoint can't read CSS
+  variables). Best done after the package consolidation (§5.6).
 
 ## Sources
 
