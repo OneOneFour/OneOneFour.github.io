@@ -212,7 +212,7 @@ After that, run **at most two tracks at a time**. Rob's review is the bottleneck
 |---|---|---|---|
 | **3W Writing** (WP-5, WP-6) | [B] `posts` collection, PostLayout (header band, breakout grid, sidenotes, end matter), MDX, KaTeX, Shiki themed from tokens, RSS. ‖ [B] **Interactive widget library** in `packages/toon-ui/widgets/`: vanilla custom elements (`<tu-widget>` frame, slider with readout, start/pause/reset controls), and the Lorenz widget built on them, with reduced motion and a static fallback. **This is the only place Playwright is used:** a few smoke tests per widget (renders, controls change state, works with reduced motion). | **C2**: first post | Post renders in both themes; widget works; smoke tests pass |
 | **3R Research** (WP-7a/b) | [G] `publications` schema + `npm run pubs:new -- <doi or file.bib>` starter. [B] `/research/` with chips and paper ↔ post links | **C3**: Rob writes the publication files | Page lists Rob's entries; links work both ways |
-| **3P Photography** (WP-8) | [G] `npm run photos:add -- <album> <files…>` using `sharp`. It resizes to a 2560px long edge, strips all EXIF (keeping camera and lens only), and writes into `src/content/photos/<album>/`. **Originals are never committed:** the repo is public and git history is permanent. `CLAUDE.md` gets a "no image over 2 MB" rule. [B] `photos` collection, `astro:assets` pipeline, album grid, lightbox on native `<dialog>` | **C4**: photos, as they come in | Images optimised; no GPS data in the repo; lightbox works by keyboard |
+| **3P Photography** (WP-8) · **[OPEN] photo storage: in repo vs external bucket, see §8** | [G] `npm run photos:add -- <album> <files…>` using `sharp`. It resizes to a 2560px long edge, strips all EXIF (keeping camera and lens only), and writes into `src/content/photos/<album>/`. **Originals are never committed:** the repo is public and git history is permanent. `CLAUDE.md` gets a "no image over 2 MB" rule. [B] `photos` collection, `astro:assets` pipeline, album grid, lightbox on native `<dialog>` | **C4**: photos, as they come in | Images optimised; no GPS data in the repo; lightbox works by keyboard |
 | **3J Projects review** (WP-9) | Rob-led conversation, one project at a time | Rob's decision per project | Only approved projects are non-draft |
 
 ### P4 Switchover and cleanup *(R8; WP-10, WP-11)*
@@ -265,3 +265,19 @@ The coordinator presents:
   Rob kept the redesign local-only. Open: Rob's other sites' build setup, and the design-package
   name and prefix (PLAN §5.6).
 - **Next:** P0 in a fresh conversation: "Run phase P0 of `docs/redesign/IMPLEMENTATION.md`".
+
+---
+
+## 8. Open: where photos are stored *(raised 2026-11-01, decide before the first photo)*
+
+Whatever the choice, **originals never leave Rob's own library**, and only resized,
+location-stripped web versions are published. This decision is hard to undo, because photos
+committed to git stay in history and the repo never shrinks without a history rewrite.
+
+| Option | How | Good | Bad |
+|---|---|---|---|
+| **A. Web versions in the repo** | `photos:add` writes 2560px stripped JPEGs into `src/content/photos/`; `astro:assets` makes the responsive sizes at build | Simplest; no extra service; optimisation built in | Public history forever; GitHub Pages recommends a source repo ≤ 1 GB and caps the published site at 1 GB. Rough estimate: fine to a few hundred photos, tight beyond |
+| **B. External bucket** *(recommended if the portfolio will keep growing)* | `photos:add` (run by Rob, with credentials kept locally) strips and resizes, generates the sizes (e.g. 640/1280/2560 WebP + JPEG) and uploads them to a bucket such as **Cloudflare R2** behind `photos.robertcking.com`. The repo holds only album Markdown: captions, alt text, image keys, dimensions | Repo and site stay small; a deleted photo is actually deleted; storage can be swapped later by editing one base URL | One more account and credentials. R2 needs the domain added to Cloudflare for a custom hostname (`r2.dev` URLs are rate-limited and meant for development only). `astro:assets` isn't used for these, so the script makes the sizes |
+
+R2 free tier (checked 2026-11-01): 10 GB-month storage, 1M Class A / 10M Class B operations
+per month, no egress fees.
