@@ -440,6 +440,41 @@ settles the type scale, the monospace face and the weights actually used.
     apricot panels), set `--focus: var(--focus-alt)` (yellow). Components with such a fill
     variant do this themselves.
 
+#### Illustration style *(proposed 2026-11-02)*
+
+How custom illustrations are drawn, from a flat cartoon locomotive Rob shared as a style reference
+(not copied). First used by the exploded-view train and lamp (§5.4).
+- **Palette**: four subdued hues in the styleguide's `illustration-tokens.css`:
+  `--illustration-red`, `-ochre`, `-steel` and `-navy`. They are the coral, yellow, sky-with-lilac
+  and navy fills, greyed towards `--illustration-grey` (halfway between `--ink` and `--glint`).
+  Each hue has two more steps:
+  - `-light` (55% hue, the rest glint), for highlights;
+  - `-shade` (80% hue, the rest ink), for shade. Ochre's shade leans into the red instead, as
+    ink turns yellow olive.
+
+  A drawing fills with only these twelve colours, never the vivid UI fills. The same recipe
+  serves both themes, as the fills it mixes keep their lightness in dark mode. It doesn't use
+  `--surface`, so every page palette gets the same drawing. It has no `light-dark()`, so it needs
+  no fallback.
+- **Outline**: `--illustration-outline` (1.5 × `--outline-width`, 3px) in `--line`, with round
+  joins and caps, the same on-screen width at any size. Every shape has one, outside its edge, so
+  overlapping shapes (a puff of steam) outline as one. Lines inside a shape (boiler bands, panel
+  lining) are the same width. Lines on the page itself, such as the ground, use `--line-unfilled`
+  so they show in dark mode.
+- **Shading**: flat and two-tone, in discrete steps. A shape is its hue, with at most a `-light`
+  band on the lit side and a `-shade` band on the other, cut off at its outline. No gradients,
+  blur or transparency. The shading is drawn for light from above (a little to the left, like the
+  default light) and doesn't turn with the light; the sun mode always lights from above.
+- **Detail**: a little more than the UI's, still simple geometry: boxes, rounded boxes, circles,
+  domes and polygons with round joins. Bands, lining, highlight strips in windows, a disc and hub
+  in a wheel. Nothing much under half a grid unit, so a drawing still reads at phone width.
+- **Shadows**: none at rest. The drawing is flat and calm, standing on a dashed ground line. A
+  hard toon shadow appears only when something lifts off the page (an exploded part), built from
+  the shadow tokens so it follows the light, the depth and the dark-mode shadow modes.
+- **Next to the UI**: the same family (ink outlines, flat fills, hard shadows that follow the
+  light), but quieter: muted hues, a heavier outline and no resting shadow. A drawing never looks
+  clickable, and the controls stay the brightest things on the page.
+
 ### 5.4 Component inventory
 
 | Layer | Components |
@@ -545,27 +580,45 @@ A linked note card's corner lifts with the pop. Options: `--tilt` (−2°, or `-
 resting shadow is turned back by the tilt with `cos()`/`sin()` so it still falls away from the
 light; `--tape` and `--pin`. On `/styleguide/` under "Fun elements".
 
-**Exploded view** *(Gate 1b, a fun element; styleguide only; the train is being redrawn in the
-illustration style, 2026-11-02)*: illustrations made only
-of flat toon shapes (rounded boxes, circles, pills), whose assemblies come apart on hover or focus
-so their parts can be inspected. "Exploded view" under "Fun elements" on `/styleguide/` shows a
-steam train (five assemblies, with an "Explode all" switch) and a one-assembly table lamp.
-- Building blocks, in `src/components/styleguide/`: `explode.css` (a stage of `--columns` ×
-  `--rows` units sized from its width; focusable assemblies; parts placed with `--x --y --w --h`,
-  filled with `--part-fill`, with `--depth` and `--explode-x/-y`; `--round`, `--pill` and `--glint`
-  shapes; labels in the default tooltip bubble), and `ExplodedView.astro`, which writes that markup
-  from data (`exploded-view.ts`). A new illustration is a new data file, like `steam-train.ts`.
-  No JavaScript.
-- Layered HTML, not SVG: parts take `box-shadow` with the shadow tokens' layers (and the colour
-  mode, via `--extrusion` from the fill), outlines stay `--outline-width` at any size, and the open
-  assembly comes in front with `z-index`, which SVG lacks. Parts are drawn back to front, so a
-  part's shadow falls on the parts behind it, never on itself.
-- Exploded, a part moves by its offset, rises by `--lift-offset` per layer of depth, and its shadow
-  grows by half `--shadow-offset` per layer. Apart on `--ease-spring` over `--duration-slide`, home
-  on `--ease-snap` over `--duration-spring`. Reduced motion: nothing moves, but the shadows still
-  grow, the labels show and the other assemblies fade back. Focus: the band on each part of the
-  focused assembly, shadows off.
-- `explode.css` holds no copy and uses only tokens, so it can move into rk-ui as it is if kept.
+**Exploded view** *(Gate 1b, a fun element; styleguide only; redrawn in the illustration style,
+§5.3, 2026-11-02)*: illustrations whose assemblies come apart on hover or focus so their parts can
+be inspected. "Exploded view" under "Fun elements" on `/styleguide/` shows a steam train (five
+assemblies, with an "Explode all" switch), a one-assembly table lamp, and the illustration
+colours.
+- Building blocks, in `src/components/styleguide/`:
+  - `explode.css`: a stage of `--columns` × `--rows` units sized from its width, a dashed ground
+    line, focusable assemblies, parts placed with `--x --y --w --h`, filled with `--part-fill`,
+    with `--depth` and `--explode-x/-y`, and labels in the default tooltip bubble;
+  - `ExplodedView.astro` and `ExplodedViewPart.astro`, which write that markup from data
+    (`exploded-view.ts`);
+  - `illustration-shapes.ts`: `rect`, `circle`, `ellipse`, `dome`, `polygon`, `line` and `union`,
+    as SVG paths with their boxes;
+  - `illustration-tokens.css`: the illustration colours and outline (§5.3).
+
+  A part is one outlined shape, with details cut off at its edge: `band` (a flat light or shade
+  step), `piece` (a smaller outlined shape, such as a hub) and `stroke` (a line). A new
+  illustration is a new data file, like `steam-train.ts`. No JavaScript.
+- An HTML stage with a small inline SVG for each part *(changed 2026-11-02 from boxes styled with
+  CSS)*:
+  - SVG gives polygons, domes, round joins, and bands clipped to a shape without losing its
+    outline, which CSS boxes couldn't.
+  - Each part's SVG is still an HTML box, so it keeps what the boxes had. Its `drop-shadow()`
+    filter is in screen pixels (on a shape inside one big SVG it would be in grid units, and
+    grow with the drawing), built from the shadow tokens' layers (and the colour mode, via
+    `--extrusion` from the fill). The open assembly comes in front with `z-index`, which SVG
+    lacks.
+  - Strokes don't scale, so outlines stay `--illustration-outline` at any size. Parts are drawn
+    back to front, so a part's shadow falls on the parts behind it, never on itself.
+- Flat at rest, as the illustration style asks. Exploded, a part moves by its offset and rises by
+  `--lift-offset` for each layer it lifts: one more than its depth. Its shadow is half
+  `--shadow-offset` for each of those layers. Apart on `--ease-spring` over `--duration-slide`,
+  home on `--ease-snap` over `--duration-spring`. A hit area where the parts sit at rest keeps the
+  assembly open while the pointer stays there.
+- Reduced motion: nothing moves, but the shadows still show, the labels show and the other
+  assemblies fade back. Focus: the band hugs each part of the focused assembly, shadows off.
+  Forced colours: CanvasText outlines on Canvas, the open assembly in Highlight.
+- `explode.css` holds no copy and uses only tokens, so it can move into rk-ui as it is if kept,
+  with `illustration-tokens.css`.
 
 
 ### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*

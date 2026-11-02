@@ -1,0 +1,38 @@
+---
+/**
+ * One part of an exploded illustration: a small SVG over the part's box, drawn in the
+ * illustration's grid units. Its details are cut off at the part's edge.
+ *
+ * @param part the part's shape, fill and details
+ * @param id a unique id for the part's clip path
+ * @param style the custom properties that place the part (ExplodedView)
+ */
+import type { ExplodedPart } from './exploded-view'
+
+interface Props {
+  part: ExplodedPart
+  id: string
+  style: string
+}
+
+const { part, id, style } = Astro.props
+const { shape, details = [] } = part
+const { x, y, w, h } = shape.box
+---
+
+<svg class="rk-explode-part" viewBox={`${x} ${y} ${w} ${h}`} style={style}>
+  <clipPath id={id}><path d={shape.d} /></clipPath>
+  <path class="rk-explode-band" d={shape.d} />
+  <path class="rk-explode-shape" d={shape.d} />
+  <g clip-path={`url(#${id})`}>
+    {
+      details.map((detail) => (
+        <path
+          class:list={['rk-explode-detail', { 'rk-explode-detail--outlined': detail.outlined }]}
+          d={detail.shape.d}
+          style={detail.fill && `--detail-fill: var(--illustration-${detail.fill})`}
+        />
+      ))
+    }
+  </g>
+</svg>

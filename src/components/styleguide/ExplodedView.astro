@@ -8,7 +8,9 @@
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
 import type { ExplodedAssembly, ExplodedIllustration, ExplodedPart } from './exploded-view'
+import ExplodedViewPart from './ExplodedViewPart.astro'
 import { sectionId } from './section-id'
+import './illustration-tokens.css'
 import './explode.css'
 
 interface Props {
@@ -17,8 +19,10 @@ interface Props {
 }
 
 const { illustration, theme } = Astro.props
-const { title, description, columns, rows, assemblies } = illustration
-const descId = `${theme}-${sectionId(title)}-desc`
+const { title, description, columns, rows, ground, assemblies } = illustration
+const idPrefix = `${theme}-${sectionId(title)}`
+const viewBox = `0 0 ${columns} ${rows}`
+const groundPath = ground.dashes.map(([start, end]) => `M${start} ${ground.y}H${end}`).join('')
 const listFormat = new Intl.ListFormat('en-GB', { type: 'conjunction' })
 
 /** "Cab: cab, roof and window" */
@@ -27,10 +31,10 @@ function assemblyLabel({ name, parts }: ExplodedAssembly) {
 }
 
 /** The custom properties that place a part and its label. */
-function partStyle({ x, y, w, h, fill, depth, explode }: ExplodedPart) {
+function partStyle({ shape: { box }, fill, depth, explode }: ExplodedPart) {
   return [
-    `--x: ${x}; --y: ${y}; --w: ${w}; --h: ${h}`,
-    `--part-fill: var(${fill}); --depth: ${depth}`,
+    `--x: ${box.x}; --y: ${box.y}; --w: ${box.w}; --h: ${box.h}`,
+    `--part-fill: var(--illustration-${fill}); --depth: ${depth}`,
     `--explode-x: ${explode[0]}; --explode-y: ${explode[1]}`,
   ].join('; ')
 }
@@ -42,20 +46,19 @@ function partStyle({ x, y, w, h, fill, depth, explode }: ExplodedPart) {
     style={`--columns: ${columns}; --rows: ${rows}`}
     role="group"
     aria-label={title}
-    aria-describedby={descId}
+    aria-describedby={`${idPrefix}-desc`}
   >
+    <svg class="rk-explode-ground" viewBox={viewBox} aria-hidden="true"><path d={groundPath} /></svg>
     {
-      assemblies.map((assembly) => (
+      assemblies.map((assembly, a) => (
         <div class="rk-explode-assembly" tabindex="0" role="img" aria-label={assemblyLabel(assembly)}>
-          {assembly.parts.map((part) => (
-            <span
-              class:list={[
-                'rk-explode-part',
-                part.shape && `rk-explode-part--${part.shape}`,
-                { 'rk-explode-part--glint': part.glint },
-              ]}
-              style={partStyle(part)}
-            />
+          <svg class="rk-explode-rest" viewBox={viewBox}>
+            {assembly.parts.map((part) => (
+              <path d={part.shape.d} />
+            ))}
+          </svg>
+          {assembly.parts.map((part, p) => (
+            <ExplodedViewPart part={part} id={`${idPrefix}-${a}-${p}`} style={partStyle(part)} />
           ))}
           {assembly.parts.map((part) => (
             <span class="rk-explode-label rk-tooltip" style={partStyle(part)}>
@@ -66,7 +69,7 @@ function partStyle({ x, y, w, h, fill, depth, explode }: ExplodedPart) {
       ))
     }
   </div>
-  <p class="rk-visually-hidden" id={descId}>{description}</p>
+  <p class="rk-visually-hidden" id={`${idPrefix}-desc`}>{description}</p>
   {
     assemblies.length > 1 && (
       <label class="rk-check">

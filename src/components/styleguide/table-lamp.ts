@@ -1,4 +1,5 @@
-import type { ExplodedIllustration } from './exploded-view'
+import { band, type ExplodedIllustration } from './exploded-view'
+import { circle, polygon, rect } from './illustration-shapes'
 
 /** A table lamp: one assembly that comes apart upwards and downwards. */
 export const tableLamp: ExplodedIllustration = {
@@ -6,14 +7,43 @@ export const tableLamp: ExplodedIllustration = {
   description: 'A table lamp with a shade, a bulb, a stem and a base. It comes apart when it is hovered or focused.',
   columns: 16,
   rows: 38,
+  ground: { y: 32.4, dashes: [[1, 2.5], [3.5, 12.5], [13.5, 15]] },
   assemblies: [
     {
       name: 'Lamp',
       parts: [
-        { name: 'Stem', x: 7, y: 20, w: 2, h: 10, fill: '--lilac', depth: 0, explode: [0, 1] },
-        { name: 'Base', shape: 'pill', x: 3, y: 29, w: 10, h: 3, fill: '--navy', depth: 1, explode: [0, 4] },
-        { name: 'Bulb', shape: 'round', x: 5.5, y: 17.5, w: 5, h: 5, fill: '--yellow', depth: 1, explode: [0, -4], glint: true },
-        { name: 'Shade', x: 2.5, y: 12, w: 11, h: 7, fill: '--teal', depth: 2, explode: [0, -9], glint: true },
+        {
+          name: 'Stem',
+          shape: rect(7.2, 21, 1.6, 8.5),
+          fill: 'steel',
+          details: [band(rect(7.2, 21, 0.6, 8.5), 'steel-light')],
+          depth: 0,
+          explode: [0, 1],
+        },
+        {
+          name: 'Base',
+          shape: rect(3.5, 29, 9, 2.8, 1.4),
+          fill: 'navy',
+          details: [band(rect(3.5, 29, 9, 0.9), 'navy-light')],
+          depth: 1,
+          explode: [0, 4],
+        },
+        {
+          name: 'Bulb',
+          shape: circle(8, 20.5, 2.5),
+          fill: 'ochre-light',
+          details: [band(rect(5.5, 21.6, 5, 1.4), 'ochre')],
+          depth: 1,
+          explode: [0, -4],
+        },
+        {
+          name: 'Shade',
+          shape: polygon([5, 12], [11, 12], [13.5, 19], [2.5, 19]),
+          fill: 'red',
+          details: [band(rect(2, 12, 12, 1.2), 'red-light'), band(rect(2, 17.5, 12, 1.5), 'red-shade')],
+          depth: 2,
+          explode: [0, -9],
+        },
       ],
     },
   ],
