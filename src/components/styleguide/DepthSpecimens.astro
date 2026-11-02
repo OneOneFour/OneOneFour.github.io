@@ -1,0 +1,119 @@
+---
+/**
+ * Normal and deep shadows side by side (data-depth="normal" and "deep"), on the same set of raised
+ * and pressed things, then one deep button beside a normal one.
+ *
+ * @param theme the panel's theme, used to keep ids and names unique across the two panels
+ */
+import Button from '../ui/Button.astro'
+import Card from '../ui/Card.astro'
+import Ballot from './Ballot.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import TilePicker from './TilePicker.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const VARIANTS = [
+  { depth: 'normal', title: 'Normal (the default, data-depth="normal")' },
+  { depth: 'deep', title: 'Deep (data-depth="deep")' },
+]
+const KEYS = ['One', 'Two', 'Three']
+const TILES = ['1', '2', '3'].map((number) => ({ value: number, label: number }))
+const BALLOT = ['teal', 'green'].map((colour) => ({
+  value: colour,
+  title: colour[0].toUpperCase() + colour.slice(1),
+  colour,
+  checked: colour === 'green',
+}))
+---
+
+{
+  VARIANTS.map((variant) => {
+    const prefix = `${theme}-depth-${variant.depth}`
+    return (
+      <div data-depth={variant.depth}>
+        <SpecimenRow title={variant.title}>
+          <Specimen label="linked card" wide>
+            <Card title="Card title" href="#depth" meta="Meta line">
+              <p>Body text.</p>
+            </Card>
+          </Specimen>
+          <Specimen label="filled button: resting, hover, pressed">
+            <Button>Button</Button>
+            <Button class="is-hover">Button</Button>
+            <Button class="is-active">Button</Button>
+          </Specimen>
+          <Specimen label="unfilled button: resting, pressed (inset)">
+            <Button unfilled>Button</Button>
+            <Button unfilled class="is-active">Button</Button>
+          </Specimen>
+          <Specimen label="tiles (2 pressed in), a checked ballot">
+            <TilePicker legend="Specimen" name={`${prefix}-tiles`} tiles={TILES} checked={['2']} />
+            <Ballot legend="Specimen" name={`${prefix}-ballot`} options={BALLOT} />
+          </Specimen>
+          <Specimen label="segmented control (Two pressed), deck keys on a plate">
+            <fieldset class="rk-segmented">
+              <legend class="rk-visually-hidden">Specimen</legend>
+              <label>
+                <input type="radio" name={`${prefix}-segmented`} checked />
+                One
+              </label>
+              <label class="is-active">
+                <input type="radio" name={`${prefix}-segmented`} />
+                Two
+              </label>
+            </fieldset>
+            <fieldset class="rk-segmented rk-segmented--deck rk-segmented--plate">
+              <legend class="rk-visually-hidden">Specimen</legend>
+              {KEYS.map((key, i) => (
+                <label>
+                  <input type="radio" name={`${prefix}-deck`} value={key} checked={i === 0} />
+                  {key}
+                </label>
+              ))}
+            </fieldset>
+          </Specimen>
+          <Specimen label="range slider: resting, pressed" wide>
+            <input class="rk-range" type="range" aria-label="Specimen" />
+            <input class="rk-range is-active" type="range" aria-label="Specimen" />
+          </Specimen>
+          <Specimen label="folder tabs: selected, hover" wide>
+            <div class="rk-folder">
+              <div class="rk-folder-tabs rk-scroll" role="tablist" aria-label="Specimen">
+                <button class="rk-folder-tab" type="button" role="tab" aria-selected="true">One</button>
+                <button class="rk-folder-tab is-hover" type="button" role="tab" aria-selected="false" tabindex="-1">
+                  Two
+                </button>
+                <button class="rk-folder-tab" type="button" role="tab" aria-selected="false" tabindex="-1">
+                  Three
+                </button>
+              </div>
+              <div class="rk-folder-sheet" role="tabpanel"><p>Panel.</p></div>
+            </div>
+          </Specimen>
+        </SpecimenRow>
+      </div>
+    )
+  })
+}
+
+<SpecimenRow title="One element (data-depth on the element itself)">
+  <Specimen label="button: normal, deep">
+    <Button>Button</Button>
+    <Button data-depth="deep">Button</Button>
+  </Specimen>
+</SpecimenRow>
+
+<style>
+  .rk-folder-sheet p {
+    margin: 0;
+  }
+</style>
+
+<script>
+  import 'rk-ui/folder-scrollbar.js'
+</script>
