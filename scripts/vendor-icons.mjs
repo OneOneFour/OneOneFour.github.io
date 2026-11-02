@@ -8,7 +8,9 @@ const TABLER = 'https://raw.githubusercontent.com/tabler/tabler-icons/v3.50.0'
 
 const PHOSPHOR_ICONS = [
   'house', 'pen-nib', 'flask', 'rocket', 'camera', 'identification-card',
-  'cloud', 'cloud-rain', 'cloud-lightning', 'wind', 'thermometer', 'globe-hemisphere-west',
+  'cloud', 'cloud-rain', 'cloud-lightning', 'wind',
+  'thermometer', 'thermometer-cold', 'thermometer-hot',
+  'globe-hemisphere-west', 'globe-hemisphere-east',
   'wave-sine', 'chart-line', 'code', 'map-pin',
   'play', 'pause', 'arrow-counter-clockwise', 'download-simple', 'arrow-square-out',
   'list', 'x', 'caret-right', 'caret-down', 'magnifying-glass', 'funnel', 'copy',
@@ -37,7 +39,10 @@ const DEFAULT_FILLS = {
   'cloud-lightning': 'yellow',
   wind: 'teal',
   thermometer: 'coral',
+  'thermometer-cold': 'sky',
+  'thermometer-hot': 'coral',
   'globe-hemisphere-west': 'green',
+  'globe-hemisphere-east': 'green',
   'wave-sine': 'teal',
   'chart-line': 'apricot',
   'map-pin': 'tangerine',
