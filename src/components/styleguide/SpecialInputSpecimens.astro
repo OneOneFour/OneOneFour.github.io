@@ -14,6 +14,7 @@ interface Props {
 }
 
 const { theme } = Astro.props
+const DATE_TYPES = ['date', 'time', 'month', 'week', 'datetime-local'] as const
 const DROP_STATES = [
   { label: "rest: click or drop a file (the name isn't shown without a script)" },
   { label: 'hover', class: 'is-hover' },
@@ -69,4 +70,23 @@ const DROP_STATES = [
       </Specimen>
     ))
   }
+</SpecimenRow>
+
+<SpecimenRow title="Date and time">
+  {
+    DATE_TYPES.map((type) => (
+      <Specimen label={type === 'date' ? "date (the popup and Firefox's icon are the browser's own)" : type} wide>
+        <input class="rk-input" type={type} aria-label="Specimen" />
+      </Specimen>
+    ))
+  }
+  <Specimen label="focused (the focused part of a real focus fills yellow)" wide>
+    <input class="rk-input is-focus" type="date" aria-label="Specimen" value="2026-11-01" />
+  </Specimen>
+  <Specimen label="disabled" wide>
+    <input class="rk-input" type="date" aria-label="Specimen" value="2026-11-01" disabled />
+  </Specimen>
+  <Specimen label="error" wide>
+    <input class="rk-input" type="time" aria-label="Specimen" value="09:30" aria-invalid="true" />
+  </Specimen>
 </SpecimenRow>

@@ -1,0 +1,39 @@
+/* Date and time inputs (date, time, month, week, datetime-local) on the text input frame. The
+   focused part of the value fills with --selected. The picker icon follows color-scheme; the
+   popup picker and Firefox's icon are the browser's own and can't be styled.
+
+   <input class="rk-input" type="date"> */
+
+.rk-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+.rk-input {
+  --date-part-fill: var(--selected);
+  --date-part-text: var(--on-selected);
+}
+
+/* Forced colours would drop the fill, so the focused part uses system colours there. */
+@media (forced-colors: active) {
+  .rk-input {
+    --date-part-fill: Highlight;
+    --date-part-text: HighlightText;
+  }
+}
+
+/* One rule for every part: browsers treat unknown ::-webkit- names as valid, so the list holds. */
+.rk-input::-webkit-datetime-edit-year-field:focus,
+.rk-input::-webkit-datetime-edit-month-field:focus,
+.rk-input::-webkit-datetime-edit-week-field:focus,
+.rk-input::-webkit-datetime-edit-day-field:focus,
+.rk-input::-webkit-datetime-edit-hour-field:focus,
+.rk-input::-webkit-datetime-edit-minute-field:focus,
+.rk-input::-webkit-datetime-edit-second-field:focus,
+.rk-input::-webkit-datetime-edit-millisecond-field:focus,
+.rk-input::-webkit-datetime-edit-ampm-field:focus,
+.rk-input::-webkit-datetime-edit-meridiem-field:focus {
+  border-radius: calc(var(--radius) / 2);
+  background-color: var(--date-part-fill);
+  color: var(--date-part-text);
+  forced-color-adjust: none;
+}
