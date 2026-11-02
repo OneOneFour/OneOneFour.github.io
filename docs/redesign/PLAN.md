@@ -458,6 +458,16 @@ above the tabs, so it never comes between them and the sheet.
 *DECIDED 2026-11-02: the scrollbar stays flat for now.* Toon shadow options for it (a raised
 thumb, a sunken track, a slider groove) were tried and removed; they are in git history.
 
+**Top bar** *(Gate 1b, pending Rob's pick)*: `topbar.css`, a sticky `.rk-topbar` for controls
+such as the theme and palette switches, ending with a back-to-top link (`.rk-back-to-top`, a plain
+`<a href="#top">`). A, `--toast`: a raised outlined panel hanging a small gap below the top edge,
+at the end of the line, with the light-following `--shadow`. B, `--flush`: full width, an ink rule
+along its bottom and a shadow that always falls straight down. Where scroll-driven animations are
+supported, the bar takes its look over the first 3rem of scrolling (the toast drops in with
+`--ease-spring`, the flush shadow grows) and the link pops in; elsewhere both show at all times.
+The styleguide header uses A; `?topbar=flush` shows B live. Anchor jumps clear a one-row bar
+(`scroll-padding-block-start: 6rem`).
+
 **More loading options** *(Gate 1b)*: on `/styleguide/` under "More spinners and loaders",
 beside spinners A and B and the progress bar. *Rob's picks, 2026-11-02:* water spinner D and the filling
 buttons; dots B, G and H for general content loading; several loader bars stay as candidates,
