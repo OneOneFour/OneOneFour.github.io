@@ -448,42 +448,34 @@ How custom illustrations are drawn, from a flat cartoon locomotive Rob shared as
 *Decided 2026-11-02 (Rob):* two tones per part, a third only where shading is needed, or
 hatching instead (striped like the progress bar); outlines slightly heavier than the UI's 2px,
 at 2.5px; the shading drawn for light from above is
-acceptable, and now also flips with the light; fills dim a little on dark pages; flat at rest,
-with shadows only when exploded.
+acceptable, and now also flips with the light.
 
-*Pending Rob's pick (2026-11-02): the look.* Rob found the subdued drawing too quiet beside the
-poppy UI, so the styleguide shows the same train in three looks (`ExplodedView`'s `look`). The
-rules below describe A; B and C change only the colours, the resting shadow and the keyline.
-- **A, subdued** (the default): the greyed palette below, flat at rest.
-- **B, pop**: the UI's own fills (`--coral`, `--yellow`, `--sky`, `--navy`) with the same steps,
-  and each assembly casts the UI's resting shadow, handing over to its parts' shadows while apart,
-  so the drawing sits on the page like a card. Inspired by neo-brutalist graphics: flat saturated
-  fills, black outlines and unblurred offset shadows
-  ([NN/G](https://www.nngroup.com/articles/neobrutalism/)).
-- **C, sticker**: B with a `--glint` keyline round each part, like a die-cut sticker, and at
-  rest an edge round each assembly in `--line-unfilled`. From the sticker cut line, an outward
-  offset of the merged silhouette with round joins
-  ([CustomStickers.com](https://customstickers.com/community/blog/creating-cut-lines-for-sticker-files-in-illustrator)).
-
-Not built: a two-ink retro print look (two inks on a paper tone, with tints from hatching), as in
+*DECIDED 2026-11-02 (Rob): the pop look, using the UI's own fills.* Rob ranked three looks of the
+same train: B pop first, C sticker second, A subdued last ("too muted, not really aligned with the
+brand"). So drawings use the UI's own fills (`--coral`, `--yellow`, `--sky`, `--navy`) with one
+step each, and each assembly casts the UI's resting shadow, handing over to its parts' shadows
+while apart, so the drawing sits on the page like a card. This draws on neo-brutalist graphics:
+flat saturated fills, black outlines and unblurred offset shadows
+([NN/G](https://www.nngroup.com/articles/neobrutalism/)). This replaces the earlier "flat at rest"
+and dark-page dimming, which belonged to the subdued look; like the buttons, the fills are not
+dimmed in dark mode. The sticker look stays as an alternate (`ExplodedView`'s `sticker`,
+`.rk-explode--sticker`): a `--glint` keyline round each part, like a die-cut sticker, and at rest
+an edge round each assembly in `--line-unfilled`, from the sticker cut line
+([CustomStickers.com](https://customstickers.com/community/blog/creating-cut-lines-for-sticker-files-in-illustrator)).
+The subdued look is removed (it is in git history). Not built: a two-ink retro print look, as in
 [this Tuts+ tutorial](https://design.tutsplus.com/tutorials/create-a-limited-color-vintage-poster-design-in-adobe-illustrator--cms-23583).
-Once Rob picks, the losing looks and their CSS go, and the lamp follows the winner.
 
-The rules, for all three looks unless they say otherwise:
-- **Palette**: seven colours in the styleguide's `illustration-tokens.css`. Four subdued hues,
-  `--illustration-red`, `-ochre`, `-steel` and `-navy`, are (in A) the coral, yellow,
-  sky-with-lilac and navy fills, greyed towards `--illustration-grey` (halfway between `--ink`
-  and `--glint`); in B and C they are the fills themselves. Each hue has at most one more step:
+The rules:
+- **Palette**: seven colours in the styleguide's `illustration-tokens.css`. Four hues,
+  `--illustration-red`, `-ochre`, `-steel` and `-navy`, are the UI's `--coral`, `--yellow`,
+  `--sky` and `--navy`. Each hue has at most one more step:
   - `--illustration-ochre-light` and `--illustration-steel-light` (55% hue, the rest glint), for
     highlights on the lighter hues;
   - `--illustration-red-shade` (80% red, the rest ink), for shade on red;
   - navy has none: it is the darkest fill and is never shaded.
 
-  A drawing fills with only these colours. In A, the same recipe serves both
-  themes, as the fills it mixes keep their lightness in dark mode, except that on dark pages the
-  grey is darker (80% ink), which dims every fill a little. That grey is a `light-dark()`, so
-  browsers without it get the light grey, as in `tokens.css`. It doesn't use `--surface`, so
-  every page palette gets the same drawing.
+  A drawing fills with only these colours. They follow the theme as the UI fills do, and don't use
+  `--surface`, so every page palette gets the same drawing.
 - **Outline**: `--illustration-outline` (1.25 × `--outline-width`, 2.5px: slightly heavier than
   the UI's 2px) in `--line`, with round joins and caps, the same on-screen width at any size.
   Every shape has one, outside its edge, so overlapping shapes (a puff of steam) outline as one.
@@ -628,15 +620,14 @@ light; `--tape` and `--pin`. On `/styleguide/` under "Fun elements".
 §5.3, 2026-11-02, then cut to two tones per part with less detail the same day)*: illustrations
 whose assemblies come apart on hover or focus so their parts can be inspected. "Exploded view"
 under "Fun elements" on `/styleguide/` shows a steam train (five assemblies, with an "Explode
-all" switch) in the three looks A/B/C pending Rob's pick (§5.3), a one-assembly table lamp in the
-default look, and the subdued illustration colours.
+all" switch) in the pop look, with the sticker alternate beside it (§5.3), a one-assembly table
+lamp, and the illustration colours.
 - Building blocks, in `src/components/styleguide/`:
   - `explode.css`: a stage of `--columns` × `--rows` units sized from its width, a dashed ground
     line, focusable assemblies, parts placed with `--x --y --w --h`, filled with `--part-fill`,
     with `--depth` and `--explode-x/-y`, and labels in the default tooltip bubble;
   - `ExplodedView.astro` and `ExplodedViewPart.astro`, which write that markup from data
-    (`exploded-view.ts`), with a `look` (subdued, pop or sticker) as `.rk-explode--pop` and
-    `.rk-explode--sticker`;
+    (`exploded-view.ts`), with `sticker` for the alternate look (`.rk-explode--sticker`);
   - `illustration-shapes.ts`: `rect`, `circle`, `ellipse`, `dome`, `polygon`, `line` and `union`,
     as SVG paths with their boxes;
   - `illustration-tokens.css`: the illustration colours, outline and hatching stripe (§5.3).
@@ -657,7 +648,7 @@ default look, and the subdued illustration colours.
     lacks.
   - Strokes don't scale, so outlines stay `--illustration-outline` at any size. Parts are drawn
     back to front, so a part's shadow falls on the parts behind it, never on itself.
-- Flat at rest, as the illustration style asks. Exploded, a part moves by its offset and rises by
+- At rest each assembly casts the UI's resting shadow (§5.3). Exploded, a part moves by its offset and rises by
   `--lift-offset` for each layer it lifts: one more than its depth. Its shadow is half
   `--shadow-offset` for each of those layers. Apart on `--ease-spring` over `--duration-slide`,
   home on `--ease-snap` over `--duration-spring`. A hit area where the parts sit at rest keeps the

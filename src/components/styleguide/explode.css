@@ -1,8 +1,9 @@
 /* Exploded view: an illustration whose assemblies come apart while they are hovered or focused, so
    their parts can be inspected. Each part is a small SVG placed on a grid of --columns × --rows
    units (--x, --y, --w, --h), and says how far it moves (--explode-x, --explode-y, in units) and
-   how many layers from the back it is (--depth). At rest the drawing is flat; exploded, each part
-   rises towards the light and casts a shadow that is longer for each layer. Parts are drawn in
+   how many layers from the back it is (--depth). At rest each assembly casts the UI's resting
+   shadow; exploded, each part rises towards the light and casts a shadow that is longer for each
+   layer. Parts are drawn in
    order, back to front, so a part's shadow falls on the parts behind it.
 
    <div class="rk-explode">
@@ -221,9 +222,9 @@
   filter: none;
 }
 
-/* Pop and sticker looks: each assembly sits on the page with the UI's resting shadow, which
-   hands over to its parts' own shadows while it is apart. */
-.rk-explode--pop .rk-explode-assembly {
+/* At rest each assembly sits on the page with the UI's resting shadow, which hands over to its
+   parts' own shadows while it is apart. */
+.rk-explode .rk-explode-assembly {
   --rest-shadow: calc((1 - var(--explode)) * var(--shadow-offset));
   --rest-edge: calc((1 - var(--explode)) * var(--outline-width));
 
@@ -237,7 +238,7 @@
     );
 }
 
-/* Sticker look: a keyline of glint round each part, like a die-cut sticker, and at rest an edge
+/* The sticker alternate: a keyline of glint round each part, like a die-cut sticker, and at rest an edge
    round each assembly's keylines, in the page's line colour. The parts' focus band replaces the
    keyline while focused. */
 .rk-explode--sticker {

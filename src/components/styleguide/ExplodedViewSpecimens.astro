@@ -1,7 +1,7 @@
 ---
 /**
- * Exploded views: a steam train of five assemblies in three looks, and a lamp that is one, both
- * drawn by ExplodedView from their data, with the subdued illustration colours.
+ * Exploded views: a steam train of five assemblies, plain and as stickers, and a lamp that is one,
+ * both drawn by ExplodedView from their data, with the illustration colours.
  *
  * @param theme the panel's theme, passed on to keep ids unique
  */
@@ -22,16 +22,13 @@ const { theme } = Astro.props
 
 <SpecimenRow title="Steam train: hover or focus an assembly to take it apart">
   <Specimen
-    label="A: subdued (the default): flat at rest; apart on --ease-spring, home on --ease-snap; the switch pulls every assembly apart"
+    label="the UI's fills, and each assembly casts the resting shadow; apart on --ease-spring, home on --ease-snap; the switch pulls every assembly apart"
     wide
   >
     <div class="train"><ExplodedView illustration={steamTrain} theme={theme} /></div>
   </Specimen>
-  <Specimen label="B: pop: the UI's fills, and each assembly casts the resting shadow" wide>
-    <div class="train"><ExplodedView illustration={steamTrain} theme={theme} look="pop" /></div>
-  </Specimen>
-  <Specimen label="C: sticker: pop, with a glint keyline round each part and an edge round each assembly" wide>
-    <div class="train"><ExplodedView illustration={steamTrain} theme={theme} look="sticker" /></div>
+  <Specimen label="alternate, sticker: a glint keyline round each part and an edge round each assembly" wide>
+    <div class="train"><ExplodedView illustration={steamTrain} theme={theme} sticker /></div>
   </Specimen>
 </SpecimenRow>
 
@@ -41,7 +38,7 @@ const { theme } = Astro.props
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title="Subdued illustration colours: four hues, three of them with one light or shade step">
+<SpecimenRow title="Illustration colours: the UI's four fills, three of them with one light or shade step">
   {
     ILLUSTRATION_COLOURS.map((colours) => (
       <Specimen label={colours.map((colour) => `--illustration-${colour}`).join(', ')}>
