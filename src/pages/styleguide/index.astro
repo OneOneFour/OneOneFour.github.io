@@ -7,6 +7,7 @@ import ColourTokens from '../../components/styleguide/ColourTokens.astro'
 import TypeScale from '../../components/styleguide/TypeScale.astro'
 import FontSpecimens from '../../components/styleguide/FontSpecimens.astro'
 import MonoSpecimen from '../../components/styleguide/MonoSpecimen.astro'
+import CodeSpecimens from '../../components/styleguide/CodeSpecimens.astro'
 import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
 import ShadowSpecimens from '../../components/styleguide/ShadowSpecimens.astro'
 import BaseSpecimens from '../../components/styleguide/BaseSpecimens.astro'
@@ -47,6 +48,15 @@ import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen
     <SpecimenSection title="Monospace" stacked>
       <MonoSpecimen slot="light" />
       <MonoSpecimen slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Code" stacked>
+      <p>
+        The copy buttons are live; without JavaScript they stay hidden. Tab into a block to scroll
+        long lines with the arrow keys.
+      </p>
+      <CodeSpecimens slot="light" />
+      <CodeSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Shape and motion">

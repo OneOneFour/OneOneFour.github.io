@@ -1,0 +1,69 @@
+---
+/**
+ * The Gate 1b code choices: the three code box variants with live copy buttons, then the three
+ * slate candidates on a plain box, each with inline code in a sentence.
+ */
+import CodeBlock from '../CodeBlock.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import { LORENZ_JS, LORENZ_PYTHON } from './code-samples'
+
+const BOXES = [
+  { title: 'Code box A (inset)', class: 'rk-code--inset' },
+  { title: 'Code box B (outlined panel)', class: 'rk-code--outlined' },
+  { title: 'Code box C (editor tab)', class: 'rk-code--tab' },
+]
+const SLATES = [
+  { title: 'Slate A (cool, the default)', class: 'slate-a' },
+  { title: 'Slate B (greige)', class: 'slate-b' },
+  { title: 'Slate C (deeper)', class: 'slate-c' },
+]
+---
+
+{
+  BOXES.map((box) => (
+    <SpecimenRow title={box.title}>
+      <Specimen label="Python, with caption" wide>
+        <CodeBlock code={LORENZ_PYTHON} lang="python" label="Python" class={box.class} />
+      </Specimen>
+      <Specimen label="JavaScript, long lines scroll" wide>
+        <CodeBlock code={LORENZ_JS} lang="javascript" label="JavaScript" class={box.class} />
+      </Specimen>
+      <Specimen label="no caption" wide>
+        <CodeBlock code="x = lorenz(1.0, 1.0, 1.0)" lang="python" class={box.class} />
+      </Specimen>
+    </SpecimenRow>
+  ))
+}
+
+{
+  SLATES.map((slate) => (
+    <SpecimenRow title={slate.title}>
+      <Specimen label="plain box" wide>
+        <div class={slate.class}>
+          <CodeBlock code={LORENZ_PYTHON} lang="python" label="Python" />
+        </div>
+      </Specimen>
+      <Specimen label="inline code" wide>
+        <p class={slate.class}>
+          Call <code>lorenz(x, y, z)</code> for the derivatives, then <code>step(state, dt)</code> once per
+          frame with <code>Δt = 0.01</code>.
+        </p>
+      </Specimen>
+    </SpecimenRow>
+  ))
+}
+
+<style>
+  .slate-a {
+    --slate: var(--slate-a);
+  }
+
+  .slate-b {
+    --slate: var(--slate-b);
+  }
+
+  .slate-c {
+    --slate: var(--slate-c);
+  }
+</style>

@@ -83,11 +83,28 @@ pre {
   font-family: var(--font-mono);
 }
 
+code {
+  padding: 0.1em 0.35em;
+  border-radius: calc(var(--radius) / 2);
+  background: var(--slate);
+  color: var(--fg);
+  font-size: 0.9em;
+}
+
 pre {
   overflow-x: auto;
   padding: var(--space-4);
   border-radius: var(--radius);
-  background: var(--lilac-tint);
+  background: var(--slate);
+  color: var(--fg);
+}
+
+/* Code inside a block is already on the panel, so it drops the inline pill. */
+pre code {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  font-size: inherit;
 }
 
 mark {
