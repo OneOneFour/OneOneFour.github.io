@@ -504,6 +504,27 @@ chart components, and the diagrams (`diagram.css`, `diagram.js`, `NeuralNetwork.
   and whose nodes light their links on hover or focus, and a flow chart whose steps light in turn,
   with a water fill on the slow step.
 
+**Exploded view** *(Gate 1b, a fun element; styleguide only, pending Rob)*: illustrations made only
+of flat toon shapes (rounded boxes, circles, pills), whose assemblies come apart on hover or focus
+so their parts can be inspected. "Exploded view" under "Fun elements" on `/styleguide/` shows a
+steam train (five assemblies, with an "Explode all" switch) and a one-assembly table lamp.
+- Building blocks, in `src/components/styleguide/`: `explode.css` (a stage of `--columns` ×
+  `--rows` units sized from its width; focusable assemblies; parts placed with `--x --y --w --h`,
+  filled with `--part-fill`, with `--depth` and `--explode-x/-y`; `--round`, `--pill` and `--glint`
+  shapes; labels in the default tooltip bubble), and `ExplodedView.astro`, which writes that markup
+  from data (`exploded-view.ts`). A new illustration is a new data file, like `steam-train.ts`.
+  No JavaScript.
+- Layered HTML, not SVG: parts take `box-shadow` with the shadow tokens' layers (and the colour
+  mode, via `--extrusion` from the fill), outlines stay `--outline-width` at any size, and the open
+  assembly comes in front with `z-index`, which SVG lacks. Parts are drawn back to front, so a
+  part's shadow falls on the parts behind it, never on itself.
+- Exploded, a part moves by its offset, rises by `--lift-offset` per layer of depth, and its shadow
+  grows by half `--shadow-offset` per layer. Apart on `--ease-spring` over `--duration-slide`, home
+  on `--ease-snap` over `--duration-spring`. Reduced motion: nothing moves, but the shadows still
+  grow, the labels show and the other assemblies fade back. Focus: the band on each part of the
+  focused assembly, shadows off.
+- `explode.css` holds no copy and uses only tokens, so it can move into rk-ui as it is if kept.
+
 
 ### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*
 
