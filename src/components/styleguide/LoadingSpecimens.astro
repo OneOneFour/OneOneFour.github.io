@@ -4,6 +4,9 @@
  * loaders. Spinner letters carry on from the spinners above.
  */
 import Button from '../ui/Button.astro'
+import AtomIcon from 'rk-ui/icons/atom.svg'
+import LightningIcon from 'rk-ui/icons/lightning.svg'
+import StarIcon from 'rk-ui/icons/star.svg'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 
@@ -19,6 +22,13 @@ const LOADERS = [
   { label: 'B: bouncing block', name: 'bounce' },
   { label: 'C: hopping ball', name: 'hop' },
   { label: 'D: candy stripes', name: 'candy' },
+]
+const BALLS = [
+  { label: 'C in coral', fill: 'coral' },
+  { label: 'C in grape', fill: 'grape' },
+  { label: 'C with an icon, in yellow', fill: 'yellow', Icon: StarIcon },
+  { label: 'C with an icon, in green', fill: 'green', Icon: AtomIcon },
+  { label: 'C with an icon, in navy', fill: 'navy', onFill: 'on-navy', Icon: LightningIcon },
 ]
 ---
 
@@ -122,6 +132,27 @@ const LOADERS = [
     LOADERS.map((loader) => (
       <Specimen label={loader.label} wide>
         <div class:list={['rk-loader', `rk-loader--${loader.name}`]} role="status">
+          <span class="rk-visually-hidden">Loading…</span>
+        </div>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Hopping ball: --loader-fill, --loader-on-fill and .rk-loader-ball">
+  {
+    BALLS.map(({ label, fill, onFill, Icon }) => (
+      <Specimen label={label} wide>
+        <div
+          class="rk-loader rk-loader--hop"
+          role="status"
+          style={`--loader-fill: var(--${fill})${onFill ? `; --loader-on-fill: var(--${onFill})` : ''}`}
+        >
+          {Icon && (
+            <span class="rk-loader-ball">
+              <Icon class="rk-icon" aria-hidden="true" />
+            </span>
+          )}
           <span class="rk-visually-hidden">Loading…</span>
         </div>
       </Specimen>
