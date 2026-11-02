@@ -91,7 +91,7 @@
   border: var(--outline-width) solid var(--line);
   border-radius: 50%;
   box-shadow: var(--dial-shadow);
-  translate: var(--dial-shift) var(--dial-shift);
+  translate: calc(var(--shadow-dx) * var(--dial-shift)) calc(var(--shadow-dy) * var(--dial-shift));
   transition:
     translate var(--duration-fast) ease,
     box-shadow var(--duration-fast) ease;
@@ -115,7 +115,7 @@
   background: var(--raised);
 }
 
-/* The notch turns, not the knob, so the knob's shadow stays at the bottom right. */
+/* The notch turns, not the knob, so the knob's shadow doesn't turn with it. */
 .rk-dial-notch {
   position: absolute;
   inset: 0;

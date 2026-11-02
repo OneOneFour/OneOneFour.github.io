@@ -1,0 +1,26 @@
+---
+/** Turns the light for the whole page (rk-ui's `<rk-light-direction>`), to check every shadow. */
+---
+
+<rk-light-direction class="light-direction">
+  <div class="rk-field">
+    <label for="light-angle">Light from (degrees clockwise from the top)</label>
+    <input class="rk-range" type="range" id="light-angle" min="0" max="359" value="315" />
+  </div>
+  <label class="rk-check">
+    <input class="rk-switch" type="checkbox" role="switch" />
+    Follow the time of day
+  </label>
+</rk-light-direction>
+
+<script>
+  import 'rk-ui/light-direction.js'
+</script>
+
+<style>
+  .light-direction {
+    display: grid;
+    gap: var(--space-3);
+    max-inline-size: 30rem;
+  }
+</style>

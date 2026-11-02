@@ -3,12 +3,12 @@
 
 :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input).is-hover {
   box-shadow: var(--shadow-hover);
-  translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+  translate: calc(-1 * var(--lift-offset-x)) calc(-1 * var(--lift-offset-y));
 }
 
 :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input).is-active {
   box-shadow: var(--shadow-pressed);
-  translate: var(--press-offset) var(--press-offset);
+  translate: var(--press-offset-x) var(--press-offset-y);
 }
 
 .rk-button--unfilled.is-hover {
@@ -20,10 +20,10 @@
 .rk-button--unfilled.is-active {
   box-shadow: var(--shadow-inset);
   translate: none;
-  padding-block: calc(var(--button-padding-block) + var(--press-offset))
-    calc(var(--button-padding-block) - var(--press-offset));
-  padding-inline: calc(var(--button-padding-inline) + var(--press-offset))
-    calc(var(--button-padding-inline) - var(--press-offset));
+  padding-block: calc(var(--button-padding-block) + var(--press-offset-y))
+    calc(var(--button-padding-block) - var(--press-offset-y));
+  padding-inline: calc(var(--button-padding-inline) + var(--press-offset-x))
+    calc(var(--button-padding-inline) - var(--press-offset-x));
 }
 
 .rk-card--link.is-hover .rk-card-link {
@@ -40,12 +40,12 @@
 
 .rk-segmented--deck label.is-hover {
   box-shadow: var(--shadow-hover);
-  translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+  translate: calc(-1 * var(--lift-offset-x)) calc(-1 * var(--lift-offset-y));
 }
 
 .rk-segmented--deck label.is-active {
   box-shadow: var(--shadow-pressed);
-  translate: var(--press-offset) var(--press-offset);
+  translate: var(--press-offset-x) var(--press-offset-y);
 }
 
 .rk-range.is-hover {
@@ -95,14 +95,14 @@ a:where(:not(.rk-button)).is-focus {
 
 .rk-input[type='file'].is-hover::file-selector-button {
   box-shadow: var(--shadow-hover);
-  inset-block-start: calc(-1 * var(--lift-offset));
-  inset-inline-start: calc(-1 * var(--lift-offset));
+  inset-block-start: calc(-1 * var(--lift-offset-y));
+  inset-inline-start: calc(-1 * var(--lift-offset-x));
 }
 
 .rk-input[type='file'].is-active::file-selector-button {
   box-shadow: var(--shadow-pressed);
-  inset-block-start: var(--press-offset);
-  inset-inline-start: var(--press-offset);
+  inset-block-start: var(--press-offset-y);
+  inset-inline-start: var(--press-offset-x);
 }
 
 .rk-file-drop.is-hover {
@@ -116,7 +116,7 @@ a:where(:not(.rk-button)).is-focus {
 
 .rk-search-bar.is-active {
   box-shadow: var(--shadow-pressed);
-  translate: var(--press-offset) var(--press-offset);
+  translate: var(--press-offset-x) var(--press-offset-y);
 }
 
 .rk-search-bar > .is-focus {

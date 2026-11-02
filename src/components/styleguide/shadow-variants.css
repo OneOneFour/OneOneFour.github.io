@@ -9,22 +9,24 @@
 .rk-shadow-b {
   --shadow-edge: light-dark(transparent, var(--line-unfilled));
   --shadow:
-    var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color),
-    var(--shadow-offset) var(--shadow-offset) 0 var(--outline-width) var(--shadow-edge);
+    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color),
+    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--outline-width) var(--shadow-edge);
   --shadow-hover:
-    6px 6px 0 var(--shadow-color),
-    6px 6px 0 var(--outline-width) var(--shadow-edge);
+    calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--shadow-color),
+    calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0
+      var(--outline-width) var(--shadow-edge);
   --shadow-pressed:
-    2px 2px 0 var(--shadow-color),
-    2px 2px 0 var(--outline-width) var(--shadow-edge);
+    calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color),
+    calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0
+      var(--outline-width) var(--shadow-edge);
 }
 
 /* Shadow C: extruded side. The shadow is the slate --shadow-lit, lighter than the page. */
 .rk-shadow-c {
   --shadow-color: var(--shadow-lit);
-  --shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
-  --shadow-hover: 6px 6px 0 var(--shadow-color);
-  --shadow-pressed: 2px 2px 0 var(--shadow-color);
+  --shadow: var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color);
+  --shadow-hover: calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--shadow-color);
+  --shadow-pressed: calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color);
 }
 
 /* Shadow D: own-colour extrusion. An element with a fill sets --extrusion to that fill, darkened;
@@ -32,9 +34,9 @@
    resolves its own --extrusion. */
 .rk-shadow-d * {
   --shadow-color: light-dark(var(--line), var(--extrusion, var(--shadow-lit)));
-  --shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
-  --shadow-hover: 6px 6px 0 var(--shadow-color);
-  --shadow-pressed: 2px 2px 0 var(--shadow-color);
+  --shadow: var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color);
+  --shadow-hover: calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--shadow-color);
+  --shadow-pressed: calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color);
 }
 
 .rk-shadow-d .rk-button {

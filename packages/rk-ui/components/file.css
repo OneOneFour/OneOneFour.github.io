@@ -42,15 +42,15 @@
 @media (hover: hover) {
   .rk-input[type='file']:enabled:hover::file-selector-button {
     box-shadow: var(--shadow-hover);
-    inset-block-start: calc(-1 * var(--lift-offset));
-    inset-inline-start: calc(-1 * var(--lift-offset));
+    inset-block-start: calc(-1 * var(--lift-offset-y));
+    inset-inline-start: calc(-1 * var(--lift-offset-x));
   }
 }
 
 .rk-input[type='file']:enabled:active::file-selector-button {
   box-shadow: var(--shadow-pressed);
-  inset-block-start: var(--press-offset);
-  inset-inline-start: var(--press-offset);
+  inset-block-start: var(--press-offset-y);
+  inset-inline-start: var(--press-offset-x);
 }
 
 .rk-input[type='file']:disabled::file-selector-button {

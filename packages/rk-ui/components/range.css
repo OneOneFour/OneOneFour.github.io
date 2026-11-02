@@ -44,7 +44,8 @@
   border-radius: 50%;
   background: var(--selected);
   box-shadow: var(--thumb-shadow);
-  translate: var(--thumb-shift) var(--thumb-shift);
+  translate: calc(var(--shadow-dx) * var(--thumb-shift))
+    calc(var(--shadow-dy) * var(--thumb-shift));
   transition:
     translate var(--duration-fast) ease,
     box-shadow var(--duration-fast) ease;
@@ -58,7 +59,8 @@
   border-radius: 50%;
   background: var(--selected);
   box-shadow: var(--thumb-shadow);
-  translate: var(--thumb-shift) var(--thumb-shift);
+  translate: calc(var(--shadow-dx) * var(--thumb-shift))
+    calc(var(--shadow-dy) * var(--thumb-shift));
   transition:
     translate var(--duration-fast) ease,
     box-shadow var(--duration-fast) ease;

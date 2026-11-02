@@ -14,14 +14,14 @@
   :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input):hover,
   .rk-segmented--deck label:hover {
     box-shadow: var(--shadow-hover);
-    translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+    translate: calc(-1 * var(--lift-offset-x)) calc(-1 * var(--lift-offset-y));
   }
 }
 
 :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input):active,
 .rk-segmented--deck label:active {
   box-shadow: var(--shadow-pressed);
-  translate: var(--press-offset) var(--press-offset);
+  translate: var(--press-offset-x) var(--press-offset-y);
 }
 
 /* Unfilled buttons sit flush. Pressed, the frame stays put and gets an inset shadow, and the
@@ -35,23 +35,23 @@
 .rk-button--unfilled:active {
   box-shadow: var(--shadow-inset);
   translate: none;
-  padding-block: calc(var(--button-padding-block) + var(--press-offset))
-    calc(var(--button-padding-block) - var(--press-offset));
-  padding-inline: calc(var(--button-padding-inline) + var(--press-offset))
-    calc(var(--button-padding-inline) - var(--press-offset));
+  padding-block: calc(var(--button-padding-block) + var(--press-offset-y))
+    calc(var(--button-padding-block) - var(--press-offset-y));
+  padding-inline: calc(var(--button-padding-inline) + var(--press-offset-x))
+    calc(var(--button-padding-inline) - var(--press-offset-x));
 }
 
 /* A checked deck key is pushed in by the whole shadow offset, flush with the page, and doesn't
    pop. */
 .rk-segmented--deck label:has(:checked) {
   box-shadow: none;
-  translate: var(--shadow-offset) var(--shadow-offset);
+  translate: var(--shadow-offset-x) var(--shadow-offset-y);
 }
 
 /* A checked tile is pushed in the same way, with an inset shadow instead. */
 .rk-tile:has(:checked) {
   box-shadow: var(--shadow-inset);
-  translate: var(--shadow-offset) var(--shadow-offset);
+  translate: var(--shadow-offset-x) var(--shadow-offset-y);
 }
 
 /* Focus band. Chips, cards, tiles, colour input frames and segmented groups (deck keys included)
