@@ -1,3 +1,5 @@
+import { afterSlide } from './segmented.js'
+
 /** @typedef {'light' | 'dark' | 'system'} ThemeChoice */
 
 const STORAGE_KEY = 'rk-theme'
@@ -66,7 +68,7 @@ export class RkThemeToggle extends HTMLElement {
     if (!(event.target instanceof HTMLInputElement)) return
     const choice = toChoice(event.target.value)
     saveChoice(choice)
-    applyChoice(choice)
+    afterSlide(event.target, () => applyChoice(choice))
     document.dispatchEvent(new CustomEvent(CHANGE_EVENT, { detail: choice }))
   }
 

@@ -27,6 +27,8 @@ const palettes = [...paletteTokens.keys()]
 </style>
 
 <script>
+  import { afterSlide } from 'rk-ui/segmented.js'
+
   const STORAGE_KEY = 'rk-palette'
   const root = document.documentElement
   const current = root.dataset.palette ?? 'cream'
@@ -34,7 +36,7 @@ const palettes = [...paletteTokens.keys()]
   for (const radio of document.querySelectorAll<HTMLInputElement>('.palette-switcher input')) {
     radio.checked = radio.value === current
     radio.addEventListener('change', () => {
-      root.dataset.palette = radio.value
+      afterSlide(radio, () => (root.dataset.palette = radio.value))
       try {
         localStorage.setItem(STORAGE_KEY, radio.value)
       } catch {

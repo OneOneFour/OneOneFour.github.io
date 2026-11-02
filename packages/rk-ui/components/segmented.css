@@ -1,6 +1,7 @@
 /* Segmented control: a pill group of native radios, one per label, with an optional icon before
    each label's text. The checked option, and its icon's fill, take --selected; where anchor
-   positioning is supported, that fill is a pill that slides to the newly checked option.
+   positioning is supported, that fill is a pill that slides to the newly checked option. When
+   checking an option restyles the whole page, delay that with afterSlide() (segmented.js).
 
    <fieldset class="rk-segmented">
      <legend class="rk-visually-hidden">Theme</legend>
