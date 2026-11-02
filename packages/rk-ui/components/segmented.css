@@ -133,23 +133,18 @@
   }
 }
 
-/* Add .rk-segmented--plate to a deck to mount its keys on a flat outlined plate. */
+/* Add .rk-segmented--plate to a deck to mount its keys on a flat outlined plate. The plate is
+   centred on where a pushed-in key sits, one shadow offset down and right of a raised key. */
 
 .rk-segmented--plate {
   --plate-padding: var(--space-2);
 
-  padding: var(--plate-padding);
-  border: var(--outline-width) solid var(--line-unfilled);
-  border-radius: var(--radius);
-}
-
-/* Plate option for Gate 1b: centred on where a pushed-in key sits, one shadow offset down and
-   right of a raised key. */
-.rk-segmented--plate-pressed {
   padding: calc(var(--plate-padding) - var(--shadow-offset))
     calc(var(--plate-padding) + var(--shadow-offset))
     calc(var(--plate-padding) + var(--shadow-offset))
     calc(var(--plate-padding) - var(--shadow-offset));
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: var(--radius);
 }
 
 /* Forced colours drop the checked fill, so the checked option uses system colours. Without

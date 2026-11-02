@@ -1,7 +1,7 @@
 ---
 /**
  * The segmented control and its deck keys variant, live with icons and text-only, and their option
- * states. Deck key plates (A and B) are options for Gate 1b.
+ * states, and deck keys with and without a plate.
  *
  * @param theme the panel's theme, used to keep radio names unique across the two panels
  */
@@ -35,8 +35,7 @@ const STATES = [
 ]
 const DECK_GROUPS = [
   { label: 'no plate', class: '' },
-  { label: 'plate A: centred on raised keys', class: 'rk-segmented--plate' },
-  { label: 'plate B: centred on the pressed key', class: 'rk-segmented--plate rk-segmented--plate-pressed' },
+  { label: 'on a plate', class: 'rk-segmented--plate' },
 ]
 ---
 
