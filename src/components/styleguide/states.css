@@ -18,6 +18,7 @@
 }
 
 .rk-button--unfilled.is-active {
+  background: var(--raised);
   box-shadow: var(--shadow-inset);
   translate: none;
   padding-block: calc(var(--button-padding-block) + var(--press-offset-y))

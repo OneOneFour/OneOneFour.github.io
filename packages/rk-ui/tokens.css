@@ -165,8 +165,7 @@
     calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color),
     calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--outline-width)
       var(--shadow-edge);
-  --shadow-inset: inset calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0
-    var(--line-unfilled);
+  --shadow-inset: inset calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--line);
   /* Pressing moves an element onto --shadow-pressed; the move plus that shadow is --shadow. */
   --press-offset: 2px;
   --press-offset-x: calc(var(--shadow-dx) * var(--press-offset));

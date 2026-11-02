@@ -161,7 +161,7 @@
     calc(2px * var(--drop-dx)) calc(2px * var(--drop-dy)) 0 var(--shadow-color),
     calc(2px * var(--drop-dx)) calc(2px * var(--drop-dy)) 0 var(--outline-width)
       var(--shadow-edge);
-  --shadow-inset: inset calc(2px * var(--drop-dx)) calc(2px * var(--drop-dy)) 0 var(--line-unfilled);
+  --shadow-inset: inset calc(2px * var(--drop-dx)) calc(2px * var(--drop-dy)) 0 var(--line);
   --picker-radius: var(--drop-corners);
 
   border-radius: var(--drop-corners);

@@ -365,6 +365,9 @@ settles the type scale, the monospace face and the weights actually used.
 - **Unfilled (outline-only) buttons are discouraged** *(Rob, 2026-11-01)*. Use a filled button
   wherever possible. Where an unfilled one is unavoidable, it sits flush (no resting shadow), and
   on press it gets an **inset** shadow and doesn't move, so it reads as pushed into the page.
+  *Decided at Gate 1b (Rob):* every inset shadow is near-black `--line` in both themes, not the
+  cream outline colour; a pressed unfilled button takes `--raised` behind it so the inset shows in
+  dark mode.
 - **Focus** *(decided at Gate 1a)*: the **highlighter**, a 6px **tangerine** band
   (`--focus`) hugging the ink outline (no offset), with the hard shadow turned off while
   focused. Never removed.

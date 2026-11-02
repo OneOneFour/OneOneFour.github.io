@@ -28,8 +28,9 @@
   translate: var(--press-offset-x) var(--press-offset-y);
 }
 
-/* Unfilled buttons sit flush. Pressed, the frame stays put and gets an inset shadow, and the
-   label sinks: the padding shifts by --press-offset, which moves the label without resizing. */
+/* Unfilled buttons sit flush. Pressed, the frame stays put and gets an inset shadow on the raised
+   background (so the dark inset shows in dark mode), and the label sinks: the padding shifts by
+   --press-offset, which moves the label without resizing. */
 .rk-button--unfilled,
 .rk-button--unfilled:hover {
   box-shadow: none;
@@ -37,6 +38,7 @@
 }
 
 .rk-button--unfilled:active {
+  background: var(--raised);
   box-shadow: var(--shadow-inset);
   translate: none;
   padding-block: calc(var(--button-padding-block) + var(--press-offset-y))
