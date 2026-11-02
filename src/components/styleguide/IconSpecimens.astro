@@ -1,10 +1,10 @@
 ---
 /** Every package icon at the default and small .rk-icon sizes, and one icon with other fills. */
-import type { AstroComponentFactory } from 'astro/runtime/server/index.js'
+import type { SvgComponent } from 'astro/types'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 
-const iconModules = import.meta.glob<{ default: AstroComponentFactory }>(
+const iconModules = import.meta.glob<{ default: SvgComponent }>(
   ['/packages/rk-ui/icons/*.svg', '!**/sprite.svg'],
   { eager: true }
 )
