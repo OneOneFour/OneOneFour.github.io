@@ -1,7 +1,7 @@
 ---
 /**
  * The ballot with letter, empty, icon and colour tiles, as checkboxes and with the tiles on the
- * right; its states; and the stamp options for the checked tile, live.
+ * right; its states; and the layout modifiers, alone and combined.
  *
  * @param theme the panel's theme, used to keep input names unique across the two panels
  */
@@ -80,11 +80,23 @@ const STATES = [
   { title: 'Checked and disabled', checked: true, disabled: true },
 ].map((option, index) => ({ ...option, value: String(index), mark: 'ABCDEFGH'[index] }))
 
-const STAMPS = [
-  { label: 'no stamp: pushed in, like any tile' },
-  { label: 'stamp A: thump', modifier: 'rk-ballot--stamp-thump' },
-  { label: 'stamp B: ink mark', modifier: 'rk-ballot--stamp-ink' },
-  { label: 'stamp C: kerchunk', modifier: 'rk-ballot--stamp-kerchunk' },
+const ONE_CHECKED = LETTERED.map((option) => ({ ...option, checked: option.value === 'second' }))
+const LAYOUTS = [
+  { label: '.rk-ballot--overlap', modifier: 'rk-ballot--overlap', options: ONE_CHECKED },
+  { label: '.rk-ballot--inside', modifier: 'rk-ballot--inside', options: ONE_CHECKED },
+  { label: '.rk-ballot--tight', modifier: 'rk-ballot--tight', options: ONE_CHECKED },
+  { label: 'tight + overlap', modifier: 'rk-ballot--tight rk-ballot--overlap', options: ONE_CHECKED },
+  { label: 'tight + inside', modifier: 'rk-ballot--tight rk-ballot--inside', options: ONE_CHECKED },
+  { label: 'overlap + mark-end', modifier: 'rk-ballot--overlap rk-ballot--mark-end', options: ONE_CHECKED },
+  {
+    label: 'tight + inside, longer text',
+    modifier: 'rk-ballot--tight rk-ballot--inside',
+    options: LETTERED.slice(0, 3).map((option) => ({
+      ...option,
+      text: SPECIMEN_TEXT,
+      checked: option.value === 'first',
+    })),
+  },
 ]
 ---
 
@@ -110,12 +122,24 @@ const STAMPS = [
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title="Ballot: stamp options for the checked tile (click to try)">
+<SpecimenRow title="Ballot: layouts (click to try)">
   {
-    STAMPS.map((stamp, index) => (
-      <Specimen label={stamp.label} wide>
-        <Ballot legend="Vote" name={`${theme}-stamp-${index}`} options={LETTERED} modifier={stamp.modifier} />
+    LAYOUTS.map((layout, index) => (
+      <Specimen label={layout.label} wide>
+        <Ballot legend="Vote" name={`${theme}-ballot-layout-${index}`} options={layout.options} modifier={layout.modifier} />
       </Specimen>
     ))
   }
+</SpecimenRow>
+
+<SpecimenRow title="Ballot: states, tight + overlap (checkboxes)">
+  <Specimen label="each row in the state it names" wide>
+    <Ballot
+      legend="States"
+      name={`${theme}-ballot-tight-states`}
+      options={STATES}
+      multiple
+      modifier="rk-ballot--tight rk-ballot--overlap"
+    />
+  </Specimen>
 </SpecimenRow>

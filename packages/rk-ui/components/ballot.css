@@ -1,7 +1,7 @@
 /* Ballot: a column of options, each a tile (tiles.css) beside a bordered text box. Each row is one
    label, so clicking anywhere on it votes. Use radios for one choice, checkboxes for several.
    Hovering or pressing the row pops its tile; the checked row's tile is pushed in and its text box
-   takes --selected-tint.
+   takes --selected-tint. The checked tile lands with a kerchunk.
 
    <fieldset class="rk-ballot">
      <legend class="rk-visually-hidden">Vote</legend>
@@ -16,12 +16,15 @@
    (<svg aria-hidden="true">) or a colour (.rk-tile--colour, color.css). Its content is part of
    the option's name; wrap it in <span aria-hidden="true"> if it shouldn't be.
 
-   Add .rk-ballot--mark-end to the group to put the tiles on the right. */
+   Layout modifiers for the group, which combine freely:
+     .rk-ballot--mark-end  the tiles on the right;
+     .rk-ballot--overlap   each tile straddles its text box's edge;
+     .rk-ballot--inside    each tile sits inside its text box;
+     .rk-ballot--tight     no gap between rows, so the boxes read as one ruled list. */
 
 .rk-ballot {
   --tile-size: 2.5rem;
   --tile-font-size: var(--step-1);
-  --stamp-duration: calc(1.5 * var(--duration-spring));
 
   display: grid;
   gap: var(--space-3);
@@ -68,62 +71,109 @@
   }
 }
 
-/* Stamp options for Gate 1b: how the tile lands when its row is checked. With none, it is pushed
-   in like any checked tile. Each is a modifier on the group. CSS can't tell a page load from a
-   click, so a row checked on load plays its stamp once. */
-
-/* Stamp A: add .rk-ballot--stamp-thump for a tile that slams down like a rubber stamp. The spring
-   easing carries it just under full size before it settles. */
-.rk-ballot--stamp-thump .rk-tile:has(:checked) {
-  animation: rk-ballot-thump var(--stamp-duration) var(--ease-spring);
+/* Overlap: a negative margin pulls the text box half under the tile, and the box pads its text
+   clear of it. The tile is positioned (tiles.css), so it paints above the box. */
+.rk-ballot--overlap .rk-ballot-option {
+  gap: 0;
 }
 
-@keyframes rk-ballot-thump {
-  from {
-    scale: 1.25;
-    rotate: -6deg;
-    box-shadow: var(--shadow-hover);
-  }
+.rk-ballot--overlap .rk-tile {
+  margin-inline-end: calc(var(--tile-size) / -2);
 }
 
-/* Stamp B: add .rk-ballot--stamp-ink for a tick that thumps onto the tile in place of its content.
-   The tick is the bottom and right borders of a box, turned 45°, as on checkboxes; the raised
-   bottom inset centres it by eye. Forced colours keep the plain checked tile. */
-@media (forced-colors: none) {
-  .rk-ballot--stamp-ink .rk-tile:has(:checked) {
-    color: transparent;
-  }
-
-  .rk-ballot--stamp-ink .rk-tile:has(:checked) > svg {
-    visibility: hidden;
-  }
-
-  .rk-ballot--stamp-ink .rk-tile:has(:checked)::after {
-    content: '';
-    position: absolute;
-    inset: 0 0 15%;
-    inline-size: 28%;
-    block-size: 52%;
-    margin: auto;
-    border: solid var(--swatch-on, var(--on-selected));
-    border-width: 0 4px 4px 0;
-    rotate: 45deg;
-    animation: rk-ballot-ink var(--stamp-duration) var(--ease-spring);
-  }
+.rk-ballot--overlap .rk-ballot-text {
+  padding-inline-start: calc(var(--tile-size) / 2 + var(--space-3));
 }
 
-@keyframes rk-ballot-ink {
-  from {
-    opacity: 0;
-    scale: 2;
-    rotate: 30deg;
-  }
+.rk-ballot--overlap.rk-ballot--mark-end .rk-tile {
+  margin-inline: calc(var(--tile-size) / -2) 0;
 }
 
-/* Stamp C: add .rk-ballot--stamp-kerchunk for the deck keys' kerchunk (segmented.css): the tile
-   drives past its pushed-in depth, then settles. The keyframes move it, so its translate isn't
-   transitioned as well. */
-.rk-ballot--stamp-kerchunk .rk-tile:has(:checked) {
+.rk-ballot--overlap.rk-ballot--mark-end .rk-ballot-text {
+  padding-inline: var(--space-3) calc(var(--tile-size) / 2 + var(--space-3));
+}
+
+/* Inside: the same pull, the whole tile's width plus --tile-inset, so the tile sits in the box's
+   padding. The tile is top-aligned and the box is at least a tile tall, so one-line text is
+   centred against the tile and longer text starts level with it. */
+.rk-ballot--inside {
+  --tile-inset: calc(var(--outline-width) + var(--space-3));
+}
+
+.rk-ballot--inside .rk-ballot-option {
+  align-items: start;
+  gap: 0;
+}
+
+.rk-ballot--inside .rk-tile {
+  margin-block-start: calc(var(--outline-width) + var(--space-2));
+  margin-inline: var(--tile-inset) calc(-1 * (var(--tile-size) + var(--tile-inset)));
+}
+
+.rk-ballot--inside .rk-ballot-text {
+  align-content: center;
+  min-block-size: calc(var(--tile-size) + 2 * (var(--space-2) + var(--outline-width)));
+  padding-inline-start: calc(var(--tile-size) + 2 * var(--space-3));
+}
+
+.rk-ballot--inside.rk-ballot--mark-end .rk-tile {
+  margin-inline: calc(-1 * (var(--tile-size) + var(--tile-inset))) var(--tile-inset);
+}
+
+.rk-ballot--inside.rk-ballot--mark-end .rk-ballot-text {
+  padding-inline: var(--space-3) calc(var(--tile-size) + 2 * var(--space-3));
+}
+
+/* Tight: each row after the first moves up by a border's width, so neighbouring boxes share one
+   edge, and only the outer corners stay round. Each box fills its row's height. The checked row,
+   then the focused one, is raised so its border and the tile's focus band sit above its
+   neighbours. */
+.rk-ballot--tight {
+  gap: 0;
+}
+
+.rk-ballot--tight .rk-ballot-option {
+  position: relative;
+}
+
+.rk-ballot--tight .rk-ballot-option + .rk-ballot-option {
+  margin-block-start: calc(-1 * var(--outline-width));
+}
+
+.rk-ballot--tight .rk-ballot-option:has(:checked) {
+  z-index: 1;
+}
+
+.rk-ballot--tight .rk-ballot-option:has(:focus-visible) {
+  z-index: 2;
+}
+
+.rk-ballot--tight .rk-ballot-text {
+  align-self: stretch;
+  align-content: center;
+}
+
+.rk-ballot--tight .rk-ballot-option:not(:first-of-type) > .rk-ballot-text {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+
+.rk-ballot--tight .rk-ballot-option:not(:last-of-type) > .rk-ballot-text {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+/* A tile that isn't inside its box keeps room above and below for its push-in, which makes the
+   row a little taller than one line of text. max(y, -y) is the size of the move whichever way
+   the light falls. */
+.rk-ballot--tight:not(.rk-ballot--inside) .rk-tile {
+  margin-block: max(var(--shadow-offset-y), -1 * var(--shadow-offset-y));
+}
+
+/* A checked tile lands with the deck keys' kerchunk (segmented.css): it drives past its pushed-in
+   depth, then settles. The keyframes move it, so its translate isn't transitioned as well. CSS
+   can't tell a page load from a click, so a row checked on load plays it once. */
+.rk-ballot .rk-tile:has(:checked:enabled) {
   --key-overshoot: 2px;
 
   transition-property: box-shadow;
