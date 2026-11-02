@@ -110,6 +110,20 @@ a:where(:not(.rk-button)).is-focus {
   outline-offset: var(--focus-offset);
 }
 
+.rk-search-bar.is-active {
+  box-shadow: var(--shadow-pressed);
+  translate: var(--press-offset) var(--press-offset);
+}
+
+.rk-search-bar > .is-focus {
+  position: relative;
+  z-index: 1;
+}
+
+.rk-search-bar:has(.is-focus) {
+  box-shadow: none;
+}
+
 .rk-stepper--stacked button.is-hover {
   background: var(--selected);
   color: var(--on-selected);

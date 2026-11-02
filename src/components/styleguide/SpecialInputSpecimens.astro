@@ -34,6 +34,14 @@ const SEARCH_STATES = [
   { label: 'focused', class: 'is-focus', value: 'Query' },
   { label: 'disabled', class: '', disabled: true },
 ]
+const SEARCH_BAR_STATES = [
+  { label: 'rest', bar: '', input: '', button: '' },
+  { label: 'with a value (hover or focus it for the clear button)', bar: '', input: '', button: '', value: 'Query' },
+  { label: 'pressed (the whole unit)', bar: 'is-active', input: '', button: '', value: 'Query' },
+  { label: 'field focused', bar: '', input: 'is-focus', button: '', value: 'Query' },
+  { label: 'button focused', bar: '', input: '', button: 'is-focus', value: 'Query' },
+  { label: 'disabled', bar: '', input: '', button: '', disabled: true },
+]
 const NUMBER_STATES = [
   { label: 'rest', input: '', buttons: '' },
   { label: 'hover on +', input: '', buttons: 'is-hover' },
@@ -161,18 +169,18 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
 
 <SpecimenRow title="Search B: attached button">
   {
-    SEARCH_STATES.map((state) => (
+    SEARCH_BAR_STATES.map((state) => (
       <Specimen label={state.label} wide>
-        <form class="rk-search-bar" role="search">
+        <form class:list={['rk-search-bar', state.bar]} role="search">
           <input
-            class:list={['rk-input', state.class]}
+            class:list={['rk-input', state.input]}
             type="search"
             aria-label="Search"
             placeholder="Search"
             value={state.value}
             disabled={state.disabled}
           />
-          <button class="rk-button" type="submit" disabled={state.disabled}>
+          <button class:list={['rk-button', state.button]} type="submit" disabled={state.disabled}>
             <SearchIcon class="rk-icon rk-icon--small" aria-hidden="true" />
             Search
           </button>
