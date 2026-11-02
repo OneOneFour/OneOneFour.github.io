@@ -159,13 +159,15 @@ font, and reads the diff.
    - breakout main grid (PLAN §4).
 
    The nav shows only sections that exist.
-2. [B] Pages:
+2. [B] `site` collection (`src/content/site/profile.md`, `home.md`, photo), per PLAN §6b. Bio,
+   photo, role, email, CV and social links are all edited there, never in components.
+3. [B] Pages:
    - Home;
    - About;
    - Projects index, with an empty state until a project is approved, plus `/projects/[slug]/`;
    - redirects from `/project/*` to `/projects/*`.
-3. [B] Remove the legacy layout styles from `global.css`.
-4. [RV] Review.
+4. [B] Remove the legacy layout styles from `global.css`.
+5. [RV] Review.
 
 **Gate 2:** Rob approves the shell with his real text. **Switchover decision:** Rob may merge
 `redesign` → `main` and push (the new look goes live), or wait for P3.
@@ -204,7 +206,7 @@ The coordinator presents:
 
 | Pack | Needed by | Contents |
 |---|---|---|
-| **C1** | P2 | One-line role for the left bar; short home intro; About bio; photo (`mugshota.png` or a new one); social links to show (GitHub, LinkedIn URL, ORCID `0009-0006-1944-7787`, Scholar URL, any of Bluesky/Mastodon/X); email to display; CV PDF |
+| **C1** | P2 | Rob writes these straight into `src/content/site/profile.md` and `home.md` (PLAN §6b): one-line role for the left bar; short home intro; About bio; photo (`mugshota.png` or a new one); social links to show (GitHub, LinkedIn URL, ORCID `0009-0006-1944-7787`, Scholar URL, any of Bluesky/Mastodon/X); email to display; CV PDF |
 | **C2** | P3W | First post: text, title, date, and what the interactive should show |
 | **C3** | P3R | Publication files (Rob writes them; `pubs:new` can prefill from a DOI or BibTeX) |
 | **C4** | P3P | Photos as they come in, album groupings, any captions |

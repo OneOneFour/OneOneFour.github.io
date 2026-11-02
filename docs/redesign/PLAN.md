@@ -411,6 +411,44 @@ Optional plain-language summary in Markdown, shown on the research page.
 
 ---
 
+### 6b. Site profile and page text: editable as Markdown *(DECIDED 2026-11-01)*
+
+Rob should be able to change his bio, photo, links or page intros by editing one obvious file,
+with no layout or component code involved. That editing is one of the main reasons for choosing
+Astro (content collections). All of it lives in `src/content/site/`:
+
+```
+src/content/site/
+  profile.md     # frontmatter: name, role (left-bar line), photo, email, cv, socials[]
+                 # body: the long bio shown on /about/
+  home.md        # body: home-page intro
+  photo.jpg      # the profile photo, referenced from profile.md; swap the file to change it
+```
+
+```markdown
+---
+name: Robert C. King
+role: Climate models · Stanford
+photo: ./photo.jpg               # image() helper → optimised by astro:assets
+email: robertcking98@gmail.com
+cv: /files/Robert_King_CV.pdf
+socials:
+  - { kind: github,   url: https://github.com/OneOneFour }
+  - { kind: orcid,    url: https://orcid.org/0009-0006-1944-7787 }
+  - { kind: linkedin, url: https://www.linkedin.com/in/… }
+---
+Longer bio in plain Markdown…
+```
+
+- A `site` collection (glob loader) with a Zod schema. A typo or a missing field fails the build
+  with a clear message, and never produces a broken page.
+- `socials[].kind` picks the icon, and the order in the file is the order shown. Adding or
+  removing a link is a one-line edit.
+- Layouts read these files. Nothing personal is hard-coded in components, which also keeps the
+  design package (§5.6) free of site content.
+- The same rule covers every section's intro text: a section index page takes its blurb from
+  Markdown, not from the template.
+
 ## 7. Interactive posts *(proposed)*
 
 - Interactive posts are `.mdx`. Plain posts stay `.md`.
