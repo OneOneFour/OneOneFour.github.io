@@ -1,0 +1,66 @@
+---
+/**
+ * The scrollbar shadow options for Gate 1b, each on a long code line whose scrollbar always shows
+ * and on a narrow strip of folder tabs, whose scrollbar shows on hover.
+ */
+import './shadow-variants.css'
+import CodeBlock from '../CodeBlock.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import { LORENZ_JS } from './code-samples'
+
+const OPTIONS = [
+  { title: 'Current: flat thumb and track (the default)', class: undefined },
+  { title: 'A: raised thumb (.rk-scrollbar-raised)', class: 'rk-scrollbar-raised' },
+  {
+    title: 'B: A in a sunken track (.rk-scrollbar-raised.rk-scrollbar-sunken)',
+    class: 'rk-scrollbar-raised rk-scrollbar-sunken',
+  },
+  {
+    title: 'C: A on a slider groove (.rk-scrollbar-raised.rk-scrollbar-slider)',
+    class: 'rk-scrollbar-raised rk-scrollbar-slider',
+  },
+  { title: 'A with shadow D (.rk-shadow-d), which differs in dark mode only', class: 'rk-scrollbar-raised rk-shadow-d' },
+]
+
+const TABS = ['Tab one', 'Tab two', 'Tab three', 'Tab four', 'Tab five', 'Tab six']
+const SELECTED_TAB = 2
+---
+
+{
+  OPTIONS.map((option) => (
+    <div class={option.class}>
+      <SpecimenRow title={option.title}>
+        <Specimen label="long code line, scrollbar always showing (.rk-scroll--bar)" wide>
+          <CodeBlock code={LORENZ_JS} lang="javascript" label="JavaScript" preClass="rk-scroll--bar" />
+        </Specimen>
+        <Specimen label="folder tabs: hover for the scrollbar">
+          <div class="narrow rk-folder">
+            <nav aria-label="Specimen pages">
+              <ol class="rk-folder-tabs rk-scroll">
+                {TABS.map((name, i) => (
+                  <li>
+                    <a class="rk-folder-tab" href="#specimen-link" aria-current={i === SELECTED_TAB ? 'page' : undefined}>
+                      {name}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+            <div class="rk-folder-sheet">Sheet</div>
+          </div>
+        </Specimen>
+      </SpecimenRow>
+    </div>
+  ))
+}
+
+<style>
+  .narrow {
+    max-inline-size: 16rem;
+  }
+</style>
+
+<script>
+  import 'rk-ui/folder-scrollbar.js'
+</script>
