@@ -223,8 +223,21 @@ export function resolveColor(tokens, name, theme) {
 }
 
 /**
+ * The tokens with the per-element tokens a recipe reads set, e.g. `{ '--shade-of': '--teal' }`
+ * makes `--shade` teal's shade.
+ *
+ * @param {Map<string, string>} tokens
+ * @param {Record<string, string>} [inputs] each input token and the token it is set to
+ */
+export function withInputs(tokens, inputs) {
+  if (!inputs) return tokens
+  const set = Object.entries(inputs).map(([name, token]) => [name, `var(${token})`])
+  return new Map([...tokens, ...set])
+}
+
+/**
  * Measures one pair in one theme, with a translucent foreground painted over the background.
- * `inputs` sets the per-element tokens a recipe reads, e.g. `{ '--shade-of': '--teal' }`.
+ * `inputs` sets the per-element tokens a recipe reads (see withInputs).
  *
  * @param {Map<string, string>} tokens
  * @param {{ fg: string, bg: string, inputs?: Record<string, string> }} pair
@@ -232,9 +245,7 @@ export function resolveColor(tokens, name, theme) {
  * @returns the hex colours as painted, and their contrast ratio
  */
 export function measurePair(tokens, { fg, bg, inputs }, theme) {
-  const scoped = inputs
-    ? new Map([...tokens, ...Object.entries(inputs).map(([name, token]) => [name, `var(${token})`])])
-    : tokens
+  const scoped = withInputs(tokens, inputs)
   const background = composite(resolveRgba(scoped, bg, theme))
   const foreground = composite(resolveRgba(scoped, fg, theme), background)
   return {

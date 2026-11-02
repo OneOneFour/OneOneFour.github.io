@@ -5,30 +5,36 @@
  *
  * @param title the section heading
  * @param stacked put the dark panel under the light one at every width, for wide content
+ * @param collapsed put the panels in a closed <details> with this summary text
  */
 import { sectionId } from './section-id'
 
 interface Props {
   title: string
   stacked?: boolean
+  collapsed?: string
 }
 
-const { title, stacked = false } = Astro.props
+const { title, stacked = false, collapsed } = Astro.props
+const Wrapper = collapsed ? 'details' : Fragment
 ---
 
 <section class="specimen-section" id={sectionId(title)}>
   <h2>{title}</h2>
   <slot />
-  <div class:list={['panels', { stacked }]}>
-    <div class="panel" style="color-scheme: light">
-      <p class="panel-label">Light</p>
-      <slot name="light" />
+  <Wrapper>
+    {collapsed && <summary>{collapsed}</summary>}
+    <div class:list={['panels', { stacked }]}>
+      <div class="panel" style="color-scheme: light">
+        <p class="panel-label">Light</p>
+        <slot name="light" />
+      </div>
+      <div class="panel" style="color-scheme: dark">
+        <p class="panel-label">Dark</p>
+        <slot name="dark" />
+      </div>
     </div>
-    <div class="panel" style="color-scheme: dark">
-      <p class="panel-label">Dark</p>
-      <slot name="dark" />
-    </div>
-  </div>
+  </Wrapper>
 </section>
 
 <style>
@@ -40,6 +46,12 @@ const { title, stacked = false } = Astro.props
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
     gap: var(--space-4);
+  }
+
+  summary {
+    margin-block: var(--space-5) var(--space-4);
+    font-weight: 700;
+    cursor: pointer;
   }
 
   .panels.stacked {

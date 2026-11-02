@@ -270,7 +270,8 @@ Rules (shown on the mood board, theme switch at the top):
   `.rk-slate-greige` still opts into greige code anywhere. Browsers without `light-dark()` get
   cream light everywhere: the fallback block also applies to `[data-palette]`. `npm run contrast`
   checks every pair under each palette in both themes. The styleguide has a palette switch next
-  to the theme toggle (stored under `rk-palette`) and shows the three palettes side by side.
+  to the theme toggle (stored under `rk-palette`), and its Colours summary lists the three
+  palettes' surfaces in both themes.
 
 | Palette | surface (light / dark) | raised (light / dark) |
 |---|---|---|
