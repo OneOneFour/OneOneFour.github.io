@@ -18,6 +18,7 @@
 }
 
 .rk-range::-webkit-slider-runnable-track {
+  box-sizing: border-box;
   block-size: var(--track-height);
   border: var(--outline-width) solid var(--line-unfilled);
   border-radius: var(--radius-pill);
@@ -25,6 +26,7 @@
 }
 
 .rk-range::-moz-range-track {
+  box-sizing: border-box;
   block-size: var(--track-height);
   border: var(--outline-width) solid var(--line-unfilled);
   border-radius: var(--radius-pill);
@@ -33,9 +35,11 @@
 
 .rk-range::-webkit-slider-thumb {
   appearance: none;
+  box-sizing: border-box;
   inline-size: var(--thumb-size);
   block-size: var(--thumb-size);
-  margin-block-start: calc((var(--track-height) - var(--thumb-size)) / 2);
+  /* WebKit puts the thumb at the top of the track's content box, inside the track border. */
+  margin-block-start: calc((var(--track-height) - var(--thumb-size)) / 2 - var(--outline-width));
   border: var(--outline-width) solid var(--line);
   border-radius: 50%;
   background: var(--selected);
