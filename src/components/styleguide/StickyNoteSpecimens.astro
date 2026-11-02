@@ -1,0 +1,126 @@
+---
+/**
+ * Sticky notes: static note cards in every hue, note and warning prompts, a linked note card in
+ * each state, and the tilt, tape and pin options.
+ */
+import Card from '../ui/Card.astro'
+import Callout from '../ui/Callout.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import ImageIcon from 'rk-ui/icons/image.svg'
+
+const HUES = ['sky', 'tangerine', 'green', 'coral', 'grape']
+const STATES = [
+  { label: 'hover (the corner lifts)', class: 'is-hover' },
+  { label: 'pressed', class: 'is-active' },
+  { label: 'focused', class: 'is-focus' },
+]
+---
+
+<SpecimenRow title="Colours">
+  <Specimen label="default (yellow)" wide>
+    <Card title="Card title" class="rk-sticky-note">
+      <p>Body text. Pack my box with five dozen liquor jugs.</p>
+    </Card>
+  </Specimen>
+  {
+    HUES.map((hue) => (
+      <Specimen label={hue} wide>
+        <Card title="Card title" class={`rk-sticky-note rk-sticky-note--${hue}`}>
+          <p>Body text. Pack my box with five dozen liquor jugs.</p>
+        </Card>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Prompts">
+  <Specimen label="note callout (sky)" wide>
+    <Callout title="Title" class="rk-sticky-note">
+      <p>Body text with <a href="#sticky-notes">a link</a>. Pack my box with five dozen liquor jugs.</p>
+    </Callout>
+  </Specimen>
+  <Specimen label="warning callout (tangerine)" wide>
+    <Callout kind="warning" title="Title" class="rk-sticky-note">
+      <p>Body text with <a href="#sticky-notes">a link</a>. Pack my box with five dozen liquor jugs.</p>
+    </Callout>
+  </Specimen>
+  <Specimen label="warning, focused link (--focus-alt)" wide>
+    <Callout kind="warning" class="rk-sticky-note">
+      <p>Body text with <a href="#sticky-notes" class="is-focus">a focused link</a>.</p>
+    </Callout>
+  </Specimen>
+  <Specimen label="note callout, yellow" wide>
+    <Callout class="rk-sticky-note rk-sticky-note--yellow">
+      <p>Body text. Sphinx of black quartz, judge my vow.</p>
+    </Callout>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Linked note card">
+  <Specimen label="rest" wide>
+    <Card title="Card title" href="#sticky-notes" meta="Meta line" class="rk-sticky-note">
+      <p>Body text.</p>
+    </Card>
+  </Specimen>
+  {
+    STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <Card title="Card title" href="#sticky-notes" meta="Meta line" class={`rk-sticky-note ${state.class}`}>
+          <p>Body text.</p>
+        </Card>
+      </Specimen>
+    ))
+  }
+  <Specimen label="with image" wide>
+    <Card title="Card title" href="#sticky-notes" meta="Meta line" class="rk-sticky-note rk-sticky-note--green">
+      <div slot="image" class="rk-card-image image-placeholder"><ImageIcon class="rk-icon" /></div>
+      <p>Body text.</p>
+    </Card>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Options">
+  <Specimen label="tilt" wide>
+    <Card title="Card title" class="rk-sticky-note rk-sticky-note--tilt">
+      <p>Body text. The quick brown fox jumps over the lazy dog.</p>
+    </Card>
+  </Specimen>
+  <Specimen label="tilt, --note-tilt: 1.5deg" wide>
+    <article class="rk-card rk-sticky-note rk-sticky-note--grape rk-sticky-note--tilt" style="--note-tilt: 1.5deg">
+      <div class="rk-card-body">
+        <h3 class="rk-card-title">Card title</h3>
+        <p>Body text. The quick brown fox jumps over the lazy dog.</p>
+      </div>
+    </article>
+  </Specimen>
+  <Specimen label="tape" wide>
+    <Card title="Card title" class="rk-sticky-note rk-sticky-note--tape">
+      <p>Body text. The quick brown fox jumps over the lazy dog.</p>
+    </Card>
+  </Specimen>
+  <Specimen label="pin" wide>
+    <Card title="Card title" class="rk-sticky-note rk-sticky-note--coral rk-sticky-note--pin">
+      <p>Body text. The quick brown fox jumps over the lazy dog.</p>
+    </Card>
+  </Specimen>
+  <Specimen label="warning, tilt and tape" wide>
+    <Callout kind="warning" title="Title" class="rk-sticky-note rk-sticky-note--tilt rk-sticky-note--tape">
+      <p>Body text. Sphinx of black quartz, judge my vow.</p>
+    </Callout>
+  </Specimen>
+</SpecimenRow>
+
+<style>
+  .image-placeholder {
+    display: grid;
+    place-items: center;
+    background: var(--teal-tint);
+    --icon-fill: var(--teal);
+  }
+
+  .image-placeholder :global(.rk-icon) {
+    inline-size: 3rem;
+    block-size: 3rem;
+  }
+</style>

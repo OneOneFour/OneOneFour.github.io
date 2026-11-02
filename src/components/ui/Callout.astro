@@ -11,13 +11,14 @@ import WarningIcon from 'rk-ui/icons/warning.svg'
 interface Props {
   kind?: 'note' | 'warning'
   title?: string
+  class?: string
 }
 
-const { kind = 'note', title } = Astro.props
+const { kind = 'note', title, class: className } = Astro.props
 const Icon = kind === 'warning' ? WarningIcon : InfoIcon
 ---
 
-<div class:list={['rk-callout', `rk-callout--${kind}`]} role="note">
+<div class:list={['rk-callout', `rk-callout--${kind}`, className]} role="note">
   <Icon class="rk-icon" />
   <div class="rk-callout-body">
     {title && <p class="rk-callout-title">{title}</p>}
