@@ -1,0 +1,61 @@
+/* Chart colours, for the styleguide's charts only: a vibe check, not part of rk-ui in this
+   version. Loaded after rk-ui's tokens.css, whose colours these mix. */
+
+:root {
+  /* Chart series: in a fixed order that keeps neighbours apart for colour-blind readers */
+  --chart-1: var(--teal);
+  --chart-2: var(--yellow);
+  --chart-3: var(--navy);
+  --chart-4: var(--green);
+  --chart-5: var(--sky);
+  --chart-6: var(--coral);
+  --chart-7: var(--grape);
+  --chart-8: var(--tangerine);
+
+  /* Sequential scale: for magnitudes, from navy's tint to its text colour, so in both themes the
+     strongest step stands out most from the page */
+  --seq-1: color-mix(in oklab, var(--navy-deep) 27%, var(--navy-tint));
+  --seq-2: color-mix(in oklab, var(--navy-deep) 45%, var(--navy-tint));
+  --seq-3: color-mix(in oklab, var(--navy-deep) 63%, var(--navy-tint));
+  --seq-4: color-mix(in oklab, var(--navy-deep) 82%, var(--navy-tint));
+  --seq-5: var(--navy-deep);
+
+  /* Vivid sequential scale (Gate 1b option): the fills from yellow through green and teal to navy,
+     in even steps of lightness. Light mode runs from yellow up to navy and dark mode from navy up
+     to yellow, so the strongest step stands out most from the page. */
+  --seq-vivid-1: light-dark(var(--yellow), color-mix(in oklab, var(--navy) 50%, var(--navy-tint)));
+  --seq-vivid-2: light-dark(var(--green), var(--navy));
+  --seq-vivid-3: light-dark(
+    color-mix(in oklab, var(--teal) 75%, var(--navy)),
+    color-mix(in oklab, var(--navy) 50%, var(--teal))
+  );
+  --seq-vivid-4: light-dark(color-mix(in oklab, var(--teal) 40%, var(--navy)), var(--green));
+  --seq-vivid-5: light-dark(var(--navy), var(--yellow));
+
+  /* Diverging scale: for anomalies, navy below and coral above with a faint neutral between. The
+     coral end leans towards --fg so that both ends are about as light as each other. */
+  --div-cold-3: var(--navy-deep);
+  --div-cold-2: color-mix(in oklab, var(--navy-deep) 67%, var(--navy-tint));
+  --div-cold-1: color-mix(in oklab, var(--navy-deep) 33%, var(--navy-tint));
+  --div-mid: color-mix(in oklab, var(--muted) 12%, var(--surface));
+  --div-warm-1: color-mix(in oklab, var(--div-warm-3) 33%, var(--coral-tint));
+  --div-warm-2: color-mix(in oklab, var(--div-warm-3) 67%, var(--coral-tint));
+  --div-warm-3: color-mix(in oklab, var(--coral-deep) 70%, var(--fg));
+}
+
+/* --div-mid mixes in the page colour, so each palette re-declares it to mix its own */
+[data-palette] {
+  --div-mid: color-mix(in oklab, var(--muted) 12%, var(--surface));
+}
+
+/* Browsers without light-dark() get the light theme, as in tokens.css. */
+@supports not (color: light-dark(#000, #fff)) {
+  :root,
+  [data-palette] {
+    --seq-vivid-1: var(--yellow);
+    --seq-vivid-2: var(--green);
+    --seq-vivid-3: color-mix(in oklab, var(--teal) 75%, var(--navy));
+    --seq-vivid-4: color-mix(in oklab, var(--teal) 40%, var(--navy));
+    --seq-vivid-5: var(--navy);
+  }
+}

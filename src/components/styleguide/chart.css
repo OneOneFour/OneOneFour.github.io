@@ -1,3 +1,6 @@
+/* Styleguide only: a vibe check for charts, not part of rk-ui in this version. */
+@import './chart-tokens.css';
+
 /* Charts: inline SVG coloured by the tokens, so a chart follows the theme with no redrawing.
    The width and height attributes are the size at which text matches the type scale; the chart
    shrinks to fit a narrower column. Put a series class on a mark or its group to colour it.
@@ -341,4 +344,9 @@
 .rk-sparkline .rk-chart-line {
   stroke: var(--muted);
   stroke-width: 1.5;
+}
+
+/* Charts on a widget's stage sit on its raised background. */
+.rk-widget-frame-stage {
+  --chart-bg: var(--raised);
 }
