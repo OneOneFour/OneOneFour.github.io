@@ -105,8 +105,6 @@
   --slate-tab: light-dark(#dbe0ea, #333946);
   --slate-greige: light-dark(#eae7e2, #35332e);
   --slate-greige-tab: light-dark(#e0dcd6, #3d3a34);
-  --shadow-code-inset: inset calc(var(--shadow-dx) * 4px) calc(var(--shadow-dy) * 4px) 0
-    color-mix(in srgb, var(--line) 20%, transparent);
   --code-keyword: var(--navy-deep);
   --code-function: var(--teal-deep);
   --code-string: var(--green-deep);
@@ -127,23 +125,10 @@
   --radius: 10px;
   --radius-pill: 999px;
   --outline-width: 2px;
-  /* The way shadows fall, as a multiple of each length below on each axis: 1 1 is down and to
-     the right. Set them on <html>, as light-direction.js does: the tokens below resolve their
-     var()s there, so setting them on a lower element changes nothing. The same goes for
-     --shadow-color and --shadow-edge: an element that changes them re-declares the shadows. */
+  /* The way shadows fall, as a multiple of each shadow length on each axis: 1 1 is down and to
+     the right. light-direction.js sets them on <html>. */
   --shadow-dx: 1;
   --shadow-dy: 1;
-  --shadow-offset: 4px;
-  --shadow-offset-x: calc(var(--shadow-dx) * var(--shadow-offset));
-  --shadow-offset-y: calc(var(--shadow-dy) * var(--shadow-offset));
-  --shadow-inset: inset calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--line);
-  /* Pressing moves an element onto --shadow-pressed; the move plus that shadow is --shadow. */
-  --press-offset: 2px;
-  --press-offset-x: calc(var(--shadow-dx) * var(--press-offset));
-  --press-offset-y: calc(var(--shadow-dy) * var(--press-offset));
-  --lift-offset: 1px;
-  --lift-offset-x: calc(var(--shadow-dx) * var(--lift-offset));
-  --lift-offset-y: calc(var(--shadow-dy) * var(--lift-offset));
   --focus-width: 6px;
   --focus-offset: 0;
 
@@ -164,8 +149,57 @@
   --stagger: 0.15s;
 }
 
-/* Hard shadows, the outlined slab. Each is two layers: the shadow, on a copy widened by
-   --outline-width in --shadow-edge. The edge is a light rim in dark mode, so the near-black
+/* Depth: data-depth="deep" on <html>, on any container or on one element makes every shadow,
+   inset and pop in it 1.5 times as deep. data-depth="normal" switches back inside it. */
+:root,
+[data-depth='normal'] {
+  --shadow-depth: 1;
+}
+
+[data-depth='deep'] {
+  --shadow-depth: 1.5;
+}
+
+/* Hard shadows and the pop's moves, built from the light, the depth and the shadow colours. A
+   custom property resolves its var()s on the element that declares it, so these are declared on
+   every element: each one builds them from its own inputs, wherever those were last set. */
+* {
+  --shadow-offset: calc(var(--shadow-depth) * 4px);
+  --shadow-offset-x: calc(var(--shadow-dx) * var(--shadow-offset));
+  --shadow-offset-y: calc(var(--shadow-dy) * var(--shadow-offset));
+  --shadow-offset-hover: calc(var(--shadow-depth) * 6px);
+  --shadow-offset-pressed: calc(var(--shadow-depth) * 2px);
+  /* Pressing moves an element onto --shadow-pressed; the move plus that shadow is --shadow. */
+  --press-offset: calc(var(--shadow-depth) * 2px);
+  --press-offset-x: calc(var(--shadow-dx) * var(--press-offset));
+  --press-offset-y: calc(var(--shadow-dy) * var(--press-offset));
+  --lift-offset: calc(var(--shadow-depth) * 1px);
+  --lift-offset-x: calc(var(--shadow-dx) * var(--lift-offset));
+  --lift-offset-y: calc(var(--shadow-dy) * var(--lift-offset));
+
+  /* Each shadow is two layers: the shadow, on a copy widened by --outline-width in
+     --shadow-edge. */
+  --shadow:
+    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color),
+    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--outline-width) var(--shadow-edge);
+  --shadow-hover:
+    calc(var(--shadow-dx) * var(--shadow-offset-hover))
+      calc(var(--shadow-dy) * var(--shadow-offset-hover)) 0 var(--shadow-color),
+    calc(var(--shadow-dx) * var(--shadow-offset-hover))
+      calc(var(--shadow-dy) * var(--shadow-offset-hover)) 0 var(--outline-width) var(--shadow-edge);
+  --shadow-pressed:
+    calc(var(--shadow-dx) * var(--shadow-offset-pressed))
+      calc(var(--shadow-dy) * var(--shadow-offset-pressed)) 0 var(--shadow-color),
+    calc(var(--shadow-dx) * var(--shadow-offset-pressed))
+      calc(var(--shadow-dy) * var(--shadow-offset-pressed)) 0 var(--outline-width)
+      var(--shadow-edge);
+  --shadow-inset: inset calc(var(--shadow-dx) * var(--shadow-offset-pressed))
+    calc(var(--shadow-dy) * var(--shadow-offset-pressed)) 0 var(--line);
+  --shadow-code-inset: inset var(--shadow-offset-x) var(--shadow-offset-y) 0
+    color-mix(in srgb, var(--line) 20%, transparent);
+}
+
+/* The shadow colours, the outlined slab. The edge is a light rim in dark mode, so the near-black
    shadow shows on the page, and transparent in light mode. Set data-shadow="colour" on <html> or
    any container for the colour shadow mode (shadow-colour.css), or "slab" to switch back inside
    it. */
@@ -173,17 +207,6 @@
 [data-shadow='slab'] {
   --shadow-color: var(--line);
   --shadow-edge: light-dark(transparent, var(--line-unfilled));
-  --shadow:
-    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color),
-    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--outline-width) var(--shadow-edge);
-  --shadow-hover:
-    calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--shadow-color),
-    calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--outline-width)
-      var(--shadow-edge);
-  --shadow-pressed:
-    calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color),
-    calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--outline-width)
-      var(--shadow-edge);
 }
 
 /* Browsers without light-dark() (before mid-2024) get the light theme, on the cream page. */
@@ -247,6 +270,9 @@
     --duration-fast: 0ms;
     --duration-spring: 0ms;
     --duration-slide: 0ms;
+  }
+
+  * {
     --press-offset: 0px;
     --lift-offset: 0px;
   }

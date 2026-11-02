@@ -6,16 +6,11 @@
 
 @supports (color: light-dark(black, white)) {
   @scope ([data-shadow='colour']) to ([data-shadow='slab']) {
-    /* Declared on every element, so each one resolves its own --extrusion. Shadows built outside
-       the tokens read --shadow-color and --shadow-edge themselves, so those are set here too. */
+    /* Declared on every element, so each one resolves its own --extrusion. The shadow tokens are
+       built on every element too (tokens.css), from these. */
     * {
       --shadow-edge: transparent;
       --shadow-color: light-dark(var(--line), var(--extrusion, var(--shadow-lit)));
-      --shadow: var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color);
-      --shadow-hover: calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0
-        var(--shadow-color);
-      --shadow-pressed: calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0
-        var(--shadow-color);
     }
 
     .rk-button {
