@@ -30,7 +30,7 @@ function pairs(foregrounds, backgrounds, min) {
 const GROUPS = [
   { title: 'Body text', pairs: pairs(['--fg', '--muted'], SURFACES, 4.5) },
   { title: 'Hue text', pairs: pairs(DEEP_TEXT, SURFACES, 4.5) },
-  { title: 'Text on tints', pairs: pairs(['--fg'], TINTS, 4.5) },
+  { title: 'Text and links on tints', pairs: pairs(['--fg', '--navy-deep'], TINTS, 4.5) },
   {
     title: 'Text on fills',
     pairs: [
@@ -47,6 +47,7 @@ const GROUPS = [
   // The highlighter band hugs the ink outline, so that is the edge it must stand out from.
   { title: 'Focus band against the outline', pairs: pairs(['--focus', '--focus-alt'], ['--line'], 3) },
   { title: 'Unfilled outlines', pairs: pairs(['--line-unfilled'], SURFACES, 3) },
+  { title: 'Error outline on its panel', pairs: [{ fg: '--coral-deep', bg: '--coral-tint', min: 3 }] },
   { title: 'Outline against the page', themes: ['light'], pairs: pairs(['--line'], SURFACES, 3) },
   { title: 'Fill edge against the page', themes: ['dark'], pairs: pairs(FILLS, ['--surface'], 3) },
   {

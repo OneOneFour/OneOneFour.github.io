@@ -91,7 +91,7 @@
   --shadow: 4px 4px 0 var(--line);
   --shadow-hover: 6px 6px 0 var(--line);
   --shadow-pressed: 2px 2px 0 var(--line);
-  --shadow-inset: inset 2px 2px 0 var(--line);
+  --shadow-inset: inset 2px 2px 0 var(--line-unfilled);
   /* Pressing moves an element onto --shadow-pressed; the move plus that shadow is --shadow. */
   --press-offset: 2px;
   --lift-offset: 1px;

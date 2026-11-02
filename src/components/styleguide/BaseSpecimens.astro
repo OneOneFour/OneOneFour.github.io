@@ -1,0 +1,41 @@
+---
+/** What base.css styles: headings, body text, links in each state, code and selection. */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+---
+
+<SpecimenRow title="Headings (h2 to h4; h1 is step 4)">
+  <div class="headings">
+    <h2>Sphinx of black quartz</h2>
+    <h3>Judge my vow</h3>
+    <h4>Pack my box with five dozen jugs</h4>
+  </div>
+</SpecimenRow>
+
+<SpecimenRow title="Links">
+  <Specimen label="rest"><a href="#base">A text link</a></Specimen>
+  <Specimen label="hover"><a href="#base" class="is-hover">A text link</a></Specimen>
+  <Specimen label="focused (marker pen)"><a href="#base" class="is-focus">A text link</a></Specimen>
+  <Specimen label="in running text" wide>
+    <p>
+      The quick brown fox <a href="#base">jumps over the lazy dog</a> and keeps on running until the line
+      wraps, so the <a href="#base" class="is-focus">focused marker carries across the line break</a> too.
+    </p>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Code and selection">
+  <Specimen label="inline code" wide>
+    <p>Call <code>step(state, dt)</code> once per frame; select this text to see the selection colour.</p>
+  </Specimen>
+  <Specimen label="pre" wide>
+    <pre><code>{`def step(x, dt):
+    return x + dt * f(x)  # σ = 10, β ≈ 8/3`}</code></pre>
+  </Specimen>
+</SpecimenRow>
+
+<style>
+  .headings > * {
+    margin-block: 0 var(--space-2);
+  }
+</style>

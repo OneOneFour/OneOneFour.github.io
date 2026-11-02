@@ -1,0 +1,54 @@
+---
+/**
+ * One labelled example in a styleguide row: the slot, with a caption under it.
+ *
+ * @param label the caption, e.g. the variant or state shown
+ * @param wide let the example fill the row's width instead of sizing to its content
+ */
+interface Props {
+  label: string
+  wide?: boolean
+}
+
+const { label, wide = false } = Astro.props
+---
+
+<figure class:list={['specimen', { wide }]}>
+  <div class="example"><slot /></div>
+  <figcaption>{label}</figcaption>
+</figure>
+
+<style>
+  .specimen {
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    gap: var(--space-2);
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    margin: 0;
+  }
+
+  .wide {
+    flex: 1 1 16rem;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: stretch;
+  }
+
+  .example {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .wide .example > :global(*) {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
+  figcaption {
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+</style>

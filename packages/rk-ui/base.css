@@ -1,0 +1,104 @@
+/* A small reset and the page defaults: body text, headings, links, code and selection. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: var(--line-height-body);
+}
+
+img,
+video {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: var(--line-height-heading);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-4);
+}
+
+h2 {
+  font-size: var(--step-3);
+}
+
+h3 {
+  font-size: var(--step-2);
+}
+
+h4 {
+  font-size: var(--step-1);
+}
+
+a {
+  color: var(--navy-deep);
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  text-decoration-thickness: var(--outline-width);
+}
+
+/* Marker-pen focus: a link has no outline for the band to hug, so the band goes behind the text.
+   The transparent outline still shows in forced-colours mode. */
+a:focus-visible {
+  outline: var(--outline-width) solid transparent;
+  background: var(--focus);
+  color: var(--ink);
+  box-decoration-break: clone;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+}
+
+pre {
+  overflow-x: auto;
+  padding: var(--space-4);
+  border-radius: var(--radius);
+  background: var(--lilac-tint);
+}
+
+::selection {
+  background: var(--yellow-tint);
+  color: var(--fg);
+}
+
+/* Hidden on screen but still read by screen readers (and still focusable, for inputs). */
+.rk-visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

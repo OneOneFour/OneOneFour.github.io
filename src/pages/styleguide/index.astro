@@ -1,4 +1,6 @@
 ---
+import 'rk-ui/rk-ui.css'
+import '../../components/styleguide/states.css'
 import SpecimenLayout from '../../layouts/SpecimenLayout.astro'
 import SpecimenSection from '../../components/styleguide/SpecimenSection.astro'
 import ColourTokens from '../../components/styleguide/ColourTokens.astro'
@@ -6,6 +8,8 @@ import TypeScale from '../../components/styleguide/TypeScale.astro'
 import FontSpecimens from '../../components/styleguide/FontSpecimens.astro'
 import MonoSpecimen from '../../components/styleguide/MonoSpecimen.astro'
 import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
+import BaseSpecimens from '../../components/styleguide/BaseSpecimens.astro'
+import IconSpecimens from '../../components/styleguide/IconSpecimens.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -36,6 +40,16 @@ import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
     <SpecimenSection title="Shape and motion">
       <ShapeAndMotion slot="light" />
       <ShapeAndMotion slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Base styles">
+      <BaseSpecimens slot="light" />
+      <BaseSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Icons">
+      <IconSpecimens slot="light" />
+      <IconSpecimens slot="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>

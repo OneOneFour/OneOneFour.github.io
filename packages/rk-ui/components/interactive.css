@@ -1,0 +1,57 @@
+/* The states every interactive component shares: the pop, the flush press for unfilled buttons,
+   the focus band and disabled. Loaded after the components, so these win over their rest styles.
+   The range slider's thumb can't join these lists (pseudo-elements), so range.css repeats them. */
+
+/* Pop: hover lifts the element and grows its shadow; press sinks it into the shadow. */
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch) {
+  box-shadow: var(--shadow);
+  transition:
+    translate var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+@media (hover: hover) {
+  :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch):hover {
+    box-shadow: var(--shadow-hover);
+    translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+  }
+}
+
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch):active {
+  box-shadow: var(--shadow-pressed);
+  translate: var(--press-offset) var(--press-offset);
+}
+
+/* Unfilled buttons sit flush. Pressed, the frame stays put and gets an inset shadow, and the
+   label sinks: the padding shifts by --press-offset, which moves the label without resizing. */
+.rk-button--unfilled,
+.rk-button--unfilled:hover {
+  box-shadow: none;
+  translate: none;
+}
+
+.rk-button--unfilled:active {
+  box-shadow: var(--shadow-inset);
+  translate: none;
+  padding-block: calc(var(--button-padding-block) + var(--press-offset))
+    calc(var(--button-padding-block) - var(--press-offset));
+  padding-inline: calc(var(--button-padding-inline) + var(--press-offset))
+    calc(var(--button-padding-inline) - var(--press-offset));
+}
+
+/* Focus band. Chips, cards and segmented options show it for the input or link inside them. */
+:is(.rk-button, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select):focus-visible,
+:is(.rk-chip, .rk-card--link, .rk-segmented label):has(:focus-visible) {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+  box-shadow: none;
+}
+
+/* Disabled: dimmed and flat, with no pop. */
+:is(.rk-button, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select, .rk-range):disabled,
+:is(.rk-chip, .rk-segmented label):has(:disabled) {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  translate: none;
+}
