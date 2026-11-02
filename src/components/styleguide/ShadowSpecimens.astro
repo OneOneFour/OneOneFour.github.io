@@ -139,7 +139,7 @@ const CURRENT = 2
           </Specimen>
           <Specimen label="folder tabs on a sheet, pagination as folder tabs" wide>
             <div class="rk-folder">
-              <div class="rk-folder-tabs" role="tablist" aria-label="Specimen">
+              <div class="rk-folder-tabs rk-scroll" role="tablist" aria-label="Specimen">
                 <button class="rk-folder-tab" type="button" role="tab" aria-selected="true">One</button>
                 <button class="rk-folder-tab" type="button" role="tab" aria-selected="false" tabindex="-1">
                   Two
@@ -149,7 +149,7 @@ const CURRENT = 2
             </div>
             <div class="rk-folder">
               <nav aria-label="Pagination">
-                <ol class="rk-folder-tabs">
+                <ol class="rk-folder-tabs rk-scroll">
                   {PAGES.map((page) => (
                     <li>
                       <a class="rk-folder-tab" href="#specimen-link" aria-current={page === CURRENT ? 'page' : undefined}>
@@ -236,5 +236,6 @@ const CURRENT = 2
 
 <script>
   import 'rk-ui/dial.js'
+  import 'rk-ui/folder-scrollbar.js'
   import 'rk-ui/stepper.js'
 </script>
