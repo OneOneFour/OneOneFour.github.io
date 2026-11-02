@@ -7,6 +7,7 @@ import TypeScale from '../../components/styleguide/TypeScale.astro'
 import FontSpecimens from '../../components/styleguide/FontSpecimens.astro'
 import MonoCandidates from '../../components/styleguide/MonoCandidates.astro'
 import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
+import FocusOptions from '../../components/styleguide/FocusOptions.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -49,6 +50,12 @@ import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
     <SpecimenSection title="Shape and motion">
       <ShapeAndMotion slot="light" />
       <ShapeAndMotion slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Focus ring options">
+      <p>Reply with one option, e.g. “focus grape”.</p>
+      <FocusOptions slot="light" />
+      <FocusOptions slot="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>

@@ -1,0 +1,88 @@
+---
+/** Candidate focus rings on the same toon button, for Rob to pick at Gate 1a. */
+const OPTIONS = [
+  { name: 'current', note: 'navy, 2px gap: crosses the shadow' },
+  { name: 'wide', note: 'navy, 6px gap: clears the shadow' },
+  { name: 'grape', note: 'grape, 6px gap' },
+  { name: 'highlighter', note: 'yellow, hugging the outline' },
+  { name: 'marquee', note: 'dashed text colour, 6px gap' },
+]
+---
+
+<div class="options">
+  {
+    OPTIONS.map(({ name, note }) => (
+      <figure>
+        <button type="button" class:list={['sample', name]}>
+          Focused
+        </button>
+        <figcaption>
+          <strong>focus {name}</strong>
+          {note}
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>
+
+<style>
+  .options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: var(--space-6);
+    padding: var(--space-3);
+  }
+
+  figure {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+    margin: 0;
+  }
+
+  figcaption {
+    display: grid;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  figcaption strong {
+    color: var(--fg);
+  }
+
+  .sample {
+    padding: var(--space-3) var(--space-4);
+    border: var(--outline-width) solid var(--line);
+    border-radius: var(--radius);
+    background: var(--teal);
+    box-shadow: var(--shadow);
+    color: var(--on-fill);
+    font: inherit;
+    font-weight: 600;
+  }
+
+  .current {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .wide {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: 6px;
+  }
+
+  .grape {
+    outline: var(--focus-width) solid var(--grape-deep);
+    outline-offset: 6px;
+  }
+
+  .highlighter {
+    outline: 4px solid var(--yellow);
+    outline-offset: 0;
+  }
+
+  .marquee {
+    outline: var(--outline-width) dashed var(--fg);
+    outline-offset: 6px;
+  }
+</style>
