@@ -1,7 +1,14 @@
 ---
-/** More loading options for Gate 1b: water spinners. Letters carry on from the spinners above. */
+/**
+ * More loading options for Gate 1b: water spinners and filling buttons. Spinner letters carry on
+ * from the spinners above.
+ */
+import Button from '../ui/Button.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
+
+const FILLS = [undefined, 'teal', 'navy', 'coral', 'grape'] as const
+const LEVELS = [0.25, 0.5, 0.85]
 ---
 
 <SpecimenRow title="Water spinners">
@@ -30,6 +37,35 @@ import SpecimenRow from './SpecimenRow.astro'
       </span>
       Loading…
     </span>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Filling buttons (aria-busy, with an .rk-water child)">
+  <Specimen label="filling: yellow, teal, navy, coral, grape">
+    {
+      FILLS.map((fill) => (
+        <Button fill={fill} aria-busy="true" aria-disabled="true">
+          <span class="rk-water rk-water--rise" aria-hidden="true" />
+          Saving…
+        </Button>
+      ))
+    }
+  </Specimen>
+  <Specimen label="set by --water-level: 0.25, 0.5, 0.85">
+    {
+      LEVELS.map((level) => (
+        <Button fill="teal" aria-busy="true" aria-disabled="true" style={`--water-level: ${level}`}>
+          <span class="rk-water" aria-hidden="true" />
+          Uploading<span class="rk-visually-hidden"> {level * 100}%</span>
+        </Button>
+      ))
+    }
+  </Specimen>
+  <Specimen label="not busy: the water is hidden">
+    <Button fill="teal">
+      <span class="rk-water" aria-hidden="true"></span>
+      Upload
+    </Button>
   </Specimen>
 </SpecimenRow>
 
