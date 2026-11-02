@@ -15,6 +15,10 @@
          </pattern>
          <path d="…" />                                      the ground line
        </svg>
+       <svg class="rk-explode-sticker" viewBox="0 0 16 38" aria-hidden="true">   sticker only
+         <g class="rk-explode-sticker-edge">…every part's shape</g>
+         <g class="rk-explode-sticker-backing">…every part's shape again</g>
+       </svg>
        <div class="rk-explode-assembly" tabindex="0" role="img" aria-label="Lamp: stem and shade">
          <svg class="rk-explode-rest" viewBox="0 0 16 38">…each part's shape</svg>
          <svg class="rk-explode-part" viewBox="7 20 2 10" style="--x: 7; --y: 20; --w: 2; --h: 10;
@@ -238,6 +242,45 @@
     );
 }
 
+/* The sticker look, a demo: the whole drawing is one die-cut sticker, a band of glint round every
+   part's resting shape with a thin edge round that, and the sticker casts the resting shadow in
+   place of the assemblies (coloured from glint in the colour mode, via --extrusion). Every shape is stroked twice: wide in the edge colour, then narrower in
+   glint on top, so the strokes merge and only the outer edge shows. The sticker stays put while
+   the parts come apart: the rest of the drawing still sits on it, and it marks where each part
+   goes home. */
+.rk-explode--sticker {
+  --keyline: calc(2 * var(--outline-width));
+}
+
+.rk-explode--sticker .rk-explode-assembly {
+  filter: none;
+}
+
+.rk-explode-sticker {
+  --extrusion: color-mix(in oklab, var(--glint) 75%, var(--line));
+
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+  fill: var(--glint);
+  filter: drop-shadow(var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color))
+    drop-shadow(
+      calc(var(--shadow-dx) * var(--outline-width)) calc(var(--shadow-dy) * var(--outline-width)) 0
+        var(--shadow-edge)
+    );
+}
+
+.rk-explode-sticker-edge {
+  stroke: var(--line-unfilled);
+  stroke-width: calc(2 * (var(--illustration-outline) + var(--keyline) + var(--outline-width)));
+}
+
+.rk-explode-sticker-backing {
+  stroke: var(--glint);
+  stroke-width: calc(2 * (var(--illustration-outline) + var(--keyline)));
+}
+
 /* Reduced motion: nothing moves, but the open assembly's shadows still show, its labels show and
    the other assemblies fade back. */
 @media (prefers-reduced-motion: reduce) {
@@ -255,12 +298,20 @@
 /* Forced colours: the drawing sets its own system colours, so its shapes are outlined in
    CanvasText on Canvas, and the open assembly's in Highlight. */
 @media (forced-colors: active) {
-  :is(.rk-explode-ground, .rk-explode-rest, .rk-explode-part) {
+  :is(.rk-explode-ground, .rk-explode-sticker, .rk-explode-rest, .rk-explode-part) {
     forced-color-adjust: none;
   }
 
-  .rk-explode-ground {
+  :is(.rk-explode-ground, .rk-explode-sticker-edge) {
     stroke: CanvasText;
+  }
+
+  .rk-explode-sticker {
+    fill: Canvas;
+  }
+
+  .rk-explode-sticker-backing {
+    stroke: Canvas;
   }
 
   .rk-explode-shape {
