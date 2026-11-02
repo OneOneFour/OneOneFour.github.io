@@ -182,17 +182,25 @@ raw hues, so dark mode is a token swap.
    (dark outline and dark lettering). Only navy, and a deepened red,
    carry white text.
 2. **Coral is deepened by about 10–15% lightness** for any fill that
-   carries text, so it passes 4.5:1 with white. First candidate
-   `#da382f` = 4.6:1 (HLS lightness −5%, computed 2026-11-01); Gate 1a may push
-   it further for margin. The bright coral stays for large display blocks
-   and header bands with no small text.
+   carries text, so it passes 4.5:1 with white. *Decided at Gate 1a:* `--coral-deep` is
+   `#c8322a` (4.79:1 as text on cream, 5.32:1 under white); PLAN's first candidate `#da382f`
+   only reached 4.12:1 as text. Coral fills with small text use `--coral-solid` (coral-deep in
+   light mode, vivid coral with ink labels in dark). The bright coral stays for large display
+   blocks and header bands with no small text.
 3. **Bright hues are never used for small text on cream.** Each hue gets
    a `-deep` variant for text and links, and a `-tint` variant for panel
-   backgrounds (like the pale-blue/teal sidebar tints in draft 3).
+   backgrounds (like the pale-blue/teal sidebar tints in draft 3). *Decided at Gate 1a:* Rob
+   kept the proposed value of every `-deep` and `-tint` over both alternates; the values are in
+   the tokens file. Sky, lilac and apricot stay vivid in both themes, and their panel
+   versions that flip in dark mode are `--sky-tint`, `--lilac-tint` and `--apricot-tint`.
 4. Every token pair can be checked with a small local script
    (`npm run contrast`), so palette tweaks don't silently fail contrast.
 5. Charts in posts use the same hues in a fixed order, checked for
-   colour-blind separability (use the `dataviz` skill's validator).
+   colour-blind separability (use the `dataviz` skill's validator). *Checked at Gate 1a:* the
+   order **teal, yellow, navy, green, sky, coral, grape, tangerine** keeps every adjacent pair
+   apart for protan/deutan viewers in both themes (worst ΔE 19.2; the old order put green next
+   to yellow, ΔE 2.6 in dark). In light mode yellow, sky, teal, green and tangerine marks are
+   under 3:1 on cream, so chart marks need the ink outline or direct labels.
 
 ### 5.1a Auxiliary colours *(approved direction 2026-11-01)*
 
@@ -223,7 +231,13 @@ Rules (shown on the mood board, theme switch at the top):
   so toon edges still read as depth.
 - **Tints flip to deep versions** with cream text (sky, lilac, apricot are
   panel backgrounds and would glare in dark mode).
-- Hue-text variants (`--navy-text` etc.) get lighter values for dark mode.
+- Hue-text variants (`--navy-deep` etc.) get lighter values for dark mode.
+- **Mechanism (decided at Gate 1a):** each colour token is `light-dark(<light>, <dark>)` and
+  follows `color-scheme`. `:root` is `light dark` (follows the system), and `data-theme` on
+  `<html>` forces one. Any container can show the other theme by setting `color-scheme` on
+  it, which is how `/styleguide/` shows both side by side. Tokens stay unregistered (no
+  `@property`), or that breaks. Browsers without `light-dark()` (before mid-2024) get a
+  light-only fallback block, which the contrast script checks against the light values.
 
 | Token | Light | Dark | Text on it (dark) |
 |---|---|---|---|
@@ -346,23 +360,21 @@ settles the type scale, the monospace face and the weights actually used.
 - **Unfilled (outline-only) buttons are discouraged** *(Rob, 2026-11-01)*. Use a filled button
   wherever possible. Where an unfilled one is unavoidable, it sits flush (no resting shadow), and
   on press it gets an **inset** shadow and doesn't move, so it reads as pushed into the page.
-- **Focus**: a visible 3px `--focus` ring offset from the outline, never
-  removed.
-  - *(Rob, Gate 1a)*: the focus style is the **highlighter**, a 6px yellow band hugging the
-    ink outline, with the hard shadow turned off while focused. Its 3:1 edge is against the ink
-    outline (yellow on cream alone is only 1.56:1). So elements with no outline, such as text
-    links, use a marker-pen version instead: a yellow background behind the ink text.
-  - **On yellow, the band is tangerine** *(Rob, Gate 1a)*. A yellow band vanishes next to
-    yellow (yellow buttons and chips, yellow panels, and the Photography section's yellow
-    areas). `--focus` is overridable: those places set `--focus: var(--focus-alt)`
-    (tangerine). Components with a yellow fill variant do this themselves, and the site does it
-    for yellow section areas.
+- **Focus** *(decided at Gate 1a)*: the **highlighter**, a 6px **tangerine** band
+  (`--focus`) hugging the ink outline (no offset), with the hard shadow turned off while
+  focused. Never removed.
+  - Its 3:1 edge is against the ink outline (6.41:1 light, 8.69:1 dark). Tangerine on cream
+    alone is only about 2.2:1, so elements with no outline, such as text links, use a
+    marker-pen version instead: a tangerine background behind the ink text.
+  - `--focus` is overridable. Where tangerine surrounds the focused element (tangerine fills,
+    apricot panels), set `--focus: var(--focus-alt)` (yellow). Components with such a fill
+    variant do this themselves.
 
 ### 5.4 Component inventory
 
 | Layer | Components |
 |---|---|
-| Primitives (CSS on native elements) | `button`, `input[type=range]`, checkbox styled as switch, `select`, text input, links |
+| Primitives (CSS on native elements) | `button`, `input[type=range]`, checkbox, radio, checkbox styled as switch, `select`, text input, `textarea`, links. All built in P1 step 7 so they share one look; each shows rest, hover, pressed, focused, disabled and (for inputs) error states |
 | Astro components | `Button`, `Chip`/`ChipGroup` (filter), `Card` (post / project / paper / album variants), `HeaderBand`, `Callout` (note / warning), `PullQuote`, `Sidenote`, `Figure`, `WidgetFrame` |
 | Layouts | `BaseLayout` (left bar + main), `PostLayout` (header band, breakout grid, end matter), `IndexLayout` (card grid + chips) |
 
