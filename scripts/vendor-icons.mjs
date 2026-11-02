@@ -342,6 +342,7 @@ const DEFAULT_FILLS = {
   'gas-can': 'tangerine',
   'charging-station': 'yellow',
   speedometer: 'yellow',
+  engine: 'yellow',
   'traffic-sign': 'tangerine',
   'traffic-cone': 'tangerine',
   'navigation-arrow': 'tangerine',
