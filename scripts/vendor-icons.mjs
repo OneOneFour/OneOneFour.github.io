@@ -90,7 +90,8 @@ const PHOSPHOR_ICONS = [
 const LOCAL_ICONS = ['satellite']
 
 // Each icon's fill when nothing sets --icon-fill, as a token name. Unlisted icons (interface
-// icons such as copy, x and the carets) use the neutral wash, --icon-fill-neutral.
+// icons such as copy, x and the carets, and maths symbols that are basically a glyph, where a
+// coloured fill makes them hard to read) use the neutral wash, --icon-fill-neutral.
 const DEFAULT_FILLS = {
   house: 'sky',
   'pen-nib': 'coral',
@@ -161,8 +162,6 @@ const DEFAULT_FILLS = {
   cpu: 'grape',
   'chart-scatter': 'apricot',
   'chart-bar': 'apricot',
-  function: 'grape',
-  sigma: 'grape',
   planet: 'lilac',
   trophy: 'yellow',
   'seal-check': 'green',
@@ -251,30 +250,6 @@ const DEFAULT_FILLS = {
   'trend-up': 'apricot',
   'trend-down': 'apricot',
   gradient: 'apricot',
-  pi: 'grape',
-  infinity: 'grape',
-  'math-operations': 'grape',
-  equals: 'grape',
-  'not-equals': 'grape',
-  'approximate-equals': 'grape',
-  'plus-minus': 'grape',
-  divide: 'grape',
-  percent: 'grape',
-  radical: 'grape',
-  'greater-than': 'grape',
-  'greater-than-or-equal': 'grape',
-  'less-than': 'grape',
-  'less-than-or-equal': 'grape',
-  'member-of': 'grape',
-  'not-member-of': 'grape',
-  'subset-of': 'grape',
-  'subset-proper-of': 'grape',
-  'not-subset-of': 'grape',
-  'superset-of': 'grape',
-  'superset-proper-of': 'grape',
-  'not-superset-of': 'grape',
-  union: 'grape',
-  intersection: 'grape',
   'intersect-three': 'grape',
   'vector-two': 'grape',
   'vector-three': 'grape',
