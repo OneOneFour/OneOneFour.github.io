@@ -1,0 +1,176 @@
+/* Diagrams: nodes and links in inline SVG, in the toon look. Nodes are flat fills with the ink
+   outline, on the hard shadow; links are lines in the outline colour. Set --node-fill on a node to
+   a fill that carries ink labels (teal, yellow, green, sky, lilac, tangerine or apricot).
+
+   <svg class="rk-diagram" viewBox="…" role="img" aria-labelledby="…">
+     <path class="rk-diagram-edge" d="…" />                 a link; --quiet for a thin muted one
+     <g class="rk-diagram-pulse">                           a dot that can travel along a link
+       <path class="rk-diagram-pulse-casing" pathLength="1" d="…" />
+       <path class="rk-diagram-pulse-dot" pathLength="1" d="…" />
+     </g>
+     <g class="rk-diagram-node" style="--node-fill: var(--sky)">
+       <rect class="rk-diagram-focus" … />                  the focus band, on nodes with tabindex
+       <rect class="rk-diagram-shape" … />
+       <circle class="rk-diagram-glint" r="3" … />          optional highlight, on the light's side
+       <text class="rk-diagram-label" …>Label</text>
+     </g>
+     <text class="rk-diagram-note" …>yes</text>             a small note beside a link
+   </svg>
+
+   A pulse is hidden at rest. Animate stroke-dashoffset on it from 0 (at the start of its path) to
+   -1 (at the end) to move it along.
+   In <rk-diagram> (diagram.js), hovering or focusing a node (data-node="id") lights the links
+   whose data-from or data-to is its id, and dims the rest.
+   Styleguide only for now, like the charts. */
+
+rk-diagram,
+.rk-diagram {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+  overflow: visible;
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+}
+
+.rk-diagram-edge {
+  fill: none;
+  stroke: var(--line-unfilled);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  transition:
+    stroke var(--duration-fast) ease,
+    stroke-width var(--duration-fast) ease;
+}
+
+.rk-diagram-edge--quiet {
+  stroke: var(--muted);
+  stroke-width: 1.5;
+}
+
+.rk-diagram-arrowhead {
+  fill: var(--line-unfilled);
+}
+
+/* A dash of almost no length with round caps is a dot. Its pattern repeats every two path
+   lengths, so only one dot is ever on the path; the resting offset puts it off both ends. */
+.rk-diagram-pulse {
+  fill: none;
+  stroke-dasharray: 0.001 2;
+  stroke-dashoffset: 0.5;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.rk-diagram-pulse-casing {
+  stroke: var(--line);
+  stroke-width: 10;
+}
+
+.rk-diagram-pulse-dot {
+  stroke: var(--pulse-fill, var(--selected));
+  stroke-width: 6;
+}
+
+/* As in tooltip.css, the second drop-shadow is the shadow's light edge in dark mode. */
+.rk-diagram-node {
+  --node-fill: var(--raised);
+
+  filter: drop-shadow(var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color))
+    drop-shadow(
+      calc(var(--shadow-dx) * var(--outline-width)) calc(var(--shadow-dy) * var(--outline-width)) 0
+        var(--shadow-edge)
+    );
+}
+
+.rk-diagram-shape {
+  fill: var(--node-fill);
+  stroke: var(--line);
+  stroke-width: var(--outline-width);
+}
+
+.rk-diagram-glint {
+  fill: var(--glint);
+  translate: calc(var(--shadow-dx) * -5px) calc(var(--shadow-dy) * -5px);
+}
+
+.rk-diagram-label {
+  fill: var(--on-fill);
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.rk-diagram-note {
+  fill: var(--muted);
+  font-style: italic;
+}
+
+/* The band is a copy of the shape under it, with a stroke wide enough to show --focus-width of it
+   outside the ink outline. As elsewhere, the shadow goes while focused. */
+.rk-diagram-focus {
+  display: none;
+  fill: none;
+  stroke: var(--focus);
+  stroke-width: calc(var(--outline-width) + 2 * var(--focus-width));
+}
+
+.rk-diagram-node:focus-visible {
+  outline: none;
+  filter: none;
+}
+
+.rk-diagram-node:focus-visible .rk-diagram-focus {
+  display: inline;
+}
+
+rk-diagram :is([data-from], [data-to]) {
+  transition: opacity var(--duration-fast) ease;
+}
+
+rk-diagram[data-highlight] :is([data-from], [data-to]):not([data-lit]) {
+  opacity: 0.2;
+}
+
+rk-diagram[data-highlight] [data-lit] .rk-diagram-edge {
+  stroke: var(--fg);
+  stroke-width: 3;
+}
+
+/* Forced colours: system colours throughout, with the moving and lit parts in Highlight. */
+@media (forced-colors: active) {
+  .rk-diagram {
+    forced-color-adjust: none;
+  }
+
+  .rk-diagram-node {
+    filter: none;
+  }
+
+  .rk-diagram-shape {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+
+  .rk-diagram-label,
+  .rk-diagram-note,
+  .rk-diagram-arrowhead {
+    fill: CanvasText;
+  }
+
+  .rk-diagram-edge,
+  .rk-diagram-pulse-casing {
+    stroke: CanvasText;
+  }
+
+  .rk-diagram-pulse-dot,
+  .rk-diagram-focus,
+  rk-diagram[data-highlight] [data-lit] .rk-diagram-edge {
+    stroke: Highlight;
+  }
+
+  .rk-diagram-glint {
+    display: none;
+  }
+}

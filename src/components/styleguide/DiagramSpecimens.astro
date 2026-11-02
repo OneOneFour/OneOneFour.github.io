@@ -1,0 +1,51 @@
+---
+/**
+ * Diagrams in the toon style: a neural network whose nodes light their links on hover or focus,
+ * and a flow chart whose steps light up in turn. Each pauses off-screen or from its button.
+ *
+ * @param theme the panel's theme, passed on to keep SVG ids unique
+ */
+import Button from '../ui/Button.astro'
+import FlowChart from './FlowChart.astro'
+import NeuralNetwork from './NeuralNetwork.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import PauseIcon from 'rk-ui/icons/pause.svg'
+import './diagram.css'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+---
+
+<SpecimenRow title="Neural network: hover or focus a node to light its links">
+  <Specimen label="pulses travel a layer at a time (--loop-long); nodes squash as they land" wide>
+    <rk-motion class="diagram">
+      <NeuralNetwork theme={theme} />
+      <Button small data-motion-pause aria-pressed="false"><PauseIcon class="rk-icon" />Pause</Button>
+    </rk-motion>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Flow chart: the steps light up in turn">
+  <Specimen label="one step per sixth of --loop-panel; step 2 fills with water while it runs" wide>
+    <rk-motion class="diagram">
+      <FlowChart theme={theme} />
+      <Button small data-motion-pause aria-pressed="false"><PauseIcon class="rk-icon" />Pause</Button>
+    </rk-motion>
+  </Specimen>
+</SpecimenRow>
+
+<script>
+  import 'rk-ui/motion.js'
+</script>
+
+<style>
+  .diagram {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-3);
+  }
+</style>

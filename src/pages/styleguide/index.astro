@@ -41,6 +41,7 @@ import EquationSpecimens from '../../components/styleguide/EquationSpecimens.ast
 import MathsInTextSpecimens from '../../components/styleguide/MathsInTextSpecimens.astro'
 import ChartPaletteSpecimens from '../../components/styleguide/ChartPaletteSpecimens.astro'
 import ChartSpecimens from '../../components/styleguide/ChartSpecimens.astro'
+import DiagramSpecimens from '../../components/styleguide/DiagramSpecimens.astro'
 import FigureSpecimens from '../../components/styleguide/FigureSpecimens.astro'
 import StyleguideContents from '../../components/styleguide/StyleguideContents.astro'
 
@@ -94,7 +95,7 @@ const CONTENTS = [
   },
   {
     title: 'Maths and charts',
-    sections: ['Equations', 'Maths in text', 'Chart colours', 'Charts', 'Figures and widgets'],
+    sections: ['Equations', 'Maths in text', 'Chart colours', 'Charts', 'Diagrams', 'Figures and widgets'],
   },
 ]
 ---
@@ -334,6 +335,15 @@ const CONTENTS = [
       </p>
       <ChartSpecimens slot="light" />
       <ChartSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Diagrams" stacked>
+      <p>
+        Inline SVG in the toon style, animated by the motion policy (PLAN §5.7). Options for Gate 1b:
+        try them with the palette switch and the light.
+      </p>
+      <DiagramSpecimens slot="light" theme="light" />
+      <DiagramSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Figures and widgets" stacked>

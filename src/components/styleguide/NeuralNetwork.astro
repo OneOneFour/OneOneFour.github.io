@@ -1,0 +1,177 @@
+---
+/**
+ * A small neural network in the toon style. A forward pass travels the links as pulses, a layer at
+ * a time, and each node squashes as its pulses land. Hovering or focusing a node lights its links.
+ *
+ * @param theme the panel's theme, used to keep SVG ids unique across the two panels
+ */
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const LAYERS = [
+  { name: 'Input', note: 'Input', size: 3, fill: '--teal' },
+  { name: 'Hidden layer 1', note: 'Hidden', size: 4, fill: '--yellow' },
+  { name: 'Hidden layer 2', note: 'Hidden', size: 4, fill: '--yellow' },
+  { name: 'Output', note: 'Output', size: 2, fill: '--coral' },
+]
+const width = 480
+const height = 260
+const radius = 15
+const middle = 112
+const rowGap = 56
+
+const layers = LAYERS.map((layer, l) => ({
+  ...layer,
+  x: 60 + l * 120,
+  nodes: Array.from({ length: layer.size }, (_, n) => ({
+    id: `${l}-${n}`,
+    label: `${layer.name}, node ${n + 1}`,
+    y: middle + (n - (layer.size - 1) / 2) * rowGap,
+  })),
+}))
+const links = layers.slice(0, -1).flatMap((layer, l) => {
+  const next = layers[l + 1]
+  return layer.nodes.flatMap((from) =>
+    next.nodes.map((to) => ({
+      layer: l,
+      from: from.id,
+      to: to.id,
+      d: `M${layer.x} ${from.y}L${next.x} ${to.y}`,
+    })),
+  )
+})
+const titleId = `${theme}-network-title`
+const descId = `${theme}-network-desc`
+---
+
+<rk-diagram>
+  <svg
+    class="rk-diagram network"
+    width={width}
+    height={height}
+    viewBox={`0 0 ${width} ${height}`}
+    role="group"
+    aria-labelledby={titleId}
+    aria-describedby={descId}
+  >
+    <title id={titleId}>A small neural network</title>
+    <desc id={descId}>
+      Three inputs, two hidden layers of four nodes and two outputs. Every node is joined to every
+      node in the next layer, and pulses travel the joins a layer at a time, from the inputs to the
+      outputs.
+    </desc>
+    {
+      links.map((link) => (
+        <g data-from={link.from} data-to={link.to} style={`--layer: ${link.layer}`}>
+          <path class="rk-diagram-edge rk-diagram-edge--quiet" d={link.d} />
+          <g class="rk-diagram-pulse">
+            <path class="rk-diagram-pulse-casing" pathLength="1" d={link.d} />
+            <path class="rk-diagram-pulse-dot" pathLength="1" d={link.d} />
+          </g>
+        </g>
+      ))
+    }
+    {
+      layers.map((layer, l) =>
+        layer.nodes.map((node) => (
+          <g
+            class:list={['rk-diagram-node', 'network-node', { 'network-node--input': l === 0 }]}
+            data-node={node.id}
+            tabindex="0"
+            role="img"
+            aria-label={node.label}
+            style={`--node-fill: var(${layer.fill}); --layer: ${l}`}
+          >
+            <circle class="rk-diagram-focus" cx={layer.x} cy={node.y} r={radius} />
+            <circle class="rk-diagram-shape" cx={layer.x} cy={node.y} r={radius} />
+            <circle class="rk-diagram-glint" cx={layer.x} cy={node.y} r="3" />
+          </g>
+        )),
+      )
+    }
+    {
+      layers.map((layer) => (
+        <text class="rk-diagram-note" x={layer.x} y={height - 12} text-anchor="middle" aria-hidden="true">
+          {layer.note}
+        </text>
+      ))
+    }
+  </svg>
+</rk-diagram>
+
+<script>
+  import './diagram.js'
+</script>
+
+<style>
+  /* One forward pass per --loop-long, in four phases. In each, the pulses from one layer travel for
+     the phase less --hold (20% of the loop), and the nodes they reach squash as they land. */
+  .network {
+    --phase: calc(var(--loop-long) / 4);
+    --hold: calc(var(--loop-long) / 20);
+  }
+
+  .network .rk-diagram-pulse {
+    animation: network-pulse var(--loop-long) linear calc(var(--layer) * var(--phase)) infinite;
+  }
+
+  @keyframes network-pulse {
+    0% {
+      stroke-dashoffset: 0;
+    }
+
+    20% {
+      stroke-dashoffset: -1;
+    }
+
+    20.01%,
+    100% {
+      stroke-dashoffset: 0.5;
+    }
+  }
+
+  /* A node squashes against the side its pulses arrive from. The inputs crouch against their
+     outgoing side instead, just before they fire. */
+  .network-node {
+    transform-box: fill-box;
+    transform-origin: left center;
+    animation: network-land var(--loop-long) calc(var(--layer) * var(--phase) - var(--hold)) infinite;
+  }
+
+  .network-node--input {
+    transform-origin: right center;
+  }
+
+  @keyframes network-land {
+    0% {
+      scale: 1;
+    }
+
+    2% {
+      scale: 0.8 1.2;
+      animation-timing-function: ease-out;
+    }
+
+    6% {
+      scale: 1.08 0.94;
+    }
+
+    10% {
+      scale: 0.97 1.03;
+    }
+
+    14%,
+    100% {
+      scale: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .network .rk-diagram-pulse,
+    .network-node {
+      animation: none;
+    }
+  }
+</style>
