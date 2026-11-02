@@ -63,7 +63,7 @@
   inset: 0;
   pointer-events: none;
   stroke: var(--line-unfilled);
-  stroke-width: var(--illustration-outline);
+  stroke-width: var(--outline-width);
 }
 
 /* An assembly covers the whole stage, so only its parts take the pointer. It comes in front of
@@ -152,7 +152,7 @@
 .rk-explode-shape {
   fill: var(--part-fill);
   stroke: var(--line);
-  stroke-width: calc(2 * var(--illustration-outline));
+  stroke-width: calc(2 * var(--outline-width));
   paint-order: stroke;
   pointer-events: auto;
 }
@@ -163,7 +163,7 @@
 
 .rk-explode-detail--outlined {
   stroke: var(--line);
-  stroke-width: var(--illustration-outline);
+  stroke-width: var(--outline-width);
 }
 
 .rk-explode-assembly > .rk-explode-label {
@@ -184,7 +184,7 @@
   display: none;
   fill: none;
   stroke: var(--focus);
-  stroke-width: calc(2 * (var(--illustration-outline) + var(--focus-width)));
+  stroke-width: calc(2 * (var(--outline-width) + var(--focus-width)));
 }
 
 .rk-explode-assembly:focus-visible .rk-explode-band {

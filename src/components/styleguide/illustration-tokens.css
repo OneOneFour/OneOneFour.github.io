@@ -29,7 +29,4 @@
   );
   --illustration-steel-shade: color-mix(in oklab, var(--illustration-steel) 80%, var(--ink));
   --illustration-navy-shade: color-mix(in oklab, var(--illustration-navy) 80%, var(--ink));
-
-  /* A drawing's outline: heavier than the interface's, the same at any size */
-  --illustration-outline: calc(1.5 * var(--outline-width));
 }
