@@ -270,8 +270,15 @@ Supporting decisions *(proposed)*:
   Markdown processor, which has no KaTeX renderer. So the site sets
   `markdown.processor` to `unified()` from `@astrojs/markdown-remark` with
   `remark-math` + `rehype-katex`, and MDX inherits it. Maths syntax in posts is
-  `$…$` inline and `$$…$$` for display. KaTeX uses its own math fonts, so the body
-  font only needs Greek for *inline prose*. No runtime JS.
+  `$…$` inline and `$$…$$` for display (a literal dollar sign in prose is `\$`). KaTeX
+  uses its own math fonts, so the body font only needs Greek for *inline prose*. No runtime JS.
+  `unified()` is a maintained, first-class processor option in Astro 7
+  (`@astrojs/markdown-remark` 7.3.5); only the old top-level `markdown.remarkPlugins`
+  keys are legacy. Site-wide TeX macros (e.g. `\R`, `\dd`) live in one shared macros
+  file passed to KaTeX. **[OPEN]** Does Rob need cross-referenced equation numbers
+  (`\label`/`\eqref`)? KaTeX supports `\tag` and numbered `align`/`equation`, but its
+  docs don't list `\label`/`\eqref`. If he does, compare `rehype-mathjax` (also build-time)
+  before P3W.
 - **Monospace** (code, widget readouts): pick one with Greek, decided in WP-1.
 - Fonts are **self-hosted** from woff2 files vendored once into the design
   package (OFL allows redistribution), with our own `@font-face` rules. Each
