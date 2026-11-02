@@ -1,14 +1,26 @@
 /* Static copies of the interactive states, so /styleguide/ can show them side by side.
    Styleguide only: the package uses the real pseudo-classes. Keep in step with interactive.css. */
 
-:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input, .rk-folder-tab).is-hover {
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input).is-hover {
   box-shadow: var(--shadow-hover);
   translate: calc(-1 * var(--lift-offset-x)) calc(-1 * var(--lift-offset-y));
 }
 
-:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input, .rk-folder-tab).is-active {
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input).is-active {
   box-shadow: var(--shadow-pressed);
   translate: var(--press-offset-x) var(--press-offset-y);
+}
+
+.rk-folder-tab.is-hover {
+  inset-block-start: calc(-1 * var(--lift-offset-y));
+  inset-inline-start: calc(-1 * var(--lift-offset-x));
+  box-shadow: var(--shadow-hover);
+}
+
+.rk-folder-tab.is-active {
+  inset-block-start: var(--press-offset-y);
+  inset-inline-start: var(--press-offset-x);
+  box-shadow: var(--shadow-pressed);
 }
 
 .rk-button--unfilled.is-hover {

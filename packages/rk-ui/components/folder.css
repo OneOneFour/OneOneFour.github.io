@@ -122,7 +122,8 @@
 }
 
 /* The selected tab stops at the sheet's top edge, and its ::after covers the sheet's outline
-   between the tab's sides, joining the two. */
+   between the tab's sides, joining the two. The cover reaches a pixel past the outline each way,
+   so a sub-pixel offset never leaves a hairline of it. */
 .rk-folder-tab:is([aria-selected='true'], [aria-current='page']) {
   z-index: 3;
   margin-block-end: var(--folder-tuck);
@@ -136,8 +137,8 @@
   content: '';
   position: absolute;
   inset-inline: 0;
-  inset-block-start: 100%;
-  block-size: var(--outline-width);
+  inset-block-start: calc(100% - 1px);
+  block-size: calc(var(--outline-width) + 2px);
   background: var(--folder-sheet);
 }
 

@@ -5,7 +5,7 @@
 /* Pop: hover lifts the element and grows its shadow; press sinks it into the shadow. A ballot row
    pops its tile from anywhere on the row; :where() keeps that below the tile's checked, focused
    and disabled states. */
-:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input, .rk-folder-tab) {
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input) {
   box-shadow: var(--shadow);
   transition:
     translate var(--duration-fast) ease,
@@ -13,7 +13,7 @@
 }
 
 @media (hover: hover) {
-  :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input, .rk-folder-tab):hover,
+  :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input):hover,
   .rk-segmented--deck label:hover,
   :where(.rk-ballot-option:hover) > .rk-tile {
     box-shadow: var(--shadow-hover);
@@ -21,7 +21,7 @@
   }
 }
 
-:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input, .rk-folder-tab):active,
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input):active,
 .rk-segmented--deck label:active,
 :where(.rk-ballot-option:active) > .rk-tile {
   box-shadow: var(--shadow-pressed);
@@ -61,12 +61,40 @@
   translate: var(--shadow-offset-x) var(--shadow-offset-y);
 }
 
+/* Folder tabs pop with their position offsets instead of translate. A translate transition puts
+   the tab on its own compositor layer, which snaps to whole pixels and can open a hairline at the
+   join with the sheet. */
+.rk-folder-tab {
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  box-shadow: var(--shadow);
+  transition:
+    inset-block-start var(--duration-fast) ease,
+    inset-inline-start var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .rk-folder-tab:hover {
+    inset-block-start: calc(-1 * var(--lift-offset-y));
+    inset-inline-start: calc(-1 * var(--lift-offset-x));
+    box-shadow: var(--shadow-hover);
+  }
+}
+
+.rk-folder-tab:active {
+  inset-block-start: var(--press-offset-y);
+  inset-inline-start: var(--press-offset-x);
+  box-shadow: var(--shadow-pressed);
+}
+
 /* The selected folder tab is joined to the sheet and doesn't pop; its shadow is on ::before
    (folder.css). It takes the selected state at once, so the press it was clicked with doesn't
    ease back across the join. */
 .rk-folder-tab:is([aria-selected='true'], [aria-current='page']) {
+  inset-block-start: 0;
+  inset-inline-start: 0;
   box-shadow: none;
-  translate: none;
   transition: none;
 }
 
