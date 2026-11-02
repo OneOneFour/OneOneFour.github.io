@@ -1,7 +1,7 @@
 ---
 /**
- * The Gate 1b code choices: the three code box variants with live copy buttons, then the three
- * slate candidates on a plain box, each with inline code in a sentence.
+ * Code blocks with live copy buttons: the default box and the editor tab, then the three slate
+ * candidates on a default box, each with inline code in a sentence.
  */
 import CodeBlock from '../CodeBlock.astro'
 import Specimen from './Specimen.astro'
@@ -9,8 +9,8 @@ import SpecimenRow from './SpecimenRow.astro'
 import { LORENZ_JS, LORENZ_PYTHON } from './code-samples'
 
 const BOXES = [
-  { title: 'Code box A (inset, now the default)', class: undefined },
-  { title: 'Code box C (editor tab)', class: 'rk-code--tab' },
+  { title: 'Code block', class: undefined },
+  { title: 'Editor tab (.rk-code--tab)', class: 'rk-code--tab' },
 ]
 const SLATES = [
   { title: 'Slate A (cool, the default)', class: 'slate-a' },
@@ -38,7 +38,7 @@ const SLATES = [
 {
   SLATES.map((slate) => (
     <SpecimenRow title={slate.title}>
-      <Specimen label="plain box" wide>
+      <Specimen label="default box" wide>
         <div class={slate.class}>
           <CodeBlock code={LORENZ_PYTHON} lang="python" label="Python" />
         </div>

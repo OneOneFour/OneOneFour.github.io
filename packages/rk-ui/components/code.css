@@ -15,7 +15,7 @@
      </figure>
    </rk-code-block>
 
-   Box variant for Gate 1b: .rk-code--tab (C). */
+   Opt-in modifier: .rk-code--tab puts the caption in a darker strip, like an editor tab. */
 
 rk-code-block {
   display: block;
@@ -81,7 +81,6 @@ rk-code-block {
   outline: none;
 }
 
-/* Code box C: the caption is a darker strip across the top, like an editor tab. */
 .rk-code--tab .rk-code-header {
   padding-block: var(--space-2);
   border-radius: var(--radius) var(--radius) 0 0;
