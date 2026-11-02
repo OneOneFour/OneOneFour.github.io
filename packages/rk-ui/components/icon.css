@@ -1,10 +1,6 @@
 /* Inline SVG icons from icons/. --icon-stroke is in the icons' 256-unit viewBox, so 21 is about
-   2px at 24px. --icon-fill inherits: set it on the icon or any container. Its default is a pale
-   wash of the outline colour. */
-
-:root {
-  --icon-fill: var(--icon-fill-neutral);
-}
+   2px at 24px. --icon-fill inherits: set it on the icon or any container. When nothing sets it,
+   each icon uses its own default fill, written into the SVG. */
 
 .rk-icon {
   flex: none;
