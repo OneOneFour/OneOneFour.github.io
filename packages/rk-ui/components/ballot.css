@@ -1,7 +1,7 @@
 /* Ballot: a column of options, each a tile (tiles.css) beside a bordered text box. Each row is one
    label, so clicking anywhere on it votes. Use radios for one choice, checkboxes for several.
    Hovering or pressing the row pops its tile; the checked row's tile is pushed in and its text box
-   takes --selected-tint.
+   takes --selected-tint. The checked tile lands with a kerchunk.
 
    <fieldset class="rk-ballot">
      <legend class="rk-visually-hidden">Vote</legend>
@@ -23,7 +23,6 @@
 .rk-ballot {
   --tile-size: 2.5rem;
   --tile-font-size: var(--step-1);
-  --stamp-duration: calc(1.5 * var(--duration-spring));
 
   display: grid;
   gap: var(--space-3);
@@ -92,62 +91,10 @@
   padding-inline: var(--space-3) calc(var(--tile-size) / 2 + var(--space-3));
 }
 
-/* Stamp options for Gate 1b: how the tile lands when its row is checked. With none, it is pushed
-   in like any checked tile. Each is a modifier on the group. CSS can't tell a page load from a
-   click, so a row checked on load plays its stamp once. */
-
-/* Stamp A: add .rk-ballot--stamp-thump for a tile that slams down like a rubber stamp. The spring
-   easing carries it just under full size before it settles. */
-.rk-ballot--stamp-thump .rk-tile:has(:checked) {
-  animation: rk-ballot-thump var(--stamp-duration) var(--ease-spring);
-}
-
-@keyframes rk-ballot-thump {
-  from {
-    scale: 1.25;
-    rotate: -6deg;
-    box-shadow: var(--shadow-hover);
-  }
-}
-
-/* Stamp B: add .rk-ballot--stamp-ink for a tick that thumps onto the tile in place of its content.
-   The tick is the bottom and right borders of a box, turned 45°, as on checkboxes; the raised
-   bottom inset centres it by eye. Forced colours keep the plain checked tile. */
-@media (forced-colors: none) {
-  .rk-ballot--stamp-ink .rk-tile:has(:checked) {
-    color: transparent;
-  }
-
-  .rk-ballot--stamp-ink .rk-tile:has(:checked) > svg {
-    visibility: hidden;
-  }
-
-  .rk-ballot--stamp-ink .rk-tile:has(:checked)::after {
-    content: '';
-    position: absolute;
-    inset: 0 0 15%;
-    inline-size: 28%;
-    block-size: 52%;
-    margin: auto;
-    border: solid var(--swatch-on, var(--on-selected));
-    border-width: 0 4px 4px 0;
-    rotate: 45deg;
-    animation: rk-ballot-ink var(--stamp-duration) var(--ease-spring);
-  }
-}
-
-@keyframes rk-ballot-ink {
-  from {
-    opacity: 0;
-    scale: 2;
-    rotate: 30deg;
-  }
-}
-
-/* Stamp C: add .rk-ballot--stamp-kerchunk for the deck keys' kerchunk (segmented.css): the tile
-   drives past its pushed-in depth, then settles. The keyframes move it, so its translate isn't
-   transitioned as well. */
-.rk-ballot--stamp-kerchunk .rk-tile:has(:checked) {
+/* A checked tile lands with the deck keys' kerchunk (segmented.css): it drives past its pushed-in
+   depth, then settles. The keyframes move it, so its translate isn't transitioned as well. CSS
+   can't tell a page load from a click, so a row checked on load plays it once. */
+.rk-ballot .rk-tile:has(:checked:enabled) {
   --key-overshoot: 2px;
 
   transition-property: box-shadow;

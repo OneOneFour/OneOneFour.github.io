@@ -1,7 +1,7 @@
 ---
 /**
  * The ballot with letter, empty, icon and colour tiles, as checkboxes and with the tiles on the
- * right; its states; and the stamp options for the checked tile, live.
+ * right; and its states.
  *
  * @param theme the panel's theme, used to keep input names unique across the two panels
  */
@@ -79,13 +79,6 @@ const STATES = [
   { title: 'Disabled', disabled: true },
   { title: 'Checked and disabled', checked: true, disabled: true },
 ].map((option, index) => ({ ...option, value: String(index), mark: 'ABCDEFGH'[index] }))
-
-const STAMPS = [
-  { label: 'no stamp: pushed in, like any tile' },
-  { label: 'stamp A: thump', modifier: 'rk-ballot--stamp-thump' },
-  { label: 'stamp B: ink mark', modifier: 'rk-ballot--stamp-ink' },
-  { label: 'stamp C: kerchunk', modifier: 'rk-ballot--stamp-kerchunk' },
-]
 ---
 
 <SpecimenRow title="Ballot: tiles">
@@ -108,14 +101,4 @@ const STAMPS = [
   <Specimen label="each row in the state it names" wide>
     <Ballot legend="States" name={`${theme}-ballot-states`} options={STATES} multiple />
   </Specimen>
-</SpecimenRow>
-
-<SpecimenRow title="Ballot: stamp options for the checked tile (click to try)">
-  {
-    STAMPS.map((stamp, index) => (
-      <Specimen label={stamp.label} wide>
-        <Ballot legend="Vote" name={`${theme}-stamp-${index}`} options={LETTERED} modifier={stamp.modifier} />
-      </Specimen>
-    ))
-  }
 </SpecimenRow>
