@@ -44,6 +44,10 @@
       --extrusion: color-mix(in oklab, var(--badge-fill) 75%, var(--line));
     }
 
+    .rk-sticky-note {
+      --extrusion: color-mix(in oklab, var(--note-fill) 75%, var(--line));
+    }
+
     /* Darkened, these fills are too close to the page to read as a shadow. Checked chips are left
        out for the same reason, since their default --section is ink. */
     :is(.rk-button--navy, .rk-button--section) {
