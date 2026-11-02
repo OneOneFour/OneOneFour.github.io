@@ -170,7 +170,10 @@
 /* Tiles (B): one filter for all of them, rather than one per tile. As in tooltip.css, the second
    drop-shadow is the shadow's light edge in dark mode. */
 .rk-chart--tiles .rk-chart-cells {
-  filter: drop-shadow(calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color))
+  filter: drop-shadow(
+      calc(var(--shadow-dx) * var(--shadow-depth) * 2px)
+        calc(var(--shadow-dy) * var(--shadow-depth) * 2px) 0 var(--shadow-color)
+    )
     drop-shadow(
       calc(var(--shadow-dx) * var(--outline-width)) calc(var(--shadow-dy) * var(--outline-width)) 0
         var(--shadow-edge)

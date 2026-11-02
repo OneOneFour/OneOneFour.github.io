@@ -20,7 +20,7 @@ function toToken(value) {
 
 /**
  * Points every shadow away from a light at `angle`, by setting --shadow-dx and --shadow-dy on
- * `<html>`, where the shadow tokens resolve.
+ * `<html>`.
  * @param {number} angle where the light comes from
  */
 function setLightAngle(angle) {

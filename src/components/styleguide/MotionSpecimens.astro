@@ -70,14 +70,12 @@ const STAGGERED = ['--teal', '--yellow', '--navy', '--green', '--coral']
 </script>
 
 <style>
-  /* What the tokens become under reduced motion, here at all times. The offsets are re-declared
-     because the tokens resolve them on <html>. */
-  .reduced-input {
+  /* What the tokens become under reduced motion, here at all times. Set on the button itself, as
+     tokens.css declares the offsets on every element. */
+  .reduced-input :global(.rk-button) {
     --duration-fast: 0ms;
-    --lift-offset-x: 0px;
-    --lift-offset-y: 0px;
-    --press-offset-x: 0px;
-    --press-offset-y: 0px;
+    --lift-offset: 0px;
+    --press-offset: 0px;
   }
 
   .track {

@@ -51,15 +51,16 @@
 
 /* Scrolls sideways when the tabs don't fit. The padding, inside the dots' gutters, leaves room
    for the focus band and a lifted tab's shadow. The gap is wider than a lifted tab's shadow at
-   any light angle, so the shadow never falls on a neighbour. */
+   any light angle, so the shadow never falls on a neighbour. The gap and the side padding grow
+   with the shadow's depth. */
 .rk-folder-tabs {
   display: flex;
   align-items: flex-end;
-  gap: var(--space-3);
+  gap: calc(var(--shadow-depth) * var(--space-3));
   position: relative;
   z-index: 2;
   margin: 0 0 calc(-1 * var(--folder-tuck));
-  padding: var(--space-2) var(--space-2) 0;
+  padding: var(--space-2) calc(var(--shadow-depth) * var(--space-2)) 0;
   overflow: auto hidden;
   scrollbar-width: none;
   list-style: none;

@@ -420,6 +420,15 @@ settles the type scale, the monospace face and the weights actually used.
   *Decided at Gate 1b (Rob):* every inset shadow is near-black `--line` in both themes, not the
   cream outline colour; a pressed unfilled button takes `--raised` behind it so the inset shows in
   dark mode.
+- **Deep shadows** *(built at Gate 1b at Rob's request)*: `data-depth="deep"` on `<html>`, any
+  container or one element makes every shadow in it 1.5× as deep: resting, hover and pressed
+  (6/9/3px), the inset, and the press and lift moves. `"normal"` switches back inside it, like
+  `data-palette` and `data-shadow`. Its one input is a unitless `--shadow-depth`. Since custom
+  properties resolve their `var()`s where they are declared, the shadow lengths, offsets and
+  composed shadows are declared on every element (`*` in `tokens.css`), each built from its own
+  depth, light (`--shadow-dx`/`-dy`) and shadow colours, so depth combines with both shadow
+  modes, every palette, both themes and the turning light. Under reduced motion the shadows still
+  deepen but nothing moves. The styleguide shows normal and deep under "Depth".
 - **Focus** *(decided at Gate 1a)*: the **highlighter**, a 6px **tangerine** band
   (`--focus`) hugging the ink outline (no offset), with the hard shadow turned off while
   focused. Never removed.
@@ -640,8 +649,9 @@ them, not as smooth constant motion. A loop usually holds for a third or more of
 
 **Shadows and light while moving.**
 - Shadow offsets always come from `--shadow-dx` and `--shadow-dy` (the shadow tokens, or
-  `calc(var(--shadow-dx) * 4px)`), never a literal offset in a keyframe, so a moving thing's
-  shadow follows the light the reader set.
+  `calc(var(--shadow-dx) * var(--shadow-offset))`), never a literal offset in a keyframe, so a
+  moving thing's shadow follows the light the reader set. Other lengths that go with a shadow
+  are multiplied by `--shadow-depth`, so they follow the deep option (§5.3).
 - A lift rises towards the light as the shadow grows (4px to 6px); a press sinks by the press
   offset onto the 2px shadow, so the shadow's outer edge stays put.
 - Glints sit opposite the shadow: `translate: calc(var(--shadow-dx) * -5px) …`.
