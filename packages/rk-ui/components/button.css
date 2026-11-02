@@ -1,0 +1,75 @@
+/* Buttons: filled by default, with fill modifiers, a small size and an unfilled secondary.
+   Works on <button> and on <a>. Put an .rk-icon before the label for icon + label. */
+
+.rk-button {
+  --button-fill: var(--yellow);
+  --button-label: var(--on-fill);
+  --button-padding-block: var(--space-2);
+  --button-padding-inline: var(--space-4);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--button-padding-block) var(--button-padding-inline);
+  border: var(--outline-width) solid var(--line);
+  border-radius: var(--radius);
+  background: var(--button-fill);
+  color: var(--button-label);
+  font-weight: 700;
+  line-height: var(--line-height-heading);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.rk-button .rk-icon {
+  color: inherit;
+}
+
+.rk-button--small {
+  --button-padding-block: var(--space-1);
+  --button-padding-inline: var(--space-3);
+  font-size: var(--step--1);
+}
+
+.rk-button--navy {
+  --button-fill: var(--navy);
+  --button-label: var(--on-navy);
+}
+
+.rk-button--teal {
+  --button-fill: var(--teal);
+}
+
+.rk-button--green {
+  --button-fill: var(--green);
+}
+
+.rk-button--coral {
+  --button-fill: var(--coral-solid);
+  --button-label: var(--on-coral);
+}
+
+.rk-button--grape {
+  --button-fill: var(--grape);
+  --button-label: var(--on-grape);
+}
+
+.rk-button--tangerine {
+  --button-fill: var(--tangerine);
+  --focus: var(--focus-alt);
+}
+
+.rk-button--section {
+  --button-fill: var(--section);
+  --button-label: var(--on-section);
+}
+
+.rk-button--unfilled {
+  border-color: var(--line-unfilled);
+  background: transparent;
+  color: var(--fg);
+}
+
+.rk-button--unfilled:hover {
+  background: var(--raised);
+}

@@ -10,6 +10,7 @@ import MonoSpecimen from '../../components/styleguide/MonoSpecimen.astro'
 import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
 import BaseSpecimens from '../../components/styleguide/BaseSpecimens.astro'
 import IconSpecimens from '../../components/styleguide/IconSpecimens.astro'
+import ButtonSpecimens from '../../components/styleguide/ButtonSpecimens.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -50,6 +51,11 @@ import IconSpecimens from '../../components/styleguide/IconSpecimens.astro'
     <SpecimenSection title="Icons">
       <IconSpecimens slot="light" />
       <IconSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Buttons">
+      <ButtonSpecimens slot="light" />
+      <ButtonSpecimens slot="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>

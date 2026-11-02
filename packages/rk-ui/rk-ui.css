@@ -7,4 +7,5 @@
 @import './base.css';
 
 @import './components/icon.css';
+@import './components/button.css';
 @import './components/interactive.css';

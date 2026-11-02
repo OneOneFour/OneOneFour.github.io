@@ -1,0 +1,67 @@
+---
+/** Every button fill, size and style, and the filled and unfilled buttons in each state. */
+import Button from '../ui/Button.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import PlayIcon from 'rk-ui/icons/play.svg'
+import ResetIcon from 'rk-ui/icons/arrow-counter-clockwise.svg'
+import DownloadIcon from 'rk-ui/icons/download-simple.svg'
+
+const FILLS = ['navy', 'teal', 'green', 'coral', 'grape', 'tangerine', 'section'] as const
+const STATES = [
+  { label: 'rest', class: '' },
+  { label: 'hover', class: 'is-hover' },
+  { label: 'pressed', class: 'is-active' },
+  { label: 'focused', class: 'is-focus' },
+]
+---
+
+<SpecimenRow title="Fills">
+  <Specimen label="default (yellow)"><Button>Button</Button></Specimen>
+  {
+    FILLS.map((fill) => (
+      <Specimen label={fill}>
+        <Button fill={fill}>Button</Button>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Sizes, icons and styles">
+  <Specimen label="icon + label">
+    <Button fill="coral"><PlayIcon class="rk-icon" />Start</Button>
+  </Specimen>
+  <Specimen label="small">
+    <Button small fill="teal"><PlayIcon class="rk-icon rk-icon--small" />Start</Button>
+  </Specimen>
+  <Specimen label="unfilled (secondary)">
+    <Button unfilled><ResetIcon class="rk-icon" />Reset</Button>
+  </Specimen>
+  <Specimen label="small unfilled"><Button unfilled small>Reset</Button></Specimen>
+  <Specimen label="link (href)">
+    <Button href="#buttons" fill="navy"><DownloadIcon class="rk-icon" />Download</Button>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Filled states">
+  {
+    STATES.map((state) => (
+      <Specimen label={state.label}>
+        <Button fill="teal" class={state.class}>Button</Button>
+      </Specimen>
+    ))
+  }
+  <Specimen label="disabled"><Button fill="teal" disabled>Button</Button></Specimen>
+  <Specimen label="focused, tangerine fill"><Button fill="tangerine" class="is-focus">Button</Button></Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Unfilled states">
+  {
+    STATES.map((state) => (
+      <Specimen label={state.label}>
+        <Button unfilled class={state.class}>Button</Button>
+      </Specimen>
+    ))
+  }
+  <Specimen label="disabled"><Button unfilled disabled>Button</Button></Specimen>
+</SpecimenRow>
