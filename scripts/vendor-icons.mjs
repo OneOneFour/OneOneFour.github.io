@@ -40,7 +40,6 @@ const DEFAULT_FILLS = {
   'globe-hemisphere-west': 'green',
   'wave-sine': 'teal',
   'chart-line': 'apricot',
-  code: 'grape',
   'map-pin': 'tangerine',
   satellite: 'lilac',
   play: 'green',
