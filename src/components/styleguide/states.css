@@ -91,7 +91,7 @@ a.is-hover {
   text-decoration-thickness: var(--outline-width);
 }
 
-a:where(:not(.rk-button, .rk-chip, .rk-folder-tab)).is-focus {
+a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab)).is-focus {
   background: var(--focus);
   color: var(--ink);
 }

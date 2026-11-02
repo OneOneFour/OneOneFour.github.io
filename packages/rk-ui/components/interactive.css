@@ -52,8 +52,9 @@
   translate: var(--shadow-offset-x) var(--shadow-offset-y);
 }
 
-/* A checked tile is pushed in the same way, with an inset shadow instead. */
-.rk-tile:has(:checked) {
+/* A checked tile, or the current page's, is pushed in the same way, with an inset shadow
+   instead. */
+.rk-tile:is(:has(:checked), [aria-current='page']) {
   box-shadow: var(--shadow-inset);
   translate: var(--shadow-offset-x) var(--shadow-offset-y);
 }
@@ -67,8 +68,8 @@
 
 /* Focus band. Chips, cards, tiles, colour input frames and segmented groups (deck keys included)
    show it for the input or link inside them; a segmented group shows it on the group, never on
-   one option. */
-:is(.rk-button, .rk-chip, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select):focus-visible,
+   one option. Chips and tiles can also be links, focused themselves. */
+:is(.rk-button, .rk-chip, .rk-tile, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select):focus-visible,
 :is(.rk-folder-tab, .rk-folder-sheet):focus-visible,
 :is(.rk-chip, .rk-card--link, .rk-segmented, .rk-tile, .rk-colour-input):has(:focus-visible) {
   outline: var(--focus-width) solid var(--focus);

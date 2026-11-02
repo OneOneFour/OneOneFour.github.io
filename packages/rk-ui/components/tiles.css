@@ -16,7 +16,8 @@
      </label>
 
    Add .rk-tiles--compact to the group for smaller tiles, and .rk-tiles--vertical to stack them
-   in a column. */
+   in a column. A tile can also be a link (<a class="rk-tile">), with aria-current="page" filling
+   it like a checked one (pagination.css). */
 
 .rk-tiles {
   --tile-size: 2.5rem;
@@ -76,14 +77,14 @@
   --icon-stroke: 24;
 }
 
-.rk-tile:has(:checked) {
+.rk-tile:is(:has(:checked), [aria-current='page']) {
   border-color: var(--line);
   background: var(--swatch, var(--selected));
   color: var(--on-selected);
 }
 
 @media (forced-colors: active) {
-  .rk-tile:has(:checked) {
+  .rk-tile:is(:has(:checked), [aria-current='page']) {
     border-color: Highlight;
     background: var(--swatch, Highlight);
     color: HighlightText;
