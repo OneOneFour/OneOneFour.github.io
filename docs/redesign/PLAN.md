@@ -307,14 +307,25 @@ Supporting decisions *(proposed)*:
 - **Equation references** *(decided 2026-11-01; Rob wants clickable references)*. Authoring is
   standard LaTeX: `\label{lorenz}` inside a display equation, and `\eqref{lorenz}` anywhere in
   inline or display maths. The result: labelled equations are numbered in order (1), (2), …;
-  each gets an anchor `#eq-lorenz`; every `\eqref` renders as a link `(1)` that jumps to it, and
+  each gets an anchor `#eq-lorenz`; every reference renders as a link that jumps to it, and
   forward references work. An unknown or duplicate label **fails the build**.
   - Neither off-the-shelf option does this (spike, 2026-11-01): `rehype-mathjax` 7.1.0 with
     `tags: 'ams'` renders each reference as "(???)" linking to `#`, because each equation is
     typeset on its own; `rehype-katex` 7.0.1 produces no anchors or links.
   - So a small rehype plugin (about 50 lines in the spike) runs **before** KaTeX. It numbers
-    labels, replaces `\label` with `\tag{n}`, inserts the anchor, and rewrites `\eqref{k}` to
-    `\href{#eq-k}{(n)}`. KaTeX's `trust` option allows `\href` for `#` links only.
+    labels, replaces `\label` with `\tag{n}`, inserts the anchor, and rewrites references:
+    - a bare reference in prose (`$\eqref{k}$`, the whole of an inline maths span) becomes
+      `<a class="rk-eqref" href="#eq-k"><span>(</span>n<span>)</span></a>`. The brackets stay
+      in spans, so it reads "(n)" to screen readers and without CSS;
+    - a reference that starts or carries a sentence (`$\Cref{k}$`, cleveref's spelling,
+      *proposed*) becomes `<a class="rk-eqref" href="#eq-k">Equation <span>(</span>n<span>)</span></a>`,
+      with the icon inside the link before the word if Rob keeps one;
+    - `\eqref{k}` inside larger maths becomes `\href{#eq-k}{(n)}`, KaTeX's own link, unstyled:
+      KaTeX puts the next operator's spacing inside the link, so a pill there would be lopsided.
+
+    KaTeX's `trust` option allows `\href` for `#` links only.
+  - Decided at Gate 1b (Rob): equation numbers and bare references are lilac pills; a long pill
+    ('Equation n', optional icon) for references that lead a sentence.
   - Implementation must also handle several `\label`s in one `align` block (one per row).
   - Scrolling uses CSS `scroll-behavior: smooth`, off under reduced motion. The target equation
     gets a brief `:target` highlight from the tokens.

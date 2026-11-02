@@ -75,10 +75,8 @@ a:hover {
 
 /* Marker-pen focus: a link has no outline for the band to hug, so the band goes behind the text.
    The transparent outline still shows in forced-colours mode. Button, chip, tile and folder tab
-   links, and pill equation references, get the focus band instead. */
-a:where(
-    :not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab, .rk-eqref:is(.rk-eqref-pill, .rk-eqref-pill *))
-  ):focus-visible {
+   links, and equation references, get the focus band instead. */
+a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab, .rk-eqref)):focus-visible {
   outline: var(--outline-width) solid transparent;
   background: var(--focus);
   color: var(--ink);

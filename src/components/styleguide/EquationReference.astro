@@ -1,19 +1,22 @@
 ---
 /**
  * A reference to a numbered equation in prose: the markup the posts' maths pipeline will write for
- * \eqref.
+ * \eqref, or for \Cref with `long`.
  *
  * @param to the equation's anchor, e.g. eq-lorenz
  * @param number the equation's number
+ * @param long lead with the word "Equation", for a reference that starts or carries a sentence
  * @param class extra classes, e.g. a static state such as is-focus
+ * @slot an optional .rk-icon before the text
  */
 interface Props {
   to: string
   number: number
+  long?: boolean
   class?: string
 }
 
-const { to, number, class: className } = Astro.props
+const { to, number, long = false, class: className } = Astro.props
 ---
 
-<a class:list={['rk-eqref', className]} href={`#${to}`}><span>(</span>{number}<span>)</span></a>
+<a class:list={['rk-eqref', className]} href={`#${to}`}><slot />{long && 'Equation '}<span>(</span>{number}<span>)</span></a>
