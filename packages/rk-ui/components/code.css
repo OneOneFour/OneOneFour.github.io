@@ -62,8 +62,10 @@ rk-code-block {
   text-transform: uppercase;
 }
 
-/* Single-colour logos are paths with no fill of their own. */
+/* Single-colour logos are paths with no fill of their own, sized to the caption text. */
 .rk-code-lang svg {
+  inline-size: 1.25em;
+  block-size: 1.25em;
   color: var(--code-lang-color, var(--muted));
   fill: currentColor;
 }

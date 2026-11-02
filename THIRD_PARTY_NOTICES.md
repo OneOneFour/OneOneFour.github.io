@@ -9,7 +9,7 @@ its own licence file next to the files it covers.
 | Tabler Icons | Icons Phosphor lacks (e.g. satellite) | MIT | https://github.com/tabler/tabler-icons |
 | Simple Icons | Brand, tech-stack and programming-language marks | CC0 1.0 | https://github.com/simple-icons/simple-icons |
 | Rust logo (the Simple Icons path) | Code block captions | CC BY, Rust Foundation | https://rustfoundation.org/policies/logo-policy-and-media-guide/ |
-| JavaScript and GNU Bash logos (the Simple Icons paths) | Code block captions | MIT | https://github.com/voodootikigod/logo.js, https://github.com/odb/official-bash-logo |
+| Julia logo (the Simple Icons path), by Stefan Karpinski | Code block captions | CC BY-NC-SA 4.0 | https://github.com/JuliaLang/julia-logo-graphics |
 | Devicon | Tech-stack icon font on the legacy project pages (`public/devicon/`) | MIT | https://github.com/devicons/devicon |
 | Xmind | Body and UI typeface | SIL Open Font License 1.1 | https://github.com/xmindltd/nevermind |
 | Roboto Slab | Heading typeface | Apache License 2.0 | https://github.com/google/fonts/tree/main/apache/robotoslab |
@@ -27,4 +27,6 @@ Programming-language logos (`src/icons/brands/languages/`) label the language of
 next to its name. They are shown in a single flat colour. The Python logo is shown in the
 caption's own text colour rather than an accent, since the PSF asks for permission before its
 logo's colours are changed. The Rust logo is a single-path version of the Rust Foundation's,
-coloured by the site's CSS.
+coloured by the site's CSS. The Julia logo is a single-colour adaptation of Stefan Karpinski's
+design, shared under the same CC BY-NC-SA 4.0 licence. Only logos that still read well in one
+accent colour are used, so solid-block marks (JavaScript, TypeScript and similar) are left out.
