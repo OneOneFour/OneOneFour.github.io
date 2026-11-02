@@ -228,11 +228,20 @@ in `<head>` before first paint.
 Rules (shown on the mood board, theme switch at the top):
 - The page goes to a deep night blue (not black). **Fills stay vivid, and
   labels on fills stay ink.** Outlines and hard shadows become near-black,
-  so toon edges still read as depth. *Gate 1b (provisional default):* a near-black shadow is
-  hard to see on the night-blue page, so every hard shadow sits on a copy widened by the outline
-  width in `--shadow-edge` (cream in dark mode, transparent in light), the "outlined slab"
-  (option B). Rob is still weighing it against option D, own-colour extrusion, which the
-  styleguide keeps as `.rk-shadow-d` for comparison.
+  so toon edges still read as depth. A near-black shadow is hard to see on the night-blue page,
+  so every hard shadow sits on a copy widened by the outline width in `--shadow-edge` (cream in
+  dark mode, transparent in light), the "outlined slab" (option B).
+  *DECIDED 2026-11-02 (Rob): B is the default, and D, own-colour extrusion, is a supported
+  alternate mode.* `data-shadow="colour"` on `<html>` or any container (`shadow-colour.css`)
+  gives each raised thing with a fill a shadow in that fill darkened (75% fill, 25% `--line`);
+  navy and section buttons, checked chips and things without a fill cast `--shadow-lit`
+  instead, lighter than the page. Light mode is unchanged. `data-shadow="slab"` switches back
+  inside it, as `cream` does for palettes. The mode is an `@scope` from `colour` to `slab`,
+  declared on every element so each one reads its own fill; browsers without `@scope` or
+  `light-dark()` keep the slab. `npm run contrast` checks `--shadow-lit` against the page under
+  every palette; the darkened fills are `color-mix()`es it doesn't resolve. The styleguide has a
+  Slab / Colour switch beside the palette switch (stored under `rk-shadow`) and keeps the two
+  side by side under "Dark-mode shadows".
 - **Tints flip to deep versions** with cream text (sky, lilac, apricot are
   panel backgrounds and would glare in dark mode).
 - Hue-text variants (`--navy-deep` etc.) get lighter values for dark mode.
