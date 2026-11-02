@@ -2,7 +2,9 @@
    the pushed-in deck key and tile, the focus band and disabled. Loaded after the components, so these win over their rest styles.
    The range slider's thumb can't join these lists (pseudo-elements), so range.css repeats them. */
 
-/* Pop: hover lifts the element and grows its shadow; press sinks it into the shadow. */
+/* Pop: hover lifts the element and grows its shadow; press sinks it into the shadow. A ballot row
+   pops its tile from anywhere on the row; :where() keeps that below the tile's checked, focused
+   and disabled states. */
 :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input) {
   box-shadow: var(--shadow);
   transition:
@@ -12,14 +14,16 @@
 
 @media (hover: hover) {
   :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input):hover,
-  .rk-segmented--deck label:hover {
+  .rk-segmented--deck label:hover,
+  :where(.rk-ballot-option:hover) > .rk-tile {
     box-shadow: var(--shadow-hover);
     translate: calc(-1 * var(--lift-offset-x)) calc(-1 * var(--lift-offset-y));
   }
 }
 
 :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input):active,
-.rk-segmented--deck label:active {
+.rk-segmented--deck label:active,
+:where(.rk-ballot-option:active) > .rk-tile {
   box-shadow: var(--shadow-pressed);
   translate: var(--press-offset-x) var(--press-offset-y);
 }
@@ -67,7 +71,8 @@
 
 /* Disabled: dimmed and flat, with no pop. */
 :is(.rk-button, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select, .rk-range):disabled,
-:is(.rk-chip, .rk-segmented label, .rk-tile, .rk-colour-input):has(:disabled) {
+:is(.rk-chip, .rk-segmented label, .rk-tile, .rk-colour-input):has(:disabled),
+.rk-ballot-option:has(:disabled) > .rk-ballot-text {
   opacity: 0.45;
   cursor: not-allowed;
   box-shadow: none;
