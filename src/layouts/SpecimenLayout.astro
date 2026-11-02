@@ -6,6 +6,7 @@ import themeInit from 'rk-ui/theme-init.js?raw'
 import ThemeToggle from '../components/ThemeToggle.astro'
 import PaletteSwitcher from '../components/styleguide/PaletteSwitcher.astro'
 import ShadowSwitcher from '../components/styleguide/ShadowSwitcher.astro'
+import BackToTop from '../components/BackToTop.astro'
 
 interface Props {
   title: string
@@ -35,23 +36,27 @@ const { title } = Astro.props
     <title>{title}</title>
   </head>
   <body>
-    <header class="specimen-header">
+    <header class="specimen-header rk-topbar rk-topbar--toast">
       <ShadowSwitcher />
       <PaletteSwitcher />
       <ThemeToggle />
+      <BackToTop />
     </header>
+    <script is:inline>
+      // ?topbar=flush swaps in the other top bar, to compare the two live.
+      if (new URLSearchParams(location.search).get('topbar') === 'flush') {
+        document
+          .querySelector('.specimen-header')
+          .classList.replace('rk-topbar--toast', 'rk-topbar--flush')
+      }
+    </script>
     <slot />
   </body>
 </html>
 
 <style>
+  /* Lines the bar's controls up with the end of the page's 96rem column. */
   .specimen-header {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: var(--space-3);
-    max-width: 96rem;
-    margin-inline: auto;
-    padding: var(--space-4) var(--space-4) 0;
+    --topbar-inset: max(var(--space-4), (100% - 96rem) / 2);
   }
 </style>
