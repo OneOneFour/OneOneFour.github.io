@@ -115,15 +115,28 @@
   --outline-width: 2px;
   /* The way shadows fall, as a multiple of each length below on each axis: 1 1 is down and to
      the right. Set them on <html>, as light-direction.js does: the tokens below resolve their
-     var()s there, so setting them on a lower element changes nothing. */
+     var()s there, so setting them on a lower element changes nothing. The same goes for
+     --shadow-color and --shadow-edge: an element that changes them re-declares the shadows. */
   --shadow-dx: 1;
   --shadow-dy: 1;
   --shadow-offset: 4px;
   --shadow-offset-x: calc(var(--shadow-dx) * var(--shadow-offset));
   --shadow-offset-y: calc(var(--shadow-dy) * var(--shadow-offset));
-  --shadow: var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color);
-  --shadow-hover: calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--shadow-color);
-  --shadow-pressed: calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color);
+  /* Each hard shadow is two layers: the shadow, on a copy widened by --outline-width in
+     --shadow-edge. The edge is a light rim in dark mode, so the near-black shadow shows on the
+     page, and transparent in light mode. */
+  --shadow-edge: light-dark(transparent, var(--line-unfilled));
+  --shadow:
+    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color),
+    var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--outline-width) var(--shadow-edge);
+  --shadow-hover:
+    calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--shadow-color),
+    calc(var(--shadow-dx) * 6px) calc(var(--shadow-dy) * 6px) 0 var(--outline-width)
+      var(--shadow-edge);
+  --shadow-pressed:
+    calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--shadow-color),
+    calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--outline-width)
+      var(--shadow-edge);
   --shadow-inset: inset calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0
     var(--line-unfilled);
   /* Pressing moves an element onto --shadow-pressed; the move plus that shadow is --shadow. */
@@ -158,6 +171,7 @@
     --fg: #1d232f;
     --muted: #5b6070;
     --line: #1d232f;
+    --shadow-edge: transparent;
     --shadow-lit: var(--line);
 
     --navy: #2c4d6e;

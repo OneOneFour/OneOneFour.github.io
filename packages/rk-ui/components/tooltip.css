@@ -52,9 +52,15 @@
     visibility 0s var(--duration-fast);
 }
 
-/* drop-shadow, unlike box-shadow, follows the tail too. */
+/* drop-shadow, unlike box-shadow, follows the tail too. It can't be widened, so the edge is a
+   second drop-shadow that shadows the first, moved on by --outline-width: it shows on the
+   shadow's far sides only. */
 .rk-tooltip--toon .rk-tooltip-bubble {
-  filter: drop-shadow(var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color));
+  filter: drop-shadow(var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color))
+    drop-shadow(
+      calc(var(--shadow-dx) * var(--outline-width)) calc(var(--shadow-dy) * var(--outline-width)) 0
+        var(--shadow-edge)
+    );
 }
 
 /* The tail: a square turned 45°, with its two lower edges outlined. */

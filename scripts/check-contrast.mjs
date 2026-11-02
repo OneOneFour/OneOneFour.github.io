@@ -184,8 +184,9 @@ function checkFallback(tokens, fallback) {
       return [`${name} still uses light-dark()`]
     }
 
-    const light = resolveColor(tokens, name, 'light').toLowerCase()
-    const actual = resolveColor(withFallback, name, 'light').toLowerCase()
+    // Compared as text rather than with resolveColor, which rejects `transparent`.
+    const light = chooseTheme(expandVars(tokens, name), 'light').toLowerCase()
+    const actual = expandVars(withFallback, name).toLowerCase()
     return actual === light ? [] : [`${name} is ${actual}, light is ${light}`]
   })
 
