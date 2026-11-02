@@ -81,3 +81,24 @@ a:where(:not(.rk-button)).is-focus {
   background: var(--focus);
   color: var(--ink);
 }
+
+/* Special inputs */
+
+.rk-input[type='file'].is-hover::file-selector-button {
+  box-shadow: var(--shadow-hover);
+  translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+}
+
+.rk-input[type='file'].is-active::file-selector-button {
+  box-shadow: var(--shadow-pressed);
+  translate: var(--press-offset) var(--press-offset);
+}
+
+.rk-file-drop.is-hover {
+  border-style: solid;
+}
+
+.rk-file-drop.is-focus {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}

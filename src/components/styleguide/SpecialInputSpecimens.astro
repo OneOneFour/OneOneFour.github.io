@@ -1,0 +1,72 @@
+---
+/**
+ * The special input types (file, date and time, search, number, colour, range with ticks and the
+ * plain text-like types), each in its states. Lettered variants are options for Gate 1b.
+ *
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import DownloadIcon from 'rk-ui/icons/download-simple.svg'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const DROP_STATES = [
+  { label: "rest: click or drop a file (the name isn't shown without a script)" },
+  { label: 'hover', class: 'is-hover' },
+  { label: 'focused', class: 'is-focus' },
+  { label: 'disabled', disabled: true },
+  { label: 'error', invalid: true },
+]
+---
+
+<SpecimenRow title="File A: button and filename">
+  <Specimen label="rest" wide>
+    <input class="rk-input" type="file" aria-label="Specimen" />
+  </Specimen>
+  <Specimen label="hover" wide>
+    <input class="rk-input is-hover" type="file" aria-label="Specimen" />
+  </Specimen>
+  <Specimen label="pressed" wide>
+    <input class="rk-input is-active" type="file" aria-label="Specimen" />
+  </Specimen>
+  <Specimen label="focused" wide>
+    <input class="rk-input is-focus" type="file" aria-label="Specimen" />
+  </Specimen>
+  <Specimen label="multiple" wide>
+    <input class="rk-input" type="file" aria-label="Specimen" multiple />
+  </Specimen>
+  <Specimen label="disabled" wide>
+    <input class="rk-input" type="file" aria-label="Specimen" disabled />
+  </Specimen>
+  <Specimen label="error" wide>
+    <div class="rk-field">
+      <label for={`${theme}-file-error`}>Label</label>
+      <input
+        class="rk-input"
+        id={`${theme}-file-error`}
+        type="file"
+        aria-invalid="true"
+        aria-describedby={`${theme}-file-error-message`}
+      />
+      <span class="rk-field-message rk-field-message--error" id={`${theme}-file-error-message`}>Error message</span>
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="File B: drop panel">
+  {
+    DROP_STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <label class:list={['rk-file-drop', state.class]}>
+          <input type="file" disabled={state.disabled} aria-invalid={state.invalid ? 'true' : undefined} />
+          <DownloadIcon class="rk-icon" aria-hidden="true" />
+          <span>Choose a file or drop it here</span>
+        </label>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>

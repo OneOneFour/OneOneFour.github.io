@@ -1,0 +1,100 @@
+/* File inputs, in two variants for Gate 1b.
+
+   File A: the input frame with a small filled button that pops, and the browser's filename text.
+   <input class="rk-input" type="file">
+
+   File B: a dashed drop panel. The input is invisible but covers the panel, so clicks and dropped
+   files land on it with no script. The chosen filename isn't shown without a script.
+   <label class="rk-file-drop">
+     <input type="file">
+     <svg class="rk-icon" aria-hidden="true">…</svg>
+     <span>Label</span>
+   </label> */
+
+/* File A */
+
+.rk-input[type='file'] {
+  cursor: pointer;
+}
+
+.rk-input[type='file']::file-selector-button {
+  margin-inline-end: var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  border: var(--outline-width) solid var(--line);
+  border-radius: var(--radius);
+  background: var(--yellow);
+  color: var(--on-fill);
+  box-shadow: var(--shadow);
+  font: inherit;
+  font-size: var(--step--1);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    translate var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .rk-input[type='file']:enabled:hover::file-selector-button {
+    box-shadow: var(--shadow-hover);
+    translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+  }
+}
+
+.rk-input[type='file']:enabled:active::file-selector-button {
+  box-shadow: var(--shadow-pressed);
+  translate: var(--press-offset) var(--press-offset);
+}
+
+.rk-input[type='file']:disabled::file-selector-button {
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* File B */
+
+.rk-file-drop {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  inline-size: 100%;
+  max-inline-size: 30rem;
+  padding: var(--space-6) var(--space-4);
+  border: var(--outline-width) dashed var(--line-unfilled);
+  border-radius: var(--radius);
+  background: var(--raised);
+  color: var(--fg);
+  font-weight: 600;
+  text-align: center;
+}
+
+.rk-file-drop input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.rk-file-drop:hover {
+  border-style: solid;
+}
+
+.rk-file-drop:has(:focus-visible) {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.rk-file-drop:has([aria-invalid='true']) {
+  border-color: var(--coral-deep);
+  background-color: var(--coral-tint);
+}
+
+.rk-file-drop:has(:disabled) {
+  opacity: 0.45;
+  border-style: dashed;
+}
+
+.rk-file-drop:has(:disabled) input {
+  cursor: not-allowed;
+}
