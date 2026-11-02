@@ -21,6 +21,8 @@
   --line: light-dark(#1d232f, #05070b);
   --line-unfilled: var(--fg);
   --focus: var(--yellow);
+  /* Where yellow surrounds the focused element, set --focus: var(--focus-alt) */
+  --focus-alt: var(--tangerine);
 
   /* Fills: vivid in both themes */
   --ink: #1d232f;
