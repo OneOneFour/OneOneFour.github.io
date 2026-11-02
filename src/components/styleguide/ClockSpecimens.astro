@@ -1,0 +1,61 @@
+---
+/**
+ * The settable clock, live by day and by night and disabled, plus how it looks without its script.
+ *
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import Sun from 'rk-ui/icons/sun.svg'
+import Moon from 'rk-ui/icons/moon.svg'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const CLOCKS = [
+  { name: 'day', label: 'Wake up', caption: 'by day, five-minute steps', value: '07:30' },
+  { name: 'night', label: 'Lights out', caption: 'by night', value: '22:45' },
+  { name: 'disabled', label: 'Label', caption: 'disabled', value: '12:00', disabled: true },
+]
+const fallbackId = `${theme}-clock-fallback`
+---
+
+<SpecimenRow title="Clock (rk-clock)">
+  {
+    CLOCKS.map((clock) => {
+      const id = `${theme}-clock-${clock.name}`
+      return (
+        <Specimen label={clock.caption}>
+          <rk-clock class="rk-clock">
+            <label for={id}>{clock.label}</label>
+            <input
+              class="rk-input"
+              type="time"
+              id={id}
+              step="300"
+              value={clock.value}
+              disabled={clock.disabled}
+            />
+            <Sun class="rk-icon rk-clock-day-icon" aria-hidden="true" />
+            <Moon class="rk-icon rk-clock-night-icon" aria-hidden="true" />
+          </rk-clock>
+        </Specimen>
+      )
+    })
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Without the script">
+  <Specimen label="the time input on its own">
+    <div class="rk-clock">
+      <label for={fallbackId}>Wake up</label>
+      <input class="rk-input" type="time" id={fallbackId} step="300" value="07:30" />
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<script>
+  import 'rk-ui/clock.js'
+</script>

@@ -20,6 +20,7 @@ import SpecialInputSpecimens from '../../components/styleguide/SpecialInputSpeci
 import SelectPickerSpecimens from '../../components/styleguide/SelectPickerSpecimens.astro'
 import DialSpecimens from '../../components/styleguide/DialSpecimens.astro'
 import DialRampSpecimens from '../../components/styleguide/DialRampSpecimens.astro'
+import ClockSpecimens from '../../components/styleguide/ClockSpecimens.astro'
 import ChoiceSpecimens from '../../components/styleguide/ChoiceSpecimens.astro'
 import RangeSpecimens from '../../components/styleguide/RangeSpecimens.astro'
 import SegmentedSpecimens from '../../components/styleguide/SegmentedSpecimens.astro'
@@ -100,7 +101,7 @@ const CONTENTS = [
   },
   {
     title: 'Fun elements',
-    sections: ['Dial ramps'],
+    sections: ['Dial ramps', 'Clock'],
   },
 ]
 ---
@@ -366,6 +367,16 @@ const CONTENTS = [
       </p>
       <DialRampSpecimens slot="light" theme="light" />
       <DialRampSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Clock">
+      <p>
+        An option for Gate 1b. Drag a hand's tag to set the time: the hour hand goes round once a
+        day, on a ring with day over the top and night under it. The time input below the face stays
+        the control for the keyboard and screen readers.
+      </p>
+      <ClockSpecimens slot="light" theme="light" />
+      <ClockSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>

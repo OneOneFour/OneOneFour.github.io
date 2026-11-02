@@ -512,6 +512,16 @@ under "Fun elements" at the bottom of `/styleguide/`.
   `rk-dial--ramp-heat` is yellow, tangerine, coral. Any ramp is `--dial-ramp-steps` plus
   `--dial-ramp-1…n`, in equal runs of blocks. A one-hue ramp (tint, hue, deep) was left out:
   the tints sit too close to the empty blocks, about 1.2:1 in dark mode.
+- Clock (`clock.css`, `clock.js`, `<rk-clock class="rk-clock">`): an outlined face with the hard
+  shadow over a native `<input type="time">`, which stays visible and is the control for the
+  keyboard, screen readers and forms; without JS it is the input alone. The hour hand goes round
+  once a day on a ring split into day (`--clock-day`, sky, 6:00 to 18:00 over the top) and night
+  (`--clock-night`, navy), with optional day and night icons (`.rk-clock-day-icon`,
+  `.rk-clock-night-icon`) at noon and midnight. The values sit on the hands' tags rather than at
+  12, 3, 6 and 9, as on a once-a-day face those numbers would mean different things for each hand.
+  Dragging a tag snaps minutes to the input's `step`, and the minute hand carries into the hour
+  as it passes 12. The hands turn with `--ease-snap`; each tag turns back by its hand's angle, so
+  it only moves and keeps its shadow on the light's side. The grabbed tag presses in.
 
 
 ### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*
