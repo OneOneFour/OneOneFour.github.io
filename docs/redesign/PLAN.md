@@ -459,8 +459,9 @@ rolls as if it feels gravity, slow over the top and fast through the bottom, fro
 fades it. C (turning icon) and E (water sloshing) were removed; they are in git history.
 - Toon water (`water.css`, `.rk-water`, level from `--water-level`): spinner D (flask
   filling); a busy filled button that fills with its own colour (`aria-busy="true"` +
-  `aria-disabled="true"`, looping or set); pending panels A (filling) and B (sloshing along the
-  bottom).
+  `aria-disabled="true"`, looping or set); a pending panel that fills up.
+  *DECIDED 2026-11-02 (Rob):* pending panel A (filling up) stays; B (sloshing along the bottom)
+  was removed, and with it, as nothing else used it, `.rk-water--slosh`.
 - Dot spinners (`spinner-dots.css`): F in a circle, G in a triangle, H squash and stretch.
 - Loaders, indeterminate bars (`loader.css`): A inchworm, B bouncing block, C hopping ball,
   D candy stripes.
