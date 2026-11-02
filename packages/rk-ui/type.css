@@ -1,7 +1,7 @@
 /* Modular type scale: each step is the previous one times --type-ratio. */
 
 :root {
-  --type-ratio: 1.28;
+  --type-ratio: 1.3;
 
   --line-height-body: 1.6;
   --line-height-heading: 1.2;
