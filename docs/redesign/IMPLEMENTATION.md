@@ -281,3 +281,9 @@ committed to git stay in history and the repo never shrinks without a history re
 
 R2 free tier (checked 2026-11-01): 10 GB-month storage, 1M Class A / 10M Class B operations
 per month, no egress fees.
+
+Rob's domain is registered with Cloudflare Registrar (2026-11-01), which requires Cloudflare DNS,
+so `robertcking.com` is already a Cloudflare zone. That removes option B's main setup hurdle:
+connecting `photos.robertcking.com` to an R2 bucket is a dashboard step in the same account.
+Check that the bucket is in the same Cloudflare account as the zone. Leave the existing
+`www` CNAME to GitHub Pages untouched.
