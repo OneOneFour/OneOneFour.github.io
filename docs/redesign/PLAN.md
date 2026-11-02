@@ -449,9 +449,27 @@ How custom illustrations are drawn, from a flat cartoon locomotive Rob shared as
 hatching instead; 2px outlines, matching the UI; the shading drawn for light from above is
 acceptable, and now also flips with the light; fills dim a little on dark pages; flat at rest,
 with shadows only when exploded.
+
+*Pending Rob's pick (2026-11-02): the look.* Rob found the subdued drawing too quiet beside the
+poppy UI, so the styleguide shows the same train in three looks (`ExplodedView`'s `look`). The
+rules below describe A; B and C change only the colours, the resting shadow and the keyline.
+- **A, subdued** (the default): the greyed palette below, flat at rest.
+- **B, pop**: the UI's own fills (`--coral`, `--yellow`, `--sky`, `--navy`) with the same steps,
+  and each assembly casts the UI's resting shadow, handing over to its parts' shadows while apart,
+  so the drawing sits on the page like a card. Inspired by neo-brutalist graphics: flat saturated
+  fills, black outlines and unblurred offset shadows
+  ([NN/G](https://www.nngroup.com/articles/neobrutalism/)).
+- **C, sticker**: B with a `--glint` keyline round each part, like a die-cut sticker, and at
+  rest an edge round each assembly in `--line-unfilled`. From the sticker cut line, an outward
+  offset of the merged silhouette with round joins
+  ([CustomStickers.com](https://customstickers.com/community/blog/creating-cut-lines-for-sticker-files-in-illustrator)).
+
+Not built: a two-ink retro print look (two inks on a paper tone, with tints from hatching), as in
+[this Tuts+ tutorial](https://design.tutsplus.com/tutorials/create-a-limited-color-vintage-poster-design-in-adobe-illustrator--cms-23583).
+Once Rob picks, the losing looks and their CSS go, and the lamp follows the winner.
 - **Palette**: seven colours in the styleguide's `illustration-tokens.css`. Four subdued hues,
-  `--illustration-red`, `-ochre`, `-steel` and `-navy`, are the coral, yellow, sky-with-lilac and
-  navy fills, greyed towards `--illustration-grey` (halfway between `--ink` and `--glint`). Each
+  `--illustration-red`, `-ochre`, `-steel` and `-navy`, are (in A) the coral, yellow,
+  sky-with-lilac and navy fills, greyed towards `--illustration-grey` (halfway between `--ink` and `--glint`). Each
   hue has at most one more step:
   - `--illustration-ochre-light` and `--illustration-steel-light` (55% hue, the rest glint), for
     highlights on the lighter hues;
@@ -485,12 +503,14 @@ with shadows only when exploded.
   dome, the cab with its window, wheels with a tyre and hub, the coupling rod, the cowcatcher and
   the steam. No rivets, bosses or small strips, and nothing much under half a grid unit, so a
   drawing still reads at phone width.
-- **Shadows**: none at rest. The drawing is flat and calm, standing on a dashed ground line. A
-  hard toon shadow appears only when something lifts off the page (an exploded part), built from
-  the shadow tokens so it follows the light, the depth and the dark-mode shadow modes.
+- **Shadows**: none at rest in A. The drawing is flat and calm, standing on a dashed ground
+  line. A hard toon shadow appears when something lifts off the page (an exploded part), built
+  from the shadow tokens so it follows the light, the depth and the dark-mode shadow modes. B and
+  C also cast the resting shadow under each assembly.
 - **Next to the UI**: the same family (ink outlines, flat fills, hard shadows that follow the
-  light), but quieter: muted hues, few tones and no resting shadow. A drawing never looks
-  clickable, and the controls stay the brightest things on the page.
+  light). A is quieter: muted hues, few tones and no resting shadow, so the controls stay the
+  brightest things on the page. B and C match the UI's energy instead, which is the open
+  question. Either way a drawing has no hover lift or press, so it never looks like a button.
 
 ### 5.4 Component inventory
 
@@ -598,16 +618,18 @@ resting shadow is turned back by the tilt with `cos()`/`sin()` so it still falls
 light; `--tape` and `--pin`. On `/styleguide/` under "Fun elements".
 
 **Exploded view** *(Gate 1b, a fun element; styleguide only; redrawn in the illustration style,
-§5.3, 2026-11-02, then cut to two tones per part with less detail the same day)*: illustrations whose assemblies come apart on hover or focus so their parts can
-be inspected. "Exploded view" under "Fun elements" on `/styleguide/` shows a steam train (five
-assemblies, with an "Explode all" switch), a one-assembly table lamp, and the illustration
-colours.
+§5.3, 2026-11-02, then cut to two tones per part with less detail the same day)*: illustrations
+whose assemblies come apart on hover or focus so their parts can be inspected. "Exploded view"
+under "Fun elements" on `/styleguide/` shows a steam train (five assemblies, with an "Explode
+all" switch) in the three looks A/B/C pending Rob's pick (§5.3), a one-assembly table lamp in the
+default look, and the subdued illustration colours.
 - Building blocks, in `src/components/styleguide/`:
   - `explode.css`: a stage of `--columns` × `--rows` units sized from its width, a dashed ground
     line, focusable assemblies, parts placed with `--x --y --w --h`, filled with `--part-fill`,
     with `--depth` and `--explode-x/-y`, and labels in the default tooltip bubble;
   - `ExplodedView.astro` and `ExplodedViewPart.astro`, which write that markup from data
-    (`exploded-view.ts`);
+    (`exploded-view.ts`), with a `look` (subdued, pop or sticker) as `.rk-explode--pop` and
+    `.rk-explode--sticker`;
   - `illustration-shapes.ts`: `rect`, `circle`, `ellipse`, `dome`, `polygon`, `line`, `hatching`
     and `union`, as SVG paths with their boxes;
   - `illustration-tokens.css`: the illustration colours (§5.3).
