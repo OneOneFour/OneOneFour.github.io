@@ -1,7 +1,7 @@
 ---
 /**
- * More loading options for Gate 1b: water spinners, filling buttons and pending panels. Spinner
- * letters carry on from the spinners above.
+ * More loading options for Gate 1b: water and dot spinners, filling buttons and pending panels.
+ * Spinner letters carry on from the spinners above.
  */
 import Button from '../ui/Button.astro'
 import Specimen from './Specimen.astro'
@@ -9,6 +9,11 @@ import SpecimenRow from './SpecimenRow.astro'
 
 const FILLS = [undefined, 'teal', 'navy', 'coral', 'grape'] as const
 const LEVELS = [0.25, 0.5, 0.85]
+const DOT_SPINNERS = [
+  { label: 'F: dots in a circle', class: 'rk-spinner--orbit' },
+  { label: 'G: dots in a triangle', class: 'rk-spinner--triangle' },
+  { label: 'H: dots that squash and stretch', class: 'rk-spinner--dots rk-spinner--squash' },
+]
 ---
 
 <SpecimenRow title="Water spinners">
@@ -36,6 +41,28 @@ const LEVELS = [0.25, 0.5, 0.85]
         <span class="rk-water rk-water--slosh"></span>
       </span>
       Loading…
+    </span>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Dot spinners">
+  {
+    DOT_SPINNERS.map((spinner) => (
+      <Specimen label={spinner.label}>
+        <span class:list={['rk-spinner', spinner.class]} role="status">
+          <span class="rk-spinner-dot" />
+          <span class="rk-spinner-dot" />
+          <span class="rk-spinner-dot" />
+          <span class="rk-visually-hidden">Loading…</span>
+        </span>
+      </Specimen>
+    ))
+  }
+  <Specimen label="G: large">
+    <span class="rk-spinner rk-spinner--triangle" style="--spinner-size: 3rem" role="status">
+      <span class="rk-spinner-dot"></span><span class="rk-spinner-dot"></span><span
+        class="rk-spinner-dot"></span>
+      <span class="rk-visually-hidden">Loading…</span>
     </span>
   </Specimen>
 </SpecimenRow>

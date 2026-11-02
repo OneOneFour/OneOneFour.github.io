@@ -1,0 +1,166 @@
+/* More three-dot spinners for Gate 1b, beside B in spinner.css, with the same markup: three
+   .rk-spinner-dot children and a visually hidden label.
+   F, .rk-spinner--orbit: the dots chase each other round a circle.
+   G, .rk-spinner--triangle: the dots hop from corner to corner of a triangle.
+   H, .rk-spinner--dots.rk-spinner--squash: B's row, squashing and stretching as it bounces.
+   The dots move but never turn, so their shadows keep to the light. Under reduced motion they
+   stay put and fade in and out instead.
+
+   <span class="rk-spinner rk-spinner--orbit" role="status">
+     <span class="rk-spinner-dot"></span><span class="rk-spinner-dot"></span><span class="rk-spinner-dot"></span>
+     <span class="rk-visually-hidden">Loading…</span>
+   </span> */
+
+.rk-spinner--orbit,
+.rk-spinner--triangle {
+  position: relative;
+  inline-size: var(--spinner-size);
+  block-size: var(--spinner-size);
+}
+
+.rk-spinner--orbit .rk-spinner-dot,
+.rk-spinner--triangle .rk-spinner-dot {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+
+/* Each dot goes round on a turned arm and turns back by the same amount, so it stays upright. */
+.rk-spinner--orbit {
+  --orbit-radius: calc(var(--spinner-size) * -0.35);
+}
+
+.rk-spinner--orbit .rk-spinner-dot {
+  --orbit-turn: 0turn;
+
+  transform: rotate(var(--orbit-turn)) translateY(var(--orbit-radius))
+    rotate(calc(-1 * var(--orbit-turn)));
+  animation: rk-orbit 1.2s ease-in-out infinite backwards;
+}
+
+.rk-spinner--orbit .rk-spinner-dot:nth-child(2) {
+  --orbit-turn: 0.333turn;
+
+  animation-delay: 0.12s;
+}
+
+.rk-spinner--orbit .rk-spinner-dot:nth-child(3) {
+  --orbit-turn: 0.667turn;
+
+  animation-delay: 0.24s;
+}
+
+@keyframes rk-orbit {
+  from {
+    transform: rotate(0turn) translateY(var(--orbit-radius)) rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn) translateY(var(--orbit-radius)) rotate(-1turn);
+  }
+}
+
+/* The corners, from the middle, with the triangle centred in the box. */
+.rk-spinner--triangle {
+  --corner-top: 0 calc(var(--spinner-size) * -0.255);
+  --corner-right: calc(var(--spinner-size) * 0.294) calc(var(--spinner-size) * 0.255);
+  --corner-left: calc(var(--spinner-size) * -0.294) calc(var(--spinner-size) * 0.255);
+}
+
+/* One hop path for all three dots, each started a third of the way further along it. */
+.rk-spinner--triangle .rk-spinner-dot {
+  translate: var(--corner-top);
+  animation: rk-triangle-hop 1.8s var(--ease-snap) infinite;
+}
+
+.rk-spinner--triangle .rk-spinner-dot:nth-child(2) {
+  translate: var(--corner-right);
+  animation-delay: -0.6s;
+}
+
+.rk-spinner--triangle .rk-spinner-dot:nth-child(3) {
+  translate: var(--corner-left);
+  animation-delay: -1.2s;
+}
+
+@keyframes rk-triangle-hop {
+  0%,
+  20% {
+    translate: var(--corner-top);
+  }
+
+  33.333%,
+  53.333% {
+    translate: var(--corner-right);
+  }
+
+  66.667%,
+  86.667% {
+    translate: var(--corner-left);
+  }
+
+  100% {
+    translate: var(--corner-top);
+  }
+}
+
+/* Crouch, stretch on the way up, round at the top, stretch on the way down, squash on landing,
+   then settle. */
+.rk-spinner--squash .rk-spinner-dot {
+  transform-origin: 50% 100%;
+  animation: rk-squash 0.9s infinite;
+}
+
+.rk-spinner--squash .rk-spinner-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.rk-spinner--squash .rk-spinner-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes rk-squash {
+  0%,
+  70%,
+  100% {
+    translate: 0 0;
+    scale: 1;
+  }
+
+  10% {
+    translate: 0 0;
+    scale: 1.3 0.7;
+    animation-timing-function: ease-out;
+  }
+
+  20% {
+    scale: 0.8 1.25;
+  }
+
+  35% {
+    translate: 0 -80%;
+    scale: 1;
+    animation-timing-function: ease-in;
+  }
+
+  45% {
+    scale: 0.85 1.15;
+  }
+
+  50% {
+    translate: 0 0;
+    scale: 1.3 0.7;
+  }
+
+  60% {
+    scale: 0.95 1.05;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rk-spinner--orbit .rk-spinner-dot,
+  .rk-spinner--triangle .rk-spinner-dot,
+  .rk-spinner--squash .rk-spinner-dot {
+    animation: rk-spinner-fade 1.8s ease-in-out infinite alternate;
+  }
+}
