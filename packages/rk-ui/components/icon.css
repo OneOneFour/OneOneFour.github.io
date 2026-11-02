@@ -3,7 +3,7 @@
    wash of the outline colour. */
 
 :root {
-  --icon-fill: color-mix(in srgb, currentColor 20%, transparent);
+  --icon-fill: var(--icon-fill-neutral);
 }
 
 .rk-icon {

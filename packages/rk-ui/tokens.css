@@ -70,6 +70,9 @@
   --lilac-tint: light-dark(#d4c4f5, #342c55);
   --apricot-tint: light-dark(#ffd2a6, #4a3324);
 
+  /* Icon fills: the quiet default for interface icons, a pale wash of the outline colour */
+  --icon-fill-neutral: color-mix(in srgb, currentColor 20%, transparent);
+
   /* Checked and selected controls */
   --selected: var(--yellow);
   --on-selected: var(--on-fill);
