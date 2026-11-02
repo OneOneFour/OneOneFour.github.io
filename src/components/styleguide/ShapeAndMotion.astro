@@ -1,32 +1,27 @@
 ---
-/** Demo boxes for the shape, outline, shadow, press and focus tokens. Not components. */
+/** Static boxes for the shape, outline, shadow and focus tokens. The live versions are the components. */
+
+const BOXES = [
+  { class: 'panel', label: 'Panel', caption: '--radius, no outline (static)' },
+  { class: 'outlined', label: 'Resting', caption: '--outline-width, --shadow' },
+  { class: 'outlined hover', label: 'Hover', caption: 'lifted by --lift-offset onto --shadow-hover' },
+  { class: 'outlined pressed', label: 'Pressed', caption: 'moved by --press-offset onto --shadow-pressed' },
+  { class: 'outlined pill', label: 'Pill', caption: '--radius-pill' },
+  { class: 'unfilled', label: 'Unfilled', caption: '--line-unfilled, flush' },
+  { class: 'unfilled inset', label: 'Inset', caption: '--shadow-inset (unfilled, pressed)' },
+  { class: 'outlined focused', label: 'Focused', caption: '--focus-width band of --focus, no shadow' },
+]
 ---
 
 <div class="demos">
-  <figure>
-    <div class="box panel">Panel</div>
-    <figcaption>--radius, no outline (static)</figcaption>
-  </figure>
-  <figure>
-    <button type="button" class="box filled">Press me</button>
-    <figcaption>--outline-width, --shadow; press for --shadow-pressed</figcaption>
-  </figure>
-  <figure>
-    <div class="box filled pressed">Pressed</div>
-    <figcaption>held down: moved by --press-offset</figcaption>
-  </figure>
-  <figure>
-    <button type="button" class="box filled pill">Pill</button>
-    <figcaption>--radius-pill</figcaption>
-  </figure>
-  <figure>
-    <button type="button" class="box unfilled"><span>Unfilled</span></button>
-    <figcaption>--line-unfilled outline; press: inset shadow, label sinks</figcaption>
-  </figure>
-  <figure>
-    <div class="box filled focused">Focused</div>
-    <figcaption>--focus ring (Tab to the buttons)</figcaption>
-  </figure>
+  {
+    BOXES.map((box) => (
+      <figure>
+        <div class:list={['box', box.class]}>{box.label}</div>
+        <figcaption>{box.caption}</figcaption>
+      </figure>
+    ))
+  }
 </div>
 
 <style>
@@ -53,7 +48,6 @@
     padding: var(--space-3) var(--space-4);
     border: var(--outline-width) solid transparent;
     border-radius: var(--radius);
-    font: inherit;
     font-weight: 600;
   }
 
@@ -61,11 +55,21 @@
     background: var(--raised);
   }
 
-  .filled {
+  .outlined {
     border-color: var(--line);
     background: var(--teal);
     box-shadow: var(--shadow);
     color: var(--on-fill);
+  }
+
+  .hover {
+    box-shadow: var(--shadow-hover);
+    translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+  }
+
+  .pressed {
+    box-shadow: var(--shadow-pressed);
+    translate: var(--press-offset) var(--press-offset);
   }
 
   .pill {
@@ -75,40 +79,12 @@
 
   .unfilled {
     border-color: var(--line-unfilled);
-    background: transparent;
-    color: var(--fg);
   }
 
-  button {
-    cursor: pointer;
-    transition:
-      transform var(--duration-fast) var(--ease-spring),
-      box-shadow var(--duration-fast) var(--ease-out);
+  .inset {
+    box-shadow: var(--shadow-inset);
   }
 
-  button:active,
-  .pressed {
-    box-shadow: var(--shadow-pressed);
-    transform: translate(var(--press-offset), var(--press-offset));
-  }
-
-  /* A flush button has no shadow to sink into, so it is pressed into the page instead:
-     the frame stays put and the label moves in. */
-  .unfilled:active {
-    box-shadow: inset var(--press-offset) var(--press-offset) 0 var(--line);
-    transform: none;
-  }
-
-  .unfilled span {
-    display: inline-block;
-    transition: transform var(--duration-fast) var(--ease-out);
-  }
-
-  .unfilled:active span {
-    transform: translate(var(--press-offset), var(--press-offset));
-  }
-
-  button:focus-visible,
   .focused {
     outline: var(--focus-width) solid var(--focus);
     outline-offset: var(--focus-offset);

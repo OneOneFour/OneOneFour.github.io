@@ -66,6 +66,10 @@
   --lilac-tint: light-dark(#d4c4f5, #342c55);
   --apricot-tint: light-dark(#ffd2a6, #4a3324);
 
+  /* Checked and selected controls */
+  --selected: var(--yellow);
+  --on-selected: var(--on-fill);
+
   /* Section hooks */
   --section: var(--ink);
   --on-section: var(--on-ink);
@@ -85,15 +89,18 @@
   --radius-pill: 999px;
   --outline-width: 2px;
   --shadow: 4px 4px 0 var(--line);
+  --shadow-hover: 6px 6px 0 var(--line);
   --shadow-pressed: 2px 2px 0 var(--line);
+  --shadow-inset: inset 2px 2px 0 var(--line);
+  /* Pressing moves an element onto --shadow-pressed; the move plus that shadow is --shadow. */
   --press-offset: 2px;
+  --lift-offset: 1px;
   --focus-width: 6px;
   --focus-offset: 0;
 
   /* Motion */
   --duration-fast: 120ms;
   --duration-slow: 200ms;
-  --ease-out: ease-out;
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -143,9 +150,12 @@
   }
 }
 
+/* Nothing moves under reduced motion; shadows still change. */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0ms;
     --duration-slow: 0ms;
+    --press-offset: 0px;
+    --lift-offset: 0px;
   }
 }

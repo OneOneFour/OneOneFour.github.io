@@ -39,6 +39,7 @@ const GROUPS = [
       { fg: '--on-navy', bg: '--navy', min: 4.5 },
       { fg: '--on-coral', bg: '--coral-solid', min: 4.5 },
       { fg: '--on-grape', bg: '--grape', min: 4.5 },
+      { fg: '--on-selected', bg: '--selected', min: 4.5 },
       { fg: '--on-section', bg: '--section', min: 4.5 },
     ],
   },
