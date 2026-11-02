@@ -21,7 +21,7 @@ const TINTS = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky', 'lilac', 'apri
 )
 const INK_LABEL_FILLS = ['--teal', '--yellow', '--green', '--sky', '--lilac', '--tangerine', '--apricot']
 const FILLS = ['--navy', '--coral', '--grape', ...INK_LABEL_FILLS]
-const SLATES = ['--slate-a', '--slate-b', '--slate-c']
+const SLATES = ['--slate-a', '--slate-b', '--slate-c', '--slate-tab']
 
 /** Every foreground against every background, with one minimum ratio. */
 function pairs(foregrounds, backgrounds, min) {

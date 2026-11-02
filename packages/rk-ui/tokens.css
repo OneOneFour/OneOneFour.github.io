@@ -80,6 +80,9 @@
   --slate-b: light-dark(#eae7e2, #35332e);
   --slate-c: light-dark(#dde3ef, #303744);
   --slate: var(--slate-a);
+  /* A step further from the page than slate A, for code box C's header strip */
+  --slate-tab: light-dark(#dbe0ea, #333946);
+  --shadow-code-inset: inset 3px 3px 0 color-mix(in srgb, var(--line) 20%, transparent);
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -159,6 +162,7 @@
     --slate-a: #e7ebf3;
     --slate-b: #eae7e2;
     --slate-c: #dde3ef;
+    --slate-tab: #dbe0ea;
   }
 }
 
