@@ -1,0 +1,110 @@
+---
+/**
+ * The dark-mode shadow options for Gate 1b, each on the same set of raised things.
+ *
+ * @param theme the panel's theme, used to keep ids and names unique across the two panels
+ */
+import './shadow-variants.css'
+import Button from '../ui/Button.astro'
+import Card from '../ui/Card.astro'
+import Chip from '../ui/Chip.astro'
+import ChipGroup from '../ui/ChipGroup.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const VARIANTS = [
+  { name: 'a', title: 'Shadow A: current (near-black)', class: '' },
+  { name: 'b', title: 'Shadow B: outlined slab', class: 'rk-shadow-b' },
+  { name: 'c', title: 'Shadow C: extruded side (lit slate)', class: 'rk-shadow-c' },
+  { name: 'd', title: 'Shadow D: own-colour extrusion', class: 'rk-shadow-d' },
+]
+const FILLS = ['navy', 'coral', 'grape', 'teal'] as const
+const KEYS = ['One', 'Two', 'Three']
+const DIALS = ['knob', 'arc']
+---
+
+{
+  VARIANTS.map((variant) => {
+    const prefix = `${theme}-shadow-${variant.name}`
+    return (
+      <div class={variant.class}>
+        <SpecimenRow title={variant.title}>
+          <Specimen label="buttons: yellow, navy, coral, grape, teal">
+            <Button>Button</Button>
+            {FILLS.map((fill) => (
+              <Button fill={fill}>Button</Button>
+            ))}
+          </Specimen>
+          <Specimen label="yellow: hover, pressed">
+            <Button class="is-hover">Button</Button>
+            <Button class="is-active">Button</Button>
+          </Specimen>
+          <Specimen label="checkbox: off, on">
+            <label class="rk-check">
+              <input class="rk-checkbox" type="checkbox" name={`${prefix}-off`} /> Label
+            </label>
+            <label class="rk-check">
+              <input class="rk-checkbox" type="checkbox" name={`${prefix}-on`} checked /> Label
+            </label>
+          </Specimen>
+          <Specimen label="chips">
+            <ChipGroup legend="Specimen">
+              <Chip name={`${prefix}-chip`} value="one" checked>One</Chip>
+              <Chip name={`${prefix}-chip`} value="two">Two</Chip>
+            </ChipGroup>
+          </Specimen>
+          <Specimen label="deck keys">
+            <fieldset class="rk-segmented rk-segmented--deck">
+              <legend class="rk-visually-hidden">Specimen</legend>
+              {KEYS.map((key, i) => (
+                <label>
+                  <input type="radio" name={`${prefix}-deck`} value={key} checked={i === 0} />
+                  {key}
+                </label>
+              ))}
+            </fieldset>
+          </Specimen>
+          <Specimen label="deck keys in tray A">
+            <fieldset class="rk-segmented rk-segmented--deck rk-segmented--tray">
+              <legend class="rk-visually-hidden">Specimen</legend>
+              {KEYS.map((key, i) => (
+                <label>
+                  <input type="radio" name={`${prefix}-tray`} value={key} checked={i === 0} />
+                  {key}
+                </label>
+              ))}
+            </fieldset>
+          </Specimen>
+          <Specimen label="linked card" wide>
+            <Card title="Card title" href="#shadows" meta="Meta line">
+              <p>Body text.</p>
+            </Card>
+          </Specimen>
+          {DIALS.map((dial) => {
+            const id = `${prefix}-dial-${dial}`
+            return (
+              <Specimen label={`dial ${dial}`}>
+                <rk-dial class:list={['rk-dial', `rk-dial--${dial}`]}>
+                  <label for={id}>Level</label>
+                  <input class="rk-range" type="range" id={id} min="0" max="100" value="40" />
+                  <output class="rk-output" for={id}>
+                    40
+                  </output>
+                </rk-dial>
+              </Specimen>
+            )
+          })}
+        </SpecimenRow>
+      </div>
+    )
+  })
+}
+
+<script>
+  import 'rk-ui/dial.js'
+</script>

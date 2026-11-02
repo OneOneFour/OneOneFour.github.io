@@ -20,9 +20,13 @@
   --muted: light-dark(#5b6070, #a3a8b6);
   --line: light-dark(#1d232f, #05070b);
   --line-unfilled: var(--fg);
+  --shadow-color: var(--line);
   --focus: var(--tangerine);
   /* Where tangerine surrounds the focused element, set --focus: var(--focus-alt) */
   --focus-alt: var(--yellow);
+
+  /* Shadow C (Gate 1b option): a dark-mode shadow lighter than the page, like a block's lit side */
+  --shadow-lit: light-dark(var(--line), #6e7891);
 
   /* Fills: vivid in both themes */
   --ink: #1d232f;
@@ -89,9 +93,9 @@
   --radius-pill: 999px;
   --outline-width: 2px;
   --shadow-offset: 4px;
-  --shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--line);
-  --shadow-hover: 6px 6px 0 var(--line);
-  --shadow-pressed: 2px 2px 0 var(--line);
+  --shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+  --shadow-hover: 6px 6px 0 var(--shadow-color);
+  --shadow-pressed: 2px 2px 0 var(--shadow-color);
   --shadow-inset: inset 2px 2px 0 var(--line-unfilled);
   /* Pressing moves an element onto --shadow-pressed; the move plus that shadow is --shadow. */
   --press-offset: 2px;
@@ -102,6 +106,7 @@
   /* Motion */
   --duration-fast: 120ms;
   --duration-spring: 180ms;
+  --duration-slide: 200ms;
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -118,6 +123,7 @@
     --fg: #1d232f;
     --muted: #5b6070;
     --line: #1d232f;
+    --shadow-lit: var(--line);
 
     --navy: #2c4d6e;
     --teal: #2ea6b1;
@@ -156,6 +162,7 @@
   :root {
     --duration-fast: 0ms;
     --duration-spring: 0ms;
+    --duration-slide: 0ms;
     --press-offset: 0px;
     --lift-offset: 0px;
   }

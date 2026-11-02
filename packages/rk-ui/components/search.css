@@ -5,7 +5,8 @@
      <input class="rk-input" type="search" aria-label="Search">
    </div>
 
-   Search B: a filled search button joined to the field's end.
+   Search B: a filled search button joined to the field's end. The two are one raised unit, which
+   is pressed into its shadow when the button is.
    <form class="rk-search-bar" role="search">
      <input class="rk-input" type="search" aria-label="Search">
      <button class="rk-button" type="submit">Search</button>
@@ -66,9 +67,16 @@
 /* Search B */
 
 .rk-search-bar {
+  --press-overshoot: 2px;
+
   display: flex;
   inline-size: 100%;
   max-inline-size: 30rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition:
+    translate var(--duration-spring) var(--ease-spring),
+    box-shadow var(--duration-fast) ease;
 }
 
 .rk-search-bar .rk-input {
@@ -78,8 +86,49 @@
   border-end-end-radius: 0;
 }
 
+/* The button's border is the divider, and matches the field's so the unit has one outline. */
 .rk-search-bar .rk-button {
   margin-inline-start: calc(-1 * var(--outline-width));
+  border-color: var(--line-unfilled);
   border-start-start-radius: 0;
   border-end-start-radius: 0;
+}
+
+/* The unit pops, not the button. */
+.rk-search-bar .rk-button,
+.rk-search-bar .rk-button:is(:hover, :active) {
+  box-shadow: none;
+  translate: none;
+}
+
+/* Pressed, the unit drives past its pressed depth, flush with the page, then settles. On release
+   the transition springs it back up. */
+.rk-search-bar:has(.rk-button:active) {
+  box-shadow: var(--shadow-pressed);
+  translate: var(--press-offset) var(--press-offset);
+  animation: rk-search-bar-press var(--duration-spring) ease-out;
+}
+
+@keyframes rk-search-bar-press {
+  from {
+    box-shadow: var(--shadow);
+    translate: 0 0;
+  }
+
+  50% {
+    box-shadow: none;
+    translate: calc(var(--press-offset) + var(--press-overshoot))
+      calc(var(--press-offset) + var(--press-overshoot));
+  }
+}
+
+/* The focused part shows the band, drawn over its neighbour, and the unit loses its shadow. */
+.rk-search-bar > :focus-visible {
+  position: relative;
+  z-index: 1;
+}
+
+.rk-search-bar:has(:focus-visible),
+.rk-search-bar:has(:disabled) {
+  box-shadow: none;
 }

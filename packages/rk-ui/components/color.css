@@ -193,9 +193,9 @@ input.rk-swatch[type='color']::-moz-color-swatch {
 
 .rk-swatches--drops .rk-swatch {
   --diagonal: 1.4142;
-  --shadow: calc(var(--shadow-offset) * var(--diagonal)) 0 0 var(--line);
-  --shadow-hover: calc(6px * var(--diagonal)) 0 0 var(--line);
-  --shadow-pressed: calc(2px * var(--diagonal)) 0 0 var(--line);
+  --shadow: calc(var(--shadow-offset) * var(--diagonal)) 0 0 var(--shadow-color);
+  --shadow-hover: calc(6px * var(--diagonal)) 0 0 var(--shadow-color);
+  --shadow-pressed: calc(2px * var(--diagonal)) 0 0 var(--shadow-color);
   --shadow-inset: inset calc(2px * var(--diagonal)) 0 0 var(--line-unfilled);
 
   border-radius: var(--drop-corners);

@@ -13,6 +13,8 @@ const options = [
 
 // Radios with the same name form one group across the page, so each toggle needs its own name.
 const name = uniqueId('rk-theme')
+// No radio starts checked: the script checks the stored choice, so the sliding pill appears there
+// instead of sliding from a default on every page load.
 ---
 
 <rk-theme-toggle>
@@ -21,7 +23,7 @@ const name = uniqueId('rk-theme')
     {
       options.map(({ value, label, Icon }) => (
         <label>
-          <input type="radio" name={name} value={value} checked={value === 'system'} />
+          <input type="radio" name={name} value={value} />
           <Icon class="rk-icon" aria-hidden="true" />
           {label}
         </label>
