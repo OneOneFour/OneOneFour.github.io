@@ -8,7 +8,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "contrast": "node scripts/check-contrast.mjs"
+    "contrast": "node scripts/check-contrast.mjs",
+    "vendor-icons": "node scripts/vendor-icons.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",
