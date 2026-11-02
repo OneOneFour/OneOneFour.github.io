@@ -67,6 +67,7 @@ function pickerStates(picker: (typeof PICKERS)[number]) {
     { label: 'checked tile focused', states: { [picker.checked[0]]: 'is-focus' } },
     { label: 'disabled', disabled: true },
     { label: 'compact', compact: true },
+    { label: 'vertical', vertical: true },
   ]
 }
 ---
@@ -84,6 +85,7 @@ function pickerStates(picker: (typeof PICKERS)[number]) {
             checked={picker.checked}
             states={state.states}
             compact={state.compact}
+            vertical={state.vertical}
             disabled={state.disabled}
           />
         </Specimen>

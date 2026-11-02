@@ -9,6 +9,7 @@
  * @param checked the values shown checked
  * @param states static state classes by value, e.g. { 2: 'is-hover' }
  * @param compact use the compact size
+ * @param vertical stack the tiles in a column
  * @param disabled disable the whole group
  */
 import type { SvgComponent } from 'astro/types'
@@ -27,13 +28,18 @@ interface Props {
   checked?: string[]
   states?: Partial<Record<string, string>>
   compact?: boolean
+  vertical?: boolean
   disabled?: boolean
 }
 
-const { legend, name, tiles, multiple, checked = [], states = {}, compact, disabled } = Astro.props
+const { legend, name, tiles, multiple, checked = [], states = {}, compact, vertical, disabled } =
+  Astro.props
 ---
 
-<fieldset class:list={['rk-tiles', { 'rk-tiles--compact': compact }]} disabled={disabled}>
+<fieldset
+  class:list={['rk-tiles', { 'rk-tiles--compact': compact, 'rk-tiles--vertical': vertical }]}
+  disabled={disabled}
+>
   <legend class="rk-visually-hidden">{legend}</legend>
   {
     tiles.map(({ value, label, Icon }) => (
