@@ -26,7 +26,9 @@ const PHOSPHOR_ICONS = [
   'briefcase', 'buildings', 'check-circle', 'x-circle', 'question',
   'snowflake', 'cloud-snow', 'waves', 'mountains', 'leaf', 'tree-evergreen', 'fire',
   'gauge', 'compass', 'cpu', 'chart-scatter', 'chart-bar', 'function', 'sigma', 'planet',
-  'eye', 'eye-slash', 'keyboard',
+  'eye', 'eye-slash', 'keyboard', 'wheelchair', 'closed-captioning', 'translate',
+  'share-network', 'speaker-high', 'speaker-slash', 'video', 'printer',
+  'trophy', 'seal-check', 'brain', 'robot', 'chalkboard-teacher', 'hand-waving',
 ]
 
 // Hand-adapted icons in Phosphor's raw duotone format, read from scripts/icon-sources/.
@@ -105,6 +107,12 @@ const DEFAULT_FILLS = {
   function: 'grape',
   sigma: 'grape',
   planet: 'lilac',
+  trophy: 'yellow',
+  'seal-check': 'green',
+  brain: 'coral',
+  robot: 'teal',
+  'chalkboard-teacher': 'green',
+  'hand-waving': 'yellow',
 }
 
 // Globes whose duotone layer is the land. They also get an ocean disc behind it, coloured by
