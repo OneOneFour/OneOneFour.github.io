@@ -10,10 +10,10 @@
 
 .rk-sticky-note {
   --note-fill: var(--note-yellow);
-  --note-fold-fill: color-mix(in oklab, var(--note-fill) 75%, var(--line));
+  --shade-of: var(--note-fill);
   --note-fold: var(--space-4);
   --note-pin: var(--coral);
-  --icon-fill: var(--note-fold-fill);
+  --icon-fill: var(--shade);
 
   position: relative;
   overflow: visible;
@@ -49,7 +49,7 @@
   border-right-width: var(--outline-width);
   background: linear-gradient(
       to bottom left,
-      var(--note-fold-fill) calc(50% - var(--outline-width)),
+      var(--shade) calc(50% - var(--outline-width)),
       var(--line) 0
     )
     border-box;

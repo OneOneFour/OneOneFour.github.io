@@ -96,6 +96,10 @@
   --note-grape: light-dark(var(--lilac-tint), var(--grape));
   --note-tape: color-mix(in srgb, var(--glint) 60%, transparent);
 
+  /* Shading: hatching stripes, the outline colour at a quarter strength over whatever they cross.
+     A fill's shade is the --shade recipe below. */
+  --stripe: color-mix(in srgb, var(--line) 25%, transparent);
+
   /* Icon fills: the quiet default for interface icons, a pale wash of the outline colour */
   --icon-fill-neutral: color-mix(in srgb, currentColor 20%, transparent);
 
@@ -157,6 +161,21 @@
   --loop-panel: 4s;
   /* The delay between neighbours that move in turn */
   --stagger: 0.15s;
+}
+
+/* Shading mixed from the page colour. A custom property resolves its var()s on the element that
+   declares it, so these are declared again on every palette container. */
+:root,
+[data-palette] {
+  /* The page a step darker, behind the folder's unselected tabs */
+  --folder-back: color-mix(in srgb, var(--surface), var(--line) 8%);
+}
+
+/* A fill's shade, a quarter of the way to the outline colour: the sticky note's fold and the colour
+   shadow mode's extrusions. Set --shade-of to the fill; declared on every element, so each one
+   mixes its own. */
+* {
+  --shade: color-mix(in oklab, var(--shade-of) 75%, var(--line));
 }
 
 /* Depth: data-depth="deep" on <html>, on any container or on one element makes every shadow,

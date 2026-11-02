@@ -141,7 +141,8 @@
    shadow's light edge in dark mode. */
 .rk-explode-part {
   --part-shadow: calc(var(--lift) * var(--shadow-offset) / 2);
-  --extrusion: color-mix(in oklab, var(--part-fill) 75%, var(--line));
+  --shade-of: var(--part-fill);
+  --extrusion: var(--shade);
 
   overflow: visible;
   pointer-events: none;

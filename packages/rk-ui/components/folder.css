@@ -37,7 +37,6 @@
 
 .rk-folder {
   --folder-sheet: var(--raised);
-  --folder-back: color-mix(in srgb, var(--surface), var(--line) 8%);
   /* How far the tabs reach down past the sheet's top edge, so a lift or press never shows a gap */
   --folder-tuck: calc(var(--outline-width) + var(--space-1));
 

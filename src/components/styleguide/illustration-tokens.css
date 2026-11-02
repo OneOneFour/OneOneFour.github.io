@@ -6,7 +6,7 @@
   /* A drawing's outline: a little heavier than the interface's */
   --illustration-outline: calc(1.25 * var(--outline-width));
   /* Hatching stripes: translucent ink, as on the striped progress bar */
-  --illustration-stripe: color-mix(in srgb, var(--line) 25%, transparent);
+  --illustration-stripe: var(--stripe);
 
   /* Hues: the UI's fills */
   --illustration-red: var(--coral);
