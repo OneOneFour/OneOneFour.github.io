@@ -20,8 +20,8 @@
     <figcaption>--radius-pill</figcaption>
   </figure>
   <figure>
-    <button type="button" class="box unfilled">Unfilled</button>
-    <figcaption>--line-unfilled outline</figcaption>
+    <button type="button" class="box unfilled"><span>Unfilled</span></button>
+    <figcaption>--line-unfilled outline; press: inset shadow, label sinks</figcaption>
   </figure>
   <figure>
     <div class="box filled focused">Focused</div>
@@ -92,10 +92,20 @@
     transform: translate(var(--press-offset), var(--press-offset));
   }
 
-  /* A flush button has no shadow to sink into, so it is pressed into the page instead. */
+  /* A flush button has no shadow to sink into, so it is pressed into the page instead:
+     the frame stays put and the label moves in. */
   .unfilled:active {
     box-shadow: inset var(--press-offset) var(--press-offset) 0 var(--line);
     transform: none;
+  }
+
+  .unfilled span {
+    display: inline-block;
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .unfilled:active span {
+    transform: translate(var(--press-offset), var(--press-offset));
   }
 
   button:focus-visible,

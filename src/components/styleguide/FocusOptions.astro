@@ -4,7 +4,7 @@ const OPTIONS = [
   { name: 'current', note: 'navy, 2px gap: crosses the shadow' },
   { name: 'wide', note: 'navy, 6px gap: clears the shadow' },
   { name: 'grape', note: 'grape, 6px gap' },
-  { name: 'highlighter', note: 'yellow, hugging the outline' },
+  { name: 'highlighter', note: 'yellow, hugging the outline; no shadow while focused' },
   { name: 'marquee', note: 'dashed text colour, 6px gap' },
 ]
 ---
@@ -79,6 +79,7 @@ const OPTIONS = [
   .highlighter {
     outline: 4px solid var(--yellow);
     outline-offset: 0;
+    box-shadow: none;
   }
 
   .marquee {
