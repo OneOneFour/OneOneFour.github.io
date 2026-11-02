@@ -64,7 +64,7 @@
   inset: 0;
   pointer-events: none;
   stroke: var(--line-unfilled);
-  stroke-width: var(--outline-width);
+  stroke-width: var(--illustration-outline);
 }
 
 /* An assembly covers the whole stage, so only its parts take the pointer. It comes in front of
@@ -153,7 +153,7 @@
 .rk-explode-shape {
   fill: var(--part-fill);
   stroke: var(--line);
-  stroke-width: calc(2 * var(--outline-width));
+  stroke-width: calc(2 * var(--illustration-outline));
   paint-order: stroke;
   pointer-events: auto;
 }
@@ -164,7 +164,7 @@
 
 .rk-explode-detail:not(.rk-explode-detail--band) {
   stroke: var(--line);
-  stroke-width: var(--outline-width);
+  stroke-width: var(--illustration-outline);
 }
 
 /* Bands and hatching are drawn for light from the top left. They flip about the part's centre
@@ -194,7 +194,7 @@
   display: none;
   fill: none;
   stroke: var(--focus);
-  stroke-width: calc(2 * (var(--outline-width) + var(--focus-width)));
+  stroke-width: calc(2 * (var(--illustration-outline) + var(--focus-width)));
 }
 
 .rk-explode-assembly:focus-visible .rk-explode-band {
@@ -231,7 +231,7 @@
 .rk-explode--sticker .rk-explode-assembly:not(:focus-visible) .rk-explode-band {
   display: inline;
   stroke: var(--glint);
-  stroke-width: calc(2 * (var(--outline-width) + var(--keyline)));
+  stroke-width: calc(2 * (var(--illustration-outline) + var(--keyline)));
 }
 
 .rk-explode--sticker .rk-explode-rest {
@@ -240,7 +240,7 @@
 
 .rk-explode--sticker .rk-explode-rest > path {
   stroke: var(--line-unfilled);
-  stroke-width: calc(2 * (2 * var(--outline-width) + var(--keyline)));
+  stroke-width: calc(2 * (2 * var(--illustration-outline) + var(--keyline)));
 }
 
 /* Reduced motion: nothing moves, but the open assembly's shadows still show, its labels show and

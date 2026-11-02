@@ -9,6 +9,9 @@
     color-mix(in oklab, var(--ink), var(--glint)),
     color-mix(in oklab, var(--ink) 80%, var(--glint))
   );
+
+  /* A drawing's outline: a little heavier than the interface's */
+  --illustration-outline: calc(1.25 * var(--outline-width));
 }
 
 /* Declared on each drawing too, so that its steps mix the hues of its look. */
