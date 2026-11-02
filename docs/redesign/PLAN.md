@@ -633,6 +633,11 @@ the single source for order, file locations and acceptance.
 
 **Open:** none.
 
+**Ideas for later (not scheduled):**
+- A warm "greige" alternate mode for the whole site, built from the greige slate Rob liked at
+  Gate 1b (kept as an opt-in `--slate` alternative for code panels). It would be a third
+  `data-theme` value or a separate attribute; nothing is built for it yet.
+
 ## Sources
 
 - Google Fonts family metadata (subsets, axes, styles, date added):
