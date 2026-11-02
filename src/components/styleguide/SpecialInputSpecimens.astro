@@ -7,9 +7,12 @@
  */
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import DownloadIcon from 'rk-ui/icons/download-simple.svg'
+import UploadIcon from 'rk-ui/icons/upload-simple.svg'
 import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
-import CaretIcon from 'rk-ui/icons/caret-down.svg'
+import MinusIcon from 'rk-ui/icons/minus.svg'
+import PlusIcon from 'rk-ui/icons/plus.svg'
+import CaretUpIcon from 'rk-ui/icons/caret-up.svg'
+import CaretDownIcon from 'rk-ui/icons/caret-down.svg'
 
 interface Props {
   theme: 'light' | 'dark'
@@ -101,7 +104,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
       <Specimen label={state.label} wide>
         <label class:list={['rk-file-drop', state.class]}>
           <input type="file" disabled={state.disabled} aria-invalid={state.invalid ? 'true' : undefined} />
-          <DownloadIcon class="rk-icon" aria-hidden="true" />
+          <UploadIcon class="rk-icon" aria-hidden="true" />
           <span>Choose a file or drop it here</span>
         </label>
       </Specimen>
@@ -191,7 +194,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
       <Specimen label={state.label}>
         <rk-stepper class="rk-stepper rk-stepper--sides">
           <button class="rk-button" type="button" data-step="down" aria-label="Decrease" disabled={state.disabled}>
-            −
+            <MinusIcon class="rk-icon" aria-hidden="true" />
           </button>
           <input
             class:list={['rk-input', state.input]}
@@ -210,7 +213,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
             aria-label="Increase"
             disabled={state.disabled}
           >
-            +
+            <PlusIcon class="rk-icon" aria-hidden="true" />
           </button>
         </rk-stepper>
       </Specimen>
@@ -241,10 +244,10 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
             aria-label="Increase"
             disabled={state.disabled}
           >
-            <CaretIcon aria-hidden="true" />
+            <CaretUpIcon aria-hidden="true" />
           </button>
           <button type="button" tabindex="-1" data-step="down" aria-label="Decrease" disabled={state.disabled}>
-            <CaretIcon aria-hidden="true" />
+            <CaretDownIcon aria-hidden="true" />
           </button>
         </rk-stepper>
       </Specimen>

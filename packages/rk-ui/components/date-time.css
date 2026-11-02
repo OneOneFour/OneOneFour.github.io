@@ -1,11 +1,23 @@
 /* Date and time inputs (date, time, month, week, datetime-local) on the text input frame. The
-   focused part of the value fills with --selected. The picker icon follows color-scheme; the
-   popup picker and Firefox's icon are the browser's own and can't be styled.
+   focused part of the value fills with --selected. The picker icon is a calendar (a clock for
+   time), drawn as a mask in currentColor the way search draws its icons. The popup picker and
+   Firefox's icon are the browser's own and can't be styled.
 
    <input class="rk-input" type="date"> */
 
 .rk-input::-webkit-calendar-picker-indicator {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  margin-inline-start: var(--space-2);
+  padding: 0;
+  background: currentColor;
+  mask: url('../icons/calendar-blank.svg') center / contain no-repeat;
+  forced-color-adjust: none;
   cursor: pointer;
+}
+
+.rk-input[type='time']::-webkit-calendar-picker-indicator {
+  mask-image: url('../icons/clock.svg');
 }
 
 .rk-input {

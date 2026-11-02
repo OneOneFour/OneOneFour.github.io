@@ -6,9 +6,9 @@
 
    Number B: − and + buttons either side of the field. Needs stepper.js.
    <rk-stepper class="rk-stepper rk-stepper--sides">
-     <button class="rk-button" type="button" data-step="down" aria-label="Decrease">−</button>
+     <button class="rk-button" type="button" data-step="down" aria-label="Decrease"><svg class="rk-icon">…</svg></button>
      <input class="rk-input" type="number" aria-label="Label">
-     <button class="rk-button" type="button" data-step="up" aria-label="Increase">+</button>
+     <button class="rk-button" type="button" data-step="up" aria-label="Increase"><svg class="rk-icon">…</svg></button>
    </rk-stepper>
 
    Number C: stacked arrow buttons inside the field's end. Needs stepper.js. The buttons skip the
@@ -61,7 +61,6 @@
 
   justify-content: center;
   inline-size: 2.75rem;
-  font-size: var(--step-1);
 }
 
 /* Number C */
@@ -109,10 +108,6 @@
   inline-size: 1rem;
   block-size: 1rem;
   --icon-stroke: 28;
-}
-
-.rk-stepper--stacked [data-step='up'] svg {
-  rotate: 180deg;
 }
 
 .rk-stepper--stacked button:enabled:hover {
