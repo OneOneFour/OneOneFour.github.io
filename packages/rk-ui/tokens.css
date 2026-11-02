@@ -1,0 +1,101 @@
+/* rk-ui design tokens. Colours are light-dark() pairs that follow color-scheme. */
+
+:root {
+  color-scheme: light dark;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+:root {
+  /* Page */
+  --surface: light-dark(#f7f3e5, #1a1f2b);
+  --raised: light-dark(#fffaf0, #232a39);
+  --fg: light-dark(#1d232f, #f2eee2);
+  --muted: light-dark(#5b6070, #a3a8b6);
+  --line: light-dark(#1d232f, #05070b);
+  --line-unfilled: var(--fg);
+  --focus: var(--navy-deep);
+
+  /* Fills: vivid in both themes */
+  --ink: #1d232f;
+  --navy: light-dark(#2c4d6e, #4a78ad);
+  --teal: light-dark(#2ea6b1, #3bb4bf);
+  --coral: light-dark(#de4d45, #e8625a);
+  --yellow: #f4bc38;
+  --green: light-dark(#7bba3d, #86c44a);
+  --sky: #8fd3f7;
+  --grape: light-dark(#7b4fc9, #a584e6);
+  --lilac: #d4c4f5;
+  --tangerine: light-dark(#f58a2a, #f5923a);
+  --apricot: #ffd2a6;
+
+  /* Text on fills */
+  --on-fill: var(--ink);
+  --on-ink: light-dark(#f7f3e5, #f2eee2);
+  --on-navy: #ffffff;
+  --on-coral: light-dark(#ffffff, var(--ink));
+  --on-grape: light-dark(#ffffff, var(--ink));
+
+  /* Hue text on --surface and --raised */
+  --navy-deep: light-dark(#2c4d6e, #8fb3e0);
+  --teal-deep: light-dark(#176f78, #6fcfd7);
+  --coral-deep: light-dark(#c8322a, #f08a83);
+  --yellow-deep: light-dark(#856000, #f7d27a);
+  --green-deep: light-dark(#3a7016, #a3d977);
+  --sky-deep: light-dark(#216b9a, #8fd3f7);
+  --grape-deep: light-dark(#7b4fc9, #b89cf0);
+  --tangerine-deep: light-dark(#a14c0a, #f8a65c);
+
+  /* Panels that carry --fg text */
+  --navy-tint: light-dark(#c7d5e6, #25364f);
+  --teal-tint: light-dark(#a6dfe3, #173f44);
+  --coral-tint: light-dark(#f6c1bb, #4d2623);
+  --yellow-tint: light-dark(#fbdf94, #4a3e18);
+  --green-tint: light-dark(#c8e5a8, #2a4220);
+  --sky-tint: light-dark(#8fd3f7, #1e3a50);
+  --lilac-tint: light-dark(#d4c4f5, #342c55);
+  --apricot-tint: light-dark(#ffd2a6, #4a3324);
+
+  /* Section hooks */
+  --section: var(--ink);
+  --on-section: var(--on-ink);
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* Shape */
+  --radius: 10px;
+  --radius-pill: 999px;
+  --outline-width: 2px;
+  --shadow: 4px 4px 0 var(--line);
+  --shadow-pressed: 2px 2px 0 var(--line);
+  --press-offset: 2px;
+  --focus-width: 3px;
+  --focus-offset: 2px;
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration-slow: 200ms;
+  --ease-out: ease-out;
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-slow: 0ms;
+  }
+}
