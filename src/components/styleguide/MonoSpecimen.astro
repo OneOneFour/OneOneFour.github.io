@@ -1,20 +1,12 @@
 ---
 /** JetBrains Mono: code with ligatures, a widget readout, maths symbols and look-alikes. */
-
-const CODE = `def lorenz(x, y, z, σ=10.0, ρ=28.0, β=8 / 3) -> tuple:
-    """Return (dx/dt, dy/dt, dz/dt) for the Lorenz system."""
-    # σ: Prandtl number, ρ: Rayleigh number
-    return σ * (y - x), x * (ρ - z) - y, x * y - β * z
-
-Δt = 0.01  # step size
-if Δt != 0 and Δt <= 0.1:
-    steps = {"n": 1000, "Δt": Δt}`
+import { LORENZ_PYTHON } from './code-samples'
 
 const READOUT = 'σ = 10.00  ρ = 28.00  β = 2.667'
 ---
 
 <div class="mono">
-  <pre><code>{CODE}</code></pre>
+  <pre><code>{LORENZ_PYTHON}</code></pre>
   <p class="lookalikes">0O 1lI rn m {'{}'} [] () =&gt; -&gt; != == &lt;= &gt;=</p>
   <p class="readout">{READOUT}</p>
   <p class="symbols">≈ ≠ ≤ ≥ ± × ÷ − → ← ∞ ∂ ∇ ∑ ∫ √ ∝ ° ′ ″</p>
