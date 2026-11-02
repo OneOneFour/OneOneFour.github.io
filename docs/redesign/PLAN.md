@@ -300,18 +300,22 @@ Supporting decisions *(proposed)*:
   - Implementation must also handle several `\label`s in one `align` block (one per row).
   - Scrolling uses CSS `scroll-behavior: smooth`, off under reduced motion. The target equation
     gets a brief `:target` highlight from the tokens.
-- **Monospace** (code, widget readouts): pick one with Greek, decided at Gate 1a.
+- **Monospace** (code, widget readouts): **JetBrains Mono** (OFL), with its ligatures on
+  (decided at Gate 1a).
 - Fonts are **self-hosted** from woff2 files vendored once into the design
   package, with our own `@font-face` rules. Xmind is OFL (no Reserved Font Name, so subsetting
   is fine) and Roboto Slab is **Apache-2.0**. Both allow redistribution, and each licence file
   ships beside its fonts. Each
   file is subset by `unicode-range` (latin, greek), so the Greek file only
-  downloads when a page uses Greek. Why vendored: Xmind isn't on Fontsource (npm 404,
+  downloads when a page uses Greek. A third small "symbols" subset per family carries the
+  maths symbols it has (≈ ≠ ≤ ≥ ∞ ∂ ∑ ∫ √ …), so prose like "β ≈ 0.3" has no fallback
+  seam. Xmind and Roboto Slab have no ← →, and none of the three has ∝, so those fall back.
+  Woff2 files are never inlined into CSS, so each subset stays a separate download. Why vendored: Xmind isn't on Fontsource (npm 404,
   checked 2026-11-01), plain files also work on Rob's vanilla-JS sites, and pinning
   protects against changes to this very new font. The site may serve the same files
   through Astro 7's stable `fonts` config (`local` provider) for preload hints.
-- A modular **type scale** (≈1.25 ratio) and `rem` units replace the legacy
-  `pt` sizes.
+- A modular **type scale** with ratio **1.3** (Rob's pick at Gate 1a, after comparing 1.25
+  and 1.28), body at 1rem, and `rem` units replace the legacy `pt` sizes.
 
 **DECIDED (2026-11-01): pairing A**, Roboto Slab headings with Xmind body
 and UI. Rob approved it after seeing it on the mood board. The Gate 1a specimen
