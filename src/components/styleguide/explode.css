@@ -258,7 +258,8 @@
 }
 
 .rk-explode-sticker {
-  --extrusion: color-mix(in oklab, var(--glint) 75%, var(--line));
+  --shade-of: var(--glint);
+  --extrusion: var(--shade);
 
   position: absolute;
   inset: 0;
