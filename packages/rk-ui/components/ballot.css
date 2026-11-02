@@ -18,7 +18,8 @@
 
    Layout modifiers for the group, which combine freely:
      .rk-ballot--mark-end  the tiles on the right;
-     .rk-ballot--overlap   each tile straddles its text box's edge. */
+     .rk-ballot--overlap   each tile straddles its text box's edge;
+     .rk-ballot--inside    each tile sits inside its text box. */
 
 .rk-ballot {
   --tile-size: 2.5rem;
@@ -89,6 +90,37 @@
 
 .rk-ballot--overlap.rk-ballot--mark-end .rk-ballot-text {
   padding-inline: var(--space-3) calc(var(--tile-size) / 2 + var(--space-3));
+}
+
+/* Inside: the same pull, the whole tile's width plus --tile-inset, so the tile sits in the box's
+   padding. The tile is top-aligned and the box is at least a tile tall, so one-line text is
+   centred against the tile and longer text starts level with it. */
+.rk-ballot--inside {
+  --tile-inset: calc(var(--outline-width) + var(--space-3));
+}
+
+.rk-ballot--inside .rk-ballot-option {
+  align-items: start;
+  gap: 0;
+}
+
+.rk-ballot--inside .rk-tile {
+  margin-block-start: calc(var(--outline-width) + var(--space-2));
+  margin-inline: var(--tile-inset) calc(-1 * (var(--tile-size) + var(--tile-inset)));
+}
+
+.rk-ballot--inside .rk-ballot-text {
+  align-content: center;
+  min-block-size: calc(var(--tile-size) + 2 * (var(--space-2) + var(--outline-width)));
+  padding-inline-start: calc(var(--tile-size) + 2 * var(--space-3));
+}
+
+.rk-ballot--inside.rk-ballot--mark-end .rk-tile {
+  margin-inline: calc(-1 * (var(--tile-size) + var(--tile-inset))) var(--tile-inset);
+}
+
+.rk-ballot--inside.rk-ballot--mark-end .rk-ballot-text {
+  padding-inline: var(--space-3) calc(var(--tile-size) + 2 * var(--space-3));
 }
 
 /* A checked tile lands with the deck keys' kerchunk (segmented.css): it drives past its pushed-in
