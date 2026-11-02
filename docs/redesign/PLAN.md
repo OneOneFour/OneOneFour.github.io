@@ -334,7 +334,7 @@ outside `tokens.css`, `chart-tokens.css` and `illustration-tokens.css` was liste
   - ink icon lines on the coral note's fold in dark mode (2.8:1, min 3): *accepted by Rob*; the
     check lists it as accepted with his reason;
   - in the colour shadow mode, coral's shade against the dark page (2.4–2.9:1) and grape's against
-    `--raised` (2.6–2.8:1): *still failing, Rob to decide*.
+    `--raised` (2.6–2.8:1): *accepted by Rob*, as the ink outline marks each element's edge.
 
 ### 5.2 Typography — research so far
 

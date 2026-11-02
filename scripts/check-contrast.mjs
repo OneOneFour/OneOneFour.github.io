@@ -118,7 +118,15 @@ const GROUPS = [
     title: "Colour shadow mode: each fill's shade against the page",
     themes: ['dark'],
     pairs: EXTRUDED_FILLS.flatMap((fill) =>
-      SURFACES.map((bg) => ({ fg: '--shade', bg, inputs: { '--shade-of': fill }, min: 3 }))
+      SURFACES.map((bg) => ({
+        fg: '--shade',
+        bg,
+        inputs: { '--shade-of': fill },
+        min: 3,
+        ...(['--coral', '--grape'].includes(fill) && {
+          accepted: "Rob, 2026-11-02: fine as they are; the ink outline marks the element's edge",
+        }),
+      }))
     ),
   },
   {
