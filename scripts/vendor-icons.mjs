@@ -8,7 +8,9 @@ const TABLER = 'https://raw.githubusercontent.com/tabler/tabler-icons/v3.50.0'
 
 const PHOSPHOR_ICONS = [
   'house', 'pen-nib', 'flask', 'rocket', 'camera', 'identification-card',
-  'cloud', 'cloud-rain', 'cloud-lightning', 'wind', 'thermometer', 'globe-hemisphere-west',
+  'cloud', 'cloud-rain', 'cloud-lightning', 'wind',
+  'thermometer', 'thermometer-cold', 'thermometer-hot',
+  'globe-hemisphere-west', 'globe-hemisphere-east',
   'wave-sine', 'chart-line', 'code', 'map-pin',
   'play', 'pause', 'arrow-counter-clockwise', 'download-simple', 'arrow-square-out',
   'list', 'x', 'caret-right', 'caret-down', 'magnifying-glass', 'funnel', 'copy',
@@ -18,6 +20,15 @@ const PHOSPHOR_ICONS = [
   'arrow-left', 'arrow-right', 'caret-left', 'check', 'link', 'tag',
   'book-open-text', 'graduation-cap', 'file-pdf', 'presentation-chart', 'quotes', 'lightbulb',
   'image', 'images', 'atom',
+  'stop', 'shuffle', 'sliders-horizontal', 'arrows-out', 'circle-notch',
+  'magnifying-glass-plus', 'magnifying-glass-minus', 'aperture', 'map-trifold',
+  'arrow-up', 'list-bullets', 'users', 'file-text', 'newspaper-clipping', 'database',
+  'briefcase', 'buildings', 'check-circle', 'x-circle', 'question',
+  'snowflake', 'cloud-snow', 'waves', 'mountains', 'leaf', 'tree-evergreen', 'fire',
+  'gauge', 'compass', 'cpu', 'chart-scatter', 'chart-bar', 'function', 'sigma', 'planet',
+  'eye', 'eye-slash', 'keyboard', 'wheelchair', 'closed-captioning', 'translate',
+  'share-network', 'speaker-high', 'speaker-slash', 'video', 'printer',
+  'trophy', 'seal-check', 'brain', 'robot', 'chalkboard-teacher', 'hand-waving',
 ]
 
 // Hand-adapted icons in Phosphor's raw duotone format, read from scripts/icon-sources/.
@@ -37,10 +48,12 @@ const DEFAULT_FILLS = {
   'cloud-lightning': 'yellow',
   wind: 'teal',
   thermometer: 'coral',
+  'thermometer-cold': 'sky',
+  'thermometer-hot': 'coral',
   'globe-hemisphere-west': 'green',
+  'globe-hemisphere-east': 'green',
   'wave-sine': 'teal',
   'chart-line': 'apricot',
-  code: 'grape',
   'map-pin': 'tangerine',
   satellite: 'lilac',
   play: 'green',
@@ -68,7 +81,43 @@ const DEFAULT_FILLS = {
   image: 'sky',
   images: 'yellow',
   atom: 'teal',
+  stop: 'coral',
+  aperture: 'yellow',
+  'map-trifold': 'green',
+  users: 'apricot',
+  'file-text': 'sky',
+  'newspaper-clipping': 'yellow',
+  briefcase: 'tangerine',
+  buildings: 'lilac',
+  'check-circle': 'green',
+  'x-circle': 'coral',
+  question: 'sky',
+  snowflake: 'sky',
+  'cloud-snow': 'sky',
+  waves: 'teal',
+  mountains: 'green',
+  leaf: 'green',
+  'tree-evergreen': 'green',
+  fire: 'tangerine',
+  gauge: 'yellow',
+  compass: 'tangerine',
+  cpu: 'grape',
+  'chart-scatter': 'apricot',
+  'chart-bar': 'apricot',
+  function: 'grape',
+  sigma: 'grape',
+  planet: 'lilac',
+  trophy: 'yellow',
+  'seal-check': 'green',
+  brain: 'coral',
+  robot: 'teal',
+  'chalkboard-teacher': 'green',
+  'hand-waving': 'yellow',
 }
+
+// Globes whose duotone layer is the land. They also get an ocean disc behind it, coloured by
+// --icon-ocean (default sky); `--icon-ocean: none` leaves just the land filled.
+const GLOBES = ['globe-hemisphere-west', 'globe-hemisphere-east']
 
 const SOURCE_DIR = new URL('./icon-sources/', import.meta.url)
 const OUT_DIR = new URL('../packages/rk-ui/icons/', import.meta.url)
@@ -78,6 +127,9 @@ const FILL_LAYER = ' opacity="0.2"'
 const SHARED_STROKE_ATTRS = / (fill="none"|stroke="currentColor"|stroke-linecap="round"|stroke-linejoin="round"|stroke-width="16")/g
 const ROOT_ATTRS =
   'fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="stroke-width:var(--icon-stroke, 16)" aria-hidden="true"'
+// Fills the globes' outline circle, so it sits behind every other shape.
+const OCEAN_DISC =
+  '<circle cx="128" cy="128" r="96" stroke="none" style="fill:var(--icon-ocean, var(--sky))"/>'
 
 /** Fetches a URL as text, failing loudly on any HTTP error. */
 async function fetchText(url) {
@@ -107,12 +159,13 @@ function recolourShape(tag, fillAttrs) {
 /** Turns a raw duotone SVG into a recolourable, SVGO-optimised one. */
 function makeRecolourable(name, rawSvg) {
   const fillAttrs = fillHook(name)
+  const ocean = GLOBES.includes(name) ? OCEAN_DISC : ''
   const svg = rawSvg
     .replace(BACKGROUND_RECT, '')
     .replace(/<(path|line|circle|ellipse|rect|polyline|polygon)\b[^>]*\/>/g, (tag) =>
       recolourShape(tag, fillAttrs)
     )
-    .replace(/<svg ([^>]*)>/, `<svg $1 ${ROOT_ATTRS}>`)
+    .replace(/<svg ([^>]*)>/, `<svg $1 ${ROOT_ATTRS}>${ocean}`)
   // convertStyleToAttrs stays off (it isn't in preset-default) so the fill hook remains a style.
   return optimize(svg, { multipass: true, plugins: ['preset-default'] }).data
 }

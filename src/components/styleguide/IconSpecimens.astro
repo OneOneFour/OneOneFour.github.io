@@ -1,7 +1,7 @@
 ---
 /**
- * Every package icon with its default fill, the alternative defaults up for review, icons in
- * context, both .rk-icon sizes, and one icon with other fills.
+ * Every package icon with its default fill, icons in context, both .rk-icon sizes, and one icon
+ * with other fills.
  */
 import type { SvgComponent } from 'astro/types'
 import Button from '../ui/Button.astro'
@@ -14,6 +14,7 @@ import Download from 'rk-ui/icons/download-simple.svg'
 import Code from 'rk-ui/icons/code.svg'
 import Reset from 'rk-ui/icons/arrow-counter-clockwise.svg'
 import ExternalLink from 'rk-ui/icons/arrow-square-out.svg'
+import Sun from 'rk-ui/icons/sun.svg'
 
 const iconModules = import.meta.glob<{ default: SvgComponent }>(
   ['/packages/rk-ui/icons/*.svg', '!**/sprite.svg'],
@@ -41,26 +42,6 @@ const ICONS = Object.entries(iconModules).map(([path, module]) => ({
   defaultFill: defaultFillOf(iconSources[path]),
 }))
 
-// Gate 1b: a second plausible default for some icons, shown beside the current one.
-const ALTERNATIVES = [
-  { name: 'house', alt: 'icon-fill-neutral' },
-  { name: 'flask', alt: 'navy' },
-  { name: 'book-open-text', alt: 'navy' },
-  { name: 'graduation-cap', alt: 'grape' },
-  { name: 'atom', alt: 'sky' },
-  { name: 'satellite', alt: 'sky' },
-  { name: 'wind', alt: 'sky' },
-  { name: 'image', alt: 'yellow' },
-  { name: 'images', alt: 'sky' },
-  { name: 'calendar-blank', alt: 'icon-fill-neutral' },
-  { name: 'circle-half', alt: 'sky' },
-  { name: 'pause', alt: 'icon-fill-neutral' },
-  { name: 'arrow-counter-clockwise', alt: 'sky' },
-  { name: 'upload-simple', alt: 'green' },
-  { name: 'arrow-square-out', alt: 'icon-fill-neutral' },
-  { name: 'link', alt: 'sky' },
-].map(({ name, alt }) => ({ ...ICONS.find((entry) => entry.name === name)!, alt }))
-
 const FILLS = ['teal', 'yellow', 'coral', 'grape', 'raised']
 ---
 
@@ -70,23 +51,6 @@ const FILLS = ['teal', 'yellow', 'coral', 'grape', 'raised']
       <Specimen label={`${name} · ${fillLabel(defaultFill)}`}>
         <Icon class="rk-icon large" />
       </Specimen>
-    ))
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Alternative defaults">
-  {
-    ALTERNATIVES.map(({ name, Icon, defaultFill, alt }) => (
-      <div class="pair">
-        <Specimen label={`${name}: default (${fillLabel(defaultFill)})`}>
-          <Icon class="rk-icon large" />
-        </Specimen>
-        <Specimen label={`alt (${fillLabel(alt)})`}>
-          <span class="fill" style={`--icon-fill: var(--${alt})`}>
-            <Icon class="rk-icon large" />
-          </span>
-        </Specimen>
-      </div>
     ))
   }
 </SpecimenRow>
@@ -107,6 +71,9 @@ const FILLS = ['teal', 'yellow', 'coral', 'grape', 'raised']
     <Button unfilled><Reset class="rk-icon" />Reset</Button>
   </Specimen>
   <Specimen label="neutral icon alone"><Copy class="rk-icon" /></Specimen>
+  <Specimen label="sun set to neutral: --icon-fill overrides any icon's default">
+    <span class="fill" style="--icon-fill: var(--icon-fill-neutral)"><Sun class="rk-icon" /></span>
+  </Specimen>
   <Specimen label="inline in a sentence">
     <p class="sentence">
       Read the paper<ExternalLink class="rk-icon inline" /> for the full derivation.
@@ -156,12 +123,6 @@ const FILLS = ['teal', 'yellow', 'coral', 'grape', 'raised']
 
   .fill {
     display: flex;
-  }
-
-  .pair {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
   }
 
   .strip {

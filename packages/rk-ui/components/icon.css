@@ -1,6 +1,7 @@
 /* Inline SVG icons from icons/. --icon-stroke is in the icons' 256-unit viewBox, so 21 is about
    2px at 24px. --icon-fill inherits: set it on the icon or any container. When nothing sets it,
-   each icon uses its own default fill, written into the SVG. */
+   each icon uses its own default fill, written into the SVG. The globes' ocean has its own hook,
+   --icon-ocean. */
 
 .rk-icon {
   flex: none;
