@@ -8,8 +8,8 @@
    </div>
 
    Opt-in modifiers on .rk-equation: --panel (a slate panel), --rule (a rule down the left) and
-   --key (a raised dashed panel for a key result). .rk-tag-pill on an equation or any ancestor
-   shows equation numbers as small pills, and .rk-eqref-pill does the same for references.
+   --key (a raised dashed panel for a key result). Equation numbers, and references to them in
+   prose (.rk-eqref), are small lilac pills.
 
    Colour-coded terms: \htmlClass{rk-maths-teal}{…}, one class per chart hue. .rk-maths-tint on
    any ancestor gives the terms a tinted background instead of coloured text. */
@@ -100,7 +100,7 @@
 }
 
 /* Each number is "(", the digits and ")"; the pill replaces the brackets. */
-.rk-tag-pill .katex-tag .mord.text {
+.katex-tag .mord.text {
   padding-inline: 0.5em;
   border-radius: var(--radius-pill);
   background: var(--lilac-tint);
@@ -109,14 +109,14 @@
   font-weight: 600;
 }
 
-.rk-tag-pill .katex-tag .mord.text > :is(:first-child, :last-child) {
+.katex-tag .mord.text > :is(:first-child, :last-child) {
   display: none;
 }
 
-/* Equation references in prose are plain links, with the brackets in their own spans:
-   <a class="rk-eqref" href="#eq-lorenz"><span>(</span>2<span>)</span></a>
-   .rk-eqref-pill on a reference or any ancestor draws them as pills like the equation numbers'. */
-.rk-eqref:is(.rk-eqref-pill, .rk-eqref-pill *) {
+/* An equation reference in prose is a pill like the equation's number. Its brackets are in spans,
+   so it still reads "(2)" without CSS:
+   <a class="rk-eqref" href="#eq-lorenz"><span>(</span>2<span>)</span></a> */
+.rk-eqref {
   padding-inline: 0.5em;
   border-radius: var(--radius-pill);
   background: var(--lilac-tint);
@@ -128,17 +128,17 @@
   white-space: nowrap;
 }
 
-.rk-eqref:is(.rk-eqref-pill, .rk-eqref-pill *) > span {
+.rk-eqref > span {
   display: none;
 }
 
-.rk-eqref:is(.rk-eqref-pill, .rk-eqref-pill *):hover {
+.rk-eqref:hover {
   box-shadow: inset 0 0 0 var(--outline-width) var(--line-unfilled);
 }
 
 /* A pill has no outline for the band to hug, so the band hugs a ring of the outline colour, as on
    equations. */
-.rk-eqref:is(.rk-eqref-pill, .rk-eqref-pill *):focus-visible {
+.rk-eqref:focus-visible {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--outline-width);
   box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);

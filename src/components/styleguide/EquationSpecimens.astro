@@ -37,14 +37,8 @@ const WRAPPERS = [
   { label: 'B: slate panel (.rk-equation--panel)', class: 'rk-equation--panel' },
   { label: 'C: left rule (.rk-equation--rule)', class: 'rk-equation--rule' },
 ]
-const REFERENCE_STYLES = [
-  { key: 'plain', label: 'plain links and numbers (default; click to jump)', class: undefined },
-  {
-    key: 'pill',
-    label: 'pill links and numbers (.rk-eqref-pill and .rk-tag-pill on an ancestor)',
-    class: 'rk-eqref-pill rk-tag-pill',
-  },
-]
+const flow = anchor('flow')
+const lorenz = anchor('lorenz')
 ---
 
 <SpecimenRow title="Display equations">
@@ -58,11 +52,8 @@ const REFERENCE_STYLES = [
 </SpecimenRow>
 
 <SpecimenRow title="Equation numbers">
-  <Specimen label="A: plain (default)" wide>
+  <Specimen label="one number per row (align)" wide>
     <Equation tex={`\\begin{align*}${LORENZ_ROWS}\\end{align*}`} />
-  </Specimen>
-  <Specimen label="B: pill (.rk-tag-pill on the equation or an ancestor)" wide>
-    <Equation tex={`\\begin{align*}${LORENZ_ROWS}\\end{align*}`} class="rk-tag-pill" />
   </Specimen>
   <Specimen label="one number for the whole system (aligned)" wide>
     <Equation tex={LORENZ_SYSTEM} />
@@ -70,25 +61,15 @@ const REFERENCE_STYLES = [
 </SpecimenRow>
 
 <SpecimenRow title="References and the jump target">
-  {
-    REFERENCE_STYLES.map((style) => {
-      const flow = anchor(`flow-${style.key}`)
-      const lorenz = anchor(`lorenz-${style.key}`)
-      return (
-        <Specimen label={style.label} wide>
-          <div class={style.class}>
-            <Equation tex={`${FLOW} \\tag{1}`} id={flow} />
-            <Equation tex={LORENZ_SYSTEM} id={lorenz} />
-            <p>
-              Pack my box with <EquationReference to={flow} number={1} /> five dozen liquor jugs:{' '}
-              <EquationReference to={lorenz} number={2} class="is-hover" /> hovered,{' '}
-              <EquationReference to={lorenz} number={2} class="is-focus" /> focused.
-            </p>
-          </div>
-        </Specimen>
-      )
-    })
-  }
+  <Specimen label="references in prose (click to jump)" wide>
+    <Equation tex={`${FLOW} \\tag{1}`} id={flow} />
+    <Equation tex={LORENZ_SYSTEM} id={lorenz} />
+    <p>
+      Pack my box with <EquationReference to={flow} number={1} /> five dozen liquor jugs:{' '}
+      <EquationReference to={lorenz} number={2} class="is-hover" /> hovered,{' '}
+      <EquationReference to={lorenz} number={2} class="is-focus" /> focused.
+    </p>
+  </Specimen>
   <Specimen label="targeted (static copy of :target)" wide>
     <Equation tex={`${FLOW} \\tag{1}`} class="is-target" />
   </Specimen>
