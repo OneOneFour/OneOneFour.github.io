@@ -15,17 +15,66 @@ const PHOSPHOR_ICONS = [
   'sun', 'moon', 'circle-half', 'info', 'warning', 'envelope-simple', 'rss',
   'calendar-blank', 'clock', 'upload-simple', 'plus', 'minus', 'caret-up',
   'paint-brush', 'palette', 'drop',
+  'arrow-left', 'arrow-right', 'caret-left', 'check', 'link', 'tag',
+  'book-open-text', 'graduation-cap', 'file-pdf', 'presentation-chart', 'quotes', 'lightbulb',
+  'image', 'images', 'atom',
 ]
 
 // Hand-adapted icons in Phosphor's raw duotone format, read from scripts/icon-sources/.
 const LOCAL_ICONS = ['satellite']
+
+// Each icon's fill when nothing sets --icon-fill, as a token name. Unlisted icons (interface
+// icons such as copy, x and the carets) use the neutral wash, --icon-fill-neutral.
+const DEFAULT_FILLS = {
+  house: 'sky',
+  'pen-nib': 'coral',
+  flask: 'sky',
+  rocket: 'teal',
+  camera: 'yellow',
+  'identification-card': 'green',
+  cloud: 'sky',
+  'cloud-rain': 'sky',
+  'cloud-lightning': 'yellow',
+  wind: 'teal',
+  thermometer: 'coral',
+  'globe-hemisphere-west': 'green',
+  'wave-sine': 'teal',
+  'chart-line': 'apricot',
+  code: 'grape',
+  'map-pin': 'tangerine',
+  satellite: 'lilac',
+  play: 'green',
+  pause: 'yellow',
+  'download-simple': 'green',
+  'arrow-square-out': 'lilac',
+  sun: 'yellow',
+  moon: 'lilac',
+  info: 'sky',
+  warning: 'tangerine',
+  'envelope-simple': 'apricot',
+  rss: 'tangerine',
+  'calendar-blank': 'coral',
+  'paint-brush': 'coral',
+  palette: 'apricot',
+  drop: 'sky',
+  check: 'green',
+  tag: 'apricot',
+  'book-open-text': 'sky',
+  'graduation-cap': 'navy',
+  'file-pdf': 'coral',
+  'presentation-chart': 'apricot',
+  quotes: 'coral',
+  lightbulb: 'yellow',
+  image: 'sky',
+  images: 'yellow',
+  atom: 'teal',
+}
 
 const SOURCE_DIR = new URL('./icon-sources/', import.meta.url)
 const OUT_DIR = new URL('../packages/rk-ui/icons/', import.meta.url)
 
 const BACKGROUND_RECT = '<rect width="256" height="256" fill="none"/>'
 const FILL_LAYER = ' opacity="0.2"'
-const FILL_HOOK = ' stroke="none" style="fill:var(--icon-fill, none)"'
 const SHARED_STROKE_ATTRS = / (fill="none"|stroke="currentColor"|stroke-linecap="round"|stroke-linejoin="round"|stroke-width="16")/g
 const ROOT_ATTRS =
   'fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="stroke-width:var(--icon-stroke, 16)" aria-hidden="true"'
@@ -37,22 +86,32 @@ async function fetchText(url) {
   return response.text()
 }
 
+/** The attributes for an icon's fill layer: `--icon-fill`, falling back to the icon's default. */
+function fillHook(name) {
+  const defaultFill = DEFAULT_FILLS[name] ?? 'icon-fill-neutral'
+  return ` stroke="none" style="fill:var(--icon-fill, var(--${defaultFill}))"`
+}
+
 /**
  * Rewrites one shape element of a raw duotone icon.
- * The 20% opacity layer becomes the `--icon-fill` region, outline strokes lose the attributes
- * the root now carries, and unpainted shapes (solid dots) are filled with the outline colour.
+ * The 20% opacity layer becomes the fill region, given `fillAttrs`. Outline strokes lose the
+ * attributes the root now carries, and unpainted shapes (solid dots) are filled with the outline
+ * colour.
  */
-function recolourShape(tag) {
-  if (tag.includes(FILL_LAYER)) return tag.replace(FILL_LAYER, FILL_HOOK)
+function recolourShape(tag, fillAttrs) {
+  if (tag.includes(FILL_LAYER)) return tag.replace(FILL_LAYER, fillAttrs)
   if (tag.includes('stroke="currentColor"')) return tag.replace(SHARED_STROKE_ATTRS, '')
   return tag.replace('/>', ' fill="currentColor" stroke="none"/>')
 }
 
 /** Turns a raw duotone SVG into a recolourable, SVGO-optimised one. */
-function makeRecolourable(rawSvg) {
+function makeRecolourable(name, rawSvg) {
+  const fillAttrs = fillHook(name)
   const svg = rawSvg
     .replace(BACKGROUND_RECT, '')
-    .replace(/<(path|line|circle|rect|polyline|polygon)\b[^>]*\/>/g, recolourShape)
+    .replace(/<(path|line|circle|ellipse|rect|polyline|polygon)\b[^>]*\/>/g, (tag) =>
+      recolourShape(tag, fillAttrs)
+    )
     .replace(/<svg ([^>]*)>/, `<svg $1 ${ROOT_ATTRS}>`)
   // convertStyleToAttrs stays off (it isn't in preset-default) so the fill hook remains a style.
   return optimize(svg, { multipass: true, plugins: ['preset-default'] }).data
@@ -84,7 +143,7 @@ await mkdir(OUT_DIR, { recursive: true })
 
 const symbols = []
 for (const [name, rawSvg] of await loadRawIcons()) {
-  const svg = makeRecolourable(rawSvg)
+  const svg = makeRecolourable(name, rawSvg)
   await writeFile(new URL(`${name}.svg`, OUT_DIR), `${svg}\n`)
   symbols.push(toSymbol(name, svg))
 }

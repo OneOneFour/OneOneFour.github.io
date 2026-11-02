@@ -1,9 +1,11 @@
 /* Buttons: filled by default, with fill modifiers, a small size and an unfilled secondary.
-   Works on <button> and on <a>. Put an .rk-icon before the label for icon + label. */
+   Works on <button> and on <a>. Put an .rk-icon before the label for icon + label; the icon's fill
+   matches the button's. */
 
 .rk-button {
   --button-fill: var(--yellow);
   --button-label: var(--on-fill);
+  --icon-fill: var(--button-fill);
   --button-padding-block: var(--space-2);
   --button-padding-inline: var(--space-4);
 
@@ -64,7 +66,10 @@
   --button-label: var(--on-section);
 }
 
+/* initial unsets --icon-fill, so an unfilled button's icons keep their own default fills. */
 .rk-button--unfilled {
+  --icon-fill: initial;
+
   border-color: var(--line-unfilled);
   background: transparent;
   color: var(--fg);
