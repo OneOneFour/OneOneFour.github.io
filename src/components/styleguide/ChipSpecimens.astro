@@ -1,0 +1,63 @@
+---
+/**
+ * Filter chips: multi-select and single-select groups, a group given another hue, and every state.
+ *
+ * @param theme the panel's theme, used to keep input names unique across the two panels
+ */
+import Chip from '../ui/Chip.astro'
+import ChipGroup from '../ui/ChipGroup.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import FlaskIcon from 'rk-ui/icons/flask.svg'
+import CodeIcon from 'rk-ui/icons/code.svg'
+import WindIcon from 'rk-ui/icons/wind.svg'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const STATES = [
+  { label: 'hover', class: 'is-hover', checked: false },
+  { label: 'pressed', class: 'is-active', checked: true },
+  { label: 'focused', class: 'is-focus', checked: false },
+]
+---
+
+<SpecimenRow title="Groups">
+  <Specimen label="multi-select (checkboxes), default --section">
+    <ChipGroup legend="Specimen">
+      <Chip name={`${theme}-multi`} value="one" checked>One</Chip>
+      <Chip name={`${theme}-multi`} value="two">Two</Chip>
+      <Chip name={`${theme}-multi`} value="three" checked>Three</Chip>
+    </ChipGroup>
+  </Specimen>
+  <Specimen label="single select (radios), --section set to teal, with icons">
+    <ChipGroup legend="Specimen" style="--section: var(--teal); --on-section: var(--on-fill)">
+      <Chip type="radio" name={`${theme}-single`} value="one" checked><FlaskIcon class="rk-icon rk-icon--small" />One</Chip>
+      <Chip type="radio" name={`${theme}-single`} value="two"><CodeIcon class="rk-icon rk-icon--small" />Two</Chip>
+      <Chip type="radio" name={`${theme}-single`} value="three"><WindIcon class="rk-icon rk-icon--small" />Three</Chip>
+    </ChipGroup>
+  </Specimen>
+  <Specimen label="--section set to coral">
+    <ChipGroup legend="Specimen" style="--section: var(--coral-solid); --on-section: var(--on-coral)">
+      <Chip name={`${theme}-coral`} value="one" checked>One</Chip>
+      <Chip name={`${theme}-coral`} value="two">Two</Chip>
+    </ChipGroup>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="States">
+  <Specimen label="off"><Chip name={`${theme}-off`} value="x">Chip</Chip></Specimen>
+  <Specimen label="on"><Chip name={`${theme}-on`} value="x" checked>Chip</Chip></Specimen>
+  {
+    STATES.map((state) => (
+      <Specimen label={state.label}>
+        <Chip name={`${theme}-${state.label}`} value="x" checked={state.checked} class={state.class}>
+          Chip
+        </Chip>
+      </Specimen>
+    ))
+  }
+  <Specimen label="disabled"><Chip name={`${theme}-disabled`} value="x" disabled>Chip</Chip></Specimen>
+</SpecimenRow>

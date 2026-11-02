@@ -1,0 +1,29 @@
+---
+/** Note and warning callouts, with and without a title, and a focused link inside each. */
+import Callout from '../ui/Callout.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+---
+
+<SpecimenRow title="Callouts">
+  <Specimen label="note, with title" wide>
+    <Callout title="Title">
+      <p>Body text with <a href="#callouts">a link</a>. Pack my box with five dozen liquor jugs.</p>
+    </Callout>
+  </Specimen>
+  <Specimen label="warning, with title" wide>
+    <Callout kind="warning" title="Title">
+      <p>Body text with <a href="#callouts">a link</a>. Pack my box with five dozen liquor jugs.</p>
+    </Callout>
+  </Specimen>
+  <Specimen label="note, focused link" wide>
+    <Callout>
+      <p>Body text with <a href="#callouts" class="is-focus">a focused link</a>.</p>
+    </Callout>
+  </Specimen>
+  <Specimen label="warning, focused link (--focus-alt)" wide>
+    <Callout kind="warning">
+      <p>Body text with <a href="#callouts" class="is-focus">a focused link</a>.</p>
+    </Callout>
+  </Specimen>
+</SpecimenRow>

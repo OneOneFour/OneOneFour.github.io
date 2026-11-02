@@ -1,0 +1,35 @@
+/* Text inputs and textareas. They sit flush like unfilled buttons; hover shows the inset shadow.
+   Mark errors with aria-invalid="true". select.css reuses this look. */
+
+.rk-input,
+.rk-select {
+  inline-size: 100%;
+  max-inline-size: 30rem;
+  padding: var(--space-2) var(--space-3);
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: var(--radius);
+  background-color: var(--raised);
+  color: var(--fg);
+  font-weight: 400;
+  line-height: var(--line-height-body);
+}
+
+.rk-input:hover,
+.rk-select:hover {
+  box-shadow: var(--shadow-inset);
+}
+
+.rk-input::placeholder {
+  color: var(--muted);
+}
+
+textarea.rk-input {
+  min-block-size: 6rem;
+  resize: vertical;
+}
+
+.rk-input[aria-invalid='true'],
+.rk-select[aria-invalid='true'] {
+  border-color: var(--coral-deep);
+  background-color: var(--coral-tint);
+}

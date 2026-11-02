@@ -1,0 +1,43 @@
+/* Switch: a native checkbox with role="switch", drawn as a pill track with a round thumb.
+   On, the track fills with --selected. Wrap it in a label.rk-check. */
+
+.rk-switch {
+  --switch-width: 2.75rem;
+  --thumb-size: 1rem;
+  --thumb-gap: 0.1875rem;
+  --thumb-travel: calc(
+    var(--switch-width) - 2 * var(--outline-width) - var(--thumb-size) - 2 * var(--thumb-gap)
+  );
+
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  inline-size: var(--switch-width);
+  block-size: calc(var(--thumb-size) + 2 * var(--thumb-gap) + 2 * var(--outline-width));
+  margin: 0;
+  padding-inline: var(--thumb-gap);
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: var(--radius-pill);
+  background: var(--raised);
+  cursor: pointer;
+}
+
+.rk-switch::before {
+  content: '';
+  inline-size: var(--thumb-size);
+  block-size: var(--thumb-size);
+  border-radius: 50%;
+  background: var(--fg);
+  transition: translate var(--duration-fast) ease;
+}
+
+.rk-switch:checked {
+  border-color: var(--line);
+  background: var(--selected);
+}
+
+.rk-switch:checked::before {
+  background: var(--on-selected);
+  translate: var(--thumb-travel) 0;
+}

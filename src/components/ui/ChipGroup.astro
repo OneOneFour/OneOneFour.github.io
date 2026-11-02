@@ -1,0 +1,19 @@
+---
+/**
+ * A group of filter chips: a fieldset with a visually hidden legend. Put Chips in the slot.
+ *
+ * @param legend the group's name for screen readers
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'fieldset'> {
+  legend: string
+}
+
+const { legend, class: className, ...attrs } = Astro.props
+---
+
+<fieldset class:list={['rk-chip-group', className]} {...attrs}>
+  <legend class="rk-visually-hidden">{legend}</legend>
+  <slot />
+</fieldset>

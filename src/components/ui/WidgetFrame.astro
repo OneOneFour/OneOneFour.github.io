@@ -1,0 +1,27 @@
+---
+/**
+ * An rk-ui widget frame: a dashed panel with a title, a stage and a controls row.
+ * The default slot is the stage (a canvas or SVG); the `controls` slot holds buttons and sliders.
+ *
+ * @param title the widget's title, shown as the figure caption
+ */
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+---
+
+<figure class="rk-widget-frame">
+  <figcaption class="rk-widget-frame-title">{title}</figcaption>
+  <div class="rk-widget-frame-stage">
+    <slot />
+  </div>
+  {
+    Astro.slots.has('controls') && (
+      <div class="rk-widget-frame-controls">
+        <slot name="controls" />
+      </div>
+    )
+  }
+</figure>

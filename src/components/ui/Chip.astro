@@ -1,0 +1,28 @@
+---
+/**
+ * A filter chip: a pill label around a native checkbox (multi-select) or radio (single select).
+ * Put an optional icon and the label text in the slot.
+ *
+ * @param type 'checkbox' (default) or 'radio'; give every chip in a group the same type and name
+ * @param name the input's name
+ * @param value the input's value
+ * @param checked whether the chip starts on
+ * @param disabled whether the chip is disabled
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'label'> {
+  type?: 'checkbox' | 'radio'
+  name: string
+  value: string
+  checked?: boolean
+  disabled?: boolean
+}
+
+const { type = 'checkbox', name, value, checked, disabled, class: className, ...attrs } = Astro.props
+---
+
+<label class:list={['rk-chip', className]} {...attrs}>
+  <input type={type} name={name} value={value} checked={checked} disabled={disabled} />
+  <slot />
+</label>

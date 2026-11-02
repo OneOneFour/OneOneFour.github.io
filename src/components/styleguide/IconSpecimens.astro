@@ -1,0 +1,56 @@
+---
+/** Every package icon at the default and small .rk-icon sizes, and one icon with other fills. */
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+const iconModules = import.meta.glob<{ default: AstroComponentFactory }>(
+  ['/packages/rk-ui/icons/*.svg', '!**/sprite.svg'],
+  { eager: true }
+)
+const ICONS = Object.entries(iconModules).map(([path, module]) => ({
+  name: path.split('/').pop()!.replace('.svg', ''),
+  Icon: module.default,
+}))
+const FILLS = ['teal', 'yellow', 'coral', 'grape', 'raised']
+const Flask = ICONS.find((icon) => icon.name === 'flask')!.Icon
+---
+
+<SpecimenRow title=".rk-icon (24px, stroke about 2px)">
+  {
+    ICONS.map(({ name, Icon }) => (
+      <Specimen label={name}>
+        <Icon class="rk-icon" />
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title=".rk-icon--small (20px)">
+  <div class="small-row">{ICONS.map(({ Icon }) => <Icon class="rk-icon rk-icon--small" />)}</div>
+</SpecimenRow>
+
+<SpecimenRow title="--icon-fill">
+  <Specimen label="default wash"><Flask class="rk-icon" /></Specimen>
+  {
+    FILLS.map((fill) => (
+      <Specimen label={fill}>
+        <span class="fill" style={`--icon-fill: var(--${fill})`}>
+          <Flask class="rk-icon" />
+        </span>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<style>
+  .fill {
+    display: flex;
+  }
+
+  .small-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

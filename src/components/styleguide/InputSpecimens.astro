@@ -1,0 +1,85 @@
+---
+/**
+ * Text input, textarea and select, each in every state.
+ *
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const STATES = [
+  { label: 'rest', class: '' },
+  { label: 'hover', class: 'is-hover' },
+  { label: 'focused', class: 'is-focus' },
+]
+---
+
+<SpecimenRow title="Text input">
+  {
+    STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <input class:list={['rk-input', state.class]} type="text" placeholder="Placeholder" aria-label="Specimen" />
+      </Specimen>
+    ))
+  }
+  <Specimen label="disabled" wide>
+    <input class="rk-input" type="text" value="Disabled" aria-label="Specimen" disabled />
+  </Specimen>
+  <Specimen label="error" wide>
+    <div class="rk-field">
+      <label for={`${theme}-error-input`}>Label</label>
+      <input
+        class="rk-input"
+        id={`${theme}-error-input`}
+        type="text"
+        value="Not valid"
+        aria-invalid="true"
+        aria-describedby={`${theme}-error-message`}
+      />
+      <span class="rk-field-message rk-field-message--error" id={`${theme}-error-message`}>Error message</span>
+    </div>
+  </Specimen>
+  <Specimen label="field with hint" wide>
+    <div class="rk-field">
+      <label for={`${theme}-hint-input`}>Label</label>
+      <input class="rk-input" id={`${theme}-hint-input`} type="text" aria-describedby={`${theme}-hint`} />
+      <span class="rk-field-message" id={`${theme}-hint`}>Hint text</span>
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Textarea">
+  <Specimen label="rest" wide>
+    <textarea class="rk-input" aria-label="Specimen" placeholder="Placeholder"></textarea>
+  </Specimen>
+  <Specimen label="error" wide>
+    <textarea class="rk-input" aria-label="Specimen" aria-invalid="true">Not valid</textarea>
+  </Specimen>
+  <Specimen label="disabled" wide>
+    <textarea class="rk-input" aria-label="Specimen" disabled>Disabled</textarea>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Select">
+  {
+    STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <select class:list={['rk-select', state.class]} aria-label="Specimen">
+          <option>Option one</option>
+          <option>Option two</option>
+        </select>
+      </Specimen>
+    ))
+  }
+  <Specimen label="disabled" wide>
+    <select class="rk-select" aria-label="Specimen" disabled><option>Option one</option></select>
+  </Specimen>
+  <Specimen label="error" wide>
+    <select class="rk-select" aria-label="Specimen" aria-invalid="true"><option>Option one</option></select>
+  </Specimen>
+</SpecimenRow>

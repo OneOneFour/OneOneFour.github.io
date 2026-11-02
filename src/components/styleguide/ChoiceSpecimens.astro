@@ -1,0 +1,81 @@
+---
+/**
+ * Checkbox, radio and switch, off and on, in every state.
+ *
+ * @param theme the panel's theme, used to keep radio names unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const CONTROLS = [
+  { title: 'Checkbox', class: 'rk-checkbox', type: 'checkbox', role: undefined },
+  { title: 'Radio', class: 'rk-radio', type: 'radio', role: undefined },
+  { title: 'Switch', class: 'rk-switch', type: 'checkbox', role: 'switch' },
+] as const
+const STATES = [
+  { label: 'off', class: '', checked: false },
+  { label: 'on', class: '', checked: true },
+  { label: 'hover', class: 'is-hover', checked: false },
+  { label: 'pressed', class: 'is-active', checked: true },
+  { label: 'focused', class: 'is-focus', checked: true },
+]
+---
+
+{
+  CONTROLS.map((control) => (
+    <SpecimenRow title={control.title}>
+      {STATES.map((state, i) => (
+        <Specimen label={state.label}>
+          <label class="rk-check">
+            <input
+              class:list={[control.class, state.class]}
+              type={control.type}
+              role={control.role}
+              name={`${theme}-${control.title}-${i}`}
+              checked={state.checked}
+            />
+            Label
+          </label>
+        </Specimen>
+      ))}
+      <Specimen label="disabled">
+        <label class="rk-check">
+          <input class={control.class} type={control.type} role={control.role} disabled />
+          Label
+        </label>
+      </Specimen>
+      <Specimen label="disabled, on">
+        <label class="rk-check">
+          <input class={control.class} type={control.type} role={control.role} checked disabled />
+          Label
+        </label>
+      </Specimen>
+      {control.role !== 'switch' && (
+        <Specimen label="error">
+          <label class="rk-check">
+            <input class={control.class} type={control.type} aria-invalid="true" />
+            Label
+          </label>
+        </Specimen>
+      )}
+    </SpecimenRow>
+  ))
+}
+
+<SpecimenRow title="Radio group">
+  <Specimen label="live: one of three">
+    {
+      ['One', 'Two', 'Three'].map((label, i) => (
+        <label class="rk-check">
+          <input class="rk-radio" type="radio" name={`${theme}-radio-group`} checked={i === 0} />
+          {label}
+        </label>
+      ))
+    }
+  </Specimen>
+</SpecimenRow>

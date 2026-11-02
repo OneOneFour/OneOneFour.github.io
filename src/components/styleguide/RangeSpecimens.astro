@@ -1,0 +1,47 @@
+---
+/**
+ * The range slider with an output readout, and in every state.
+ *
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const id = `${theme}-range`
+const STATES = [
+  { label: 'rest', class: '' },
+  { label: 'hover', class: 'is-hover' },
+  { label: 'pressed', class: 'is-active' },
+  { label: 'focused', class: 'is-focus' },
+]
+---
+
+<SpecimenRow title="With readout">
+  <Specimen label="live: the inline oninput updates the output" wide>
+    <form class="rk-field" oninput={`this.elements['${id}-out'].value = this.elements['${id}'].value`}>
+      <label for={id}>Label</label>
+      <div class="rk-range-row">
+        <input class="rk-range" type="range" id={id} name={id} min="0" max="1" step="0.01" value="0.28" />
+        <output class="rk-output" name={`${id}-out`} for={id}>0.28</output>
+      </div>
+    </form>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="States">
+  {
+    STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <input class:list={['rk-range', state.class]} type="range" aria-label="Specimen" />
+      </Specimen>
+    ))
+  }
+  <Specimen label="disabled" wide>
+    <input class="rk-range" type="range" aria-label="Specimen" disabled />
+  </Specimen>
+</SpecimenRow>

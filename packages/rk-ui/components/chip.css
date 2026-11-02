@@ -1,0 +1,49 @@
+/* Filter chips: pill labels around a native checkbox (multi-select) or radio (single select),
+   with an optional .rk-icon before the text. Checked chips fill with --section and
+   --on-section; set those on the chip or its group to pass in another hue.
+
+   <fieldset class="rk-chip-group">
+     <legend class="rk-visually-hidden">Topic</legend>
+     <label class="rk-chip"><input type="checkbox" name="topic" value="a"> Label</label>
+     …
+   </fieldset> */
+
+.rk-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rk-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: var(--radius-pill);
+  background: var(--raised);
+  color: var(--fg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rk-chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rk-chip .rk-icon {
+  color: inherit;
+}
+
+.rk-chip:has(:checked) {
+  border-color: var(--line);
+  background: var(--section);
+  color: var(--on-section);
+}

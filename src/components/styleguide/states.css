@@ -1,0 +1,82 @@
+/* Static copies of the interactive states, so /styleguide/ can show them side by side.
+   Styleguide only: the package uses the real pseudo-classes. Keep in step with interactive.css. */
+
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch).is-hover {
+  box-shadow: var(--shadow-hover);
+  translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+}
+
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch).is-active {
+  box-shadow: var(--shadow-pressed);
+  translate: var(--press-offset) var(--press-offset);
+}
+
+.rk-button--unfilled.is-hover {
+  box-shadow: none;
+  translate: none;
+  background: var(--raised);
+}
+
+.rk-button--unfilled.is-active {
+  box-shadow: var(--shadow-inset);
+  translate: none;
+  padding-block: calc(var(--button-padding-block) + var(--press-offset))
+    calc(var(--button-padding-block) - var(--press-offset));
+  padding-inline: calc(var(--button-padding-inline) + var(--press-offset))
+    calc(var(--button-padding-inline) - var(--press-offset));
+}
+
+.rk-card--link.is-hover .rk-card-link {
+  text-decoration: underline;
+}
+
+:is(.rk-input, .rk-select).is-hover {
+  box-shadow: var(--shadow-inset);
+}
+
+.rk-segmented label.is-hover {
+  box-shadow: inset 0 0 0 var(--outline-width) var(--line-unfilled);
+}
+
+.rk-segmented label.is-active {
+  box-shadow: var(--shadow-inset);
+}
+
+.rk-range.is-hover {
+  --thumb-shadow: var(--shadow-hover);
+  --thumb-shift: calc(-1 * var(--lift-offset));
+}
+
+.rk-range.is-active {
+  --thumb-shadow: var(--shadow-pressed);
+  --thumb-shift: var(--press-offset);
+}
+
+.rk-range.is-focus {
+  --thumb-shadow: 0 0 0 var(--focus-width) var(--focus);
+}
+
+:is(
+    .rk-button,
+    .rk-chip,
+    .rk-card--link,
+    .rk-checkbox,
+    .rk-radio,
+    .rk-switch,
+    .rk-input,
+    .rk-select,
+    .rk-segmented label
+  ).is-focus {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+  box-shadow: none;
+}
+
+a.is-hover {
+  text-decoration-thickness: var(--outline-width);
+}
+
+a.is-focus {
+  background: var(--focus);
+  color: var(--ink);
+}

@@ -1,0 +1,16 @@
+/* Selects: the text input look (input.css) with a caret. The open list is the browser's own. */
+
+/* The caret is drawn with two gradients so it takes --fg in either theme. */
+.rk-select {
+  appearance: none;
+  padding-inline-end: var(--space-7);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--fg) 50%),
+    linear-gradient(135deg, var(--fg) 50%, transparent 50%);
+  background-position:
+    right var(--space-5) center,
+    right var(--space-4) center;
+  background-size: var(--space-2) var(--space-2);
+  background-repeat: no-repeat;
+  cursor: pointer;
+}

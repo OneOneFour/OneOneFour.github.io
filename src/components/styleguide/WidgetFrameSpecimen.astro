@@ -1,0 +1,32 @@
+---
+/** A widget frame with a placeholder SVG on the stage and a row of controls. */
+import WidgetFrame from '../ui/WidgetFrame.astro'
+import Button from '../ui/Button.astro'
+import PlayIcon from 'rk-ui/icons/play.svg'
+import ResetIcon from 'rk-ui/icons/arrow-counter-clockwise.svg'
+---
+
+<WidgetFrame title="Widget title">
+  <svg viewBox="0 0 320 160" role="img" aria-label="Placeholder figure">
+    <path class="trace" d="M10 80 C 60 10, 100 150, 160 80 S 260 10, 310 80" />
+  </svg>
+  <Fragment slot="controls">
+    <Button fill="coral"><PlayIcon class="rk-icon" />Start</Button>
+    <Button unfilled><ResetIcon class="rk-icon" />Reset</Button>
+    <input class="rk-range slider" type="range" aria-label="Specimen" />
+  </Fragment>
+</WidgetFrame>
+
+<style>
+  .trace {
+    fill: none;
+    stroke: var(--grape-deep);
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+
+  .slider {
+    flex: 1 1 10rem;
+    inline-size: auto;
+  }
+</style>
