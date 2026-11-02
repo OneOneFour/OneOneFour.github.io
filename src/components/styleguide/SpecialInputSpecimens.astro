@@ -8,12 +8,19 @@
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 import DownloadIcon from 'rk-ui/icons/download-simple.svg'
+import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
 
 interface Props {
   theme: 'light' | 'dark'
 }
 
 const { theme } = Astro.props
+const SEARCH_STATES = [
+  { label: 'rest', class: '' },
+  { label: 'with a value (hover or focus it for the clear button)', class: '', value: 'Query' },
+  { label: 'focused', class: 'is-focus', value: 'Query' },
+  { label: 'disabled', class: '', disabled: true },
+]
 const DATE_TYPES = ['date', 'time', 'month', 'week', 'datetime-local'] as const
 const DROP_STATES = [
   { label: "rest: click or drop a file (the name isn't shown without a script)" },
@@ -89,4 +96,46 @@ const DROP_STATES = [
   <Specimen label="error" wide>
     <input class="rk-input" type="time" aria-label="Specimen" value="09:30" aria-invalid="true" />
   </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Search A: icon inside">
+  {
+    SEARCH_STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <div class="rk-search">
+          <input
+            class:list={['rk-input', state.class]}
+            type="search"
+            aria-label="Search"
+            placeholder="Search"
+            value={state.value}
+            disabled={state.disabled}
+          />
+        </div>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Search B: attached button">
+  {
+    SEARCH_STATES.map((state) => (
+      <Specimen label={state.label} wide>
+        <form class="rk-search-bar" role="search">
+          <input
+            class:list={['rk-input', state.class]}
+            type="search"
+            aria-label="Search"
+            placeholder="Search"
+            value={state.value}
+            disabled={state.disabled}
+          />
+          <button class="rk-button" type="submit" disabled={state.disabled}>
+            <SearchIcon class="rk-icon rk-icon--small" aria-hidden="true" />
+            Search
+          </button>
+        </form>
+      </Specimen>
+    ))
+  }
 </SpecimenRow>

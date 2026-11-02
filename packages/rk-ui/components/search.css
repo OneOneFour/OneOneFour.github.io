@@ -1,0 +1,85 @@
+/* Search fields, in two variants for Gate 1b. Both swap WebKit's clear button for our ×.
+
+   Search A: a magnifying glass inside the field.
+   <div class="rk-search">
+     <input class="rk-input" type="search" aria-label="Search">
+   </div>
+
+   Search B: a filled search button joined to the field's end.
+   <form class="rk-search-bar" role="search">
+     <input class="rk-input" type="search" aria-label="Search">
+     <button class="rk-button" type="submit">Search</button>
+   </form>
+
+   The icons are masks filled with currentColor. forced-color-adjust keeps that fill in forced
+   colours, where currentColor is the system text colour. */
+
+.rk-input[type='search'] {
+  appearance: none;
+}
+
+.rk-input[type='search']::-webkit-search-decoration {
+  appearance: none;
+}
+
+.rk-input[type='search']::-webkit-search-cancel-button {
+  appearance: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  margin-inline-start: var(--space-2);
+  background-color: currentColor;
+  mask: url('../icons/x.svg') center / contain no-repeat;
+  forced-color-adjust: none;
+  cursor: pointer;
+}
+
+/* Search A */
+
+.rk-search {
+  --search-icon-size: 1.25rem;
+
+  position: relative;
+  inline-size: 100%;
+  max-inline-size: 30rem;
+}
+
+.rk-search::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--space-3);
+  inline-size: var(--search-icon-size);
+  background-color: currentColor;
+  mask: url('../icons/magnifying-glass.svg') center / contain no-repeat;
+  forced-color-adjust: none;
+  pointer-events: none;
+}
+
+.rk-search:has(:disabled)::before {
+  opacity: 0.45;
+}
+
+.rk-search .rk-input {
+  padding-inline-start: calc(var(--space-3) + var(--search-icon-size) + var(--space-2));
+}
+
+/* Search B */
+
+.rk-search-bar {
+  display: flex;
+  inline-size: 100%;
+  max-inline-size: 30rem;
+}
+
+.rk-search-bar .rk-input {
+  flex: 1;
+  min-inline-size: 0;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.rk-search-bar .rk-button {
+  margin-inline-start: calc(-1 * var(--outline-width));
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
