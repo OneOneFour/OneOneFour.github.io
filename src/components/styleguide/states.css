@@ -65,7 +65,7 @@
     .rk-switch,
     .rk-input,
     .rk-select,
-    .rk-segmented label
+    .rk-segmented
   ).is-focus {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-offset);

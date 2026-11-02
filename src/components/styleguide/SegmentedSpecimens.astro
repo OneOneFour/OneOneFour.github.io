@@ -23,7 +23,6 @@ const OPTIONS = [
 const STATES = [
   { label: 'hover', class: 'is-hover' },
   { label: 'pressed', class: 'is-active' },
-  { label: 'focused', class: 'is-focus' },
 ]
 ---
 
@@ -72,6 +71,13 @@ const STATES = [
       </Specimen>
     ))
   }
+  <Specimen label="focused (band on the frame)">
+    <fieldset class="rk-segmented is-focus">
+      <legend class="rk-visually-hidden">Specimen</legend>
+      <label><input type="radio" name={`${theme}-segmented-focus`} /> One</label>
+      <label><input type="radio" name={`${theme}-segmented-focus`} checked /> Two</label>
+    </fieldset>
+  </Specimen>
   <Specimen label="second option disabled">
     <fieldset class="rk-segmented">
       <legend class="rk-visually-hidden">Specimen</legend>
