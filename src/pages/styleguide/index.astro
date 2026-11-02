@@ -3,6 +3,9 @@ import SpecimenLayout from '../../layouts/SpecimenLayout.astro'
 import SpecimenSection from '../../components/styleguide/SpecimenSection.astro'
 import ColourTokens from '../../components/styleguide/ColourTokens.astro'
 import HueVariants from '../../components/styleguide/HueVariants.astro'
+import TypeScale from '../../components/styleguide/TypeScale.astro'
+import FontSpecimens from '../../components/styleguide/FontSpecimens.astro'
+import MonoCandidates from '../../components/styleguide/MonoCandidates.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -23,6 +26,23 @@ import HueVariants from '../../components/styleguide/HueVariants.astro'
       </p>
       <HueVariants slot="light" theme="light" />
       <HueVariants slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Type scale" stacked>
+      <p>Reply with a ratio: 1.2, 1.25 or 1.333.</p>
+      <TypeScale slot="light" />
+      <TypeScale slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Fonts">
+      <FontSpecimens slot="light" />
+      <FontSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Monospace candidates" stacked>
+      <p>Reply with JetBrains Mono or Roboto Mono.</p>
+      <MonoCandidates slot="light" />
+      <MonoCandidates slot="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>
