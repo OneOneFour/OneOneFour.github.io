@@ -1,0 +1,108 @@
+/* Tooltip: a short plain-text description of a control, shown above it while it is hovered or
+   focused. The control points at the bubble with aria-describedby; anything interactive belongs
+   in a popup instead. <rk-tooltip> (tooltip.js) lets Escape hide it; without the script the rest
+   still works. A parent with overflow: hidden clips the bubble.
+   A, the default: an inverted bubble, in the page's colours swapped.
+   B, .rk-tooltip--toon: a raised bubble with the outline and the hard shadow.
+
+   <rk-tooltip class="rk-tooltip">
+     <button class="rk-button" aria-describedby="save-tip">Save</button>
+     <span class="rk-tooltip-bubble" id="save-tip" role="tooltip">Text</span>
+   </rk-tooltip> */
+
+.rk-tooltip {
+  --tooltip-fill: var(--fg);
+  --tooltip-text: var(--surface);
+  --tooltip-edge: transparent;
+  --tooltip-gap: var(--space-3);
+
+  position: relative;
+  display: inline-flex;
+}
+
+.rk-tooltip--toon {
+  --tooltip-fill: var(--raised);
+  --tooltip-text: var(--fg);
+  --tooltip-edge: var(--line-unfilled);
+}
+
+.rk-tooltip-bubble {
+  position: absolute;
+  inset-block-end: calc(100% + var(--tooltip-gap));
+  inset-inline-start: 50%;
+  z-index: 10;
+  inline-size: max-content;
+  max-inline-size: 16rem;
+  padding: var(--space-1) var(--space-3);
+  border: var(--outline-width) solid var(--tooltip-edge);
+  border-radius: var(--radius);
+  background: var(--tooltip-fill);
+  color: var(--tooltip-text);
+  font-size: var(--step--1);
+  font-weight: 600;
+  line-height: var(--line-height-heading);
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  translate: -50% var(--space-1);
+  /* Visibility flips after the fade, so the bubble stays hoverable while it fades out. */
+  transition:
+    opacity var(--duration-fast) ease,
+    translate var(--duration-fast) ease,
+    visibility 0s var(--duration-fast);
+}
+
+/* drop-shadow, unlike box-shadow, follows the tail too. */
+.rk-tooltip--toon .rk-tooltip-bubble {
+  filter: drop-shadow(var(--shadow-offset-x) var(--shadow-offset-y) 0 var(--shadow-color));
+}
+
+/* The tail: a square turned 45°, with its two lower edges outlined. */
+.rk-tooltip-bubble::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-start: 50%;
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+  border: inherit;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  background: inherit;
+  translate: -50% -50%;
+  rotate: 45deg;
+}
+
+/* Bridges the gap to the control, so the pointer can move onto the bubble without losing it. */
+.rk-tooltip-bubble::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 100%;
+  block-size: var(--tooltip-gap);
+}
+
+.rk-tooltip:hover > .rk-tooltip-bubble,
+.rk-tooltip:has(:focus-visible) > .rk-tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+  translate: -50% 0;
+  transition-delay: 0s;
+}
+
+/* A short wait on hover, so a pointer passing over doesn't flash the bubble. */
+.rk-tooltip:hover:not(:has(:focus-visible)) > .rk-tooltip-bubble {
+  transition-delay: 300ms;
+}
+
+.rk-tooltip[data-dismissed] > .rk-tooltip-bubble {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Forced colours outline the tail's transparent edges too, so it is left out. */
+@media (forced-colors: active) {
+  .rk-tooltip-bubble::before {
+    display: none;
+  }
+}

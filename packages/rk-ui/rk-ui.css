@@ -31,4 +31,6 @@
 @import './components/code.css';
 @import './components/spinner.css';
 @import './components/progress.css';
+@import './components/tooltip.css';
+@import './components/popup.css';
 @import './components/interactive.css';

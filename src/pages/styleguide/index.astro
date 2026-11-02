@@ -26,6 +26,7 @@ import ChipSpecimens from '../../components/styleguide/ChipSpecimens.astro'
 import CardSpecimens from '../../components/styleguide/CardSpecimens.astro'
 import CalloutSpecimens from '../../components/styleguide/CalloutSpecimens.astro'
 import ProgressSpecimens from '../../components/styleguide/ProgressSpecimens.astro'
+import TooltipSpecimens from '../../components/styleguide/TooltipSpecimens.astro'
 import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen.astro'
 ---
 
@@ -153,6 +154,15 @@ import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen
     <SpecimenSection title="Spinners and progress">
       <ProgressSpecimens slot="light" />
       <ProgressSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Tooltips and popups">
+      <p>
+        Popups open under their button where CSS anchor positioning is supported, and in the middle
+        of the window elsewhere.
+      </p>
+      <TooltipSpecimens slot="light" theme="light" />
+      <TooltipSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Widget frame">

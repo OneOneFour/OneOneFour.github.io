@@ -1,0 +1,53 @@
+/* Popup: a small raised panel that a button opens with the Popover API, for a toggletip or a few
+   controls. The browser opens and closes it, closes it on Escape or a click outside, and returns
+   focus to the button. Where CSS anchor positioning is supported it opens under its button and
+   flips to stay on screen; elsewhere it opens in the middle of the viewport.
+
+   <button class="rk-button" popovertarget="filter-popup">Filter</button>
+   <div class="rk-popup" id="filter-popup" popover>…</div> */
+
+.rk-popup {
+  box-sizing: border-box;
+  max-inline-size: min(20rem, 100vw - 2 * var(--space-4));
+  padding: var(--space-4);
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: var(--radius);
+  background: var(--raised);
+  color: var(--fg);
+  box-shadow: var(--shadow);
+  transition:
+    opacity var(--duration-spring) ease,
+    scale var(--duration-spring) var(--ease-spring),
+    display var(--duration-spring) allow-discrete,
+    overlay var(--duration-spring) allow-discrete;
+}
+
+.rk-popup > :first-child {
+  margin-block-start: 0;
+}
+
+.rk-popup > :last-child {
+  margin-block-end: 0;
+}
+
+.rk-popup[popover]:not(:popover-open) {
+  opacity: 0;
+  scale: 0.9;
+}
+
+@starting-style {
+  .rk-popup:popover-open {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+
+/* The button that opens a popover is its anchor, so no anchor-name is needed. */
+@supports (position-area: block-end) {
+  .rk-popup {
+    inset: auto;
+    margin: var(--space-2) 0;
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline;
+  }
+}

@@ -172,3 +172,11 @@ a:where(:not(.rk-button)).is-focus {
 .rk-ballot--tight .rk-ballot-option.is-focus {
   z-index: 2;
 }
+
+/* Tooltip */
+
+.rk-tooltip.is-hover > .rk-tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+  translate: -50% 0;
+}
