@@ -1,0 +1,242 @@
+/* Dial: a rotary "thermostat" for a number, in two variants for Gate 1b. Needs dial.js, which draws
+   a face over the range; without it, the range and readout show side by side.
+
+   Dial A, knob: <rk-dial class="rk-dial rk-dial--knob">
+   Dial B, arc:  <rk-dial class="rk-dial rk-dial--arc">
+     <label for="t">Label</label>
+     <input class="rk-range" id="t" type="range" min="10" max="30" step="0.5" value="20">
+     <output class="rk-output" for="t">20</output>
+   </rk-dial>
+
+   The face's SVG is 200 units square, so its lengths are pixels at the default --dial-size. */
+
+.rk-dial {
+  --dial-size: 12.5rem;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'label label'
+    'control readout';
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  max-inline-size: 30rem;
+}
+
+.rk-dial > label {
+  grid-area: label;
+  font-weight: 600;
+}
+
+.rk-dial > input,
+.rk-dial-face {
+  grid-area: control;
+}
+
+.rk-dial > output {
+  grid-area: readout;
+}
+
+/* With the face drawn, the range lies invisibly over it: still focusable and announced, with the
+   dial's bounds, while the face takes the pointer. */
+
+.rk-dial:has(> .rk-dial-face) {
+  grid-template-columns: var(--dial-size);
+  grid-template-areas:
+    'label'
+    'control'
+    'readout';
+  justify-items: center;
+}
+
+.rk-dial:has(> .rk-dial-face) > input {
+  inline-size: 100%;
+  block-size: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rk-dial-face {
+  --dial-shadow: var(--shadow);
+  --dial-shift: 0px;
+
+  display: grid;
+  place-items: center;
+  position: relative;
+  inline-size: var(--dial-size);
+  aspect-ratio: 1;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+}
+
+.rk-dial-face > svg {
+  grid-area: 1 / 1;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+}
+
+.rk-dial-limit {
+  fill: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+/* The knob and the thumb are the parts that pop. */
+:is(.rk-dial-knob, .rk-dial-thumb) {
+  border: var(--outline-width) solid var(--line);
+  border-radius: 50%;
+  box-shadow: var(--dial-shadow);
+  translate: var(--dial-shift) var(--dial-shift);
+  transition:
+    translate var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+/* Dial A, knob */
+
+.rk-dial-tick {
+  stroke: var(--muted);
+  stroke-width: 2px;
+  stroke-linecap: round;
+}
+
+.rk-dial-knob {
+  grid-area: 1 / 1;
+  position: relative;
+  inline-size: 66%;
+  aspect-ratio: 1;
+  /* As on an unchecked checkbox: in dark mode the outline, not the raised fill, stands out. */
+  border-color: var(--line-unfilled);
+  background: var(--raised);
+}
+
+/* The notch turns, not the knob, so the knob's shadow stays at the bottom right. */
+.rk-dial-notch {
+  position: absolute;
+  inset: 0;
+  rotate: var(--dial-angle);
+  transition: rotate var(--duration-fast) ease;
+}
+
+.rk-dial-notch::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 8%;
+  inset-inline-start: calc(50% - 0.375rem);
+  box-sizing: border-box;
+  inline-size: 0.75rem;
+  block-size: 32%;
+  border: var(--outline-width) solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--selected);
+}
+
+/* Dial B, arc */
+
+.rk-dial-track-outline,
+.rk-dial-track,
+.rk-dial-fill {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.rk-dial-track-outline {
+  stroke: var(--line-unfilled);
+  stroke-width: 20px;
+}
+
+.rk-dial-track {
+  stroke: var(--raised);
+  stroke-width: 16px;
+}
+
+.rk-dial-fill {
+  stroke: var(--selected);
+  stroke-width: 16px;
+}
+
+/* Centred on the point dial.js sets; the margins centre it, since translate is taken by the pop. */
+.rk-dial-thumb {
+  --thumb-size: calc(var(--dial-size) * 0.14);
+
+  position: absolute;
+  left: var(--dial-thumb-x);
+  top: var(--dial-thumb-y);
+  box-sizing: border-box;
+  inline-size: var(--thumb-size);
+  aspect-ratio: 1;
+  margin: calc(var(--thumb-size) / -2) 0 0 calc(var(--thumb-size) / -2);
+  background: var(--selected);
+}
+
+.rk-dial--arc:has(> .rk-dial-face) > output {
+  grid-area: control;
+  pointer-events: none;
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* States */
+
+@media (hover: hover) {
+  .rk-dial-face:hover {
+    --dial-shadow: var(--shadow-hover);
+    --dial-shift: calc(-1 * var(--lift-offset));
+  }
+}
+
+.rk-dial[data-dragging] > .rk-dial-face {
+  --dial-shadow: var(--shadow-pressed);
+  --dial-shift: var(--press-offset);
+}
+
+.rk-dial:has(> input:focus-visible) :is(.rk-dial-knob, .rk-dial-thumb) {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+  box-shadow: none;
+}
+
+.rk-dial:has(> input:disabled) > .rk-dial-face {
+  --dial-shadow: none;
+  --dial-shift: 0px;
+
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Forced colours: the SVG keeps its own colours, so the value stays visible. */
+@media (forced-colors: active) {
+  .rk-dial-face > svg,
+  .rk-dial-notch::before {
+    forced-color-adjust: none;
+  }
+
+  .rk-dial-tick,
+  .rk-dial-track-outline {
+    stroke: CanvasText;
+  }
+
+  .rk-dial-limit {
+    fill: CanvasText;
+  }
+
+  .rk-dial-track {
+    stroke: Canvas;
+  }
+
+  .rk-dial-fill {
+    stroke: Highlight;
+  }
+
+  .rk-dial-notch::before {
+    border-color: CanvasText;
+    background: Highlight;
+  }
+}

@@ -13,6 +13,7 @@ import IconSpecimens from '../../components/styleguide/IconSpecimens.astro'
 import ButtonSpecimens from '../../components/styleguide/ButtonSpecimens.astro'
 import InputSpecimens from '../../components/styleguide/InputSpecimens.astro'
 import SpecialInputSpecimens from '../../components/styleguide/SpecialInputSpecimens.astro'
+import DialSpecimens from '../../components/styleguide/DialSpecimens.astro'
 import ChoiceSpecimens from '../../components/styleguide/ChoiceSpecimens.astro'
 import RangeSpecimens from '../../components/styleguide/RangeSpecimens.astro'
 import SegmentedSpecimens from '../../components/styleguide/SegmentedSpecimens.astro'
@@ -75,6 +76,15 @@ import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen
     <SpecimenSection title="Special inputs">
       <SpecialInputSpecimens slot="light" theme="light" />
       <SpecialInputSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Dial">
+      <p>
+        Each dial draws over a native range input, which stays the accessible control: it keeps
+        focus, the arrow keys, Home and End, Page Up and Page Down, and form submission.
+      </p>
+      <DialSpecimens slot="light" theme="light" />
+      <DialSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Checkboxes, radios and switches">
