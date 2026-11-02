@@ -1,8 +1,4 @@
 ---
-// Replaces the old Nuxt dynamic route pages/project/_name.vue. That page
-// fetched project JSON + a separate markdown file at request time via
-// $content(); here both metadata and body come from one content-collection
-// entry, resolved at build time via getStaticPaths.
 import { render } from 'astro:content'
 import { getPublished } from '../../lib/content'
 import Layout from '../../layouts/Layout.astro'
@@ -51,10 +47,7 @@ const { Content } = await render(project)
   .container {
     width: 1580px;
     margin: 0 auto;
-    /* Needed (not just min-height, which global.css already sets for the
-       homepage) so the grid-template-rows `fr` units below have a definite
-       height to divide up --- otherwise the image row grows to fit its
-       content and pushes .project-links off-screen. */
+    /* A definite height, so the grid's `fr` rows don't grow to fit the images. */
     height: 100vh;
   }
   .link-description {

@@ -1,8 +1,4 @@
 ---
-// Ported from the old Vue ProjectGrid.vue, which fetched `$content('projects')`
-// client-side on mount. Astro content collections are known at build time,
-// so this is now a static component that reads getCollection() directly ---
-// no client fetch, no loading state, no JS shipped for the grid itself.
 import { getPublished } from '../lib/content'
 import ProjectItem from './ProjectItem.astro'
 

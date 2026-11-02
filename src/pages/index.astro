@@ -19,9 +19,7 @@ const showCvLink = false
 <Layout title="Robert King">
   <div class="container" id="app-container">
     <div class="leftbar" id="leftbar">
-      <!-- Mobile-only: jump to the projects column (see the <script> below
-           for the show/hide logic --- this button and .mini-left-bar are
-           the two ends of the same toggle). -->
+      <!-- Mobile only: this button and .mini-left-bar toggle between profile and projects. -->
       <button class="toggle-switch top" id="show-projects" aria-label="Show projects">
         <img src="/icons/arrow-66.svg" alt="" /><span>Projects</span>
       </button>
@@ -62,8 +60,6 @@ const showCvLink = false
       </div>
     </div>
 
-    <!-- Mobile-only collapsed state of the leftbar --- hidden by default;
-         shown by the script below once the leftbar is dismissed. -->
     <button class="mini-left-bar" id="show-profile" hidden aria-label="Show profile">
       <h1 class="mini-left-bar-title">RK</h1>
       <img src="/icons/arrow-65.svg" alt="" />
@@ -76,12 +72,8 @@ const showCvLink = false
 </Layout>
 
 <script>
-  // @ts-nocheck --- plain DOM script, not worth typing (TypeScript is
-  // entirely optional in this project; see the note in Layout.astro).
-  // Mobile-only profile/projects toggle, replacing the old Vuex `pane` flag
-  // --- there's nothing here that needs to be shared across components, so
-  // a couple of DOM references + classList toggles are simpler than pulling
-  // in a store for two buttons.
+  // @ts-nocheck
+  // Mobile profile/projects toggle.
   const leftbar = document.getElementById('leftbar')
   const miniBar = document.getElementById('show-profile')
   const rightbar = document.getElementById('rightbar')

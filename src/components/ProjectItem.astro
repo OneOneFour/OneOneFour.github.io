@@ -1,11 +1,4 @@
 ---
-// Ported from the old Vue ProjectItem.vue. The original tracked a
-// `mouseOver` boolean in JS and used a <transition> to slide the overlay in
-// on mouseenter/mouseleave --- that's exactly what CSS :hover + transition
-// already does natively, so this is now a static Astro component with a
-// CSS-only hover reveal instead of a Vue island. Every project also now
-// gets a real detail page (no more directLink bypass --- see
-// src/content.config.ts), so the "View" button always links to /project/[slug].
 import ProjectIcons from './ProjectIcons.astro'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -55,7 +48,6 @@ const backgroundImage = image ?? '/blank.png'
     align-items: flex-start;
     justify-content: space-around;
     padding: 5px 15px;
-    /* CSS-only equivalent of the old mouseOver + <transition name="slide"> */
     opacity: 0;
     transform: translateY(100%);
     transition: opacity 0.25s ease, transform 0.25s ease;

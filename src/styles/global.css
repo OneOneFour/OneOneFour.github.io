@@ -1,7 +1,5 @@
 /* ==========================================================================
-   Theme variables --- tweak colors/spacing here, nothing else needs to change.
-   (Dark mode / night-mode toggle comes back in a later phase; for now this
-   is a single fixed light theme, same look as the current live site.)
+   Theme variables
    ========================================================================== */
 :root {
   --color-bg: white;
@@ -43,18 +41,14 @@ a {
   color: inherit;
 }
 
-/* .leftbar/.mini-left-bar set their own `display`, which would otherwise
-   win over the browser's default `[hidden] { display: none }` rule (same
-   specificity, later in the cascade) --- so toggling the `hidden` attribute
-   from index.astro's script needs this to actually take effect. */
+/* Elements that set their own `display` would otherwise ignore the `hidden` attribute. */
 [hidden] {
   display: none !important;
 }
 
 /* ==========================================================================
-   Homepage layout --- a fixed-width profile sidebar (.leftbar) next to the
-   project grid (.rightbar). On narrow screens only one is shown at a time;
-   see the toggle script in index.astro and .mini-left-bar below.
+   Homepage layout: profile sidebar (.leftbar) beside the project grid (.rightbar).
+   On narrow screens only one shows at a time (toggle script in index.astro).
    ========================================================================== */
 .container {
   position: relative;
@@ -79,9 +73,7 @@ a {
   width: 1240px;
 }
 
-/* Collapsed stand-in for .leftbar on mobile --- tap to bring the profile
-   sidebar back (see index.astro's script). Hidden above the 740px
-   breakpoint, where both columns just show side by side. */
+/* Collapsed .leftbar on mobile; tap to bring the profile back. */
 .mini-left-bar {
   display: none;
   cursor: pointer;
@@ -135,7 +127,7 @@ a {
   width: 16px;
 }
 
-/* Three/two/one-column breakpoints, same widths as the legacy site. */
+/* Three/two/one-column breakpoints. */
 @media screen and (max-width: 1580px) {
   .container {
     width: 1240px;

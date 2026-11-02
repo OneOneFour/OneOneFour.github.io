@@ -1,11 +1,7 @@
 ---
-// Ported from the old Vue ProjectImages.vue. The original used Vue purely
-// for a `currentImg` index and a click handler --- that's simple enough to
-// do with a few lines of plain JS in a <script> tag below, so there's no
-// need to pull in Vue (or any framework) just for an image slideshow.
 interface Props {
   imageUrls: string[]
-  autoScrollMs?: number // 0 disables auto-advance, matching the old default
+  autoScrollMs?: number // 0 disables auto-advance
 }
 
 const { imageUrls, autoScrollMs = 0 } = Astro.props
@@ -83,9 +79,7 @@ const showButtons = imageUrls.length > 1
 </style>
 
 <script>
-  // @ts-nocheck --- plain DOM script, not worth typing.
-  // Runs once for the whole page; handles every .project-images-container
-  // on it (there's normally just one, on a project detail page).
+  // @ts-nocheck
   document.querySelectorAll('.project-images-container').forEach((container) => {
     const images = Array.from(container.querySelectorAll('.img-holder img'))
     if (images.length <= 1) return
