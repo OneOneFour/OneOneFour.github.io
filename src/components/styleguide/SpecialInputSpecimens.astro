@@ -1,13 +1,13 @@
 ---
 /**
- * The special input types (file, date and time, search, number, colour, range with ticks and the
- * plain text-like types), each in its states. Lettered variants are options for Gate 1b.
+ * The special input types (file, date and time, search, number, a colour input on its own, range
+ * with ticks and the plain text-like types), each in its states. Lettered variants are options for
+ * Gate 1b.
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import SwatchPicker from './SwatchPicker.astro'
 import UploadIcon from 'rk-ui/icons/upload-simple.svg'
 import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
 import CaretUpIcon from 'rk-ui/icons/caret-up.svg'
@@ -48,19 +48,6 @@ const NUMBER_STATES = [
   { label: 'focused', input: 'is-focus', buttons: '' },
   { label: 'disabled', input: '', buttons: '', disabled: true },
   { label: 'error', input: '', buttons: '', invalid: true },
-]
-const SWATCH_GROUPS = [
-  { label: 'rest (teal checked; the last tile opens the browser picker)', custom: true },
-  { label: 'hover on navy, pressed coral', custom: true, states: { navy: 'is-hover', coral: 'is-active' } },
-  { label: 'custom colour tile focused', custom: true, states: { custom: 'is-focus' } },
-  { label: 'custom colour checked', custom: true, checked: 'custom' },
-  { label: 'disabled', custom: true, disabled: true },
-  { label: 'palette only, with no custom colour tile', custom: false },
-]
-const FLAIRS = [
-  { label: 'flair A: paint brush', class: 'rk-tiles--brush' },
-  { label: 'flair B: paint drops', class: 'rk-tiles--drops' },
-  { label: 'flair C: palette and stroke', class: 'rk-tiles--stroke', paletteLegend: true },
 ]
 const COLOUR_STATES = [
   { label: 'rest', class: '' },
@@ -249,38 +236,6 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
             <CaretDownIcon aria-hidden="true" />
           </button>
         </rk-stepper>
-      </Specimen>
-    ))
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Colour picker: palette tiles (flair none)">
-  {
-    SWATCH_GROUPS.map((group, index) => (
-      <Specimen label={group.label}>
-        <SwatchPicker
-          name={`${theme}-swatch-${index}`}
-          custom={group.custom}
-          checked={group.checked}
-          states={group.states}
-          disabled={group.disabled}
-        />
-      </Specimen>
-    ))
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Colour picker: flair for the checked tile">
-  {
-    FLAIRS.map((flair, index) => (
-      <Specimen label={`${flair.label}, hover on navy`}>
-        <SwatchPicker
-          name={`${theme}-flair-${index}`}
-          flair={flair.class}
-          custom
-          paletteLegend={flair.paletteLegend}
-          states={{ navy: 'is-hover' }}
-        />
       </Specimen>
     ))
   }

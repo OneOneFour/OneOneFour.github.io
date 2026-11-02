@@ -1,0 +1,53 @@
+---
+/**
+ * A tile picker for the styleguide, with tiles that hold text or an icon.
+ *
+ * @param legend the group's name, visually hidden
+ * @param name the inputs' name, unique on the page
+ * @param tiles each tile's value and name; the name is shown, unless the tile has an icon
+ * @param multiple use checkboxes, so that several tiles can be checked
+ * @param checked the values shown checked
+ * @param states static state classes by value, e.g. { 2: 'is-hover' }
+ * @param compact use the compact size
+ * @param disabled disable the whole group
+ */
+import type { SvgComponent } from 'astro/types'
+
+interface Tile {
+  value: string
+  label: string
+  Icon?: SvgComponent
+}
+
+interface Props {
+  legend: string
+  name: string
+  tiles: Tile[]
+  multiple?: boolean
+  checked?: string[]
+  states?: Partial<Record<string, string>>
+  compact?: boolean
+  disabled?: boolean
+}
+
+const { legend, name, tiles, multiple, checked = [], states = {}, compact, disabled } = Astro.props
+---
+
+<fieldset class:list={['rk-tiles', { 'rk-tiles--compact': compact }]} disabled={disabled}>
+  <legend class="rk-visually-hidden">{legend}</legend>
+  {
+    tiles.map(({ value, label, Icon }) => (
+      <label class:list={['rk-tile', states[value]]}>
+        <input type={multiple ? 'checkbox' : 'radio'} name={name} value={value} checked={checked.includes(value)} />
+        {Icon ? (
+          <>
+            <Icon aria-hidden="true" />
+            <span class="rk-visually-hidden">{label}</span>
+          </>
+        ) : (
+          label
+        )}
+      </label>
+    ))
+  }
+</fieldset>

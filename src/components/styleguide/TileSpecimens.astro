@@ -1,0 +1,125 @@
+---
+/**
+ * The tile picker with numbers, letters and icons, and the colour picker built on it, each in its
+ * states. The flair row shows the options still open for the checked colour tile.
+ *
+ * @param theme the panel's theme, used to keep input names unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import TilePicker from './TilePicker.astro'
+import SwatchPicker from './SwatchPicker.astro'
+import SunIcon from 'rk-ui/icons/sun.svg'
+import CloudIcon from 'rk-ui/icons/cloud.svg'
+import CloudRainIcon from 'rk-ui/icons/cloud-rain.svg'
+import CloudLightningIcon from 'rk-ui/icons/cloud-lightning.svg'
+import WindIcon from 'rk-ui/icons/wind.svg'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const NUMBERS = ['1', '2', '3', '4', '5'].map((number) => ({ value: number, label: number }))
+const LETTERS = ['A', 'B', 'C', 'D'].map((letter) => ({ value: letter.toLowerCase(), label: letter }))
+const WEATHER = [
+  { value: 'sun', label: 'Sun', Icon: SunIcon },
+  { value: 'cloud', label: 'Cloud', Icon: CloudIcon },
+  { value: 'rain', label: 'Rain', Icon: CloudRainIcon },
+  { value: 'lightning', label: 'Lightning', Icon: CloudLightningIcon },
+  { value: 'wind', label: 'Wind', Icon: WindIcon },
+]
+const PICKERS = [
+  { title: 'Tile picker: numbers (a rating)', legend: 'Rating', tiles: NUMBERS, checked: ['3'] },
+  { title: 'Tile picker: letters (multiple choice)', legend: 'Answer', tiles: LETTERS, checked: ['c'] },
+  {
+    title: 'Tile picker: icons (checkboxes, several choices)',
+    legend: 'Weather',
+    tiles: WEATHER,
+    checked: ['cloud', 'rain'],
+    multiple: true,
+  },
+]
+const SWATCH_GROUPS = [
+  { label: 'rest (teal checked; the last tile opens the browser picker)', custom: true },
+  { label: 'hover on navy, pressed coral', custom: true, states: { navy: 'is-hover', coral: 'is-active' } },
+  { label: 'custom colour tile focused', custom: true, states: { custom: 'is-focus' } },
+  { label: 'custom colour checked', custom: true, checked: 'custom' },
+  { label: 'disabled', custom: true, disabled: true },
+  { label: 'palette only, with no custom colour tile', custom: false },
+]
+const FLAIRS = [
+  { label: 'flair A: paint brush', class: 'rk-tiles--brush' },
+  { label: 'flair B: paint drops', class: 'rk-tiles--drops' },
+  { label: 'flair C: palette and stroke', class: 'rk-tiles--stroke', paletteLegend: true },
+]
+
+/** The states shown for each picker, on its first, last and first checked tiles. */
+function pickerStates(picker: (typeof PICKERS)[number]) {
+  const first = picker.tiles[0]
+  const last = picker.tiles[picker.tiles.length - 1]
+  return [
+    { label: 'rest' },
+    {
+      label: `hover on ${first.label}, pressed ${last.label}`,
+      states: { [first.value]: 'is-hover', [last.value]: 'is-active' },
+    },
+    { label: 'checked tile focused', states: { [picker.checked[0]]: 'is-focus' } },
+    { label: 'disabled', disabled: true },
+    { label: 'compact', compact: true },
+  ]
+}
+---
+
+{
+  PICKERS.map((picker, p) => (
+    <SpecimenRow title={picker.title}>
+      {pickerStates(picker).map((state, s) => (
+        <Specimen label={state.label}>
+          <TilePicker
+            legend={picker.legend}
+            name={`${theme}-tiles-${p}-${s}`}
+            tiles={picker.tiles}
+            multiple={picker.multiple}
+            checked={picker.checked}
+            states={state.states}
+            compact={state.compact}
+            disabled={state.disabled}
+          />
+        </Specimen>
+      ))}
+    </SpecimenRow>
+  ))
+}
+
+<SpecimenRow title="Colour picker: palette tiles and a custom colour (flair none)">
+  {
+    SWATCH_GROUPS.map((group, index) => (
+      <Specimen label={group.label}>
+        <SwatchPicker
+          name={`${theme}-swatch-${index}`}
+          custom={group.custom}
+          checked={group.checked}
+          states={group.states}
+          disabled={group.disabled}
+        />
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Colour picker: flair for the checked tile">
+  {
+    FLAIRS.map((flair, index) => (
+      <Specimen label={`${flair.label}, hover on navy`}>
+        <SwatchPicker
+          name={`${theme}-flair-${index}`}
+          flair={flair.class}
+          custom
+          paletteLegend={flair.paletteLegend}
+          states={{ navy: 'is-hover' }}
+        />
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
