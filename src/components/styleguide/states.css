@@ -148,8 +148,15 @@ a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab)).is-focus {
 
 /* Folder tabs */
 
-.rk-folder-tab:is(.is-hover, .is-focus):not([aria-selected='true']) {
-  z-index: 2;
+.rk-folder-tab:is([aria-selected='true'], [aria-current='page']).is-focus {
+  outline: none;
+}
+
+.rk-folder-tab:is([aria-selected='true'], [aria-current='page']).is-focus::before {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+  box-shadow: none;
+  clip-path: inset(-100vmax -100vmax 0);
 }
 
 /* Input hover cue */
