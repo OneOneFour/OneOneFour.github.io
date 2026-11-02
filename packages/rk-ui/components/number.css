@@ -1,32 +1,20 @@
-/* Number inputs, in three variants for Gate 1b.
+/* Number steppers: a number input with our own step buttons in place of the browser's
+   spinners. Both need stepper.js.
 
-   Number A: the browser's own spinners, always shown. WebKit lets them be shown, hidden or
-   replaced, but the native arrows can't be recoloured or outlined.
-   <input class="rk-input rk-input--spinners" type="number">
-
-   Number B: − and + buttons either side of the field. Needs stepper.js.
-   <rk-stepper class="rk-stepper rk-stepper--sides">
+   Split: − and + buttons either side of the field.
+   <rk-stepper class="rk-stepper rk-stepper--split">
      <button class="rk-button" type="button" data-step="down" aria-label="Decrease"><svg class="rk-icon">…</svg></button>
      <input class="rk-input" type="number" aria-label="Label">
      <button class="rk-button" type="button" data-step="up" aria-label="Increase"><svg class="rk-icon">…</svg></button>
    </rk-stepper>
 
-   Number C: stacked arrow buttons inside the field's end. Needs stepper.js. The buttons skip the
-   tab order because the arrow keys already step the focused field, as with native spinners.
+   Stacked: up and down arrow buttons inside the field's end. The buttons skip the tab order
+   because the arrow keys already step the focused field, as with native spinners.
    <rk-stepper class="rk-stepper rk-stepper--stacked">
      <input class="rk-input" type="number" aria-label="Label">
      <button type="button" tabindex="-1" data-step="up" aria-label="Increase"><svg>…</svg></button>
      <button type="button" tabindex="-1" data-step="down" aria-label="Decrease"><svg>…</svg></button>
    </rk-stepper> */
-
-/* Number A */
-
-.rk-input--spinners::-webkit-inner-spin-button {
-  opacity: 1;
-  cursor: pointer;
-}
-
-/* Number B and C replace the native spinners, so hide them. */
 
 .rk-stepper .rk-input {
   inline-size: 8rem;
@@ -44,26 +32,26 @@
   visibility: hidden;
 }
 
-/* Number B */
+/* Split */
 
-.rk-stepper--sides {
+.rk-stepper--split {
   display: inline-flex;
   align-items: stretch;
   gap: var(--space-2);
 }
 
-.rk-stepper--sides .rk-input {
+.rk-stepper--split .rk-input {
   text-align: center;
 }
 
-.rk-stepper--sides .rk-button {
+.rk-stepper--split .rk-button {
   --button-padding-inline: 0;
 
   justify-content: center;
   inline-size: 2.75rem;
 }
 
-/* Number C */
+/* Stacked */
 
 .rk-stepper--stacked {
   --arrow-width: 1.75rem;

@@ -173,26 +173,11 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   }
 </SpecimenRow>
 
-<SpecimenRow title="Number A: native spinners">
-  <Specimen label="rest (the arrows are the browser's own)">
-    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="3" />
-  </Specimen>
-  <Specimen label="focused">
-    <input class="rk-input rk-input--spinners is-focus" type="number" aria-label="Specimen" value="3" />
-  </Specimen>
-  <Specimen label="disabled">
-    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="3" disabled />
-  </Specimen>
-  <Specimen label="error">
-    <input class="rk-input rk-input--spinners" type="number" aria-label="Specimen" value="30" aria-invalid="true" />
-  </Specimen>
-</SpecimenRow>
-
-<SpecimenRow title="Number B: buttons either side">
+<SpecimenRow title="Number stepper, split: buttons either side">
   {
     NUMBER_STATES.map((state) => (
       <Specimen label={state.label}>
-        <rk-stepper class="rk-stepper rk-stepper--sides">
+        <rk-stepper class="rk-stepper rk-stepper--split">
           <button class="rk-button" type="button" data-step="down" aria-label="Decrease" disabled={state.disabled}>
             <MinusIcon class="rk-icon" aria-hidden="true" />
           </button>
@@ -221,7 +206,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   }
 </SpecimenRow>
 
-<SpecimenRow title="Number C: stacked arrows inside">
+<SpecimenRow title="Number stepper, stacked: arrows inside">
   {
     NUMBER_STATES.map((state) => (
       <Specimen label={state.label.replace('+', 'up')}>
