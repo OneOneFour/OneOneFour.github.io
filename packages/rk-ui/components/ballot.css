@@ -72,13 +72,16 @@
 }
 
 /* Overlap: a negative margin pulls the text box half under the tile, and the box pads its text
-   clear of it. The tile is positioned (tiles.css), so it paints above the box. */
+   clear of it. The tile is positioned (tiles.css), so it paints above the box. It rests back by
+   the shadow offset, so a checked tile, pushed in by that offset, is the one centred on the
+   box's edge. */
 .rk-ballot--overlap .rk-ballot-option {
   gap: 0;
 }
 
 .rk-ballot--overlap .rk-tile {
-  margin-inline-end: calc(var(--tile-size) / -2);
+  inset-block-start: calc(-1 * var(--shadow-offset-y));
+  margin-inline-end: calc(var(--shadow-offset-x) - var(--tile-size) / 2);
 }
 
 .rk-ballot--overlap .rk-ballot-text {
@@ -86,7 +89,7 @@
 }
 
 .rk-ballot--overlap.rk-ballot--mark-end .rk-tile {
-  margin-inline: calc(var(--tile-size) / -2) 0;
+  margin-inline: calc(-1 * (var(--shadow-offset-x) + var(--tile-size) / 2)) 0;
 }
 
 .rk-ballot--overlap.rk-ballot--mark-end .rk-ballot-text {
