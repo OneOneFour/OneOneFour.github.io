@@ -388,6 +388,11 @@ first: the background sinks by default, and `.rk-hover-ring`, `.rk-hover-underli
 `.rk-hover-none` on a field or any ancestor swaps it. Options stay CSS classes (or attributes),
 so the plain-HTML sites and any later framework wrapper (e.g. a Vue `hover` prop) share them.
 
+**Dashed grouping panel** *(Rob, Gate 1b)*: the widget frame's dashed outline is liked as a
+general way to group content, not only for widgets. Generalise it into a grouping panel (dashed
+outline, flat) with a raised option (dashed outline plus the hard shadow), and build it with the
+P2 card work so the widget frame becomes one use of it.
+
 
 ### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*
 
