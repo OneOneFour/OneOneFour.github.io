@@ -1,0 +1,84 @@
+/* Tile picker: a radio group (or a checkbox group, to allow several choices) of equal round
+   tiles, each holding a number, a letter or an icon. The checked tile fills with --selected and
+   is pushed into the page. Colour tiles are in color.css.
+
+   <fieldset class="rk-tiles">
+     <legend class="rk-visually-hidden">Rating</legend>
+     <label class="rk-tile"><input type="radio" name="rating" value="1"> 1</label>
+     …
+   </fieldset>
+
+   An icon tile is named by hidden text:
+     <label class="rk-tile">
+       <input type="checkbox" name="weather" value="sun">
+       <svg aria-hidden="true">…</svg>
+       <span class="rk-visually-hidden">Sun</span>
+     </label>
+
+   Add .rk-tiles--compact to the group for smaller tiles. */
+
+.rk-tiles {
+  --tile-size: 2.5rem;
+  --tile-font-size: var(--step-1);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rk-tiles--compact {
+  --tile-size: 2rem;
+  --tile-font-size: var(--step-0);
+
+  gap: var(--space-2);
+}
+
+/* Colour tiles set --swatch, which takes the place of both the resting and the checked fill. */
+.rk-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--tile-size);
+  block-size: var(--tile-size);
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: 50%;
+  background: var(--swatch, var(--raised));
+  color: var(--fg);
+  font-family: var(--font-display);
+  font-size: var(--tile-font-size);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.rk-tile > input:is([type='radio'], [type='checkbox']) {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rk-tile > svg {
+  inline-size: 1em;
+  block-size: 1em;
+  --icon-stroke: 24;
+}
+
+.rk-tile:has(:checked) {
+  border-color: var(--line);
+  background: var(--swatch, var(--selected));
+  color: var(--on-selected);
+}
+
+@media (forced-colors: active) {
+  .rk-tile:has(:checked) {
+    border-color: Highlight;
+    background: var(--swatch, Highlight);
+    color: HighlightText;
+  }
+}

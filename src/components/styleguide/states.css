@@ -1,12 +1,12 @@
 /* Static copies of the interactive states, so /styleguide/ can show them side by side.
    Styleguide only: the package uses the real pseudo-classes. Keep in step with interactive.css. */
 
-:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch).is-hover {
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile).is-hover {
   box-shadow: var(--shadow-hover);
   translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
 }
 
-:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch).is-active {
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile).is-active {
   box-shadow: var(--shadow-pressed);
   translate: var(--press-offset) var(--press-offset);
 }
@@ -72,7 +72,8 @@
     .rk-switch,
     .rk-input,
     .rk-select,
-    .rk-segmented
+    .rk-segmented,
+    .rk-tile
   ).is-focus {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-offset);
