@@ -54,6 +54,8 @@ const projects = defineCollection({
         })
       )
       .default([]),
+
+    draft: z.boolean().default(false),
   }),
 })
 

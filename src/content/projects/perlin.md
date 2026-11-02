@@ -13,4 +13,5 @@ links:
   - type: Launch
     url: /PerlinNoise/
     logo: webplay-plain
+draft: true
 ---

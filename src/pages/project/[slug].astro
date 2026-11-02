@@ -3,14 +3,15 @@
 // fetched project JSON + a separate markdown file at request time via
 // $content(); here both metadata and body come from one content-collection
 // entry, resolved at build time via getStaticPaths.
-import { getCollection, render } from 'astro:content'
+import { render } from 'astro:content'
+import { getPublished } from '../../lib/content'
 import Layout from '../../layouts/Layout.astro'
 import ProjectIcons from '../../components/ProjectIcons.astro'
 import ProjectLinks from '../../components/ProjectLinks.astro'
 import ProjectImages from '../../components/ProjectImages.astro'
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects')
+  const projects = await getPublished('projects')
   return projects.map((project) => ({
     params: { slug: project.id },
     props: { project },

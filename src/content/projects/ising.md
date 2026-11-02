@@ -20,6 +20,7 @@ links:
   - type: Full Report
     url: /ising/IROP_Report.pdf
     logo: download
+draft: true
 ---
 
 In the summer of 2019 I was fortunate enough to be selected to participate in Imperial's International Research

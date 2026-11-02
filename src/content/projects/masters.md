@@ -25,6 +25,7 @@ links:
   - type: GitHub
     url: https://github.com/OneOneFour/TropicalCyclonesMSci
     logo: github-plain
+draft: true
 ---
 
 Out of all the natural disasters on Earth, tropical cyclones are responsible for the highest amount of devastation both to human lives and to economies particularly in the developing world. As an example, in 2017 Hurricane Harvey resulted in the loss of 107 lives and caused $125bn of damage. The deadliest cyclone in history, Cyclone Bhola, claimed over 500,000 lives and wiped out entire communities.

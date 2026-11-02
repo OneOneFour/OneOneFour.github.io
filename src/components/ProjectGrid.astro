@@ -3,10 +3,10 @@
 // client-side on mount. Astro content collections are known at build time,
 // so this is now a static component that reads getCollection() directly ---
 // no client fetch, no loading state, no JS shipped for the grid itself.
-import { getCollection } from 'astro:content'
+import { getPublished } from '../lib/content'
 import ProjectItem from './ProjectItem.astro'
 
-const projects = (await getCollection('projects')).sort(
+const projects = (await getPublished('projects')).sort(
   (a, b) => b.data.year - a.data.year || b.data.month - a.data.month
 )
 ---
