@@ -352,6 +352,11 @@ settles the type scale, the monospace face and the weights actually used.
     ink outline, with the hard shadow turned off while focused. Its 3:1 edge is against the ink
     outline (yellow on cream alone is only 1.56:1). So elements with no outline, such as text
     links, use a marker-pen version instead: a yellow background behind the ink text.
+  - **On yellow, the band is tangerine** *(Rob, Gate 1a)*. A yellow band vanishes next to
+    yellow (yellow buttons and chips, yellow panels, and the Photography section's yellow
+    areas). `--focus` is overridable: those places set `--focus: var(--focus-alt)`
+    (tangerine). Components with a yellow fill variant do this themselves, and the site does it
+    for yellow section areas.
 
 ### 5.4 Component inventory
 
