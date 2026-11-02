@@ -156,6 +156,9 @@ boundaries. Takeaways in §5.1.
 - **Index pages** (Writing, Projects, Photos) use the whole main area for
   card grids. Grids use `auto-fill/minmax`, not the legacy fixed pixel
   breakpoints.
+- **Projects index layout is open** *(Rob, 2026-11-01)*. Rob doesn't want the legacy project
+  grid (Phase 2's `ProjectGrid`) carried over. P2 shows two mock-ups, a card grid and a
+  stacked list of cards, and Rob picks at Gate 2. The Phase 2 grid code is not a starting point.
 - **Narrower than ~1200px**: the margin column folds in, so sidenotes become
   inline expandable notes and `.wide` equals `text`.
 - **Narrower than ~800px**: the left bar becomes a top bar (avatar, name,
