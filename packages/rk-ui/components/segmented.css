@@ -58,6 +58,53 @@
   color: var(--on-selected);
 }
 
+/* Deck keys: add .rk-segmented--deck for a row of raised keys, like a tape deck's. The checked key
+   is pushed in flush with the page (interactive.css), driving past that depth before it settles;
+   the key it replaces springs back up. */
+
+.rk-segmented--deck {
+  --key-overshoot: 2px;
+
+  gap: var(--space-2);
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+}
+
+.rk-segmented--deck label {
+  padding: var(--space-2) var(--space-4);
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: var(--radius);
+  background: var(--raised);
+  box-shadow: var(--shadow);
+  transition:
+    translate var(--duration-spring) var(--ease-spring),
+    box-shadow var(--duration-fast) ease;
+}
+
+/* The keyframes move the checked key in, so its translate isn't transitioned as well. */
+.rk-segmented--deck label:has(:checked) {
+  border-color: var(--line);
+  transition-property: box-shadow;
+  animation: rk-deck-key-in var(--duration-spring) ease-out;
+}
+
+@keyframes rk-deck-key-in {
+  from {
+    translate: var(--press-offset) var(--press-offset);
+  }
+
+  50% {
+    translate: calc(var(--shadow-offset) + var(--key-overshoot))
+      calc(var(--shadow-offset) + var(--key-overshoot));
+  }
+
+  to {
+    translate: var(--shadow-offset) var(--shadow-offset);
+  }
+}
+
 /* Forced colours drop the checked fill, so the checked option uses system colours. Without
    forced-color-adjust, the browser puts a Canvas backplate behind the HighlightText label. */
 @media (forced-colors: active) {

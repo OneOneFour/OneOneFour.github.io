@@ -1,5 +1,5 @@
 /* The states every interactive component shares: the pop, the flush press for unfilled buttons,
-   the focus band and disabled. Loaded after the components, so these win over their rest styles.
+   the pushed-in deck key, the focus band and disabled. Loaded after the components, so these win over their rest styles.
    The range slider's thumb can't join these lists (pseudo-elements), so range.css repeats them. */
 
 /* Pop: hover lifts the element and grows its shadow; press sinks it into the shadow. */
@@ -11,13 +11,15 @@
 }
 
 @media (hover: hover) {
-  :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch):hover {
+  :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch):hover,
+  .rk-segmented--deck label:hover {
     box-shadow: var(--shadow-hover);
     translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
   }
 }
 
-:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch):active {
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch):active,
+.rk-segmented--deck label:active {
   box-shadow: var(--shadow-pressed);
   translate: var(--press-offset) var(--press-offset);
 }
@@ -39,10 +41,20 @@
     calc(var(--button-padding-inline) - var(--press-offset));
 }
 
+/* A checked deck key is pushed in by the whole shadow offset, flush with the page, and doesn't
+   pop. */
+.rk-segmented--deck label:has(:checked) {
+  box-shadow: none;
+  translate: var(--shadow-offset) var(--shadow-offset);
+}
+
 /* Focus band. Chips, cards and segmented groups show it for the input or link inside them. A
-   segmented group's options have no outline to hug, so the band goes on the group's frame. */
+   segmented group's options have no outline to hug, so the band goes on the group's frame; deck
+   keys have outlines, so it hugs the focused key. */
 :is(.rk-button, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select):focus-visible,
-:is(.rk-chip, .rk-card--link, .rk-segmented):has(:focus-visible) {
+:is(.rk-chip, .rk-card--link):has(:focus-visible),
+.rk-segmented:not(.rk-segmented--deck):has(:focus-visible),
+.rk-segmented--deck label:has(:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-offset);
   box-shadow: none;
