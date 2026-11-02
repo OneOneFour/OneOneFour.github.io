@@ -1,7 +1,8 @@
 /* Progress bar and meter on the native elements, drawn as a pill track like the range slider's.
    The track is the element itself; WebKit and Firefox name the fill differently, so each fill is
-   styled twice. A <progress> without a value is indeterminate: a block slides along the track.
-   Option A is flat; option B (.rk-progress--striped) is striped.
+   styled twice. The fill is striped; add .rk-progress--flat for a plain one. A <progress>
+   without a value is indeterminate: the stripes roll along the whole track, or on a flat bar a
+   block slides along it.
 
    <label class="rk-field">Uploading <progress class="rk-progress" max="100" value="40">40%</progress></label>
    <label class="rk-field">Loading <progress class="rk-progress"></progress></label>
@@ -24,9 +25,6 @@
 
 .rk-progress {
   --progress-fill: var(--selected);
-}
-
-.rk-progress--striped {
   --stripe: color-mix(in srgb, var(--line) 25%, transparent);
   --stripe-size: 1rem;
   --stripes: linear-gradient(
@@ -45,20 +43,20 @@
 /* The fill's leading edge gets the outline, so it reads as a solid block against the track. */
 .rk-progress::-webkit-progress-value {
   border-inline-end: var(--outline-width) solid var(--line);
-  background: var(--progress-fill);
+  background: var(--stripes) 0 0 / var(--stripe-size) var(--stripe-size), var(--progress-fill);
 }
 
 .rk-progress::-moz-progress-bar {
   border-inline-end: var(--outline-width) solid var(--line);
+  background: var(--stripes) 0 0 / var(--stripe-size) var(--stripe-size), var(--progress-fill);
+}
+
+.rk-progress--flat::-webkit-progress-value {
   background: var(--progress-fill);
 }
 
-.rk-progress--striped::-webkit-progress-value {
-  background: var(--stripes) 0 0 / var(--stripe-size) var(--stripe-size), var(--progress-fill);
-}
-
-.rk-progress--striped::-moz-progress-bar {
-  background: var(--stripes) 0 0 / var(--stripe-size) var(--stripe-size), var(--progress-fill);
+.rk-progress--flat::-moz-progress-bar {
+  background: var(--progress-fill);
 }
 
 /* Indeterminate: the fills are hidden and the track's own background moves. */
@@ -71,25 +69,25 @@
 }
 
 .rk-progress:indeterminate {
+  background: var(--stripes) 0 0 / var(--stripe-size) var(--stripe-size), var(--progress-fill);
+  animation: rk-progress-stripes 0.6s linear infinite;
+}
+
+.rk-progress--flat:indeterminate {
   background: linear-gradient(var(--progress-fill) 0 0) 0 0 / 35% 100% no-repeat
     var(--progress-track);
   animation: rk-progress-slide 1.2s ease-in-out infinite alternate;
 }
 
-.rk-progress--striped:indeterminate {
-  background: var(--stripes) 0 0 / var(--stripe-size) var(--stripe-size), var(--progress-fill);
-  animation: rk-progress-stripes 0.6s linear infinite;
+@keyframes rk-progress-stripes {
+  to {
+    background-position-x: var(--stripe-size);
+  }
 }
 
 @keyframes rk-progress-slide {
   to {
     background-position-x: 100%;
-  }
-}
-
-@keyframes rk-progress-stripes {
-  to {
-    background-position-x: var(--stripe-size);
   }
 }
 
@@ -133,7 +131,7 @@
     animation: rk-progress-fade 2s ease-in-out infinite alternate;
   }
 
-  .rk-progress:indeterminate:not(.rk-progress--striped) {
+  .rk-progress--flat:indeterminate {
     background-size: 100% 100%;
   }
 }

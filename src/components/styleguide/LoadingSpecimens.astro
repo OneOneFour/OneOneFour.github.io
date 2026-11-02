@@ -1,7 +1,7 @@
 ---
 /**
- * More loading options for Gate 1b: water and dot spinners, filling buttons, pending panels and
- * loaders. Spinner letters carry on from the spinners above.
+ * More spinners and loaders: water and dot spinners, filling buttons, the pending panel and the
+ * hopping-ball loader. Spinner letters carry on from the spinners above.
  */
 import Button from '../ui/Button.astro'
 import AtomIcon from 'rk-ui/icons/atom.svg'
@@ -17,18 +17,13 @@ const DOT_SPINNERS = [
   { label: 'G: dots in a triangle', class: 'rk-spinner--triangle' },
   { label: 'H: dots that squash and stretch', class: 'rk-spinner--dots rk-spinner--squash' },
 ]
-const LOADERS = [
-  { label: 'A: inchworm', name: 'inchworm' },
-  { label: 'B: bouncing block', name: 'bounce' },
-  { label: 'C: hopping ball', name: 'hop' },
-  { label: 'D: candy stripes', name: 'candy' },
-]
 const BALLS = [
-  { label: 'C in coral', fill: 'coral' },
-  { label: 'C in grape', fill: 'grape' },
-  { label: 'C with an icon, in yellow', fill: 'yellow', Icon: StarIcon },
-  { label: 'C with an icon, in green', fill: 'green', Icon: AtomIcon },
-  { label: 'C with an icon, in navy', fill: 'navy', onFill: 'on-navy', Icon: LightningIcon },
+  { label: 'teal (the default)' },
+  { label: 'in coral', fill: 'coral' },
+  { label: 'in grape', fill: 'grape' },
+  { label: 'with an icon, in yellow', fill: 'yellow', Icon: StarIcon },
+  { label: 'with an icon, in green', fill: 'green', Icon: AtomIcon },
+  { label: 'with an icon, in navy', fill: 'navy', onFill: 'on-navy', Icon: LightningIcon },
 ]
 ---
 
@@ -115,26 +110,14 @@ const BALLS = [
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title="Loaders (indeterminate bars)">
-  {
-    LOADERS.map((loader) => (
-      <Specimen label={loader.label} wide>
-        <div class:list={['rk-loader', `rk-loader--${loader.name}`]} role="status">
-          <span class="rk-visually-hidden">Loading…</span>
-        </div>
-      </Specimen>
-    ))
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Hopping ball: --loader-fill, --loader-on-fill and .rk-loader-ball">
+<SpecimenRow title="Hopping-ball loader: --loader-fill, --loader-on-fill and .rk-loader-ball">
   {
     BALLS.map(({ label, fill, onFill, Icon }) => (
       <Specimen label={label} wide>
         <div
           class="rk-loader rk-loader--hop"
           role="status"
-          style={`--loader-fill: var(--${fill})${onFill ? `; --loader-on-fill: var(--${onFill})` : ''}`}
+          style={fill && `--loader-fill: var(--${fill})${onFill ? `; --loader-on-fill: var(--${onFill})` : ''}`}
         >
           {Icon && (
             <span class="rk-loader-ball">

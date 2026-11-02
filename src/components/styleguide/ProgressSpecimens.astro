@@ -1,5 +1,5 @@
 ---
-/** Spinners A and B, progress bar options A and B (set and indeterminate), and the meter. */
+/** Spinners A and B, the progress bar, striped and flat (set and indeterminate), and the meter. */
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 
@@ -50,19 +50,19 @@ const METERS = [
 </SpecimenRow>
 
 <SpecimenRow title="Progress bars">
-  <Specimen label="A: flat" wide>
-    <label class="rk-field">Label <progress class="rk-progress" max="100" value="40">40%</progress></label>
+  <Specimen label="striped (the default)" wide>
+    <label class="rk-field">Label <progress class="rk-progress" max="100" value="65">65%</progress></label>
   </Specimen>
-  <Specimen label="B: striped" wide>
+  <Specimen label="flat (.rk-progress--flat)" wide>
     <label class="rk-field">
-      Label <progress class="rk-progress rk-progress--striped" max="100" value="65">65%</progress>
+      Label <progress class="rk-progress rk-progress--flat" max="100" value="40">40%</progress>
     </label>
   </Specimen>
-  <Specimen label="A: indeterminate (no value)" wide>
+  <Specimen label="striped, indeterminate (no value)" wide>
     <label class="rk-field">Label <progress class="rk-progress"></progress></label>
   </Specimen>
-  <Specimen label="B: indeterminate (no value)" wide>
-    <label class="rk-field">Label <progress class="rk-progress rk-progress--striped"></progress></label>
+  <Specimen label="flat, indeterminate (no value)" wide>
+    <label class="rk-field">Label <progress class="rk-progress rk-progress--flat"></progress></label>
   </Specimen>
 </SpecimenRow>
 

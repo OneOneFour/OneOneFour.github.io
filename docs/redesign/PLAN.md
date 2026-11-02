@@ -447,8 +447,8 @@ above the tabs, so it never comes between them and the sheet.
 *DECIDED 2026-11-02: the scrollbar stays flat for now.* Toon shadow options for it (a raised
 thumb, a sunken track, a slider groove) were tried and removed; they are in git history.
 
-**More loading options** *(Gate 1b)*: on `/styleguide/` under "More loading options", beside
-spinners A and B and progress bars A–B. *Rob's picks, 2026-11-02:* water spinner D and the filling
+**More loading options** *(Gate 1b)*: on `/styleguide/` under "More spinners and loaders",
+beside spinners A and B and the progress bar. *Rob's picks, 2026-11-02:* water spinner D and the filling
 buttons; dots B, G and H for general content loading; several loader bars stay as candidates,
 with C, the hopping ball, the favourite (recoloured with `--loader-fill`, and an icon can ride in a
 `.rk-loader-ball`).
@@ -463,8 +463,11 @@ fades it. C (turning icon) and E (water sloshing) were removed; they are in git 
   *DECIDED 2026-11-02 (Rob):* pending panel A (filling up) stays; B (sloshing along the bottom)
   was removed, and with it, as nothing else used it, `.rk-water--slosh`.
 - Dot spinners (`spinner-dots.css`): F in a circle, G in a triangle, H squash and stretch.
-- Loaders, indeterminate bars (`loader.css`): A inchworm, B bouncing block, C hopping ball,
-  D candy stripes.
+- Loader, an indeterminate bar (`loader.css`): the hopping ball, `.rk-loader--hop`.
+  *DECIDED 2026-11-02 (Rob):* the hopping ball stays beside the standard progress bars and
+  meters; the inchworm, bouncing block and candy stripes were removed. The progress bar is
+  striped by default ("striped is more fun"), set and indeterminate; the flat bar, the other
+  option, stays as `.rk-progress--flat`, since a set flat bar is a plain, still bar.
 
 
 ### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*
