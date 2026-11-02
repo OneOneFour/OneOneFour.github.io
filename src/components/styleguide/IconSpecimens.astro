@@ -1,33 +1,125 @@
 ---
-/** Every package icon at the default and small .rk-icon sizes, and one icon with other fills. */
+/**
+ * Every package icon with its default fill, the alternative defaults up for review, icons in
+ * context, both .rk-icon sizes, and one icon with other fills.
+ */
 import type { SvgComponent } from 'astro/types'
+import Button from '../ui/Button.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
+import Flask from 'rk-ui/icons/flask.svg'
+import Copy from 'rk-ui/icons/copy.svg'
+import Play from 'rk-ui/icons/play.svg'
+import Download from 'rk-ui/icons/download-simple.svg'
+import Code from 'rk-ui/icons/code.svg'
+import Reset from 'rk-ui/icons/arrow-counter-clockwise.svg'
+import ExternalLink from 'rk-ui/icons/arrow-square-out.svg'
 
 const iconModules = import.meta.glob<{ default: SvgComponent }>(
   ['/packages/rk-ui/icons/*.svg', '!**/sprite.svg'],
   { eager: true }
 )
+const iconSources = import.meta.glob<string>(['/packages/rk-ui/icons/*.svg', '!**/sprite.svg'], {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+})
+
+/** The token an icon's fill falls back to, read from its SVG: "yellow", "icon-fill-neutral"… */
+function defaultFillOf(svg: string) {
+  return svg.match(/var\(--icon-fill, var\(--([\w-]+)\)\)/)![1]
+}
+
+/** A fill token's short name for captions. */
+function fillLabel(token: string) {
+  return token === 'icon-fill-neutral' ? 'neutral' : token
+}
+
 const ICONS = Object.entries(iconModules).map(([path, module]) => ({
   name: path.split('/').pop()!.replace('.svg', ''),
   Icon: module.default,
+  defaultFill: defaultFillOf(iconSources[path]),
 }))
+
+// Gate 1b: a second plausible default for some icons, shown beside the current one.
+const ALTERNATIVES = [
+  { name: 'house', alt: 'icon-fill-neutral' },
+  { name: 'flask', alt: 'navy' },
+  { name: 'book-open-text', alt: 'navy' },
+  { name: 'graduation-cap', alt: 'grape' },
+  { name: 'atom', alt: 'sky' },
+  { name: 'satellite', alt: 'sky' },
+  { name: 'wind', alt: 'sky' },
+  { name: 'image', alt: 'yellow' },
+  { name: 'images', alt: 'sky' },
+  { name: 'calendar-blank', alt: 'icon-fill-neutral' },
+  { name: 'circle-half', alt: 'sky' },
+  { name: 'pause', alt: 'icon-fill-neutral' },
+  { name: 'arrow-counter-clockwise', alt: 'sky' },
+  { name: 'upload-simple', alt: 'green' },
+  { name: 'arrow-square-out', alt: 'icon-fill-neutral' },
+  { name: 'link', alt: 'sky' },
+].map(({ name, alt }) => ({ ...ICONS.find((entry) => entry.name === name)!, alt }))
+
 const FILLS = ['teal', 'yellow', 'coral', 'grape', 'raised']
-const Flask = ICONS.find((icon) => icon.name === 'flask')!.Icon
 ---
 
-<SpecimenRow title=".rk-icon (24px, stroke about 2px)">
+<SpecimenRow title="Default fills">
   {
-    ICONS.map(({ name, Icon }) => (
-      <Specimen label={name}>
-        <Icon class="rk-icon" />
+    ICONS.map(({ name, Icon, defaultFill }) => (
+      <Specimen label={`${name} · ${fillLabel(defaultFill)}`}>
+        <Icon class="rk-icon large" />
       </Specimen>
     ))
   }
 </SpecimenRow>
 
+<SpecimenRow title="Alternative defaults">
+  {
+    ALTERNATIVES.map(({ name, Icon, defaultFill, alt }) => (
+      <div class="pair">
+        <Specimen label={`${name}: default (${fillLabel(defaultFill)})`}>
+          <Icon class="rk-icon large" />
+        </Specimen>
+        <Specimen label={`alt (${fillLabel(alt)})`}>
+          <span class="fill" style={`--icon-fill: var(--${alt})`}>
+            <Icon class="rk-icon large" />
+          </span>
+        </Specimen>
+      </div>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="In context">
+  <Specimen label="yellow button"><Button><Copy class="rk-icon" />Copy</Button></Specimen>
+  <Specimen label="teal button"><Button fill="teal"><Play class="rk-icon" />Play</Button></Specimen>
+  <Specimen label="navy button">
+    <Button fill="navy"><Download class="rk-icon" />Download</Button>
+  </Specimen>
+  <Specimen label="coral button">
+    <Button fill="coral"><Play class="rk-icon" />Start</Button>
+  </Specimen>
+  <Specimen label="grape button">
+    <Button fill="grape"><Code class="rk-icon" />Run</Button>
+  </Specimen>
+  <Specimen label="unfilled button (own default)">
+    <Button unfilled><Reset class="rk-icon" />Reset</Button>
+  </Specimen>
+  <Specimen label="neutral icon alone"><Copy class="rk-icon" /></Specimen>
+  <Specimen label="inline in a sentence">
+    <p class="sentence">
+      Read the paper<ExternalLink class="rk-icon inline" /> for the full derivation.
+    </p>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title=".rk-icon (24px, stroke about 2px)">
+  <div class="strip">{ICONS.map(({ Icon }) => <Icon class="rk-icon" />)}</div>
+</SpecimenRow>
+
 <SpecimenRow title=".rk-icon--small (20px)">
-  <div class="small-row">{ICONS.map(({ Icon }) => <Icon class="rk-icon rk-icon--small" />)}</div>
+  <div class="strip">{ICONS.map(({ Icon }) => <Icon class="rk-icon rk-icon--small" />)}</div>
 </SpecimenRow>
 
 <SpecimenRow title="--icon-fill">
@@ -44,11 +136,35 @@ const Flask = ICONS.find((icon) => icon.name === 'flask')!.Icon
 </SpecimenRow>
 
 <style>
+  /* 13 in the 256-unit viewBox is about 2px at 40px. */
+  .large {
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    --icon-stroke: 13;
+  }
+
+  .inline {
+    inline-size: 1em;
+    block-size: 1em;
+    margin-inline-start: 0.2em;
+    vertical-align: -0.125em;
+  }
+
+  .sentence {
+    margin: 0;
+  }
+
   .fill {
     display: flex;
   }
 
-  .small-row {
+  .pair {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .strip {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
