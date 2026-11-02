@@ -446,7 +446,8 @@ How custom illustrations are drawn, from a flat cartoon locomotive Rob shared as
 (not copied). First used by the exploded-view train and lamp (§5.4).
 
 *Decided 2026-11-02 (Rob):* two tones per part, a third only where shading is needed, or
-hatching instead; 2px outlines, matching the UI; the shading drawn for light from above is
+hatching instead (striped like the progress bar); outlines slightly heavier than the UI's 2px,
+at 2.5px; the shading drawn for light from above is
 acceptable, and now also flips with the light; fills dim a little on dark pages; flat at rest,
 with shadows only when exploded.
 
@@ -467,31 +468,37 @@ rules below describe A; B and C change only the colours, the resting shadow and 
 Not built: a two-ink retro print look (two inks on a paper tone, with tints from hatching), as in
 [this Tuts+ tutorial](https://design.tutsplus.com/tutorials/create-a-limited-color-vintage-poster-design-in-adobe-illustrator--cms-23583).
 Once Rob picks, the losing looks and their CSS go, and the lamp follows the winner.
+
+The rules, for all three looks unless they say otherwise:
 - **Palette**: seven colours in the styleguide's `illustration-tokens.css`. Four subdued hues,
   `--illustration-red`, `-ochre`, `-steel` and `-navy`, are (in A) the coral, yellow,
-  sky-with-lilac and navy fills, greyed towards `--illustration-grey` (halfway between `--ink` and `--glint`). Each
-  hue has at most one more step:
+  sky-with-lilac and navy fills, greyed towards `--illustration-grey` (halfway between `--ink`
+  and `--glint`); in B and C they are the fills themselves. Each hue has at most one more step:
   - `--illustration-ochre-light` and `--illustration-steel-light` (55% hue, the rest glint), for
     highlights on the lighter hues;
   - `--illustration-red-shade` (80% red, the rest ink), for shade on red;
   - navy has none: it is the darkest fill and is never shaded.
 
-  A drawing fills with only these colours, never the vivid UI fills. The same recipe serves both
+  A drawing fills with only these colours. In A, the same recipe serves both
   themes, as the fills it mixes keep their lightness in dark mode, except that on dark pages the
   grey is darker (80% ink), which dims every fill a little. That grey is a `light-dark()`, so
   browsers without it get the light grey, as in `tokens.css`. It doesn't use `--surface`, so
   every page palette gets the same drawing.
-- **Outline**: `--outline-width` (2px, matching the UI) in `--line`, with round joins and caps,
-  the same on-screen width at any size. Every shape has one, outside its edge, so overlapping
-  shapes (a puff of steam) outline as one. Lines inside a shape (boiler bands, panel lining) and
-  hatching are the same width. Lines on the page itself, such as the ground, use
-  `--line-unfilled` so they show in dark mode.
+- **Outline**: `--illustration-outline` (1.25 × `--outline-width`, 2.5px: slightly heavier than
+  the UI's 2px) in `--line`, with round joins and caps, the same on-screen width at any size.
+  Every shape has one, outside its edge, so overlapping shapes (a puff of steam) outline as one.
+  Lines inside a shape (boiler bands, panel lining) are the same width. Lines on the page itself,
+  such as the ground, use `--line-unfilled` so they show in dark mode.
 - **Tones**: two per part by default, the fill plus one light or shade band, never both. Flat
   sides (a tank, a cab, a frame) can stay one tone; round forms (a dome, a roof, a bulb) get the
   second. A third tone only where shading is needed to read the form, and hatching is the
-  alternative: a few short parallel strokes in the outline colour, cut off at the outline, sparse
-  enough to read at phone width (the boiler and smokebox). Bands are flat, cut off at the
-  outline: no gradients, blur or transparency.
+  alternative (the boiler and smokebox). Bands are flat, cut off at the outline: no gradients or
+  blur.
+- **Hatching**: the striped progress bar's stripes, so the drawing and the UI share one hatching:
+  even 45° hard-edged stripes in `--illustration-stripe` (25% `--line`, the progress bar's
+  `--stripe`), over the fill and cut off at the outline, never animated. It is an SVG pattern in
+  grid units, so its pitch matches the progress bar's 1rem tile with the train at full width
+  (about 10px a unit) and shrinks with the drawing on narrower screens.
 - **Light**: the shading is drawn for light from the top left, like the default light. Bands and
   hatching flip about their part's centre to face the light, by quadrant: across when the light
   comes from the right, up and down when it comes from below. It jumps rather than slides, as toon
@@ -630,14 +637,15 @@ default look, and the subdued illustration colours.
   - `ExplodedView.astro` and `ExplodedViewPart.astro`, which write that markup from data
     (`exploded-view.ts`), with a `look` (subdued, pop or sticker) as `.rk-explode--pop` and
     `.rk-explode--sticker`;
-  - `illustration-shapes.ts`: `rect`, `circle`, `ellipse`, `dome`, `polygon`, `line`, `hatching`
-    and `union`, as SVG paths with their boxes;
-  - `illustration-tokens.css`: the illustration colours (§5.3).
+  - `illustration-shapes.ts`: `rect`, `circle`, `ellipse`, `dome`, `polygon`, `line` and `union`,
+    as SVG paths with their boxes;
+  - `illustration-tokens.css`: the illustration colours, outline and hatching stripe (§5.3).
 
   A part is one outlined shape, with details cut off at its edge: `band` (a flat light or shade
-  step), `hatch` (outline-coloured hatching, for shade without a third tone), `piece` (a smaller
-  outlined shape, such as a hub) and `stroke` (a line). Bands and hatching flip to face the light
-  (§5.3, "Light"). A new illustration is a new data file, like `steam-train.ts`. No JavaScript.
+  step), `hatch` (a region of the drawing's stripe pattern, for shade without a third tone),
+  `piece` (a smaller outlined shape, such as a hub) and `stroke` (a line). Bands and hatching flip
+  to face the light (§5.3, "Light"). A new illustration is a new data file, like
+  `steam-train.ts`. No JavaScript.
 - An HTML stage with a small inline SVG for each part *(changed 2026-11-02 from boxes styled with
   CSS)*:
   - SVG gives polygons, domes, round joins, and bands clipped to a shape without losing its
@@ -647,7 +655,7 @@ default look, and the subdued illustration colours.
     grow with the drawing), built from the shadow tokens' layers (and the colour mode, via
     `--extrusion` from the fill). The open assembly comes in front with `z-index`, which SVG
     lacks.
-  - Strokes don't scale, so outlines stay `--outline-width` at any size. Parts are drawn
+  - Strokes don't scale, so outlines stay `--illustration-outline` at any size. Parts are drawn
     back to front, so a part's shadow falls on the parts behind it, never on itself.
 - Flat at rest, as the illustration style asks. Exploded, a part moves by its offset and rises by
   `--lift-offset` for each layer it lifts: one more than its depth. Its shadow is half
