@@ -77,6 +77,13 @@ export function line(x1: number, y1: number, x2: number, y2: number): Shape {
   return { d: path`M${x1} ${y1}L${x2} ${y2}`, box: boxAround([[x1, y1], [x2, y2]]) }
 }
 
+/** Short parallel strokes across a box, `gap` apart, each leaning right at 45°. */
+export function hatching(x: number, y: number, w: number, h: number, gap: number): Shape {
+  const starts = Array.from({ length: Math.floor((w - h) / gap) + 1 }, (_, i) => x + i * gap)
+  const d = starts.map((start) => path`M${start} ${y + h}l${h} ${-h}`).join('')
+  return { d, box: box(x, y, w, h) }
+}
+
 /** Overlapping shapes filled and outlined as one, such as a puff of steam. */
 export function union(...shapes: Shape[]): Shape {
   const corners = shapes.flatMap(({ box: { x, y, w, h } }): Point[] => [[x, y], [x + w, y + h]])

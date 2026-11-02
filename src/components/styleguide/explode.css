@@ -16,8 +16,9 @@
            <path class="rk-explode-band" d="…" />       the focus band, then the outlined shape
            <path class="rk-explode-shape" d="…" />
            <g clip-path="url(#…)">                       details, cut off at the shape's edge
-             <path class="rk-explode-detail" d="…" style="--detail-fill: …" />   a flat band
-             <path class="rk-explode-detail rk-explode-detail--outlined" d="…" />   a line
+             <path class="rk-explode-detail rk-explode-detail--band" d="…" style="--detail-fill: …" />
+             <path class="rk-explode-detail rk-explode-detail--stroke" d="…" />
+             …also --hatch (outline-coloured strokes) and --piece (an outlined, filled shape)
            </g>
          </svg>
          …more parts
@@ -161,7 +162,7 @@
   fill: var(--detail-fill, none);
 }
 
-.rk-explode-detail--outlined {
+.rk-explode-detail:not(.rk-explode-detail--band) {
   stroke: var(--line);
   stroke-width: var(--outline-width);
 }
@@ -229,7 +230,7 @@
     fill: Canvas;
   }
 
-  .rk-explode-detail--outlined {
+  .rk-explode-detail:not(.rk-explode-detail--band) {
     stroke: CanvasText;
   }
 

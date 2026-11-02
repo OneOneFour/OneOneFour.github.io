@@ -28,7 +28,7 @@ const { x, y, w, h } = shape.box
     {
       details.map((detail) => (
         <path
-          class:list={['rk-explode-detail', { 'rk-explode-detail--outlined': detail.outlined }]}
+          class={`rk-explode-detail rk-explode-detail--${detail.kind}`}
           d={detail.shape.d}
           style={detail.fill && `--detail-fill: var(--illustration-${detail.fill})`}
         />

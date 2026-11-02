@@ -14,19 +14,8 @@
   );
   --illustration-navy: color-mix(in oklab, var(--navy) 85%, var(--illustration-grey));
 
-  /* Light steps: highlights, each hue towards the glint */
-  --illustration-red-light: color-mix(in oklab, var(--illustration-red) 55%, var(--glint));
+  /* One more step for the lighter hues, towards the glint, and a shade for red, towards ink */
   --illustration-ochre-light: color-mix(in oklab, var(--illustration-ochre) 55%, var(--glint));
   --illustration-steel-light: color-mix(in oklab, var(--illustration-steel) 55%, var(--glint));
-  --illustration-navy-light: color-mix(in oklab, var(--illustration-navy) 55%, var(--glint));
-
-  /* Shade steps: each hue towards ink. Ochre leans into the red instead, as ink makes it olive. */
   --illustration-red-shade: color-mix(in oklab, var(--illustration-red) 80%, var(--ink));
-  --illustration-ochre-shade: color-mix(
-    in oklab,
-    var(--illustration-ochre) 60%,
-    var(--illustration-red)
-  );
-  --illustration-steel-shade: color-mix(in oklab, var(--illustration-steel) 80%, var(--ink));
-  --illustration-navy-shade: color-mix(in oklab, var(--illustration-navy) 80%, var(--ink));
 }
