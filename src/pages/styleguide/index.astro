@@ -35,7 +35,6 @@ import BreadcrumbSpecimens from '../../components/styleguide/BreadcrumbSpecimens
 import FolderSpecimens from '../../components/styleguide/FolderSpecimens.astro'
 import PaginationSpecimens from '../../components/styleguide/PaginationSpecimens.astro'
 import OverflowSpecimens from '../../components/styleguide/OverflowSpecimens.astro'
-import ScrollbarShadowSpecimens from '../../components/styleguide/ScrollbarShadowSpecimens.astro'
 import EquationSpecimens from '../../components/styleguide/EquationSpecimens.astro'
 import MathsInTextSpecimens from '../../components/styleguide/MathsInTextSpecimens.astro'
 import ChartPaletteSpecimens from '../../components/styleguide/ChartPaletteSpecimens.astro'
@@ -88,7 +87,7 @@ const CONTENTS = [
   },
   {
     title: 'Navigation and scrolling',
-    sections: ['Breadcrumbs', 'Folder tabs', 'Pagination', 'Overflow', 'Scrollbar shadow'],
+    sections: ['Breadcrumbs', 'Folder tabs', 'Pagination', 'Overflow'],
   },
   {
     title: 'Maths and charts',
@@ -285,16 +284,6 @@ const CONTENTS = [
       </p>
       <OverflowSpecimens slot="light" />
       <OverflowSpecimens slot="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Scrollbar shadow" stacked>
-      <p>
-        Options for Gate 1b, labelled A, B and C. Hover the thumb and drag it to see it lift and sink,
-        and turn the light to move the shadows. Chrome, Edge and Safari on a desktop draw them;
-        Firefox keeps the flat bar.
-      </p>
-      <ScrollbarShadowSpecimens slot="light" />
-      <ScrollbarShadowSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Equations" stacked>

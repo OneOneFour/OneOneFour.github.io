@@ -221,9 +221,6 @@ a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab, .rk-eqref)).is-focu
   --scroll-track-edge: var(--line-unfilled);
   --scroll-thumb: var(--selected);
   --scroll-thumb-edge: var(--line);
-  --scroll-shadow: var(--shadow-color);
-  --scroll-shadow-edge: var(--shadow-edge);
-  --scroll-inset: var(--line);
 }
 
 .rk-equation.is-focus {

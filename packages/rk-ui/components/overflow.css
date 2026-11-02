@@ -22,10 +22,6 @@
   --scroll-track-edge: var(--line-unfilled);
   --scroll-thumb: var(--selected);
   --scroll-thumb-edge: var(--line);
-  /* For the scrollbar shadow options below */
-  --scroll-shadow: var(--shadow-color);
-  --scroll-shadow-edge: var(--shadow-edge);
-  --scroll-inset: var(--line);
 
   overflow-x: auto;
 }
@@ -59,62 +55,6 @@
 @supports not selector(::-webkit-scrollbar) {
   .rk-scroll {
     scrollbar-color: var(--scroll-thumb) var(--scroll-track);
-  }
-}
-
-/* Scrollbar shadow options (Gate 1b): put one on a scroll region or any ancestor. A scrollbar part
-   clips anything drawn outside its own box, so each shadow is drawn inside it. Firefox and forced
-   colours keep the plain bar. */
-@media (forced-colors: none) {
-  /* A, .rk-scrollbar-raised: a hard shadow on the thumb, away from the light. Transparent borders
-     make room for it: the fill is clipped to the padding box, the outline is an inner ring and the
-     shadow shows through the borders. */
-  .rk-scroll:is(.rk-scrollbar-raised, .rk-scrollbar-raised *)::-webkit-scrollbar-thumb {
-    --thumb-drop: 2px;
-    --thumb-sink: 0px;
-    --drop-x: calc(var(--shadow-dx) * var(--thumb-drop));
-    --drop-y: calc(var(--shadow-dy) * var(--thumb-drop));
-    --sink-x: calc(var(--shadow-dx) * var(--thumb-sink));
-    --sink-y: calc(var(--shadow-dy) * var(--thumb-sink));
-
-    border: 0 solid var(--scroll-shadow-edge);
-    /* Each side gets the shadow that falls on it, plus, on the light side, the gap the thumb
-       leaves when it sinks. */
-    border-top-width: calc(max(0px, -1 * var(--drop-y)) + max(0px, var(--sink-y)));
-    border-right-width: calc(max(0px, var(--drop-x)) + max(0px, -1 * var(--sink-x)));
-    border-bottom-width: calc(max(0px, var(--drop-y)) + max(0px, -1 * var(--sink-y)));
-    border-left-width: calc(max(0px, -1 * var(--drop-x)) + max(0px, var(--sink-x)));
-    background:
-      linear-gradient(var(--scroll-thumb) 0 0) padding-box,
-      linear-gradient(var(--scroll-shadow) 0 0) border-box;
-    box-shadow: inset 0 0 0 var(--outline-width) var(--scroll-thumb-edge);
-  }
-
-  /* Scrollbar parts don't transition, so these snap. */
-  @media (hover: hover) {
-    .rk-scroll:is(.rk-scrollbar-raised, .rk-scrollbar-raised *)::-webkit-scrollbar-thumb:hover {
-      --thumb-drop: 3px;
-    }
-  }
-
-  .rk-scroll:is(.rk-scrollbar-raised, .rk-scrollbar-raised *)::-webkit-scrollbar-thumb:active {
-    --thumb-drop: 0px;
-    --thumb-sink: var(--press-offset);
-  }
-
-  /* B, .rk-scrollbar-sunken: the track is pressed in, like a pressed unfilled button. */
-  .rk-scroll:is(.rk-scrollbar-sunken, .rk-scrollbar-sunken *)::-webkit-scrollbar-track {
-    box-shadow: inset calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0
-      var(--scroll-inset);
-  }
-
-  /* C, .rk-scrollbar-slider: a groove narrower than the thumb, like the range slider's track.
-     Transparent borders thin it and the outline is an inner ring. */
-  .rk-scroll:is(.rk-scrollbar-slider, .rk-scrollbar-slider *)::-webkit-scrollbar-track {
-    border-color: transparent;
-    border-width: calc(var(--scroll-bar-size) / 4) 0;
-    background-clip: padding-box;
-    box-shadow: inset 0 0 0 var(--outline-width) var(--scroll-track-edge);
   }
 }
 
@@ -231,9 +171,6 @@
       --scroll-track-edge: transparent;
       --scroll-thumb: transparent;
       --scroll-thumb-edge: transparent;
-      --scroll-shadow: transparent;
-      --scroll-shadow-edge: transparent;
-      --scroll-inset: transparent;
     }
   }
 

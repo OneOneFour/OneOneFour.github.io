@@ -435,9 +435,8 @@ P2 card work so the widget frame becomes one use of it.
 **Overflow** *(decided at Gate 1b, Rob)*: D by default (dots + toon scrollbar on hover/focus),
 A always-visible bar as the alternative; C dropped. A folder's tab strip puts its scrollbar
 above the tabs, so it never comes between them and the sheet.
-*DECIDED 2026-11-02: the scrollbar stays flat for now.* The shadow options A
-`.rk-scrollbar-raised`, B `.rk-scrollbar-sunken` and C `.rk-scrollbar-slider` ("Scrollbar shadow"
-on `/styleguide/`) are parked, to be removed when Gate 1b closes.
+*DECIDED 2026-11-02: the scrollbar stays flat for now.* Toon shadow options for it (a raised
+thumb, a sunken track, a slider groove) were tried and removed; they are in git history.
 
 **More loading options** *(Gate 1b)*: on `/styleguide/` under "More loading options", beside
 spinners A–C and progress bars A–B. *Rob's picks, 2026-11-02:* water spinner D and the filling
