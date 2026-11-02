@@ -27,6 +27,7 @@ import CardSpecimens from '../../components/styleguide/CardSpecimens.astro'
 import CalloutSpecimens from '../../components/styleguide/CalloutSpecimens.astro'
 import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen.astro'
 import BreadcrumbSpecimens from '../../components/styleguide/BreadcrumbSpecimens.astro'
+import FolderSpecimens from '../../components/styleguide/FolderSpecimens.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -153,6 +154,15 @@ import BreadcrumbSpecimens from '../../components/styleguide/BreadcrumbSpecimens
     <SpecimenSection title="Breadcrumbs">
       <BreadcrumbSpecimens slot="light" />
       <BreadcrumbSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Folder tabs">
+      <p>
+        The live tabs follow the ARIA tabs pattern: click a tab, or focus one and use the arrow keys,
+        Home and End.
+      </p>
+      <FolderSpecimens slot="light" theme="light" />
+      <FolderSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Widget frame">
