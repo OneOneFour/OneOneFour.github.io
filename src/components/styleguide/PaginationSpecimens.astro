@@ -77,7 +77,7 @@ const STATES = [
                   '…'
                 ) : (
                   <a
-                    class:list={['rk-tile', { [state.class]: page === 3 }]}
+                    class:list={['rk-tile', page === 3 && state.class]}
                     href="#"
                     aria-current={page === CURRENT ? 'page' : undefined}
                   >
