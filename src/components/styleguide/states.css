@@ -38,6 +38,16 @@
   box-shadow: var(--shadow-inset);
 }
 
+.rk-segmented--deck label.is-hover {
+  box-shadow: var(--shadow-hover);
+  translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+}
+
+.rk-segmented--deck label.is-active {
+  box-shadow: var(--shadow-pressed);
+  translate: var(--press-offset) var(--press-offset);
+}
+
 .rk-range.is-hover {
   --thumb-shadow: var(--shadow-hover);
   --thumb-shift: calc(-1 * var(--lift-offset));
@@ -63,7 +73,8 @@
     .rk-input,
     .rk-select,
     .rk-segmented
-  ).is-focus {
+  ).is-focus,
+.rk-segmented--deck label.is-focus {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-offset);
   box-shadow: none;
