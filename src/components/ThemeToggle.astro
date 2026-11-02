@@ -1,0 +1,35 @@
+---
+/** The Light / Dark / System theme switch: rk-ui's `<rk-theme-toggle>` markup with icons. */
+import Sun from 'rk-ui/icons/sun.svg'
+import Moon from 'rk-ui/icons/moon.svg'
+import CircleHalf from 'rk-ui/icons/circle-half.svg'
+import { uniqueId } from '../lib/unique-id'
+
+const options = [
+  { value: 'light', label: 'Light', Icon: Sun },
+  { value: 'dark', label: 'Dark', Icon: Moon },
+  { value: 'system', label: 'System', Icon: CircleHalf },
+]
+
+// Radios with the same name form one group across the page, so each toggle needs its own name.
+const name = uniqueId('rk-theme')
+---
+
+<rk-theme-toggle>
+  <fieldset class="rk-segmented">
+    <legend class="rk-visually-hidden">Theme</legend>
+    {
+      options.map(({ value, label, Icon }) => (
+        <label>
+          <input type="radio" name={name} value={value} />
+          <Icon class="rk-icon" aria-hidden="true" />
+          {label}
+        </label>
+      ))
+    }
+  </fieldset>
+</rk-theme-toggle>
+
+<script>
+  import 'rk-ui/theme-toggle.js'
+</script>
