@@ -84,6 +84,13 @@
   --slate-tab: light-dark(#dbe0ea, #333946);
   --shadow-code-inset: inset 3px 3px 0 color-mix(in srgb, var(--line) 20%, transparent);
 
+  /* Syntax highlighting on slate */
+  --code-keyword: var(--navy-deep);
+  --code-function: var(--teal-deep);
+  --code-string: var(--green-deep);
+  --code-number: var(--tangerine-deep);
+  --code-comment: var(--muted);
+
   /* Spacing */
   --space-1: 0.25rem;
   --space-2: 0.5rem;

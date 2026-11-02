@@ -1,0 +1,61 @@
+---
+/**
+ * A highlighted code block: rk-ui's code-block markup around Astro's <Code>, with the syntax
+ * colours taken from the --code-* tokens.
+ *
+ * @param code the source to show
+ * @param lang the Shiki language id, e.g. "python"
+ * @param label the language name shown in the caption; leave it out for no caption
+ * @param class extra classes for the figure, e.g. a box variant
+ */
+import { Code } from 'astro:components'
+import type { ComponentProps } from 'astro/types'
+import CopyIcon from 'rk-ui/icons/copy.svg'
+
+interface Props {
+  code: string
+  lang: ComponentProps<typeof Code>['lang']
+  label?: string
+  class?: string
+}
+
+const { code, lang, label, class: className } = Astro.props
+---
+
+<rk-code-block>
+  <figure class:list={['rk-code', className]}>
+    {
+      label && (
+        <figcaption class="rk-code-header">
+          <span class="rk-code-lang">{label}</span>
+        </figcaption>
+      )
+    }
+    <Code code={code} lang={lang} theme="css-variables" />
+    <button type="button" class="rk-button rk-button--small rk-code-copy" hidden>
+      <CopyIcon class="rk-icon rk-icon--small" />
+      <span class="rk-code-copy-label">Copy</span>
+    </button>
+  </figure>
+</rk-code-block>
+
+<style>
+  /* Astro's css-variables theme colours each token with var(--astro-code-*). */
+  .rk-code {
+    --astro-code-foreground: var(--fg);
+    --astro-code-background: transparent;
+    --astro-code-token-keyword: var(--code-keyword);
+    --astro-code-token-function: var(--code-function);
+    --astro-code-token-string: var(--code-string);
+    --astro-code-token-string-expression: var(--code-string);
+    --astro-code-token-constant: var(--code-number);
+    --astro-code-token-comment: var(--code-comment);
+    --astro-code-token-parameter: var(--fg);
+    --astro-code-token-punctuation: var(--fg);
+    --astro-code-token-link: var(--navy-deep);
+  }
+</style>
+
+<script>
+  import 'rk-ui/code-block.js'
+</script>

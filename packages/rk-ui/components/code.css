@@ -16,6 +16,10 @@
 
    Box variants for Gate 1b: .rk-code--inset (A), .rk-code--outlined (B), .rk-code--tab (C). */
 
+rk-code-block {
+  display: block;
+}
+
 .rk-code {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
