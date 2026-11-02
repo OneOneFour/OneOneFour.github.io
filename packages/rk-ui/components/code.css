@@ -15,10 +15,16 @@
      </figure>
    </rk-code-block>
 
-   Opt-in modifier: .rk-code--tab puts the caption in a darker strip, like an editor tab. */
+   Opt-in modifier: .rk-code--tab puts the caption in a darker strip, like an editor tab.
+   Put .rk-slate-greige on a block or any ancestor for the greige slate, inline code included. */
 
 rk-code-block {
   display: block;
+}
+
+.rk-slate-greige {
+  --slate: var(--slate-greige);
+  --slate-tab: var(--slate-greige-tab);
 }
 
 .rk-code {

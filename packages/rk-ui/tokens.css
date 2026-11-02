@@ -78,14 +78,12 @@
   --section: var(--ink);
   --on-section: var(--on-ink);
 
-  /* Slate: a quiet neutral panel for code. Gate 1b candidates (A cool, B greige, C deeper); the
-     two that lose are deleted. */
-  --slate-a: light-dark(#e7ebf3, #2c323d);
-  --slate-b: light-dark(#eae7e2, #35332e);
-  --slate-c: light-dark(#dde3ef, #303744);
-  --slate: var(--slate-a);
-  /* A step further from the page than slate A, for code box C's header strip */
+  /* Slate: a quiet neutral panel for code. The tab is a step further from the page, for the code
+     block's editor-tab strip. .rk-slate-greige (code.css) swaps in the greige pair. */
+  --slate: light-dark(#e7ebf3, #2c323d);
   --slate-tab: light-dark(#dbe0ea, #333946);
+  --slate-greige: light-dark(#eae7e2, #35332e);
+  --slate-greige-tab: light-dark(#e0dcd6, #3d3a34);
   --shadow-code-inset: inset 4px 4px 0 color-mix(in srgb, var(--line) 20%, transparent);
 
   /* Syntax highlighting on slate */
@@ -174,10 +172,10 @@
     --lilac-tint: #d4c4f5;
     --apricot-tint: #ffd2a6;
 
-    --slate-a: #e7ebf3;
-    --slate-b: #eae7e2;
-    --slate-c: #dde3ef;
+    --slate: #e7ebf3;
     --slate-tab: #dbe0ea;
+    --slate-greige: #eae7e2;
+    --slate-greige-tab: #e0dcd6;
   }
 }
 
