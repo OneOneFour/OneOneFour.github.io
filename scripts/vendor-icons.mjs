@@ -26,7 +26,7 @@ const FILL_LAYER = ' opacity="0.2"';
 const FILL_HOOK = ' stroke="none" style="fill:var(--icon-fill, none)"';
 const SHARED_STROKE_ATTRS = / (fill="none"|stroke="currentColor"|stroke-linecap="round"|stroke-linejoin="round"|stroke-width="16")/g;
 const ROOT_ATTRS =
-  'fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" aria-hidden="true"';
+  'fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="stroke-width:var(--icon-stroke, 16)" aria-hidden="true"';
 
 /** Fetches a URL as text, failing loudly on any HTTP error. */
 async function fetchText(url) {
