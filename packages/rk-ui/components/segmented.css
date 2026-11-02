@@ -116,7 +116,7 @@
   --key-overshoot: calc(var(--shadow-depth) * 2px);
   --plate-padding: calc(var(--shadow-depth) * var(--space-2));
 
-  gap: var(--space-2);
+  gap: calc(var(--depth-gap-scale) * var(--space-2));
   padding: calc(var(--plate-padding) - var(--shadow-offset-y))
     calc(var(--plate-padding) + var(--shadow-offset-x))
     calc(var(--plate-padding) + var(--shadow-offset-y))

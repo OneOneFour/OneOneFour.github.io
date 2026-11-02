@@ -186,6 +186,8 @@
   --lift-offset: calc(var(--shadow-depth) * 1px);
   --lift-offset-x: calc(var(--shadow-dx) * var(--lift-offset));
   --lift-offset-y: calc(var(--shadow-dy) * var(--lift-offset));
+  /* For gaps between raised neighbours: grows half as fast as the shadow (1.25 when deep). */
+  --depth-gap-scale: calc((1 + var(--shadow-depth)) / 2);
 
   /* Each shadow is two layers: the shadow, on a copy widened by --outline-width in
      --shadow-edge. */
