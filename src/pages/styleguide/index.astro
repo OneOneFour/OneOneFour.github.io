@@ -13,6 +13,7 @@ import IconSpecimens from '../../components/styleguide/IconSpecimens.astro'
 import ButtonSpecimens from '../../components/styleguide/ButtonSpecimens.astro'
 import InputSpecimens from '../../components/styleguide/InputSpecimens.astro'
 import ChoiceSpecimens from '../../components/styleguide/ChoiceSpecimens.astro'
+import RangeSpecimens from '../../components/styleguide/RangeSpecimens.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -68,6 +69,11 @@ import ChoiceSpecimens from '../../components/styleguide/ChoiceSpecimens.astro'
     <SpecimenSection title="Checkboxes, radios and switches">
       <ChoiceSpecimens slot="light" theme="light" />
       <ChoiceSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Range slider">
+      <RangeSpecimens slot="light" theme="light" />
+      <RangeSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>

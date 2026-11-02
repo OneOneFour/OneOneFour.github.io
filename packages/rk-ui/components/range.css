@@ -1,0 +1,101 @@
+/* Range slider: a pill track and an outlined thumb that pops. WebKit and Firefox name the parts
+   differently and one unknown pseudo-element drops a whole selector list, so each part is styled
+   twice; the states set custom properties that both thumbs read. Put an <output class="rk-output">
+   beside it in a .rk-range-row for a readout. */
+
+.rk-range {
+  --track-height: 0.75rem;
+  --thumb-size: 1.5rem;
+  --thumb-shadow: var(--shadow);
+  --thumb-shift: 0px;
+
+  appearance: none;
+  inline-size: 100%;
+  block-size: calc(var(--thumb-size) + var(--space-2));
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.rk-range::-webkit-slider-runnable-track {
+  block-size: var(--track-height);
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: var(--radius-pill);
+  background: var(--raised);
+}
+
+.rk-range::-moz-range-track {
+  block-size: var(--track-height);
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: var(--radius-pill);
+  background: var(--raised);
+}
+
+.rk-range::-webkit-slider-thumb {
+  appearance: none;
+  inline-size: var(--thumb-size);
+  block-size: var(--thumb-size);
+  margin-block-start: calc((var(--track-height) - var(--thumb-size)) / 2);
+  border: var(--outline-width) solid var(--line);
+  border-radius: 50%;
+  background: var(--selected);
+  box-shadow: var(--thumb-shadow);
+  translate: var(--thumb-shift) var(--thumb-shift);
+  transition:
+    translate var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+.rk-range::-moz-range-thumb {
+  box-sizing: border-box;
+  inline-size: var(--thumb-size);
+  block-size: var(--thumb-size);
+  border: var(--outline-width) solid var(--line);
+  border-radius: 50%;
+  background: var(--selected);
+  box-shadow: var(--thumb-shadow);
+  translate: var(--thumb-shift) var(--thumb-shift);
+  transition:
+    translate var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .rk-range:hover {
+    --thumb-shadow: var(--shadow-hover);
+    --thumb-shift: calc(-1 * var(--lift-offset));
+  }
+}
+
+.rk-range:active {
+  --thumb-shadow: var(--shadow-pressed);
+  --thumb-shift: var(--press-offset);
+}
+
+/* The focus band is a spread shadow on the thumb. Forced-colours mode drops shadows, so the
+   transparent outline keeps a visible ring there. */
+.rk-range:focus-visible {
+  --thumb-shadow: 0 0 0 var(--focus-width) var(--focus);
+  outline: var(--outline-width) solid transparent;
+}
+
+.rk-range:disabled {
+  --thumb-shadow: none;
+  --thumb-shift: 0px;
+}
+
+.rk-range-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  inline-size: 100%;
+  max-inline-size: 30rem;
+}
+
+.rk-output {
+  min-inline-size: 5ch;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: end;
+}
