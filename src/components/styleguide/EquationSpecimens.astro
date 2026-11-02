@@ -5,8 +5,6 @@
  *
  * @param theme the panel's theme, used to keep anchors unique across the two panels
  */
-import FunctionIcon from 'rk-ui/icons/function.svg'
-import SigmaIcon from 'rk-ui/icons/sigma.svg'
 import Equation from './Equation.astro'
 import EquationReference from './EquationReference.astro'
 import Specimen from './Specimen.astro'
@@ -38,11 +36,6 @@ const WRAPPERS = [
   { label: 'A: bare (default)', class: undefined },
   { label: 'B: slate panel (.rk-equation--panel)', class: 'rk-equation--panel' },
   { label: 'C: left rule (.rk-equation--rule)', class: 'rk-equation--rule' },
-]
-const LONG_REFERENCES = [
-  { label: 'A: no icon', icon: undefined },
-  { label: 'B: function icon', icon: FunctionIcon },
-  { label: 'C: sigma icon', icon: SigmaIcon },
 ]
 const flow = anchor('flow')
 const lorenz = anchor('lorenz')
@@ -83,21 +76,14 @@ const lorenz = anchor('lorenz')
 </SpecimenRow>
 
 <SpecimenRow title="Long references, for a sentence that starts with one (click to jump)">
-  {
-    LONG_REFERENCES.map(({ label, icon: Icon }) => (
-      <Specimen label={label} wide>
-        <p>
-          <EquationReference to={lorenz} number={2} long>{Icon && <Icon class="rk-icon" />}</EquationReference> packs
-          my box with five dozen liquor jugs, beside a short <EquationReference to={flow} number={1} />. Sphinx of
-          black quartz, judge my vow:{' '}
-          <EquationReference to={lorenz} number={2} long class="is-hover">{Icon && <Icon class="rk-icon" />}</EquationReference>{' '}
-          hovered,{' '}
-          <EquationReference to={flow} number={1} long class="is-focus">{Icon && <Icon class="rk-icon" />}</EquationReference>{' '}
-          focused.
-        </p>
-      </Specimen>
-    ))
-  }
+  <Specimen label="long pill with the function icon, beside a short one" wide>
+    <p>
+      <EquationReference to={lorenz} number={2} long /> packs my box with five dozen liquor jugs, beside a
+      short <EquationReference to={flow} number={1} />. Sphinx of black quartz, judge my vow:{' '}
+      <EquationReference to={lorenz} number={2} long class="is-hover" /> hovered,{' '}
+      <EquationReference to={flow} number={1} long class="is-focus" /> focused.
+    </p>
+  </Specimen>
 </SpecimenRow>
 
 <SpecimenRow title="Long equations scroll">

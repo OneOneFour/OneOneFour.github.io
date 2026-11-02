@@ -318,14 +318,14 @@ Supporting decisions *(proposed)*:
       `<a class="rk-eqref" href="#eq-k"><span>(</span>n<span>)</span></a>`. The brackets stay
       in spans, so it reads "(n)" to screen readers and without CSS;
     - a reference that starts or carries a sentence (`$\Cref{k}$`, cleveref's spelling,
-      *proposed*) becomes `<a class="rk-eqref" href="#eq-k">Equation <span>(</span>n<span>)</span></a>`,
-      with the icon inside the link before the word if Rob keeps one;
+      *proposed*) becomes `<a class="rk-eqref" href="#eq-k"><svg class="rk-icon" aria-hidden="true">…</svg>Equation <span>(</span>n<span>)</span></a>`,
+      with Phosphor's `function` icon before the word;
     - `\eqref{k}` inside larger maths becomes `\href{#eq-k}{(n)}`, KaTeX's own link, unstyled:
       KaTeX puts the next operator's spacing inside the link, so a pill there would be lopsided.
 
     KaTeX's `trust` option allows `\href` for `#` links only.
   - Decided at Gate 1b (Rob): equation numbers and bare references are lilac pills; a long pill
-    ('Equation n', optional icon) for references that lead a sentence.
+    (the `function` icon and "Equation n") for references that lead a sentence.
   - Implementation must also handle several `\label`s in one `align` block (one per row).
   - Scrolling uses CSS `scroll-behavior: smooth`, off under reduced motion. The target equation
     gets a brief `:target` highlight from the tokens.

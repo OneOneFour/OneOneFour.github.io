@@ -5,10 +5,12 @@
  *
  * @param to the equation's anchor, e.g. eq-lorenz
  * @param number the equation's number
- * @param long lead with the word "Equation", for a reference that starts or carries a sentence
+ * @param long lead with the function icon and the word "Equation", for a reference that starts or
+ *   carries a sentence
  * @param class extra classes, e.g. a static state such as is-focus
- * @slot an optional .rk-icon before the text
  */
+import FunctionIcon from 'rk-ui/icons/function.svg'
+
 interface Props {
   to: string
   number: number
@@ -19,4 +21,6 @@ interface Props {
 const { to, number, long = false, class: className } = Astro.props
 ---
 
-<a class:list={['rk-eqref', className]} href={`#${to}`}><slot />{long && 'Equation '}<span>(</span>{number}<span>)</span></a>
+<a class:list={['rk-eqref', className]} href={`#${to}`}
+  >{long && <FunctionIcon class="rk-icon" aria-hidden="true" />}{long && 'Equation '}<span>(</span>{number}<span>)</span></a
+>
