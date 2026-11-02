@@ -1,14 +1,24 @@
 ---
 /**
  * Maths inside text: inline maths at candidate sizes beside the body font, colour-coded terms,
- * and maths in a callout and a sidenote.
+ * and maths and equation references in a callout and a sidenote.
+ *
+ * @param theme the panel's theme, used to keep anchors unique across the two panels
  */
 import Callout from '../ui/Callout.astro'
 import Equation from './Equation.astro'
+import EquationReference from './EquationReference.astro'
 import Maths from './Maths.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 import { TERM_HUES } from './maths'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const critical = `eq-critical-${theme}`
 
 const SCALES = [
   { label: '1em', value: '1em' },
@@ -51,7 +61,11 @@ const ALL_HUES = TERM_HUES.map((hue, i) => `\\${hue}{x_${i + 1}}`).join(' + ')
   <Specimen label="callout" wide>
     <Callout title="Title">
       <p>Body text with <Maths tex={String.raw`\dot{x} = \sigma (y - x)`} /> inline. Pack my box with five dozen jugs.</p>
-      <Equation tex={String.raw`\rho_c = \sigma \frac{\sigma + \beta + 3}{\sigma - \beta - 1}`} />
+      <Equation tex={String.raw`\rho_c = \sigma \frac{\sigma + \beta + 3}{\sigma - \beta - 1} \tag{7}`} id={critical} />
+      <p>
+        <EquationReference to={critical} number={7} long /> judges my vow, and so does
+        <EquationReference to={critical} number={7} />.
+      </p>
     </Callout>
   </Specimen>
   <Specimen label="sidenote (a mock: the sidenote itself comes with the post layout)" wide>
@@ -61,7 +75,7 @@ const ALL_HUES = TERM_HUES.map((hue, i) => `\\${hue}{x_${i + 1}}`).join(' + ')
         jugs.
       </p>
       <aside>
-        <sup>1</sup> Small text with <Maths tex={String.raw`\lambda_1 \approx 0.906`} /> and <Maths tex={String.raw`\tfrac{\mathrm{d}V}{\mathrm{d}t} = -(\sigma + 1 + \beta) V`} />.
+        <sup>1</sup> Small text with <Maths tex={String.raw`\lambda_1 \approx 0.906`} />, <Maths tex={String.raw`\tfrac{\mathrm{d}V}{\mathrm{d}t} = -(\sigma + 1 + \beta) V`} /> and <EquationReference to={critical} number={7} />.
       </aside>
     </div>
   </Specimen>
