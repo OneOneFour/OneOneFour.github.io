@@ -1,0 +1,28 @@
+/* <rk-motion> (motion.js) pauses the animations inside it while it is off-screen, and while its
+   pause button is pressed. The button shows once the script has run.
+
+   <rk-motion>
+     …animated content…
+     <button class="rk-button rk-button--small" type="button" data-motion-pause aria-pressed="false">Pause</button>
+   </rk-motion> */
+
+rk-motion {
+  display: block;
+}
+
+rk-motion:not(:defined) [data-motion-pause] {
+  display: none;
+}
+
+/* !important, or a component's own animation shorthand would set it running again. */
+rk-motion[data-paused] *,
+rk-motion[data-paused] *::before,
+rk-motion[data-paused] *::after {
+  animation-play-state: paused !important;
+}
+
+/* Pressed, the pause button stays pushed in, like a checked tile. */
+rk-motion [data-motion-pause][aria-pressed='true'] {
+  box-shadow: var(--shadow-inset);
+  translate: var(--shadow-offset-x) var(--shadow-offset-y);
+}

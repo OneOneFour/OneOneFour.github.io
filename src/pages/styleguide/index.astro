@@ -9,6 +9,7 @@ import FontSpecimens from '../../components/styleguide/FontSpecimens.astro'
 import MonoSpecimen from '../../components/styleguide/MonoSpecimen.astro'
 import CodeSpecimens from '../../components/styleguide/CodeSpecimens.astro'
 import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
+import MotionSpecimens from '../../components/styleguide/MotionSpecimens.astro'
 import LightDirection from '../../components/styleguide/LightDirection.astro'
 import ShadowSpecimens from '../../components/styleguide/ShadowSpecimens.astro'
 import BaseSpecimens from '../../components/styleguide/BaseSpecimens.astro'
@@ -53,6 +54,7 @@ const CONTENTS = [
       'Monospace',
       'Code',
       'Shape and motion',
+      'Motion',
       'Dark-mode shadows',
       'Base styles',
       'Icons',
@@ -137,6 +139,15 @@ const CONTENTS = [
       <LightDirection />
       <ShapeAndMotion slot="light" />
       <ShapeAndMotion slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Motion">
+      <p>
+        The patterns of the motion policy (PLAN §5.7). Turn the light above to see the shadows and the
+        glint follow it while things move.
+      </p>
+      <MotionSpecimens slot="light" />
+      <MotionSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Dark-mode shadows" stacked>

@@ -215,6 +215,14 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   /* Fast start, then a visible swing past the target before settling */
   --ease-snap: cubic-bezier(0.3, 1.5, 0.45, 1);
+  /* Loops: one cycle of an animation that repeats on its own. Short for small busy marks, long
+     for fills and sloshes, panel for large areas and diagrams. */
+  --loop-short: 0.9s;
+  --loop-medium: 1.6s;
+  --loop-long: 2.4s;
+  --loop-panel: 4s;
+  /* The delay between neighbours that move in turn */
+  --stagger: 0.15s;
 }
 
 /* Browsers without light-dark() (before mid-2024) get the light theme, on the cream page. */

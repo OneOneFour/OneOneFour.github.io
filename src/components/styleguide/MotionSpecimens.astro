@@ -1,0 +1,208 @@
+---
+/**
+ * The motion policy's core patterns side by side (PLAN §5.7): an input response, ambient loops in
+ * each easing, a stagger, squash and settle, and the reduced-motion fallbacks. The pause button
+ * pauses them all, as does scrolling them out of view.
+ */
+import Button from '../ui/Button.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import PauseIcon from 'rk-ui/icons/pause.svg'
+
+const EASINGS = [
+  { label: 'ease: input responses', easing: 'ease' },
+  { label: '--ease-spring: recovering from a squash or press', easing: 'var(--ease-spring)' },
+  { label: '--ease-snap: a jump to a new place', easing: 'var(--ease-snap)' },
+]
+const STAGGERED = ['--teal', '--yellow', '--navy', '--green', '--coral']
+---
+
+<rk-motion>
+  <Button small data-motion-pause aria-pressed="false"><PauseIcon class="rk-icon" />Pause</Button>
+
+  <SpecimenRow title="Input response: hover or press">
+    <Specimen label="--duration-fast, ease: lifts on hover, sinks on press">
+      <Button fill="teal">Button</Button>
+    </Specimen>
+    <Specimen label="reduced motion: the shadow changes, nothing moves">
+      <div class="reduced-input"><Button fill="teal">Button</Button></div>
+    </Specimen>
+  </SpecimenRow>
+
+  <SpecimenRow title="Ambient loop: hold, move, hold, one --loop-medium cycle">
+    {
+      EASINGS.map((item) => (
+        <Specimen label={item.label} wide>
+          <div class="track">
+            <span class="block hop" style={`--hop-ease: ${item.easing}`} />
+          </div>
+        </Specimen>
+      ))
+    }
+  </SpecimenRow>
+
+  <SpecimenRow title="Stagger: neighbours start --stagger apart">
+    <Specimen label="entering in reading order, holding, then leaving in the same order (--loop-panel)" wide>
+      <div class="stagger">
+        {STAGGERED.map((fill, i) => <span class="block enter" style={`--i: ${i}; background: var(${fill})`} />)}
+      </div>
+    </Specimen>
+  </SpecimenRow>
+
+  <SpecimenRow title="Squash and settle">
+    <Specimen label="1.3 × 0.7 on landing, 0.8 × 1.25 on take-off, 0.95 × 1.05 to settle, pinned to the ground (rk-squash)">
+      <div class="ground"><span class="ball bounce"></span></div>
+    </Specimen>
+  </SpecimenRow>
+
+  <SpecimenRow title="Reduced motion: loops stay still and fade instead (rk-spinner-fade)">
+    <Specimen label="the loop above" wide>
+      <div class="track"><span class="block faded"></span></div>
+    </Specimen>
+    <Specimen label="the bounce above">
+      <div class="ground"><span class="ball faded"></span></div>
+    </Specimen>
+  </SpecimenRow>
+</rk-motion>
+
+<script>
+  import 'rk-ui/motion.js'
+</script>
+
+<style>
+  /* What the tokens become under reduced motion, here at all times. The offsets are re-declared
+     because the tokens resolve them on <html>. */
+  .reduced-input {
+    --duration-fast: 0ms;
+    --lift-offset-x: 0px;
+    --lift-offset-y: 0px;
+    --press-offset-x: 0px;
+    --press-offset-y: 0px;
+  }
+
+  .track {
+    box-sizing: border-box;
+    padding: var(--space-1);
+    container-type: inline-size;
+    border: var(--outline-width) solid var(--line-unfilled);
+    border-radius: var(--radius);
+  }
+
+  .block {
+    display: block;
+    box-sizing: border-box;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    border: var(--outline-width) solid var(--line);
+    border-radius: calc(var(--radius) / 2);
+    background: var(--yellow);
+    box-shadow: var(--shadow);
+  }
+
+  /* Each move takes 15% of the loop. The easing applies to every step of the keyframes, but on the
+     holds it has nothing to ease. */
+  .hop {
+    animation: motion-hop var(--loop-medium) var(--hop-ease) infinite;
+  }
+
+  @keyframes motion-hop {
+    0%,
+    35% {
+      translate: 0 0;
+    }
+
+    50%,
+    85% {
+      translate: calc(100cqi - 100%) 0;
+    }
+
+    100% {
+      translate: 0 0;
+    }
+  }
+
+  .stagger {
+    display: flex;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+  }
+
+  .enter {
+    opacity: 0;
+    animation: motion-enter var(--loop-panel) var(--ease-snap) calc(var(--i) * var(--stagger)) infinite backwards;
+  }
+
+  /* Comes in over 6% of the loop, holds, then fades out. */
+  @keyframes motion-enter {
+    0% {
+      opacity: 0;
+      translate: 0 0.75rem;
+    }
+
+    6%,
+    75% {
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    85%,
+    100% {
+      opacity: 0;
+      translate: 0 0;
+    }
+  }
+
+  .ground {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    inline-size: 6rem;
+    block-size: 4.5rem;
+    border-block-end: var(--outline-width) solid var(--line-unfilled);
+  }
+
+  /* A glint on the side the light comes from, opposite the shadow. */
+  .ball {
+    position: relative;
+    box-sizing: border-box;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border: var(--outline-width) solid var(--line);
+    border-radius: 50%;
+    background: var(--coral);
+    box-shadow: var(--shadow-pressed);
+  }
+
+  .ball::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    inline-size: 25%;
+    block-size: 25%;
+    margin: auto;
+    border-radius: 50%;
+    background: var(--glint);
+    translate: calc(var(--shadow-dx) * -0.3rem) calc(var(--shadow-dy) * -0.3rem);
+  }
+
+  .bounce {
+    transform-origin: 50% 100%;
+    animation: rk-squash var(--loop-short) infinite;
+  }
+
+  .faded {
+    animation: rk-spinner-fade 1.8s ease-in-out infinite alternate;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hop,
+    .bounce {
+      animation: rk-spinner-fade 1.8s ease-in-out infinite alternate;
+    }
+
+    .enter {
+      opacity: 1;
+      animation: none;
+    }
+  }
+</style>
