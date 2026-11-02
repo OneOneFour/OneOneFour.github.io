@@ -20,9 +20,9 @@
   --muted: light-dark(#5b6070, #a3a8b6);
   --line: light-dark(#1d232f, #05070b);
   --line-unfilled: var(--fg);
-  --focus: var(--yellow);
-  /* Where yellow surrounds the focused element, set --focus: var(--focus-alt) */
-  --focus-alt: var(--tangerine);
+  --focus: var(--tangerine);
+  /* Where tangerine surrounds the focused element, set --focus: var(--focus-alt) */
+  --focus-alt: var(--yellow);
 
   /* Fills: vivid in both themes */
   --ink: #1d232f;
