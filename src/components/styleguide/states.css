@@ -73,11 +73,14 @@
     .rk-input,
     .rk-select,
     .rk-segmented
-  ).is-focus,
-.rk-segmented--deck label.is-focus {
+  ).is-focus {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-offset);
   box-shadow: none;
+}
+
+.rk-segmented--deck:not(.rk-segmented--plate).is-focus {
+  outline-offset: var(--shadow-offset);
 }
 
 a.is-hover {

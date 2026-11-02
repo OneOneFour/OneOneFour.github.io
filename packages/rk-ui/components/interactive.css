@@ -48,16 +48,18 @@
   translate: var(--shadow-offset) var(--shadow-offset);
 }
 
-/* Focus band. Chips, cards and segmented groups show it for the input or link inside them. A
-   segmented group's options have no outline to hug, so the band goes on the group's frame; deck
-   keys have outlines, so it hugs the focused key. */
+/* Focus band. Chips, cards and segmented groups (deck keys included) show it for the input or
+   link inside them; a segmented group shows it on the group, never on one option. */
 :is(.rk-button, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select):focus-visible,
-:is(.rk-chip, .rk-card--link):has(:focus-visible),
-.rk-segmented:not(.rk-segmented--deck):has(:focus-visible),
-.rk-segmented--deck label:has(:focus-visible) {
+:is(.rk-chip, .rk-card--link, .rk-segmented):has(:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-offset);
   box-shadow: none;
+}
+
+/* A deck with no plate has no frame, so the band stands clear of the raised keys' shadows. */
+.rk-segmented--deck:not(.rk-segmented--plate):has(:focus-visible) {
+  outline-offset: var(--shadow-offset);
 }
 
 /* Disabled: dimmed and flat, with no pop. */

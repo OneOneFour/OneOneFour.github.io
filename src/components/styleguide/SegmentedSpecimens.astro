@@ -145,11 +145,11 @@ const DECK_GROUPS = [
       </Specimen>
     ))
   }
-  <Specimen label="focused (band on the key)">
-    <fieldset class="rk-segmented rk-segmented--deck">
+  <Specimen label="focused (band on the group)">
+    <fieldset class="rk-segmented rk-segmented--deck is-focus">
       <legend class="rk-visually-hidden">Specimen</legend>
       <label><input type="radio" name={`${theme}-deck-focus`} /> One</label>
-      <label class="is-focus"><input type="radio" name={`${theme}-deck-focus`} checked /> Two</label>
+      <label><input type="radio" name={`${theme}-deck-focus`} checked /> Two</label>
     </fieldset>
   </Specimen>
   <Specimen label="second key disabled">
@@ -177,11 +177,11 @@ const DECK_GROUPS = [
             ))}
           </fieldset>
         </Specimen>
-        <Specimen label={`${group.label}: hover on Two, focus on Three`}>
-          <fieldset class:list={['rk-segmented rk-segmented--deck', group.class]}>
+        <Specimen label={`${group.label}: hover on Two, group focused`}>
+          <fieldset class:list={['rk-segmented rk-segmented--deck is-focus', group.class]}>
             <legend class="rk-visually-hidden">Specimen</legend>
             {OPTIONS.map(({ value, label }, i) => (
-              <label class:list={{ 'is-hover': i === 1, 'is-focus': i === 2 }}>
+              <label class:list={{ 'is-hover': i === 1 }}>
                 <input type="radio" name={`${theme}-deck-group-states-${g}`} value={value} checked={i === 0} />
                 {label}
               </label>
