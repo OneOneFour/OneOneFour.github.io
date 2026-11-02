@@ -1,5 +1,8 @@
 ---
-/** JetBrains Mono: the same code with ligatures on and off, a widget readout and look-alikes. */
+/**
+ * JetBrains Mono: the same code with ligatures on and off, a widget readout, maths symbols and
+ * look-alikes.
+ */
 
 const LIGATURE_SETTINGS = [
   { label: 'Ligatures on (default)', ligatures: true },
@@ -31,6 +34,7 @@ const READOUT = 'σ = 10.00  ρ = 28.00  β = 2.667'
     }
   </div>
   <p class="readout">{READOUT}</p>
+  <p class="symbols">≈ ≠ ≤ ≥ ± × ÷ − → ← ∞ ∂ ∇ ∑ ∫ √ ∝ ° ′ ″</p>
   <p><em># italic: σ, ρ and β stay fixed while Δt varies</em></p>
 </div>
 
@@ -86,6 +90,11 @@ const READOUT = 'σ = 10.00  ρ = 28.00  β = 2.667'
     background: var(--raised);
     font-size: var(--step-1);
     white-space: pre-wrap;
+  }
+
+  .symbols {
+    font-size: var(--step-1);
+    word-spacing: 0.2em;
   }
 
   .lookalikes {

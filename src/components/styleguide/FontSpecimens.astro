@@ -4,6 +4,7 @@
 const SLAB_WEIGHTS = [500, 800]
 const XMIND_WEIGHTS = [400, 600, 800]
 const XMIND_ITALIC_WEIGHTS = [400, 600]
+const MATHS_SYMBOLS = '≈ ≠ ≤ ≥ ± × ÷ − → ← ∞ ∂ ∇ ∑ ∫ √ ∝ ° ′ ″'
 ---
 
 <h3>Roboto Slab</h3>
@@ -42,6 +43,12 @@ const XMIND_ITALIC_WEIGHTS = [400, 600]
   σκύλο, and the sentence carries on in Latin script.
 </p>
 
+<h3>Maths symbols</h3>
+<p class="slab symbols">{MATHS_SYMBOLS}</p>
+<p class="xmind symbols">{MATHS_SYMBOLS}</p>
+<p class="xmind symbols"><em>{MATHS_SYMBOLS}</em></p>
+<p class="label">Symbols a family lacks fall back to the system font.</p>
+
 <style>
   h3 {
     margin-block: var(--space-5) var(--space-3);
@@ -77,5 +84,9 @@ const XMIND_ITALIC_WEIGHTS = [400, 600]
 
   .greek-prose {
     max-width: 38rem;
+  }
+
+  .symbols {
+    word-spacing: 0.2em;
   }
 </style>
