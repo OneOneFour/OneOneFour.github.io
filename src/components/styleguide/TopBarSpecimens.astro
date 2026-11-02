@@ -1,0 +1,49 @@
+---
+/** Top bar options A and B, each at the top of a small page and in place rather than stuck. */
+import Specimen from './Specimen.astro'
+import BackToTop from '../BackToTop.astro'
+import Button from '../ui/Button.astro'
+
+const SPECIMEN_TEXT =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+const OPTIONS = [
+  { label: 'A: toast', class: 'rk-topbar--toast' },
+  { label: 'B: flush', class: 'rk-topbar--flush' },
+]
+---
+
+{
+  OPTIONS.map((option) => (
+    <Specimen label={option.label} wide>
+      <div class="page">
+        <div class:list={['rk-topbar', option.class]}>
+          <Button>Button</Button>
+          <BackToTop />
+        </div>
+        <p>{SPECIMEN_TEXT}</p>
+      </div>
+    </Specimen>
+  ))
+}
+
+<style>
+  .page {
+    overflow: clip;
+    border: 1px solid var(--muted);
+    border-radius: var(--radius);
+  }
+
+  .page .rk-topbar {
+    position: static;
+  }
+
+  /* Shown as they look once the page has scrolled. */
+  .page .rk-topbar,
+  .page :global(.rk-back-to-top) {
+    animation: none;
+  }
+
+  p {
+    margin: var(--space-4);
+  }
+</style>

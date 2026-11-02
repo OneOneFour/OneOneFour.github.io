@@ -1,0 +1,127 @@
+/* Top bar: controls that stay at the top of the window as the page scrolls, such as a theme
+   switch, ending with a back-to-top link. Pick one of two variants:
+   .rk-topbar--toast: a raised panel hanging just below the top edge, at the end of the line.
+   .rk-topbar--flush: full width along the top edge, with a rule and a shadow under it.
+   --topbar-inset is the space at the bar's sides: the toast's margin, the flush bar's padding.
+
+   <header class="rk-topbar rk-topbar--toast">
+     …
+     <a class="rk-button rk-back-to-top" href="#top">
+       <svg class="rk-icon" aria-hidden="true">…arrow-up…</svg>
+       <span class="rk-visually-hidden">Back to top</span>
+     </a>
+   </header>
+
+   Where scroll-driven animations are supported, the bar takes its look over the first few rems
+   of scrolling: the toast drops in from lying flat in the page, the flush bar's shadow grows,
+   and the back-to-top link pops in. Other browsers show the full bar and the link at all times. */
+
+.rk-topbar {
+  --topbar-inset: var(--space-4);
+  --topbar-gap: var(--space-3);
+  /* How far the toast drops in, and the back-to-top link's starting scale */
+  --topbar-drop: var(--space-3);
+  --topbar-pop: 0.5;
+  /* How far the page scrolls while the bar takes its look */
+  --topbar-reveal: 3rem;
+
+  position: sticky;
+  inset-block-start: 0;
+  /* Above tooltip bubbles (tooltip.css) */
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  border: 0 solid var(--line-unfilled);
+  background: var(--raised);
+  color: var(--fg);
+}
+
+.rk-topbar--toast {
+  inset-block-start: var(--topbar-gap);
+  inline-size: fit-content;
+  max-inline-size: calc(100% - 2 * var(--topbar-inset));
+  margin-block-start: var(--topbar-gap);
+  margin-inline: auto var(--topbar-inset);
+  padding: var(--space-2) var(--space-3);
+  border-width: var(--outline-width);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* The flush bar's shadow falls straight down whatever the light: across a full-width bar, a
+   sideways shadow would slide off one edge of the window and leave a gap at the other. */
+.rk-topbar--flush {
+  padding: var(--space-2) var(--topbar-inset);
+  border-block-end-width: var(--outline-width);
+  box-shadow:
+    0 var(--shadow-offset) 0 var(--shadow-color),
+    0 var(--shadow-offset) 0 var(--outline-width) var(--shadow-edge);
+}
+
+/* Anchor jumps, such as a table of contents' links, land below the bar rather than under it.
+   This clears a bar one row of controls high. */
+:root:has(.rk-topbar) {
+  scroll-padding-block-start: 6rem;
+}
+
+/* Under reduced motion nothing moves: the toast and the link only fade in. */
+@media (prefers-reduced-motion: reduce) {
+  .rk-topbar {
+    --topbar-drop: 0px;
+    --topbar-pop: 1;
+  }
+}
+
+/* Longhands only, as in overflow.css. */
+@supports (animation-timeline: scroll()) {
+  .rk-topbar,
+  .rk-back-to-top {
+    animation-duration: auto;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root);
+    animation-range-end: var(--topbar-reveal);
+  }
+
+  .rk-topbar--toast {
+    animation-name: rk-topbar-toast-in;
+    animation-timing-function: var(--ease-spring);
+  }
+
+  .rk-topbar--flush {
+    animation-name: rk-topbar-flush-in;
+    animation-timing-function: linear;
+  }
+
+  .rk-back-to-top {
+    animation-name: rk-back-to-top-in;
+    animation-timing-function: var(--ease-spring);
+  }
+}
+
+/* Each animation runs from its keyframe to the element's own styles. */
+@keyframes rk-topbar-toast-in {
+  from {
+    border-color: transparent;
+    background-color: transparent;
+    box-shadow: none;
+    translate: 0 calc(-1 * var(--topbar-drop));
+  }
+}
+
+@keyframes rk-topbar-flush-in {
+  from {
+    box-shadow: none;
+  }
+}
+
+/* Hidden at the top of the page, so it is out of the tab order there too. */
+@keyframes rk-back-to-top-in {
+  from {
+    visibility: hidden;
+    opacity: 0;
+    scale: var(--topbar-pop);
+  }
+}
