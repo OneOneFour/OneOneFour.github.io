@@ -148,10 +148,19 @@
   --diagonal: 1.4142;
   --drop-dx: calc((var(--shadow-dx) + var(--shadow-dy)) * var(--diagonal) / 2);
   --drop-dy: calc((var(--shadow-dy) - var(--shadow-dx)) * var(--diagonal) / 2);
-  --shadow: calc(var(--shadow-offset) * var(--drop-dx)) calc(var(--shadow-offset) * var(--drop-dy))
-    0 var(--shadow-color);
-  --shadow-hover: calc(6px * var(--drop-dx)) calc(6px * var(--drop-dy)) 0 var(--shadow-color);
-  --shadow-pressed: calc(2px * var(--drop-dx)) calc(2px * var(--drop-dy)) 0 var(--shadow-color);
+  --shadow:
+    calc(var(--shadow-offset) * var(--drop-dx)) calc(var(--shadow-offset) * var(--drop-dy)) 0
+      var(--shadow-color),
+    calc(var(--shadow-offset) * var(--drop-dx)) calc(var(--shadow-offset) * var(--drop-dy)) 0
+      var(--outline-width) var(--shadow-edge);
+  --shadow-hover:
+    calc(6px * var(--drop-dx)) calc(6px * var(--drop-dy)) 0 var(--shadow-color),
+    calc(6px * var(--drop-dx)) calc(6px * var(--drop-dy)) 0 var(--outline-width)
+      var(--shadow-edge);
+  --shadow-pressed:
+    calc(2px * var(--drop-dx)) calc(2px * var(--drop-dy)) 0 var(--shadow-color),
+    calc(2px * var(--drop-dx)) calc(2px * var(--drop-dy)) 0 var(--outline-width)
+      var(--shadow-edge);
   --shadow-inset: inset calc(2px * var(--drop-dx)) calc(2px * var(--drop-dy)) 0 var(--line-unfilled);
   --picker-radius: var(--drop-corners);
 
