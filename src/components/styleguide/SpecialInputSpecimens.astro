@@ -30,6 +30,20 @@ const NUMBER_STATES = [
   { label: 'disabled', input: '', buttons: '', disabled: true },
   { label: 'error', input: '', buttons: '', invalid: true },
 ]
+const HUES = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky', 'grape', 'tangerine', 'lilac', 'apricot']
+const SWATCH_GROUPS = [
+  { variant: 'A', label: 'rest (teal checked)' },
+  { variant: 'A', label: 'hover on navy, focus on teal', hover: 'navy', focus: 'teal' },
+  { variant: 'A', label: 'disabled', disabled: true },
+  { variant: 'B', label: 'rest (the last swatch opens the browser picker)' },
+  { variant: 'B', label: 'focused custom swatch', focusCustom: true },
+]
+const COLOUR_STATES = [
+  { label: 'rest', class: '' },
+  { label: 'hover', class: 'is-hover' },
+  { label: 'pressed', class: 'is-active' },
+  { label: 'focused', class: 'is-focus' },
+]
 const DATE_TYPES = ['date', 'time', 'month', 'week', 'datetime-local'] as const
 const DROP_STATES = [
   { label: "rest: click or drop a file (the name isn't shown without a script)" },
@@ -229,6 +243,46 @@ const DROP_STATES = [
       </Specimen>
     ))
   }
+</SpecimenRow>
+
+<SpecimenRow title="Colour A and B: token swatches">
+  {
+    SWATCH_GROUPS.map((group, index) => (
+      <Specimen label={`colour ${group.variant}: ${group.label}`}>
+        <fieldset class="rk-swatches" disabled={group.disabled}>
+          <legend class="rk-visually-hidden">Colour</legend>
+          {HUES.map((hue) => (
+            <label
+              class:list={['rk-swatch', { 'is-hover': hue === group.hover, 'is-focus': hue === group.focus }]}
+              style={`--swatch: var(--${hue})`}
+            >
+              <input type="radio" name={`${theme}-swatch-${index}`} value={hue} checked={hue === 'teal'} />
+              <span class="rk-visually-hidden">{hue}</span>
+            </label>
+          ))}
+          {group.variant === 'B' && (
+            <label class="rk-check">
+              <input class:list={['rk-swatch', { 'is-focus': group.focusCustom }]} type="color" />
+              Custom
+            </label>
+          )}
+        </fieldset>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Colour C: native input">
+  {
+    COLOUR_STATES.map((state) => (
+      <Specimen label={state.label}>
+        <input class:list={['rk-input', state.class]} type="color" aria-label="Specimen" />
+      </Specimen>
+    ))
+  }
+  <Specimen label="disabled">
+    <input class="rk-input" type="color" aria-label="Specimen" disabled />
+  </Specimen>
 </SpecimenRow>
 
 <script>

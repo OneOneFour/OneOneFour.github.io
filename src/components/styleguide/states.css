@@ -111,3 +111,20 @@ a:where(:not(.rk-button)).is-focus {
 .rk-stepper--stacked button.is-active {
   box-shadow: var(--shadow-inset);
 }
+
+.rk-swatch.is-hover,
+.rk-input[type='color'].is-hover {
+  box-shadow: var(--shadow-hover);
+  translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+}
+
+.rk-input[type='color'].is-active {
+  box-shadow: var(--shadow-pressed);
+  translate: var(--press-offset) var(--press-offset);
+}
+
+.rk-swatch.is-focus {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+  box-shadow: none;
+}

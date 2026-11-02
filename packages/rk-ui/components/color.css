@@ -1,0 +1,156 @@
+/* Colour pickers, in three variants for Gate 1b. Swatches keep their real colours in forced
+   colours (forced-color-adjust), since the colour is the content.
+
+   Colour A: a radio group of round swatches that pop. Each swatch takes its colour from a token
+   through --swatch. The checked one is pushed into the page.
+   <fieldset class="rk-swatches">
+     <legend class="rk-visually-hidden">Colour</legend>
+     <label class="rk-swatch" style="--swatch: var(--teal)">
+       <input type="radio" name="colour" value="teal">
+       <span class="rk-visually-hidden">Teal</span>
+     </label>
+     …
+   </fieldset>
+
+   Colour B: colour A plus a native colour input as a last, matching swatch.
+     <label class="rk-check"><input class="rk-swatch" type="color"> Custom</label>
+
+   Colour C: the native colour input on its own, as a swatch button that pops.
+   <input class="rk-input" type="color" aria-label="Colour"> */
+
+/* Colour A */
+
+.rk-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rk-swatch {
+  position: relative;
+  flex: none;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  padding: 0;
+  border: var(--outline-width) solid var(--line);
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  forced-color-adjust: none;
+  transition:
+    translate var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+.rk-swatch input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .rk-swatch:hover {
+    box-shadow: var(--shadow-hover);
+    translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+  }
+}
+
+.rk-swatch:active {
+  box-shadow: var(--shadow-pressed);
+  translate: var(--press-offset) var(--press-offset);
+}
+
+/* Checked: pushed all the way into its shadow, with an inset shadow instead. */
+.rk-swatch:has(:checked) {
+  box-shadow: var(--shadow-inset);
+  translate: calc(2 * var(--press-offset)) calc(2 * var(--press-offset));
+}
+
+.rk-swatch:is(:focus-visible, :has(:focus-visible)) {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+  box-shadow: none;
+}
+
+.rk-swatch:is(:disabled, :has(:disabled)) {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  translate: none;
+}
+
+@media (forced-colors: active) {
+  .rk-swatch:has(:checked) {
+    border-color: Highlight;
+  }
+}
+
+/* Colour B */
+
+input.rk-swatch[type='color'] {
+  appearance: none;
+}
+
+input.rk-swatch[type='color']::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input.rk-swatch[type='color']::-webkit-color-swatch {
+  border: 0;
+  border-radius: 50%;
+}
+
+input.rk-swatch[type='color']::-moz-color-swatch {
+  border: 0;
+  border-radius: 50%;
+}
+
+/* Colour C */
+
+.rk-input[type='color'] {
+  appearance: none;
+  inline-size: 3.5rem;
+  block-size: 2.5rem;
+  padding: 0;
+  border-color: var(--line);
+  background: transparent;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  forced-color-adjust: none;
+  transition:
+    translate var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+/* :where() keeps these as specific as the shared focus and disabled states, which come later. */
+@media (hover: hover) {
+  .rk-input:where([type='color']):hover {
+    box-shadow: var(--shadow-hover);
+    translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
+  }
+}
+
+.rk-input:where([type='color']):active {
+  box-shadow: var(--shadow-pressed);
+  translate: var(--press-offset) var(--press-offset);
+}
+
+.rk-input[type='color']::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.rk-input[type='color']::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius) - var(--outline-width));
+}
+
+.rk-input[type='color']::-moz-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius) - var(--outline-width));
+}

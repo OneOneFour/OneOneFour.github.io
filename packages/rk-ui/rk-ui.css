@@ -23,4 +23,5 @@
 @import './components/date-time.css';
 @import './components/search.css';
 @import './components/number.css';
+@import './components/color.css';
 @import './components/interactive.css';
