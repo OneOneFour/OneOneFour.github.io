@@ -34,6 +34,10 @@
   box-shadow: inset 0 0 0 var(--outline-width) var(--line-unfilled);
 }
 
+.rk-breadcrumbs--path a.is-hover {
+  box-shadow: inset 0 0 0 var(--outline-width) var(--line-unfilled);
+}
+
 .rk-segmented label.is-active {
   box-shadow: var(--shadow-inset);
 }
@@ -86,7 +90,7 @@ a.is-hover {
   text-decoration-thickness: var(--outline-width);
 }
 
-a:where(:not(.rk-button)).is-focus {
+a:where(:not(.rk-button, .rk-chip)).is-focus {
   background: var(--focus);
   color: var(--ink);
 }

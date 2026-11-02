@@ -67,9 +67,9 @@ a:hover {
 }
 
 /* Marker-pen focus: a link has no outline for the band to hug, so the band goes behind the text.
-   The transparent outline still shows in forced-colours mode. Button links get the focus band
-   instead. */
-a:where(:not(.rk-button)):focus-visible {
+   The transparent outline still shows in forced-colours mode. Button and chip links get the
+   focus band instead. */
+a:where(:not(.rk-button, .rk-chip)):focus-visible {
   outline: var(--outline-width) solid transparent;
   background: var(--focus);
   color: var(--ink);

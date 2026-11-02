@@ -1,6 +1,7 @@
 /* Filter chips: pill labels around a native checkbox (multi-select) or radio (single select),
    with an optional .rk-icon before the text. Checked chips, and their icons' fills, take --section,
-   with --on-section text; set those on the chip or its group to pass in another hue.
+   with --on-section text; set those on the chip or its group to pass in another hue. A chip can
+   also be a link (<a class="rk-chip">), with aria-current="page" filling it like a checked one.
 
    <fieldset class="rk-chip-group">
      <legend class="rk-visually-hidden">Topic</legend>
@@ -29,6 +30,7 @@
   background: var(--raised);
   color: var(--fg);
   font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -42,7 +44,7 @@
   color: inherit;
 }
 
-.rk-chip:has(:checked) {
+.rk-chip:is(:has(:checked), [aria-current='page']) {
   --icon-fill: var(--section);
 
   border-color: var(--line);
@@ -53,7 +55,7 @@
 /* Forced colours drop the checked fill, so the checked chip uses system colours. Without
    forced-color-adjust, the browser puts a Canvas backplate behind the HighlightText label. */
 @media (forced-colors: active) {
-  .rk-chip:has(:checked) {
+  .rk-chip:is(:has(:checked), [aria-current='page']) {
     forced-color-adjust: none;
     border-color: Highlight;
     background: Highlight;
