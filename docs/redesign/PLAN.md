@@ -620,8 +620,8 @@ held step, so the reader sees where it ends before it starts again.
 - `ease-in-out` with `alternate`: filling, draining, sloshing.
 - `--ease-snap`: a jump to a new place or state, with one visible overshoot. *Retuned
   2026-11-02 (Rob: "a tad too snappy", overshoot "a bit much")* from `cubic-bezier(0.3, 1.5,
-  0.45, 1)` (8% overshoot, 90% of the way at a quarter of the time) to `cubic-bezier(0.35, 1.4,
-  0.5, 1)` (about 5%, 90% at a third).
+  0.45, 1)` (8% overshoot, 90% of the way at a quarter of the time), then gentler again at
+  Rob's second look, to `cubic-bezier(0.38, 1.35, 0.52, 1)` (about 4%, 90% at 35%).
 - `--ease-spring`: recovering from a squash or a press.
 
 No other curves, and no elastic, many-bounce easing.
