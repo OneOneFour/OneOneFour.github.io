@@ -435,6 +435,16 @@ P2 card work so the widget frame becomes one use of it.
 A always-visible bar as the alternative; C dropped. A folder's tab strip puts its scrollbar
 above the tabs, so it never comes between them and the sheet.
 
+**More loading options** *(Gate 1b, pending Rob's picks)*: on `/styleguide/` under "More loading
+options", beside spinners A–C and progress bars A–B.
+- Toon water (`water.css`, `.rk-water`, level from `--water-level`): spinners D (flask filling)
+  and E (flask sloshing); a busy filled button that fills with its own colour
+  (`aria-busy="true"` + `aria-disabled="true"`, looping or set); pending panels A (filling) and
+  B (sloshing along the bottom).
+- Dot spinners (`spinner-dots.css`): F in a circle, G in a triangle, H squash and stretch.
+- Loaders, indeterminate bars (`loader.css`): A inchworm, B bouncing block, C hopping ball,
+  D candy stripes.
+
 
 ### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*
 
