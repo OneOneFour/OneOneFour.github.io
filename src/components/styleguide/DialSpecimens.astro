@@ -1,0 +1,70 @@
+---
+/**
+ * The two dial variants for Gate 1b, live with a decimal and an integer range and disabled, plus
+ * how a dial looks without its script.
+ *
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const VARIANTS = [
+  { name: 'knob', title: 'Dial A (knob)' },
+  { name: 'arc', title: 'Dial B (arc)' },
+]
+const RANGES = [
+  { name: 'temperature', label: 'Temperature', caption: '10 to 30, step 0.5', min: 10, max: 30, step: 0.5, value: 20 },
+  { name: 'level', label: 'Level', caption: '0 to 100, step 1', min: 0, max: 100, step: 1, value: 40 },
+  { name: 'disabled', label: 'Label', caption: 'disabled', min: 0, max: 100, step: 1, value: 40, disabled: true },
+]
+const fallbackId = `${theme}-dial-fallback`
+---
+
+{
+  VARIANTS.map((variant) => (
+    <SpecimenRow title={variant.title}>
+      {RANGES.map((range) => {
+        const id = `${theme}-dial-${variant.name}-${range.name}`
+        return (
+          <Specimen label={range.caption}>
+            <rk-dial class:list={['rk-dial', `rk-dial--${variant.name}`]}>
+              <label for={id}>{range.label}</label>
+              <input
+                class="rk-range"
+                type="range"
+                id={id}
+                min={range.min}
+                max={range.max}
+                step={range.step}
+                value={range.value}
+                disabled={range.disabled}
+              />
+              <output class="rk-output" for={id}>
+                {range.value}
+              </output>
+            </rk-dial>
+          </Specimen>
+        )
+      })}
+    </SpecimenRow>
+  ))
+}
+
+<SpecimenRow title="Without the script">
+  <Specimen label="a plain range and readout; the readout only follows the range with dial.js" wide>
+    <div class="rk-dial rk-dial--knob">
+      <label for={fallbackId}>Temperature</label>
+      <input class="rk-range" type="range" id={fallbackId} min="10" max="30" step="0.5" value="20" />
+      <output class="rk-output" for={fallbackId}>20</output>
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<script>
+  import 'rk-ui/dial.js'
+</script>
