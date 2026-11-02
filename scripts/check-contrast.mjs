@@ -1,6 +1,7 @@
 /**
  * Checks WCAG 2.x contrast between pairs of rk-ui colour tokens, in both themes and under every
- * page palette. Reads the styleguide's chart tokens too, so their fallback is checked.
+ * page palette. Reads the styleguide's chart tokens too, so their fallback is checked. Tokens may
+ * use var(), light-dark() and color-mix() (colour.mjs evaluates the mixes).
  *
  * Usage: node scripts/check-contrast.mjs
  *
@@ -9,6 +10,7 @@
  */
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { composite, contrastRatio, evaluateColour, selfCheck, toHex } from './colour.mjs'
 
 const TOKEN_FILES = [
   new URL('../packages/rk-ui/tokens.css', import.meta.url),
@@ -160,29 +162,43 @@ function chooseTheme(value, theme) {
   return chooseTheme(value.slice(0, start) + chosen.trim() + value.slice(end + 1), theme)
 }
 
-/** The `#rrggbb` colour a token resolves to in one theme ('light' or 'dark'). */
-export function resolveColor(tokens, name, theme) {
+/** The colour a token resolves to in one theme ('light' or 'dark'), as `{ r, g, b, alpha }`. */
+export function resolveRgba(tokens, name, theme) {
   const value = chooseTheme(expandVars(tokens, name), theme)
-  if (!/^#[0-9a-f]{6}$/i.test(value)) {
-    throw new Error(`${name} is not a #rrggbb colour in the ${theme} theme: ${value}`)
+  try {
+    return evaluateColour(value)
+  } catch (error) {
+    throw new Error(`${name} is not a colour in the ${theme} theme: ${value} (${error.message})`)
   }
-  return value
 }
 
-function toLinear(channel) {
-  return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4
+/** The colour a token resolves to in one theme, as `#rrggbb`, or `#rrggbbaa` if translucent. */
+export function resolveColor(tokens, name, theme) {
+  return toHex(resolveRgba(tokens, name, theme))
 }
 
-/** WCAG 2.x relative luminance of a `#rrggbb` colour. */
-export function relativeLuminance(hex) {
-  const [r, g, b] = [1, 3, 5].map((i) => toLinear(parseInt(hex.slice(i, i + 2), 16) / 255))
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b
-}
-
-/** WCAG 2.x contrast ratio between two `#rrggbb` colours, from 1 to 21. */
-export function contrastRatio(hexA, hexB) {
-  const [lighter, darker] = [relativeLuminance(hexA), relativeLuminance(hexB)].sort((a, b) => b - a)
-  return (lighter + 0.05) / (darker + 0.05)
+/**
+ * Measures one pair in one theme. A translucent background is painted over the pair's `over`
+ * token first, and a translucent foreground over the background. `inputs` sets per-element
+ * tokens a recipe reads, e.g. `{ '--shade-of': '--teal' }`.
+ *
+ * @param {Map<string, string>} tokens
+ * @param {{ fg: string, bg: string, over?: string, inputs?: Record<string, string> }} pair
+ * @param {string} theme
+ * @returns the hex colours as painted, and their contrast ratio
+ */
+export function measurePair(tokens, { fg, bg, over, inputs }, theme) {
+  const scoped = inputs
+    ? new Map([...tokens, ...Object.entries(inputs).map(([name, token]) => [name, `var(${token})`])])
+    : tokens
+  const backdrop = over ? resolveRgba(scoped, over, theme) : undefined
+  const background = composite(resolveRgba(scoped, bg, theme), backdrop)
+  const foreground = composite(resolveRgba(scoped, fg, theme), background)
+  return {
+    fgHex: toHex(foreground),
+    bgHex: toHex(background),
+    ratio: contrastRatio(foreground, background),
+  }
 }
 
 /** Prints one palette and theme's table and returns the number of failing pairs. */
@@ -194,10 +210,9 @@ function printTable(tokens, palette, theme) {
     if (group.themes && !group.themes.includes(theme)) continue
     console.log(`\n  ${group.title}`)
 
-    for (const { fg, bg, min } of group.pairs) {
-      const fgHex = resolveColor(tokens, fg, theme)
-      const bgHex = resolveColor(tokens, bg, theme)
-      const ratio = contrastRatio(fgHex, bgHex)
+    for (const pair of group.pairs) {
+      const { fg, bg, min } = pair
+      const { fgHex, bgHex, ratio } = measurePair(tokens, pair, theme)
       const status = ratio >= min ? 'pass' : group.knownGap ? 'known gap' : 'FAIL'
       if (status === 'FAIL') failures++
 
@@ -223,7 +238,7 @@ function checkFallback(tokens, fallback) {
       return [`${name} still uses light-dark()`]
     }
 
-    // Compared as text rather than with resolveColor, which rejects `transparent`.
+    // Compared as expanded text, so the fallback must repeat the light value itself.
     const light = chooseTheme(expandVars(tokens, name), 'light').toLowerCase()
     const actual = expandVars(withFallback, name).toLowerCase()
     return actual === light ? [] : [`${name} is ${actual}, light is ${light}`]
@@ -236,6 +251,9 @@ function checkFallback(tokens, fallback) {
 }
 
 function main() {
+  const resolverProblems = selfCheck()
+  resolverProblems.forEach((problem) => console.log(`RESOLVER SELF-CHECK FAIL ${problem}`))
+
   const files = TOKEN_FILES.map((file) => readFileSync(file, 'utf8'))
   const { main: mainCss, fallback: fallbackCss } = splitFallbacks(files)
   const { palettes } = splitPalettes(mainCss)
@@ -246,7 +264,7 @@ function main() {
     for (const theme of THEMES) failures += printTable(tokens, palette, theme)
   }
   console.log(failures ? `\n${failures} pair(s) fail.` : '\nAll pairs pass.')
-  process.exitCode = failures || fallbackFailures ? 1 : 0
+  process.exitCode = failures || fallbackFailures || resolverProblems.length ? 1 : 0
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

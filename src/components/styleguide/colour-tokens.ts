@@ -3,7 +3,7 @@ import {
   splitFallbacks,
   splitPalettes,
   resolveColor,
-  contrastRatio,
+  measurePair,
   THEMES,
   DEFAULT_PALETTE,
 } from '../../../scripts/check-contrast.mjs'
@@ -38,7 +38,7 @@ export function hexOf(allTokens: Tokens, name: string, theme: Theme): string {
 
 /** WCAG contrast of the `fg` token on the `bg` token, in one theme. */
 export function contrast(allTokens: Tokens, fg: string, bg: string, theme: Theme): Contrast {
-  const ratio = contrastRatio(hexOf(allTokens, fg, theme), hexOf(allTokens, bg, theme))
+  const { ratio } = measurePair(allTokens, { fg, bg }, theme)
   return { fg, bg, ratio }
 }
 
