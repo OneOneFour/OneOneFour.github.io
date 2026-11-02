@@ -59,6 +59,21 @@
   color: var(--on-selected);
 }
 
+/* The newly checked option dips, then bounces as the pill lands on it. */
+.rk-segmented:not(.rk-segmented--deck) label:has(:checked) {
+  animation: rk-segment-pop var(--duration-slide) ease-out;
+}
+
+@keyframes rk-segment-pop {
+  35% {
+    scale: 0.94;
+  }
+
+  75% {
+    scale: 1.06;
+  }
+}
+
 /* The sliding pill is the group's ::before, anchored to the checked label. It comes before the
    labels in tree order, so the labels (positioned too) paint over it. Forced colours keep the
    per-option Highlight fill below. */
