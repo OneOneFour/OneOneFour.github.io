@@ -50,6 +50,7 @@ const TICK_STATES = [
   { label: 'focused', class: 'is-focus' },
   { label: 'disabled', class: '', disabled: true },
 ]
+const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
 const DATE_TYPES = ['date', 'time', 'month', 'week', 'datetime-local'] as const
 const DROP_STATES = [
   { label: "rest: click or drop a file (the name isn't shown without a script)" },
@@ -335,6 +336,19 @@ const DROP_STATES = [
           aria-label="Specimen"
           disabled={state.disabled}
         />
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Text-like types (no extra styles)">
+  {
+    TEXT_TYPES.map((type) => (
+      <Specimen label={type} wide>
+        <div class="rk-field">
+          <label for={`${theme}-${type}`}>Label</label>
+          <input class="rk-input" id={`${theme}-${type}`} type={type} />
+        </div>
       </Specimen>
     ))
   }
