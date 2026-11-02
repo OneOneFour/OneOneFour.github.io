@@ -41,8 +41,18 @@
   cursor: pointer;
 }
 
+/* The layouts place the checked tile, which is pushed in by the shadow offset. A tile at rest
+   sits back by that offset, so it's the checked tile that's centred on its row and edges. */
+.rk-ballot .rk-tile {
+  inset-block-start: calc(-1 * var(--shadow-offset-y));
+}
+
 .rk-ballot--mark-end .rk-ballot-option {
   flex-direction: row-reverse;
+}
+
+.rk-ballot--mark-end .rk-tile {
+  margin-inline-end: var(--shadow-offset-x);
 }
 
 .rk-ballot-option:has(:disabled) {
@@ -72,15 +82,12 @@
 }
 
 /* Overlap: a negative margin pulls the text box half under the tile, and the box pads its text
-   clear of it. The tile is positioned (tiles.css), so it paints above the box. It rests back by
-   the shadow offset, so a checked tile, pushed in by that offset, is the one centred on the
-   box's edge. */
+   clear of it. The tile is positioned (tiles.css), so it paints above the box. */
 .rk-ballot--overlap .rk-ballot-option {
   gap: 0;
 }
 
 .rk-ballot--overlap .rk-tile {
-  inset-block-start: calc(-1 * var(--shadow-offset-y));
   margin-inline-end: calc(var(--shadow-offset-x) - var(--tile-size) / 2);
 }
 
@@ -89,7 +96,7 @@
 }
 
 .rk-ballot--overlap.rk-ballot--mark-end .rk-tile {
-  margin-inline: calc(-1 * (var(--shadow-offset-x) + var(--tile-size) / 2)) 0;
+  margin-inline: calc(-1 * (var(--shadow-offset-x) + var(--tile-size) / 2)) var(--shadow-offset-x);
 }
 
 .rk-ballot--overlap.rk-ballot--mark-end .rk-ballot-text {
@@ -110,7 +117,8 @@
 
 .rk-ballot--inside .rk-tile {
   margin-block-start: calc(var(--outline-width) + var(--space-2));
-  margin-inline: var(--tile-inset) calc(-1 * (var(--tile-size) + var(--tile-inset)));
+  margin-inline: calc(var(--tile-inset) - var(--shadow-offset-x))
+    calc(var(--shadow-offset-x) - var(--tile-size) - var(--tile-inset));
 }
 
 .rk-ballot--inside .rk-ballot-text {
@@ -120,7 +128,8 @@
 }
 
 .rk-ballot--inside.rk-ballot--mark-end .rk-tile {
-  margin-inline: calc(-1 * (var(--tile-size) + var(--tile-inset))) var(--tile-inset);
+  margin-inline: calc(-1 * (var(--tile-size) + var(--tile-inset) + var(--shadow-offset-x)))
+    calc(var(--tile-inset) + var(--shadow-offset-x));
 }
 
 .rk-ballot--inside.rk-ballot--mark-end .rk-ballot-text {
