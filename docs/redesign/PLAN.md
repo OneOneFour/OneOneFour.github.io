@@ -244,7 +244,8 @@ Rules (shown on the mood board, theme switch at the top):
   light-only fallback block, which the contrast script checks against the light values.
 - **Page palettes (Gate 1b):** `data-palette="slate"` (cool grey) or `"greige"` (warm grey) on
   `<html>` or any container swaps the cream page for a grey one, alongside `data-theme`; cream
-  is the default and `data-palette="cream"` switches back inside another palette. A palette
+  is the default (*DECIDED 2026-11-02: the site ships cream*; slate and greige stay available
+  as opt-ins) and `data-palette="cream"` switches back inside another palette. A palette
   redeclares only `--surface` and `--raised` (as `light-dark()` pairs), plus `--div-mid`, the one
   `:root` token mixed from the page colour (custom properties resolve their `var()`s where they
   are declared, so it must be redeclared on every palette container). The values come from the
@@ -705,7 +706,7 @@ the single source for order, file locations and acceptance.
 **Ideas for later (not scheduled):**
 - ~~A warm "greige" alternate mode for the whole site, built from the greige slate Rob liked at
   Gate 1b.~~ *Built at Gate 1b* as the `data-palette` attribute, with a cool slate palette too
-  (§5.1b). Which palette the site ships with is still Rob's call; cream stays the default.
+  (§5.1b). The site ships cream (decided 2026-11-02).
 - A "How this site was made" section with a credits page listing every third-party asset and
   its author/licence (icons, fonts, logos), generated from or kept in step with
   `THIRD_PARTY_NOTICES.md`. Some assets need visible credit there (e.g. the Julia logo,
