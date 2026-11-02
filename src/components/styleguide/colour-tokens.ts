@@ -1,9 +1,11 @@
 import {
   parseTokens,
   splitFallback,
+  splitPalettes,
   resolveColor,
   contrastRatio,
   THEMES,
+  DEFAULT_PALETTE,
 } from '../../../scripts/check-contrast.mjs'
 import rawTokensCss from 'rk-ui/tokens.css?raw'
 
@@ -17,9 +19,15 @@ export interface Contrast {
   ratio: number
 }
 
-/** tokens.css without its light-only fallback, whose plain values would hide the dark theme. */
-export const tokensCss: string = splitFallback(rawTokensCss).main
-export const tokens: Tokens = parseTokens(tokensCss)
+// The light-only fallback is left out: its plain values would hide the dark theme.
+const { shared, palettes } = splitPalettes(splitFallback(rawTokensCss).main)
+
+/** tokens.css without the fallback and the page palette rules: the tokens every palette shares. */
+export const tokensCss: string = shared
+/** Each page palette's tokens, by palette name, in the order tokens.css gives them. */
+export const paletteTokens: Map<string, Tokens> = palettes
+/** The default palette's tokens. */
+export const tokens: Tokens = palettes.get(DEFAULT_PALETTE)!
 
 /** The `#rrggbb` a token resolves to in one theme. */
 export function hexOf(allTokens: Tokens, name: string, theme: Theme): string {
@@ -51,6 +59,12 @@ function isColour(allTokens: Tokens, name: string): boolean {
 }
 
 const SURFACES = ['--surface', '--raised']
+const CODE_PANELS = ['--slate', '--slate-greige']
+
+/** A panel carries --fg text: the page surfaces, the tints and the code slates. */
+function isPanel(name: string): boolean {
+  return SURFACES.includes(name) || name.endsWith('-tint') || name.startsWith('--slate')
+}
 
 /** The --on-* token a fill's own label would have; `--coral-solid` shares `--on-coral`. */
 function ownLabel(fill: string): string {
@@ -71,11 +85,11 @@ function labelFor(allTokens: Tokens, fill: string): string {
 
 /**
  * The pairs a colour token's swatch shows, with their contrast:
- * panels (surfaces, tints) carry --fg; fills carry their label; a label is shown on every fill
- * that uses it; any other colour is text read on --surface and --raised.
+ * panels carry --fg; fills carry their label; a label is shown on every fill that uses it;
+ * syntax colours are read on the code slates, and any other colour on --surface and --raised.
  */
 export function swatchPairs(allTokens: Tokens, name: string, theme: Theme): Contrast[] {
-  if (SURFACES.includes(name) || name.endsWith('-tint')) {
+  if (isPanel(name)) {
     return [contrast(allTokens, '--fg', name, theme)]
   }
   if (isFill(allTokens, name)) {
@@ -87,21 +101,40 @@ export function swatchPairs(allTokens: Tokens, name: string, theme: Theme): Cont
     )
     return fills.map((fill) => contrast(allTokens, name, fill, theme))
   }
-  return SURFACES.map((surface) => contrast(allTokens, name, surface, theme))
+  const backgrounds = name.startsWith('--code-') ? CODE_PANELS : SURFACES
+  return backgrounds.map((background) => contrast(allTokens, name, background, theme))
+}
+
+/** A group of colour tokens: a short title, an optional caption and the token names. */
+export interface ColourGroup {
+  title: string
+  caption: string
+  names: string[]
+}
+
+// A comment after a blank line or a `{` heads a group. One straight under a declaration is a
+// note on the next token, so it stays in the group above.
+const GROUP_HEADING = /(?:^|\{|\n[ \t]*\n)\s*\/\*\s*([\s\S]*?)\s*\*\//
+
+/** Splits a heading comment such as `Fills: vivid in both themes` into title and caption. */
+function splitHeading(comment: string): { title: string; caption: string } {
+  const [title, ...rest] = comment.replace(/\s+/g, ' ').split(': ')
+  const caption = rest.join(': ')
+  return { title, caption: caption.charAt(0).toUpperCase() + caption.slice(1) }
 }
 
 /**
- * The colour tokens of a CSS file, grouped under the comment that precedes them.
+ * The colour tokens of a CSS file, grouped under the heading comment that precedes them.
  * Groups with no colour tokens are left out.
  */
-export function colourGroups(css: string): { title: string; names: string[] }[] {
+export function colourGroups(css: string): ColourGroup[] {
   const allTokens = parseTokens(css)
   // Splitting on a captured comment gives [before, comment, after, comment, after, ...].
-  const parts = css.split(/\/\*\s*([\s\S]*?)\s*\*\//)
+  const parts = css.split(GROUP_HEADING)
   const groups = []
   for (let i = 1; i < parts.length; i += 2) {
     const names = [...parseTokens(parts[i + 1]).keys()].filter((name) => isColour(allTokens, name))
-    if (names.length > 0) groups.push({ title: parts[i], names })
+    if (names.length > 0) groups.push({ ...splitHeading(parts[i]), names })
   }
   return groups
 }
