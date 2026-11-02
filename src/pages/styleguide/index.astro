@@ -33,6 +33,11 @@ import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen
 import BreadcrumbSpecimens from '../../components/styleguide/BreadcrumbSpecimens.astro'
 import FolderSpecimens from '../../components/styleguide/FolderSpecimens.astro'
 import PaginationSpecimens from '../../components/styleguide/PaginationSpecimens.astro'
+import EquationSpecimens from '../../components/styleguide/EquationSpecimens.astro'
+import MathsInTextSpecimens from '../../components/styleguide/MathsInTextSpecimens.astro'
+import ChartPaletteSpecimens from '../../components/styleguide/ChartPaletteSpecimens.astro'
+import ChartSpecimens from '../../components/styleguide/ChartSpecimens.astro'
+import FigureSpecimens from '../../components/styleguide/FigureSpecimens.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -206,6 +211,39 @@ import PaginationSpecimens from '../../components/styleguide/PaginationSpecimens
     <SpecimenSection title="Widget frame">
       <WidgetFrameSpecimen slot="light" />
       <WidgetFrameSpecimen slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Equations" stacked>
+      <p>
+        Rendered by KaTeX at build time. Options for Gate 1b are labelled A, B and C. Click a reference to
+        jump to its equation.
+      </p>
+      <EquationSpecimens slot="light" theme="light" />
+      <EquationSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Maths in text" stacked>
+      <MathsInTextSpecimens slot="light" />
+      <MathsInTextSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Chart colours">
+      <ChartPaletteSpecimens slot="light" />
+      <ChartPaletteSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Charts" stacked>
+      <p>
+        Inline SVG drawn at build time and coloured by the tokens. Options for Gate 1b: A flat, as the
+        dataviz guidance has it, and B with the toon edges and shadows.
+      </p>
+      <ChartSpecimens slot="light" />
+      <ChartSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Figures and widgets" stacked>
+      <FigureSpecimens slot="light" theme="light" />
+      <FigureSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>

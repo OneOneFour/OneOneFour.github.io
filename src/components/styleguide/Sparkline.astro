@@ -1,0 +1,27 @@
+---
+/**
+ * A word-sized line chart for running text, with a dot in a series colour on its last value.
+ *
+ * @param values the points, left to right
+ * @param series which series colour the end dot takes (1 to 8)
+ * @param label the sparkline's accessible name
+ */
+import { linear, linePath } from './chart-scale'
+
+interface Props {
+  values: number[]
+  series: number
+  label: string
+}
+
+const { values, series, label } = Astro.props
+const x = linear([0, values.length - 1], [2, 62])
+const y = linear([Math.min(...values), Math.max(...values)], [14, 2])
+const points = values.map((v, i) => [x(i), y(v)] as [number, number])
+const [endX, endY] = points.at(-1)!
+---
+
+<svg class="rk-sparkline" viewBox="0 0 64 16" role="img" aria-label={label}>
+  <path class="rk-chart-line" d={linePath(points)} />
+  <circle class:list={['rk-chart-dot', `rk-chart-series-${series}`]} cx={endX} cy={endY} r="2.5" />
+</svg>

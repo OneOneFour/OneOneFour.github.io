@@ -1,0 +1,30 @@
+/* Figure: an image, chart or widget with a caption under it and an optional source line.
+
+   <figure class="rk-figure">
+     …image, chart or widget…
+     <figcaption class="rk-figure-caption">
+       <span class="rk-figure-label">Figure 1.</span> Caption text.
+       <span class="rk-figure-source">Source: …</span>
+     </figcaption>
+   </figure> */
+
+.rk-figure {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-5) 0;
+}
+
+.rk-figure-caption {
+  max-inline-size: 68ch;
+  font-size: var(--step--1);
+}
+
+.rk-figure-label {
+  font-weight: 700;
+}
+
+.rk-figure-source {
+  display: block;
+  margin-block-start: var(--space-1);
+  color: var(--muted);
+}

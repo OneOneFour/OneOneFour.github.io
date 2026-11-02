@@ -1,0 +1,20 @@
+---
+/**
+ * A display equation in the rk-ui wrapper: the markup the posts' maths pipeline will write.
+ *
+ * @param tex the TeX source, with \tag{n} for a numbered equation
+ * @param id the anchor that equation references link to, e.g. eq-lorenz
+ * @param class modifier classes, e.g. rk-equation--panel
+ */
+import { renderMaths } from './maths'
+
+interface Props {
+  tex: string
+  id?: string
+  class?: string
+}
+
+const { tex, id, class: className } = Astro.props
+---
+
+<div class:list={['rk-equation', className]} id={id} tabindex="0" set:html={renderMaths(tex, true)} />

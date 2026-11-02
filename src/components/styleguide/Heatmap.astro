@@ -1,0 +1,74 @@
+---
+/**
+ * A heatmap: a grid of cells coloured by a stepped scale, with a scale legend under it.
+ *
+ * @param rows the values, one array per row
+ * @param rowLabels a label for every row
+ * @param columnLabels the columns that get a label, by index
+ * @param colour maps a value to a CSS colour
+ * @param scale the legend: each step's colour, and the labels at its two ends
+ * @param label the chart's accessible name
+ */
+interface Props {
+  rows: number[][]
+  rowLabels: string[]
+  columnLabels: { index: number; label: string }[]
+  colour: (value: number) => string
+  scale: { steps: string[]; from: string; to: string }
+  label: string
+}
+
+const { rows, rowLabels, columnLabels, colour, scale, label } = Astro.props
+const width = 640
+const cellHeight = 16
+const plot = { left: 40, top: 4, right: width - 16 }
+const cellWidth = (plot.right - plot.left) / rows[0].length
+const height = plot.top + rows.length * cellHeight + 28
+---
+
+<div>
+  <svg class="rk-chart" width={width} height={height} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
+    {
+      rows.map((row, r) => (
+        <>
+          <text
+            class="rk-chart-tick"
+            x={plot.left - 8}
+            y={plot.top + (r + 0.5) * cellHeight}
+            text-anchor="end"
+            dominant-baseline="middle"
+          >
+            {rowLabels[r]}
+          </text>
+          {row.map((value, c) => (
+            <rect
+              class="rk-chart-cell"
+              x={(plot.left + c * cellWidth).toFixed(1)}
+              y={plot.top + r * cellHeight}
+              width={cellWidth.toFixed(1)}
+              height={cellHeight}
+              style={`fill: ${colour(value)}`}
+            />
+          ))}
+        </>
+      ))
+    }
+    {
+      columnLabels.map((column) => (
+        <text
+          class="rk-chart-tick"
+          x={plot.left + (column.index + 0.5) * cellWidth}
+          y={plot.top + rows.length * cellHeight + 20}
+          text-anchor="middle"
+        >
+          {column.label}
+        </text>
+      ))
+    }
+  </svg>
+  <p class="rk-chart-scale">
+    <span>{scale.from}</span>
+    <span class="rk-chart-scale-steps">{scale.steps.map((step) => <span style={`background: ${step}`} />)}</span>
+    <span>{scale.to}</span>
+  </p>
+</div>

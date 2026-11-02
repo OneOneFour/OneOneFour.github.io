@@ -1,0 +1,80 @@
+---
+/**
+ * A static mock of the Lorenz widget: two trajectories from almost the same start, projected
+ * onto the x–z plane, as the recent trail of each over the attractor in grey. The controls are the
+ * ones the live widget will have. Nothing moves.
+ *
+ * @param theme the panel's theme, used to keep SVG ids unique across the two panels
+ */
+import WidgetFrame from '../ui/WidgetFrame.astro'
+import Button from '../ui/Button.astro'
+import PlayIcon from 'rk-ui/icons/play.svg'
+import ResetIcon from 'rk-ui/icons/arrow-counter-clockwise.svg'
+import { linear, linePath } from './chart-scale'
+import { trajectory } from './lorenz'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const width = 640
+const height = 400
+const x = linear([-22, 22], [24, width - 24])
+const z = linear([0, 52], [height - 16, 16])
+const STARTS: [number, number, number][] = [
+  [1, 1, 1],
+  [1.001, 1, 1],
+]
+// By t = 30 the two have parted. Each trail is its last three time units; the grey attractor
+// leaves out the first five, the spiral in from the start.
+const TRAIL = 150
+const runs = STARTS.map((start) =>
+  trajectory(start, 3000).map(([px, , pz]) => [x(px), z(pz)] as [number, number]),
+)
+const attractor = linePath(runs[0].slice(250))
+const trails = runs.map((points, i) => ({
+  id: `lorenz-${theme}-${i}`,
+  d: linePath(points.slice(-TRAIL)),
+  end: points.at(-1)!,
+}))
+const sliderId = `${theme}-lorenz-offset`
+---
+
+<WidgetFrame title="Widget title">
+  <svg class="rk-chart rk-chart--toon" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Two trajectories">
+    <defs>
+      {trails.map((trail) => <path id={trail.id} d={trail.d} />)}
+    </defs>
+    <line class="rk-chart-grid" x1={x(0)} x2={x(0)} y1={z(0)} y2={z(52)} />
+    <text class="rk-chart-tick" x={width - 24} y={z(0) - 6} text-anchor="end" font-style="italic">x</text>
+    <text class="rk-chart-tick" x={x(0) + 6} y={z(52) + 4} font-style="italic">z</text>
+    <path class="rk-chart-line rk-chart-series-context" d={attractor} />
+    {
+      trails.map((trail, i) => (
+        <g class={`rk-chart-series-${i + 1}`}>
+          <use class="rk-chart-casing" href={`#${trail.id}`} />
+          <use class="rk-chart-line" href={`#${trail.id}`} />
+          <circle class="rk-chart-dot" cx={trail.end[0]} cy={trail.end[1]} r="6" />
+        </g>
+      ))
+    }
+  </svg>
+  <Fragment slot="controls">
+    <Button fill="coral"><PlayIcon class="rk-icon" />Start</Button>
+    <Button unfilled><ResetIcon class="rk-icon" />Reset</Button>
+    <div class="rk-field offset">
+      <label for={sliderId}>Offset</label>
+      <div class="rk-range-row">
+        <input class="rk-range" type="range" id={sliderId} min="-5" max="-1" step="1" value="-3" />
+        <output class="rk-output" for={sliderId}>10⁻³</output>
+      </div>
+    </div>
+  </Fragment>
+</WidgetFrame>
+
+<style>
+  .offset {
+    flex: 1 1 14rem;
+  }
+</style>

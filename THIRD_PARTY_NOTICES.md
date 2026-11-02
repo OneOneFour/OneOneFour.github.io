@@ -15,6 +15,7 @@ its own licence file next to the files it covers.
 | Xmind | Body and UI typeface | SIL Open Font License 1.1 | https://github.com/xmindltd/nevermind |
 | Roboto Slab | Heading typeface | Apache License 2.0 | https://github.com/google/fonts/tree/main/apache/robotoslab |
 | JetBrains Mono | Monospace typeface | SIL Open Font License 1.1 | https://github.com/google/fonts/tree/main/ofl/jetbrainsmono |
+| KaTeX and its maths fonts | Equations, rendered at build time | MIT | https://github.com/KaTeX/KaTeX |
 
 ## Trademarks
 

@@ -1,0 +1,16 @@
+---
+/**
+ * Inline maths, rendered at build time.
+ *
+ * @param tex the TeX source
+ */
+import { renderMaths } from './maths'
+
+interface Props {
+  tex: string
+}
+
+const { tex } = Astro.props
+---
+
+<Fragment set:html={renderMaths(tex)} />

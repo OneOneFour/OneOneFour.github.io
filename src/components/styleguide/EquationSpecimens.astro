@@ -1,0 +1,115 @@
+---
+/**
+ * Display equations: the wrapper options, equation numbers, references and the jump target, an
+ * aligned system, a long equation that scrolls, and key results.
+ *
+ * @param theme the panel's theme, used to keep anchors unique across the two panels
+ */
+import Equation from './Equation.astro'
+import Maths from './Maths.astro'
+import { renderMaths } from './maths'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const anchor = (label: string) => `eq-${label}-${theme}`
+// KaTeX writes the link, so the static focus class is added to its markup.
+const focusedReference = renderMaths(`\\href{#${anchor('lorenz')}}{(2)}`).replace('<a ', '<a class="is-focus" ')
+
+const FLOW = String.raw`\frac{\mathrm{d}\mathbf{x}}{\mathrm{d}t} = \mathbf{f}(\mathbf{x};\, \sigma, \rho, \beta)`
+const LORENZ_ROWS = String.raw`
+  \dot{x} &= \sigma (y - x) \tag{2} \\
+  \dot{y} &= x (\rho - z) - y \tag{3} \\
+  \dot{z} &= x y - \beta z \tag{4}`
+const LORENZ_SYSTEM = String.raw`\begin{aligned}
+  \dot{x} &= \sigma (y - x) \\
+  \dot{y} &= x (\rho - z) - y \\
+  \dot{z} &= x y - \beta z
+\end{aligned} \tag{2}`
+const MOMENTUM = String.raw`\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y}
+  + w \frac{\partial u}{\partial z} - f v = -\frac{1}{\rho} \frac{\partial p}{\partial x}
+  + \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2} \right) \tag{5}`
+const LYAPUNOV = String.raw`\lambda = \lim_{t \to \infty} \frac{1}{t} \ln \frac{\lVert \delta \mathbf{x}(t) \rVert}{\lVert \delta \mathbf{x}(0) \rVert}`
+
+const WRAPPERS = [
+  { label: 'A: bare (default)', class: undefined },
+  { label: 'B: slate panel (.rk-equation--panel)', class: 'rk-equation--panel' },
+  { label: 'C: left rule (.rk-equation--rule)', class: 'rk-equation--rule' },
+]
+---
+
+<SpecimenRow title="Display equations">
+  {
+    WRAPPERS.map((wrapper) => (
+      <Specimen label={wrapper.label} wide>
+        <Equation tex={`${FLOW} \\tag{1}`} class={wrapper.class} />
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Equation numbers">
+  <Specimen label="A: plain (default)" wide>
+    <Equation tex={`\\begin{align*}${LORENZ_ROWS}\\end{align*}`} />
+  </Specimen>
+  <Specimen label="B: pill (.rk-tag-pill on the equation or an ancestor)" wide>
+    <Equation tex={`\\begin{align*}${LORENZ_ROWS}\\end{align*}`} class="rk-tag-pill" />
+  </Specimen>
+  <Specimen label="one number for the whole system (aligned)" wide>
+    <Equation tex={LORENZ_SYSTEM} />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="References and the jump target">
+  <Specimen label="A: the reference is KaTeX's link (click to jump)" wide>
+    <p>
+      Pack my box with <Maths tex={`\\href{#${anchor('flow')}}{(1)}`} /> five dozen liquor jugs, and
+      <Fragment set:html={focusedReference} /> once more.
+    </p>
+  </Specimen>
+  <Specimen label="B: the reference is a plain link in the body font" wide>
+    <p>
+      Pack my box with <a href={`#${anchor('flow')}`}>(1)</a> five dozen liquor jugs, and
+      <a href={`#${anchor('lorenz')}`} class="is-focus">(2)</a> once more.
+    </p>
+  </Specimen>
+  <Specimen label="jump targets (live)" wide>
+    <Equation tex={`${FLOW} \\tag{1}`} id={anchor('flow')} />
+    <Equation tex={LORENZ_SYSTEM} id={anchor('lorenz')} />
+  </Specimen>
+  <Specimen label="targeted (static copy of :target)" wide>
+    <Equation tex={`${FLOW} \\tag{1}`} class="is-target" />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Long equations scroll">
+  <Specimen label="phone width: scroll, or tab in and use the arrow keys" wide>
+    <div class="phone">
+      <Equation tex={MOMENTUM} />
+    </div>
+  </Specimen>
+  <Specimen label="focused" wide>
+    <div class="phone">
+      <Equation tex={MOMENTUM} class="is-focus" />
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Key results">
+  <Specimen label={String.raw`A: \boxed{…}`} wide>
+    <Equation tex={`\\boxed{${LYAPUNOV}} \\tag{6}`} />
+  </Specimen>
+  <Specimen label="B: raised dashed panel (.rk-equation--key)" wide>
+    <Equation tex={`${LYAPUNOV} \\tag{6}`} class="rk-equation--key" />
+  </Specimen>
+</SpecimenRow>
+
+<style>
+  .phone {
+    max-inline-size: 20rem;
+  }
+</style>
