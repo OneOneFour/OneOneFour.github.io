@@ -50,3 +50,9 @@
 .rk-shadow-d :is(.rk-button--navy, .rk-button--section) {
   --extrusion: initial;
 }
+
+/* The inside shadow for Gate 1b: the default is cream (--line-unfilled) in dark mode;
+   .rk-inset-dark tries near-black --line instead. Light mode is the same in both. */
+.rk-inset-dark {
+  --shadow-inset: inset calc(var(--shadow-dx) * 2px) calc(var(--shadow-dy) * 2px) 0 var(--line);
+}
