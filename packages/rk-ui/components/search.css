@@ -67,7 +67,7 @@
 /* Search B */
 
 .rk-search-bar {
-  --press-overshoot: 2px;
+  --press-overshoot: calc(var(--shadow-depth) * 2px);
 
   display: flex;
   inline-size: 100%;

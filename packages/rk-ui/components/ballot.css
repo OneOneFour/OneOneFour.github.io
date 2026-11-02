@@ -189,7 +189,7 @@
    depth, then settles. The keyframes move it, so its translate isn't transitioned as well. CSS
    can't tell a page load from a click, so a row checked on load plays it once. */
 .rk-ballot .rk-tile:has(:checked:enabled) {
-  --key-overshoot: 2px;
+  --key-overshoot: calc(var(--shadow-depth) * 2px);
 
   transition-property: box-shadow;
   animation: rk-deck-key-in var(--duration-spring) ease-out;
