@@ -57,3 +57,13 @@
   background: var(--selected);
   color: var(--on-selected);
 }
+
+/* Forced colours drop the checked fill, so the checked option uses system colours. Without
+   forced-color-adjust, the browser puts a Canvas backplate behind the HighlightText label. */
+@media (forced-colors: active) {
+  .rk-segmented label:has(:checked) {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

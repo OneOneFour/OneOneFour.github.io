@@ -52,3 +52,20 @@
 .rk-radio[aria-invalid='true'] {
   border-color: var(--coral-deep);
 }
+
+/* Forced colours drop the checked fill, so the checked box and its mark use system colours. */
+@media (forced-colors: active) {
+  .rk-checkbox:checked,
+  .rk-radio:checked {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  .rk-checkbox:checked::before {
+    border-color: HighlightText;
+  }
+
+  .rk-radio:checked::before {
+    background: HighlightText;
+  }
+}

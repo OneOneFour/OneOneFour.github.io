@@ -1,5 +1,5 @@
 ---
-/** What base.css styles: headings, body text, links in each state, code and selection. */
+/** What base.css styles: headings, body text, links in each state, code, highlights and selection. */
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 ---
@@ -24,13 +24,16 @@ import SpecimenRow from './SpecimenRow.astro'
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title="Code and selection">
+<SpecimenRow title="Code, highlights and selection">
   <Specimen label="inline code" wide>
     <p>Call <code>step(state, dt)</code> once per frame; select this text to see the selection colour.</p>
   </Specimen>
   <Specimen label="pre" wide>
     <pre><code>{`def step(x, dt):
     return x + dt * f(x)  # σ = 10, β ≈ 8/3`}</code></pre>
+  </Specimen>
+  <Specimen label="mark" wide>
+    <p>The quick brown fox <mark>jumps over the lazy dog</mark> and keeps on running.</p>
   </Specimen>
 </SpecimenRow>
 

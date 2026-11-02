@@ -41,3 +41,19 @@
   background: var(--on-selected);
   translate: var(--thumb-travel) 0;
 }
+
+/* Forced colours drop the fills, so the thumb and the on track use system colours. */
+@media (forced-colors: active) {
+  .rk-switch::before {
+    background: CanvasText;
+  }
+
+  .rk-switch:checked {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  .rk-switch:checked::before {
+    background: HighlightText;
+  }
+}

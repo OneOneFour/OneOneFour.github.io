@@ -1,4 +1,5 @@
-/* A small reset and the page defaults: body text, headings, links, code and selection. */
+/* A small reset and the page defaults: body text, headings, links, code, highlights and
+   selection. */
 
 *,
 *::before,
@@ -66,8 +67,9 @@ a:hover {
 }
 
 /* Marker-pen focus: a link has no outline for the band to hug, so the band goes behind the text.
-   The transparent outline still shows in forced-colours mode. */
-a:focus-visible {
+   The transparent outline still shows in forced-colours mode. Button links get the focus band
+   instead. */
+a:where(:not(.rk-button)):focus-visible {
   outline: var(--outline-width) solid transparent;
   background: var(--focus);
   color: var(--ink);
@@ -86,6 +88,11 @@ pre {
   padding: var(--space-4);
   border-radius: var(--radius);
   background: var(--lilac-tint);
+}
+
+mark {
+  background: var(--apricot);
+  color: var(--on-fill);
 }
 
 ::selection {

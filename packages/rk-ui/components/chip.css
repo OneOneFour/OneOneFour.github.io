@@ -47,3 +47,14 @@
   background: var(--section);
   color: var(--on-section);
 }
+
+/* Forced colours drop the checked fill, so the checked chip uses system colours. Without
+   forced-color-adjust, the browser puts a Canvas backplate behind the HighlightText label. */
+@media (forced-colors: active) {
+  .rk-chip:has(:checked) {
+    forced-color-adjust: none;
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

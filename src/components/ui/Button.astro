@@ -1,7 +1,7 @@
 ---
 /**
  * An rk-ui button, or a link styled as one when `href` is given. Put an icon before the label in
- * the slot. Other attributes (type, disabled, aria-*) pass through.
+ * the slot. Other attributes pass through: <a> ones for a link, <button> ones otherwise.
  *
  * @param fill the fill colour; yellow when left out
  * @param unfilled the outline-only secondary style
@@ -12,14 +12,17 @@ import type { HTMLAttributes } from 'astro/types'
 
 type Fill = 'navy' | 'teal' | 'green' | 'coral' | 'grape' | 'tangerine' | 'section'
 
-interface Props extends HTMLAttributes<'button'> {
+interface Style {
   fill?: Fill
   unfilled?: boolean
   small?: boolean
-  href?: string
 }
 
-const { fill, unfilled = false, small = false, href, class: className, ...attrs } = Astro.props
+type LinkProps = Style & HTMLAttributes<'a'> & { href: string }
+type ButtonProps = Style & HTMLAttributes<'button'> & { href?: never }
+type Props = LinkProps | ButtonProps
+
+const { fill, unfilled = false, small = false, class: className, ...attrs } = Astro.props
 const classes = [
   'rk-button',
   fill && `rk-button--${fill}`,
@@ -29,13 +32,13 @@ const classes = [
 ---
 
 {
-  href ? (
-    <a href={href} class:list={classes} {...attrs}>
-      <slot />
-    </a>
-  ) : (
+  attrs.href === undefined ? (
     <button type="button" class:list={classes} {...attrs}>
       <slot />
     </button>
+  ) : (
+    <a class:list={classes} {...attrs}>
+      <slot />
+    </a>
   )
 }

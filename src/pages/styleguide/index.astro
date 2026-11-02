@@ -1,7 +1,7 @@
 ---
-import 'rk-ui/rk-ui.css'
-import '../../components/styleguide/states.css'
 import SpecimenLayout from '../../layouts/SpecimenLayout.astro'
+// After SpecimenLayout, which loads rk-ui.css, so the mirrored states win over the real ones.
+import '../../components/styleguide/states.css'
 import SpecimenSection from '../../components/styleguide/SpecimenSection.astro'
 import ColourTokens from '../../components/styleguide/ColourTokens.astro'
 import TypeScale from '../../components/styleguide/TypeScale.astro'

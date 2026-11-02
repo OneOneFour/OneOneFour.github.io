@@ -39,9 +39,10 @@
     calc(var(--button-padding-inline) - var(--press-offset));
 }
 
-/* Focus band. Chips, cards and segmented options show it for the input or link inside them. */
+/* Focus band. Chips, cards and segmented groups show it for the input or link inside them. A
+   segmented group's options have no outline to hug, so the band goes on the group's frame. */
 :is(.rk-button, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select):focus-visible,
-:is(.rk-chip, .rk-card--link, .rk-segmented label):has(:focus-visible) {
+:is(.rk-chip, .rk-card--link, .rk-segmented):has(:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-offset);
   box-shadow: none;
