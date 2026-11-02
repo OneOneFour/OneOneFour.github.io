@@ -180,3 +180,15 @@ a:where(:not(.rk-button)).is-focus {
   visibility: visible;
   translate: -50% 0;
 }
+
+/* Maths */
+
+.rk-equation.is-focus {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--outline-width);
+  box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);
+}
+
+.rk-equation.is-target {
+  background-color: var(--apricot-tint);
+}

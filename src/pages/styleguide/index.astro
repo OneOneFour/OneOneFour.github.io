@@ -29,6 +29,8 @@ import BadgeSpecimens from '../../components/styleguide/BadgeSpecimens.astro'
 import ProgressSpecimens from '../../components/styleguide/ProgressSpecimens.astro'
 import TooltipSpecimens from '../../components/styleguide/TooltipSpecimens.astro'
 import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen.astro'
+import EquationSpecimens from '../../components/styleguide/EquationSpecimens.astro'
+import MathsInTextSpecimens from '../../components/styleguide/MathsInTextSpecimens.astro'
 ---
 
 <SpecimenLayout title="Styleguide">
@@ -174,6 +176,20 @@ import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen
     <SpecimenSection title="Widget frame">
       <WidgetFrameSpecimen slot="light" />
       <WidgetFrameSpecimen slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Equations" stacked>
+      <p>
+        Rendered by KaTeX at build time. Options for Gate 1b are labelled A, B and C. Click a reference to
+        jump to its equation.
+      </p>
+      <EquationSpecimens slot="light" theme="light" />
+      <EquationSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Maths in text" stacked>
+      <MathsInTextSpecimens slot="light" />
+      <MathsInTextSpecimens slot="dark" />
     </SpecimenSection>
   </main>
 </SpecimenLayout>

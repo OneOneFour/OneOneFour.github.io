@@ -1,0 +1,85 @@
+---
+/**
+ * Maths inside text: inline maths at candidate sizes beside the body font, colour-coded terms,
+ * and maths in a callout and a sidenote.
+ */
+import Callout from '../ui/Callout.astro'
+import Equation from './Equation.astro'
+import Maths from './Maths.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import { TERM_HUES } from './maths'
+
+const SCALES = [
+  { label: '1em', value: '1em' },
+  { label: '1.1em', value: '1.1em' },
+  { label: '1.15em: proposed, matches the x-height', value: '1.15em' },
+  { label: "1.21em: KaTeX's default", value: '1.21em' },
+]
+const ENERGY = String.raw`\frac{\partial E}{\partial t} = \teal{-\nabla \cdot \mathbf{F}} + \coral{Q} - \navy{\varepsilon}`
+const ALL_HUES = TERM_HUES.map((hue, i) => `\\${hue}{x_${i + 1}}`).join(' + ')
+---
+
+<SpecimenRow title="Inline maths size (--maths-scale)">
+  {
+    SCALES.map((scale) => (
+      <Specimen label={scale.label} wide>
+        <p style={`--maths-scale: ${scale.value}`}>
+          Xmind σ, ρ, β, x beside KaTeX <Maths tex={String.raw`\sigma, \rho, \beta, x`} />. With <Maths tex={String.raw`\sigma = 10`} />,
+          <Maths tex={String.raw`\rho = 28`} /> and <Maths tex={String.raw`\beta = 8/3`} />, each <Maths tex="x_i(t)" /> stays bounded, and so does
+          <Maths tex={String.raw`\tfrac{1}{2}\lVert \mathbf{x} \rVert^2`} />.
+        </p>
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title={String.raw`Colour-coded terms (\htmlClass{rk-maths-…}, or macros such as \teal{…})`}>
+  <Specimen label="A: coloured text (the hues' text variants)" wide>
+    <Equation tex={ENERGY} />
+    <p>Every hue: <Maths tex={ALL_HUES} /></p>
+  </Specimen>
+  <Specimen label="B: tinted background (.rk-maths-tint)" wide>
+    <div class="rk-maths-tint">
+      <Equation tex={ENERGY} />
+      <p>Every hue: <Maths tex={ALL_HUES} /></p>
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="In a callout and a sidenote">
+  <Specimen label="callout" wide>
+    <Callout title="Title">
+      <p>Body text with <Maths tex={String.raw`\dot{x} = \sigma (y - x)`} /> inline. Pack my box with five dozen jugs.</p>
+      <Equation tex={String.raw`\rho_c = \sigma \frac{\sigma + \beta + 3}{\sigma - \beta - 1}`} />
+    </Callout>
+  </Specimen>
+  <Specimen label="sidenote (a mock: the sidenote itself comes with the post layout)" wide>
+    <div class="sidenote-mock">
+      <p>
+        Body text with a note.<sup>1</sup> Sphinx of black quartz, judge my vow. Pack my box with five dozen liquor
+        jugs.
+      </p>
+      <aside>
+        <sup>1</sup> Small text with <Maths tex={String.raw`\lambda_1 \approx 0.906`} /> and <Maths tex={String.raw`\tfrac{\mathrm{d}V}{\mathrm{d}t} = -(\sigma + 1 + \beta) V`} />.
+      </aside>
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<style>
+  .sidenote-mock {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-4);
+  }
+
+  .sidenote-mock > * {
+    margin: 0;
+  }
+
+  aside {
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+</style>
