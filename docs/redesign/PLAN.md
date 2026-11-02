@@ -344,6 +344,10 @@ settles the type scale, the monospace face and the weights actually used.
   on press it gets an **inset** shadow and doesn't move, so it reads as pushed into the page.
 - **Focus**: a visible 3px `--focus` ring offset from the outline, never
   removed.
+  - *(Rob, Gate 1a)*: the focus style is the **highlighter**, a 4px yellow band hugging the
+    ink outline, with the hard shadow turned off while focused. Its 3:1 edge is against the ink
+    outline (yellow on cream alone is only 1.56:1). So elements with no outline, such as text
+    links, use a marker-pen version instead: a yellow background behind the ink text.
 
 ### 5.4 Component inventory
 
