@@ -41,10 +41,24 @@
   padding-inline: 2.5em;
 }
 
-/* The equation a reference jumped to flashes a tint, then fades back. The tint is on the inner
-   element because the wrapper's animation shows the scroll region's dots. */
-.rk-equation:is(:target, :has(:target)) > .katex-display {
-  animation: rk-equation-target 2s ease-in;
+/* The equation a reference jumped to flashes a tint, then fades back. The tint fills the whole
+   wrapper, dots' gutters included, so it lines up with the focus band. Where the wrapper already
+   runs the scroll region's dots animation (overflow.css), the flash is added to that list.
+   Longhands only, as in overflow.css. */
+.rk-equation:is(:target, :has(:target)) {
+  animation-name: rk-equation-target;
+  animation-duration: 2s;
+  animation-timing-function: ease-in;
+}
+
+@supports (animation-timeline: scroll()) {
+  .rk-equation:is(:target, :has(:target)) {
+    animation-name: rk-scroll-more, rk-equation-target;
+    animation-duration: auto, 2s;
+    animation-timing-function: linear, ease-in;
+    animation-fill-mode: both, none;
+    animation-timeline: scroll(self inline), auto;
+  }
 }
 
 @keyframes rk-equation-target {
@@ -55,8 +69,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rk-equation:is(:target, :has(:target)) > .katex-display {
-    animation: none;
+  .rk-equation:is(:target, :has(:target)) {
     background-color: var(--apricot-tint);
   }
 }

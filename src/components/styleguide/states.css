@@ -227,7 +227,7 @@ a:where(:not(.rk-button, .rk-chip, .rk-tile, .rk-folder-tab, .rk-eqref)).is-focu
   box-shadow: 0 0 0 var(--outline-width) var(--line-unfilled);
 }
 
-.rk-equation.is-target > .katex-display {
+.rk-equation.is-target {
   background-color: var(--apricot-tint);
 }
 
