@@ -1,33 +1,35 @@
 ---
 /**
- * A colour A or B swatch group for the styleguide, with teal checked.
+ * A colour picker for the styleguide: the palette as colour tiles, optionally ending with the
+ * custom colour tile.
  *
  * @param name the radios' name, unique on the page
  * @param flair a flair modifier class for the group, if any
- * @param hover the hue shown hovered
- * @param focus the hue shown focused
+ * @param custom end with the custom colour tile
+ * @param checked the checked tile's value: a hue, or 'custom'
+ * @param states static state classes by value, e.g. { navy: 'is-hover', custom: 'is-focus' }
  * @param disabled disable the whole group
- * @param custom add colour B's native colour input as a last swatch
- * @param focusCustom show that custom swatch focused
  * @param paletteLegend show the legend, with a palette icon, instead of hiding it
  */
 import PaletteIcon from 'rk-ui/icons/palette.svg'
+import PaintBrushIcon from 'rk-ui/icons/paint-brush.svg'
 
 interface Props {
   name: string
   flair?: string
-  hover?: string
-  focus?: string
-  disabled?: boolean
   custom?: boolean
-  focusCustom?: boolean
+  checked?: string
+  states?: Partial<Record<string, string>>
+  disabled?: boolean
   paletteLegend?: boolean
 }
 
-const { name, flair, hover, focus, disabled, custom, focusCustom, paletteLegend } = Astro.props
+const { name, flair, custom, checked = 'teal', states = {}, disabled, paletteLegend } = Astro.props
 const HUES = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky', 'grape', 'tangerine', 'lilac', 'apricot']
 // Hues that carry their own text colour; the rest take --on-fill.
 const HUES_WITH_OWN_TEXT = ['navy', 'coral', 'grape']
+// Only a group with a custom colour tile needs the script.
+const Wrapper = custom ? 'rk-colour-picker' : Fragment
 
 function swatchStyle(hue: string) {
   const onColour = HUES_WITH_OWN_TEXT.includes(hue) ? `--on-${hue}` : '--on-fill'
@@ -35,31 +37,38 @@ function swatchStyle(hue: string) {
 }
 ---
 
-<fieldset class:list={['rk-swatches', flair]} disabled={disabled}>
-  {
-    paletteLegend ? (
-      <legend>
-        <PaletteIcon class="rk-icon rk-icon--small" aria-hidden="true" />
-        Colour
-      </legend>
-    ) : (
-      <legend class="rk-visually-hidden">Colour</legend>
-    )
-  }
-  {
-    HUES.map((hue) => (
-      <label class:list={['rk-swatch', { 'is-hover': hue === hover, 'is-focus': hue === focus }]} style={swatchStyle(hue)}>
-        <input type="radio" name={name} value={hue} checked={hue === 'teal'} />
-        <span class="rk-visually-hidden">{hue}</span>
-      </label>
-    ))
-  }
-  {
-    custom && (
-      <label class="rk-check">
-        <input class:list={['rk-swatch', { 'is-focus': focusCustom }]} type="color" />
-        Custom
-      </label>
-    )
-  }
-</fieldset>
+<Wrapper>
+  <fieldset class:list={['rk-tiles', flair]} disabled={disabled}>
+    {
+      paletteLegend ? (
+        <legend>
+          <PaletteIcon class="rk-icon rk-icon--small" aria-hidden="true" />
+          Colour
+        </legend>
+      ) : (
+        <legend class="rk-visually-hidden">Colour</legend>
+      )
+    }
+    {
+      HUES.map((hue) => (
+        <label class:list={['rk-tile rk-tile--colour', states[hue]]} style={swatchStyle(hue)}>
+          <input type="radio" name={name} value={hue} checked={hue === checked} />
+          <span class="rk-visually-hidden">{hue}</span>
+        </label>
+      ))
+    }
+    {
+      custom && (
+        <label class:list={['rk-tile rk-tile--custom-colour', states.custom]}>
+          <input type="radio" name={name} value="custom" checked={checked === 'custom'} aria-label="Custom colour" />
+          <input type="color" aria-label="Choose custom colour" />
+          <PaintBrushIcon aria-hidden="true" />
+        </label>
+      )
+    }
+  </fieldset>
+</Wrapper>
+
+<script>
+  import 'rk-ui/colour-picker.js'
+</script>

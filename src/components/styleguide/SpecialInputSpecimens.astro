@@ -1,17 +1,18 @@
 ---
 /**
- * The special input types (file, date and time, search, number, colour, range with ticks and the
- * plain text-like types), each in its states. Lettered variants are options for Gate 1b.
+ * The special input types (file, date and time, search, number, a colour input on its own, range
+ * with ticks and the plain text-like types), each in its states. Lettered variants are options for
+ * Gate 1b.
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import SwatchPicker from './SwatchPicker.astro'
 import UploadIcon from 'rk-ui/icons/upload-simple.svg'
 import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
 import CaretUpIcon from 'rk-ui/icons/caret-up.svg'
 import CaretDownIcon from 'rk-ui/icons/caret-down.svg'
+import PaintBrushIcon from 'rk-ui/icons/paint-brush.svg'
 
 interface Props {
   theme: 'light' | 'dark'
@@ -48,27 +49,12 @@ const NUMBER_STATES = [
   { label: 'disabled', input: '', buttons: '', disabled: true },
   { label: 'error', input: '', buttons: '', invalid: true },
 ]
-const SWATCH_GROUPS = [
-  { variant: 'A', label: 'rest (teal checked)' },
-  { variant: 'A', label: 'hover on navy, focus on teal', hover: 'navy', focus: 'teal' },
-  { variant: 'A', label: 'disabled', disabled: true },
-  { variant: 'B', label: 'rest (the last swatch opens the browser picker)', custom: true },
-  { variant: 'B', label: 'focused custom swatch', custom: true, focusCustom: true },
-]
-const FLAIRS = [
-  { label: 'flair A: paint brush', class: 'rk-swatches--brush' },
-  { label: 'flair B: paint drops', class: 'rk-swatches--drops' },
-  { label: 'flair C: palette and stroke', class: 'rk-swatches--stroke', paletteLegend: true },
-]
-const FLAIR_GROUPS = [
-  { label: 'colour A, hover on navy', hover: 'navy' },
-  { label: 'colour B', custom: true },
-]
 const COLOUR_STATES = [
   { label: 'rest', class: '' },
   { label: 'hover', class: 'is-hover' },
   { label: 'pressed', class: 'is-active' },
   { label: 'focused', class: 'is-focus' },
+  { label: 'disabled', class: '', disabled: true },
 ]
 const TICKS = [0, 25, 50, 75, 100]
 const TICK_STATES = [
@@ -255,52 +241,17 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   }
 </SpecimenRow>
 
-<SpecimenRow title="Colour A and B: token swatches (flair none)">
-  {
-    SWATCH_GROUPS.map((group, index) => (
-      <Specimen label={`colour ${group.variant}: ${group.label}`}>
-        <SwatchPicker
-          name={`${theme}-swatch-${index}`}
-          hover={group.hover}
-          focus={group.focus}
-          disabled={group.disabled}
-          custom={group.custom}
-          focusCustom={group.focusCustom}
-        />
-      </Specimen>
-    ))
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Colour A and B: flair">
-  {
-    FLAIRS.flatMap((flair, f) =>
-      FLAIR_GROUPS.map((group, g) => (
-        <Specimen label={`${flair.label}: ${group.label}`}>
-          <SwatchPicker
-            name={`${theme}-flair-${f}-${g}`}
-            flair={flair.class}
-            paletteLegend={flair.paletteLegend}
-            hover={group.hover}
-            custom={group.custom}
-          />
-        </Specimen>
-      ))
-    )
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Colour C: native input">
+<SpecimenRow title="Colour: native input on its own, with no palette">
   {
     COLOUR_STATES.map((state) => (
       <Specimen label={state.label}>
-        <input class:list={['rk-input', state.class]} type="color" aria-label="Specimen" />
+        <span class:list={['rk-colour-input', state.class]}>
+          <input type="color" aria-label="Specimen" disabled={state.disabled} />
+          <PaintBrushIcon aria-hidden="true" />
+        </span>
       </Specimen>
     ))
   }
-  <Specimen label="disabled">
-    <input class="rk-input" type="color" aria-label="Specimen" disabled />
-  </Specimen>
 </SpecimenRow>
 
 <SpecimenRow title="Ticks A: native">

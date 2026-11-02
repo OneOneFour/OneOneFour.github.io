@@ -1,9 +1,9 @@
 /* The states every interactive component shares: the pop, the flush press for unfilled buttons,
-   the pushed-in deck key, the focus band and disabled. Loaded after the components, so these win over their rest styles.
+   the pushed-in deck key and tile, the focus band and disabled. Loaded after the components, so these win over their rest styles.
    The range slider's thumb can't join these lists (pseudo-elements), so range.css repeats them. */
 
 /* Pop: hover lifts the element and grows its shadow; press sinks it into the shadow. */
-:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch) {
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input) {
   box-shadow: var(--shadow);
   transition:
     translate var(--duration-fast) ease,
@@ -11,14 +11,14 @@
 }
 
 @media (hover: hover) {
-  :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch):hover,
+  :is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input):hover,
   .rk-segmented--deck label:hover {
     box-shadow: var(--shadow-hover);
     translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
   }
 }
 
-:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch):active,
+:is(.rk-button, .rk-chip, .rk-card--link, .rk-checkbox, .rk-radio, .rk-switch, .rk-tile, .rk-colour-input):active,
 .rk-segmented--deck label:active {
   box-shadow: var(--shadow-pressed);
   translate: var(--press-offset) var(--press-offset);
@@ -48,10 +48,17 @@
   translate: var(--shadow-offset) var(--shadow-offset);
 }
 
-/* Focus band. Chips, cards and segmented groups (deck keys included) show it for the input or
-   link inside them; a segmented group shows it on the group, never on one option. */
+/* A checked tile is pushed in the same way, with an inset shadow instead. */
+.rk-tile:has(:checked) {
+  box-shadow: var(--shadow-inset);
+  translate: var(--shadow-offset) var(--shadow-offset);
+}
+
+/* Focus band. Chips, cards, tiles, colour input frames and segmented groups (deck keys included)
+   show it for the input or link inside them; a segmented group shows it on the group, never on
+   one option. */
 :is(.rk-button, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select):focus-visible,
-:is(.rk-chip, .rk-card--link, .rk-segmented):has(:focus-visible) {
+:is(.rk-chip, .rk-card--link, .rk-segmented, .rk-tile, .rk-colour-input):has(:focus-visible) {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-offset);
   box-shadow: none;
@@ -64,7 +71,7 @@
 
 /* Disabled: dimmed and flat, with no pop. */
 :is(.rk-button, .rk-checkbox, .rk-radio, .rk-switch, .rk-input, .rk-select, .rk-range):disabled,
-:is(.rk-chip, .rk-segmented label):has(:disabled) {
+:is(.rk-chip, .rk-segmented label, .rk-tile, .rk-colour-input):has(:disabled) {
   opacity: 0.45;
   cursor: not-allowed;
   box-shadow: none;

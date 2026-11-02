@@ -1,167 +1,120 @@
-/* Colour pickers, in three variants for Gate 1b. Swatches keep their real colours in forced
-   colours (forced-color-adjust), since the colour is the content.
+/* Colour pickers. Colours come from tokens through --swatch.
 
-   Colour A: a radio group of round swatches that pop. Each swatch takes its colour from a token
-   through --swatch. The checked one is pushed into the page.
-   <fieldset class="rk-swatches">
+   With a palette: a tile group (tiles.css) of colour tiles, each filled from --swatch and named by
+   hidden text. The checked one is pushed into the page and keeps its colour.
+   <fieldset class="rk-tiles">
      <legend class="rk-visually-hidden">Colour</legend>
-     <label class="rk-swatch" style="--swatch: var(--teal)">
+     <label class="rk-tile rk-tile--colour" style="--swatch: var(--teal)">
        <input type="radio" name="colour" value="teal">
        <span class="rk-visually-hidden">Teal</span>
      </label>
      …
    </fieldset>
 
-   Colour B: colour A plus a native colour input as a last, matching swatch.
-     <label class="rk-check"><input class="rk-swatch" type="color"> Custom</label>
+   To allow any colour as well, end the group with a custom colour tile: a radio, a native colour
+   input and a paint brush icon. Wrap the group in <rk-colour-picker> (colour-picker.js) so that
+   picking a colour also checks the tile's radio. Without the script, the radio is checked only
+   from the keyboard or by clicking the tile's outline.
+   <rk-colour-picker>
+     <fieldset class="rk-tiles">
+       …
+       <label class="rk-tile rk-tile--custom-colour">
+         <input type="radio" name="colour" value="custom" aria-label="Custom colour">
+         <input type="color" aria-label="Choose custom colour">
+         <svg aria-hidden="true">…paint-brush…</svg>
+       </label>
+     </fieldset>
+   </rk-colour-picker>
 
-   Colour C: the native colour input on its own, as a swatch button that pops.
-   <input class="rk-input" type="color" aria-label="Colour"> */
+   Without a palette: the native colour input on its own, in a frame that pops, with the same
+   paint brush.
+   <span class="rk-colour-input">
+     <input type="color" aria-label="Colour">
+     <svg aria-hidden="true">…paint-brush…</svg>
+   </span> */
 
-/* Colour A */
-
-.rk-swatches {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-3);
-  min-inline-size: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.rk-swatch {
-  position: relative;
-  flex: none;
-  inline-size: 2.25rem;
-  block-size: 2.25rem;
-  padding: 0;
-  border: var(--outline-width) solid var(--line);
-  border-radius: 50%;
-  background: var(--swatch);
-  box-shadow: var(--shadow);
-  cursor: pointer;
+/* Colour tiles and the standalone frame are filled, so they take the dark outline in both themes.
+   They keep their colours in forced colours, since the colour is the content. */
+:is(.rk-tile--colour, .rk-tile--custom-colour, .rk-colour-input) {
+  border-color: var(--line);
   forced-color-adjust: none;
-  transition:
-    translate var(--duration-fast) ease,
-    box-shadow var(--duration-fast) ease;
 }
 
-.rk-swatch input[type='radio'] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
+/* The standalone frame pops like a button (interactive.css). */
+.rk-colour-input {
+  --picker-radius: calc(var(--radius) - var(--outline-width));
 
-@media (hover: hover) {
-  .rk-swatch:hover {
-    box-shadow: var(--shadow-hover);
-    translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
-  }
-}
-
-.rk-swatch:active {
-  box-shadow: var(--shadow-pressed);
-  translate: var(--press-offset) var(--press-offset);
-}
-
-/* Checked: pushed all the way into its shadow, with an inset shadow instead. */
-.rk-swatch:has(:checked) {
-  box-shadow: var(--shadow-inset);
-  translate: calc(2 * var(--press-offset)) calc(2 * var(--press-offset));
-}
-
-.rk-swatch:is(:focus-visible, :has(:focus-visible)) {
-  outline: var(--focus-width) solid var(--focus);
-  outline-offset: var(--focus-offset);
-  box-shadow: none;
-}
-
-.rk-swatch:is(:disabled, :has(:disabled)) {
-  opacity: 0.45;
-  cursor: not-allowed;
-  box-shadow: none;
-  translate: none;
-}
-
-@media (forced-colors: active) {
-  .rk-swatch:has(:checked) {
-    border-color: Highlight;
-  }
-}
-
-/* Colour B */
-
-input.rk-swatch[type='color'] {
-  appearance: none;
-}
-
-input.rk-swatch[type='color']::-webkit-color-swatch-wrapper {
-  padding: 0;
-}
-
-input.rk-swatch[type='color']::-webkit-color-swatch {
-  border: 0;
-  border-radius: 50%;
-}
-
-input.rk-swatch[type='color']::-moz-color-swatch {
-  border: 0;
-  border-radius: 50%;
-}
-
-/* Colour C */
-
-.rk-input[type='color'] {
-  appearance: none;
+  position: relative;
+  display: inline-block;
   inline-size: 3.5rem;
   block-size: 2.5rem;
-  padding: 0;
-  border-color: var(--line);
-  background: transparent;
-  box-shadow: var(--shadow);
+  border-width: var(--outline-width);
+  border-style: solid;
+  border-radius: var(--radius);
   cursor: pointer;
-  forced-color-adjust: none;
-  transition:
-    translate var(--duration-fast) ease,
-    box-shadow var(--duration-fast) ease;
 }
 
-/* :where() keeps these as specific as the shared focus and disabled states, which come later. */
-@media (hover: hover) {
-  .rk-input:where([type='color']):hover {
-    box-shadow: var(--shadow-hover);
-    translate: calc(-1 * var(--lift-offset)) calc(-1 * var(--lift-offset));
-  }
+.rk-tile--custom-colour {
+  --picker-radius: 50%;
 }
 
-.rk-input:where([type='color']):active {
-  box-shadow: var(--shadow-pressed);
-  translate: var(--press-offset) var(--press-offset);
+/* The native input fills the custom colour tile or the standalone frame, which shows the focus
+   band for it. --picker-radius rounds the input and the browser's swatch inside it to match. */
+
+:is(.rk-tile--custom-colour, .rk-colour-input) > input[type='color'] {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--picker-radius);
+  outline: none;
+  background: none;
+  cursor: inherit;
 }
 
-.rk-input[type='color']::-webkit-color-swatch-wrapper {
+:is(.rk-tile--custom-colour, .rk-colour-input) > input[type='color']::-webkit-color-swatch-wrapper {
   padding: 0;
 }
 
-.rk-input[type='color']::-webkit-color-swatch {
+:is(.rk-tile--custom-colour, .rk-colour-input) > input[type='color']::-webkit-color-swatch {
   border: 0;
-  border-radius: calc(var(--radius) - var(--outline-width));
+  border-radius: var(--picker-radius);
 }
 
-.rk-input[type='color']::-moz-color-swatch {
+:is(.rk-tile--custom-colour, .rk-colour-input) > input[type='color']::-moz-color-swatch {
   border: 0;
-  border-radius: calc(var(--radius) - var(--outline-width));
+  border-radius: var(--picker-radius);
 }
 
-/* Flair options for the swatches, for Gate 1b. With none, the swatches are plain (flair none). */
+/* The paint brush sits on a neutral disc in the corner, so it reads on any picked colour. Clicks
+   pass through it to the input. */
+:is(.rk-tile--custom-colour, .rk-colour-input) > svg {
+  position: absolute;
+  inset-block-end: -0.375rem;
+  inset-inline-end: -0.375rem;
+  inline-size: 1.375rem;
+  block-size: 1.375rem;
+  padding: 0.125rem;
+  border: var(--outline-width) solid var(--line-unfilled);
+  border-radius: 50%;
+  background: var(--raised);
+  color: var(--fg);
+  forced-color-adjust: auto;
+  pointer-events: none;
+  --icon-stroke: 28;
+}
 
-/* Flair A: add .rk-swatches--brush for a faint paint brush on the checked and hovered swatches.
+/* Flair options for colour tiles, for Gate 1b. With none, the tiles are plain (flair none). Each
+   is a modifier on the group. */
+
+/* Flair A: add .rk-tiles--brush for a faint paint brush on the checked and hovered colour tiles.
    The brush is ink; give hues that carry white text their own colour through --swatch-on:
    style="--swatch: var(--navy); --swatch-on: var(--on-navy)". */
 
-.rk-swatches--brush label.rk-swatch::after {
+.rk-tiles--brush .rk-tile--colour::after {
   content: '';
   position: absolute;
   inset: 15%;
@@ -171,54 +124,51 @@ input.rk-swatch[type='color']::-moz-color-swatch {
   transition: opacity var(--duration-fast) ease;
 }
 
-.rk-swatches--brush label.rk-swatch:has(:checked)::after {
+.rk-tiles--brush .rk-tile--colour:has(:checked)::after {
   opacity: 0.7;
 }
 
 @media (hover: hover) {
-  .rk-swatches--brush label.rk-swatch:not(:has(:disabled)):hover::after {
+  .rk-tiles--brush .rk-tile--colour:not(:has(:disabled)):hover::after {
     opacity: 0.7;
   }
 }
 
-/* Flair B: add .rk-swatches--drops for swatches shaped like paint drops: a square with one sharp
-   corner, turned so that corner points up. Turning a swatch turns its shadows too, so they are
+/* Flair B: add .rk-tiles--drops for tiles shaped like paint drops: a square with one sharp
+   corner, turned so that corner points up. Turning a tile turns its shadows too, so they are
    redefined along its own x axis, which the turn points down and to the right. */
 
-.rk-swatches--drops {
+.rk-tiles--drops {
   --drop-corners: 0 50% 50% 50%;
 
   padding-block-start: var(--space-2);
 }
 
-.rk-swatches--drops .rk-swatch {
+.rk-tiles--drops .rk-tile {
   --diagonal: 1.4142;
   --shadow: calc(var(--shadow-offset) * var(--diagonal)) 0 0 var(--shadow-color);
   --shadow-hover: calc(6px * var(--diagonal)) 0 0 var(--shadow-color);
   --shadow-pressed: calc(2px * var(--diagonal)) 0 0 var(--shadow-color);
   --shadow-inset: inset calc(2px * var(--diagonal)) 0 0 var(--line-unfilled);
+  --picker-radius: var(--drop-corners);
 
   border-radius: var(--drop-corners);
   rotate: 45deg;
 }
 
-.rk-swatches--drops input.rk-swatch::-webkit-color-swatch {
-  border-radius: var(--drop-corners);
+.rk-tiles--drops .rk-tile--custom-colour > svg {
+  rotate: -45deg;
 }
 
-.rk-swatches--drops input.rk-swatch::-moz-color-swatch {
-  border-radius: var(--drop-corners);
-}
-
-/* Flair C: add .rk-swatches--stroke for a visible legend with a palette icon and a short paint
-   stroke in the checked colour under the checked swatch.
+/* Flair C: add .rk-tiles--stroke for a visible legend with a palette icon and a short paint
+   stroke in the checked colour under the checked tile.
    <legend><svg class="rk-icon rk-icon--small" aria-hidden="true">…</svg> Colour</legend> */
 
-.rk-swatches--stroke {
+.rk-tiles--stroke {
   padding-block-end: var(--space-4);
 }
 
-.rk-swatches--stroke legend {
+.rk-tiles--stroke legend {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -227,7 +177,7 @@ input.rk-swatch[type='color']::-moz-color-swatch {
   font-weight: 600;
 }
 
-.rk-swatches--stroke label.rk-swatch:has(:checked)::after {
+.rk-tiles--stroke .rk-tile--colour:has(:checked)::after {
   content: '';
   position: absolute;
   inset-block-start: calc(100% + var(--space-2));
