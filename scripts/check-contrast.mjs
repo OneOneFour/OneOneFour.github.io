@@ -21,6 +21,7 @@ const TINTS = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky', 'lilac', 'apri
 )
 const INK_LABEL_FILLS = ['--teal', '--yellow', '--green', '--sky', '--lilac', '--tangerine', '--apricot']
 const FILLS = ['--navy', '--coral', '--grape', ...INK_LABEL_FILLS]
+const SLATES = ['--slate-a', '--slate-b', '--slate-c']
 
 /** Every foreground against every background, with one minimum ratio. */
 function pairs(foregrounds, backgrounds, min) {
@@ -31,6 +32,9 @@ const GROUPS = [
   { title: 'Body text', pairs: pairs(['--fg', '--muted'], SURFACES, 4.5) },
   { title: 'Hue text', pairs: pairs(DEEP_TEXT, SURFACES, 4.5) },
   { title: 'Text and links on tints', pairs: pairs(['--fg', '--navy-deep'], TINTS, 4.5) },
+  // Code is long reading, so its text gets the AAA ratio.
+  { title: 'Code text on slate', pairs: pairs(['--fg'], SLATES, 7) },
+  { title: 'Code comments on slate', pairs: pairs(['--muted'], SLATES, 4.5) },
   {
     title: 'Text on fills',
     pairs: [
