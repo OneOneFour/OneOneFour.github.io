@@ -25,6 +25,7 @@
 @import './components/number.css';
 @import './components/tiles.css';
 @import './components/color.css';
+@import './components/ballot.css';
 @import './components/range-ticks.css';
 @import './components/dial.css';
 @import './components/code.css';

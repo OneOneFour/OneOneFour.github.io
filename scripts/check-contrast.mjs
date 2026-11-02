@@ -34,6 +34,7 @@ const GROUPS = [
   { title: 'Body text', pairs: pairs(['--fg', '--muted'], SURFACES, 4.5) },
   { title: 'Hue text', pairs: pairs(DEEP_TEXT, SURFACES, 4.5) },
   { title: 'Text and links on tints', pairs: pairs(['--fg', '--navy-deep'], TINTS, 4.5) },
+  { title: 'Text on the selected tint', pairs: pairs(['--fg'], ['--selected-tint'], 4.5) },
   // Code is long reading, so its text gets the AAA ratio.
   { title: 'Code text on slate', pairs: pairs(['--fg'], [...SLATES, ...TAB_STRIPS], 7) },
   { title: 'Code comments and captions on slate', pairs: pairs(['--muted'], [...SLATES, ...TAB_STRIPS], 4.5) },

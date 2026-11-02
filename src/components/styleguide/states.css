@@ -150,3 +150,21 @@ a:where(:not(.rk-button)).is-focus {
 :is(.rk-input, .rk-select).is-hover:not([aria-invalid='true']) {
   background-color: var(--input-hover-background);
 }
+
+/* Ballot */
+
+:where(.rk-ballot-option.is-hover) > .rk-tile {
+  box-shadow: var(--shadow-hover);
+  translate: calc(-1 * var(--lift-offset-x)) calc(-1 * var(--lift-offset-y));
+}
+
+:where(.rk-ballot-option.is-active) > .rk-tile {
+  box-shadow: var(--shadow-pressed);
+  translate: var(--press-offset-x) var(--press-offset-y);
+}
+
+.rk-ballot-option.is-focus > .rk-tile {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+  box-shadow: none;
+}

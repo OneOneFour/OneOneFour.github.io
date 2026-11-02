@@ -1,0 +1,57 @@
+---
+/**
+ * A ballot for the styleguide: a column of options, each a tile beside a text box.
+ *
+ * @param legend the group's name, visually hidden
+ * @param name the inputs' name, unique on the page
+ * @param options each option's value, title and optional text; its tile's content (a letter or
+ *   number, an icon, a colour token's name, or nothing); whether it is checked or disabled; and
+ *   a static state class for the row, e.g. 'is-hover'
+ * @param multiple use checkboxes, so that several options can be checked
+ * @param modifier a modifier class for the group, if any
+ */
+import type { SvgComponent } from 'astro/types'
+
+interface Option {
+  value: string
+  title: string
+  text?: string
+  mark?: string
+  Icon?: SvgComponent
+  colour?: string
+  checked?: boolean
+  disabled?: boolean
+  state?: string
+}
+
+interface Props {
+  legend: string
+  name: string
+  options: Option[]
+  multiple?: boolean
+  modifier?: string
+}
+
+const { legend, name, options, multiple, modifier } = Astro.props
+---
+
+<fieldset class:list={['rk-ballot', modifier]}>
+  <legend class="rk-visually-hidden">{legend}</legend>
+  {
+    options.map(({ value, title, text, mark, Icon, colour, checked, disabled, state }) => (
+      <label class:list={['rk-ballot-option', state]}>
+        <span
+          class:list={['rk-tile', { 'rk-tile--colour': colour }]}
+          style={colour && `--swatch: var(--${colour})`}
+        >
+          <input type={multiple ? 'checkbox' : 'radio'} name={name} value={value} checked={checked} disabled={disabled} />
+          {Icon ? <Icon aria-hidden="true" /> : mark}
+        </span>
+        <span class="rk-ballot-text">
+          <strong>{title}</strong>
+          {text && <span>{text}</span>}
+        </span>
+      </label>
+    ))
+  }
+</fieldset>

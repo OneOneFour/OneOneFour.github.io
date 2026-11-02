@@ -76,6 +76,8 @@
   /* Checked and selected controls */
   --selected: var(--yellow);
   --on-selected: var(--on-fill);
+  /* A panel that carries --fg text, for the selected option's surroundings */
+  --selected-tint: var(--yellow-tint);
 
   /* Section hooks */
   --section: var(--ink);
