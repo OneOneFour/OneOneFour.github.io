@@ -37,7 +37,7 @@ const GROUPS = [
       ...pairs(['--on-fill'], INK_LABEL_FILLS, 4.5),
       { fg: '--on-ink', bg: '--ink', min: 4.5 },
       { fg: '--on-navy', bg: '--navy', min: 4.5 },
-      { fg: '--on-coral', bg: '--coral-deep', min: 4.5 },
+      { fg: '--on-coral', bg: '--coral-solid', min: 4.5 },
       { fg: '--on-grape', bg: '--grape', min: 4.5 },
       { fg: '--on-section', bg: '--section', min: 4.5 },
     ],

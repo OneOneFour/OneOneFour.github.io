@@ -61,7 +61,7 @@ const ratio = ({ ratio }: Contrast) => `${ratio.toFixed(2)} ${grade(ratio)}`
               </>
             )}
 
-            {base === '--coral-deep' && (
+            {base === '--coral-deep' && theme === 'light' && (
               <p>
                 <span class="button-sample">Button</span>
                 <small>--on-coral {ratio(contrast(allTokens, '--on-coral', name, theme))}</small>

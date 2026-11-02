@@ -44,17 +44,21 @@ function isColour(allTokens: Tokens, name: string): boolean {
 
 const SURFACES = ['--surface', '--raised']
 
+/** The --on-* token a fill's own label would have; `--coral-solid` shares `--on-coral`. */
+function ownLabel(fill: string): string {
+  return `--on-${fill.slice(2).replace(/-solid$/, '')}`
+}
+
 /** A fill is a hue with -deep or -tint variants, or a colour with its own --on-* label. */
 function isFill(allTokens: Tokens, name: string): boolean {
   if (name.startsWith('--on-')) return false
   const hasVariant = allTokens.has(`${name}-deep`) || allTokens.has(`${name}-tint`)
-  return hasVariant || allTokens.has(`--on-${name.slice(2)}`)
+  return hasVariant || allTokens.has(ownLabel(name))
 }
 
 /** The label colour used on a fill: its own --on-* token, or --on-fill. */
 function labelFor(allTokens: Tokens, fill: string): string {
-  const own = `--on-${fill.slice(2)}`
-  return allTokens.has(own) ? own : '--on-fill'
+  return allTokens.has(ownLabel(fill)) ? ownLabel(fill) : '--on-fill'
 }
 
 /**

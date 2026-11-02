@@ -27,6 +27,8 @@
   --navy: light-dark(#2c4d6e, #4a78ad);
   --teal: light-dark(#2ea6b1, #3bb4bf);
   --coral: light-dark(#de4d45, #e8625a);
+  /* Coral for fills with small text: --coral is too light for white text in light mode */
+  --coral-solid: light-dark(var(--coral-deep), var(--coral));
   --yellow: #f4bc38;
   --green: light-dark(#7bba3d, #86c44a);
   --sky: #8fd3f7;
