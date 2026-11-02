@@ -24,4 +24,5 @@
 @import './components/search.css';
 @import './components/number.css';
 @import './components/color.css';
+@import './components/range-ticks.css';
 @import './components/interactive.css';
