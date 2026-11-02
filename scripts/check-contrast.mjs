@@ -4,7 +4,8 @@
  * Usage: node scripts/check-contrast.mjs [extra-tokens.css]
  *
  * An extra file's tokens are layered over the main file. A token named `--x-alt1` is checked
- * in every pair that uses `--x`. Exits with code 1 if any pair fails.
+ * in every pair that uses `--x`. Also checks that the light-only fallback for browsers without
+ * light-dark() repeats every light-dark() token's light colour. Exits with code 1 on any failure.
  */
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -59,6 +60,24 @@ export function parseTokens(css) {
   const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, '')
   const declarations = withoutComments.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)
   return new Map([...declarations].map(([, name, value]) => [name, value.trim()]))
+}
+
+/**
+ * Splits tokens.css into the main CSS and the body of the light-only fallback block
+ * (`@supports not (color: light-dark(…))`), so the fallback can't override the main values.
+ */
+export function splitFallback(css) {
+  const start = css.indexOf('@supports not (color: light-dark(')
+  if (start === -1) return { main: css, fallback: '' }
+
+  const bodyStart = css.indexOf('{', start) + 1
+  let depth = 1
+  let end = bodyStart
+  for (; depth > 0 && end < css.length; end++) {
+    if (css[end] === '{') depth++
+    else if (css[end] === '}') depth--
+  }
+  return { main: css.slice(0, start) + css.slice(end), fallback: css.slice(bodyStart, end - 1) }
 }
 
 /** A token's value with every `var(--x)` replaced by the value of `--x`, recursively. */
@@ -157,8 +176,35 @@ function printTheme(tokens, groups, theme) {
   return failures
 }
 
+/**
+ * Checks that the fallback declares every light-dark() token as a plain value with the same
+ * light colour. Prints each problem and returns how many there are.
+ */
+function checkFallback(tokens, fallback) {
+  const withFallback = new Map([...tokens, ...fallback])
+  const themed = [...tokens.keys()].filter((name) => tokens.get(name).includes('light-dark('))
+  const problems = themed.flatMap((name) => {
+    if (!fallback.has(name)) return [`${name} is missing`]
+    if (expandVars(withFallback, name).includes('light-dark(')) {
+      return [`${name} still uses light-dark()`]
+    }
+
+    const light = resolveColor(tokens, name, 'light').toLowerCase()
+    const actual = resolveColor(withFallback, name, 'light').toLowerCase()
+    return actual === light ? [] : [`${name} is ${actual}, light is ${light}`]
+  })
+
+  console.log('\nLIGHT-ONLY FALLBACK')
+  problems.forEach((problem) => console.log(`  FAIL ${problem}`))
+  if (!problems.length) console.log(`  All ${themed.length} light-dark() tokens match.`)
+  return problems.length
+}
+
 function main([extraFile]) {
-  const tokens = parseTokens(readFileSync(TOKENS_FILE, 'utf8'))
+  const css = readFileSync(TOKENS_FILE, 'utf8')
+  const { main: mainCss, fallback: fallbackCss } = splitFallback(css)
+  const tokens = parseTokens(mainCss)
+  const fallbackFailures = checkFallback(tokens, parseTokens(fallbackCss))
   let groups = GROUPS
 
   if (extraFile) {
@@ -169,7 +215,7 @@ function main([extraFile]) {
 
   const failures = THEMES.reduce((sum, theme) => sum + printTheme(tokens, groups, theme), 0)
   console.log(failures ? `\n${failures} pair(s) fail.` : '\nAll pairs pass.')
-  process.exitCode = failures ? 1 : 0
+  process.exitCode = failures || fallbackFailures ? 1 : 0
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
