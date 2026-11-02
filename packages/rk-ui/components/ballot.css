@@ -19,7 +19,8 @@
    Layout modifiers for the group, which combine freely:
      .rk-ballot--mark-end  the tiles on the right;
      .rk-ballot--overlap   each tile straddles its text box's edge;
-     .rk-ballot--inside    each tile sits inside its text box. */
+     .rk-ballot--inside    each tile sits inside its text box;
+     .rk-ballot--tight     no gap between rows, so the boxes read as one ruled list. */
 
 .rk-ballot {
   --tile-size: 2.5rem;
@@ -121,6 +122,52 @@
 
 .rk-ballot--inside.rk-ballot--mark-end .rk-ballot-text {
   padding-inline: var(--space-3) calc(var(--tile-size) + 2 * var(--space-3));
+}
+
+/* Tight: each row after the first moves up by a border's width, so neighbouring boxes share one
+   edge, and only the outer corners stay round. Each box fills its row's height. The checked row,
+   then the focused one, is raised so its border and the tile's focus band sit above its
+   neighbours. */
+.rk-ballot--tight {
+  gap: 0;
+}
+
+.rk-ballot--tight .rk-ballot-option {
+  position: relative;
+}
+
+.rk-ballot--tight .rk-ballot-option + .rk-ballot-option {
+  margin-block-start: calc(-1 * var(--outline-width));
+}
+
+.rk-ballot--tight .rk-ballot-option:has(:checked) {
+  z-index: 1;
+}
+
+.rk-ballot--tight .rk-ballot-option:has(:focus-visible) {
+  z-index: 2;
+}
+
+.rk-ballot--tight .rk-ballot-text {
+  align-self: stretch;
+  align-content: center;
+}
+
+.rk-ballot--tight .rk-ballot-option:not(:first-of-type) > .rk-ballot-text {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+
+.rk-ballot--tight .rk-ballot-option:not(:last-of-type) > .rk-ballot-text {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+/* A tile that isn't inside its box keeps room above and below for its push-in, which makes the
+   row a little taller than one line of text. max(y, -y) is the size of the move whichever way
+   the light falls. */
+.rk-ballot--tight:not(.rk-ballot--inside) .rk-tile {
+  margin-block: max(var(--shadow-offset-y), -1 * var(--shadow-offset-y));
 }
 
 /* A checked tile lands with the deck keys' kerchunk (segmented.css): it drives past its pushed-in
