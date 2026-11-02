@@ -329,7 +329,8 @@ Supporting decisions *(proposed)*:
   protects against changes to this very new font. The site may serve the same files
   through Astro 7's stable `fonts` config (`local` provider) for preload hints.
 - A modular **type scale** with ratio **1.3** (Rob's pick at Gate 1a, after comparing 1.25
-  and 1.28), body at 1rem, and `rem` units replace the legacy `pt` sizes.
+  and 1.28), body at 1rem, and `rem` units replace the legacy `pt` sizes. Small text (step −1) is
+  the exception: fixed at 0.8rem, the 1.25 size, because 1 ÷ 1.3 (12.3px) was too small.
 
 **DECIDED (2026-11-01): pairing A**, Roboto Slab headings with Xmind body
 and UI. Rob approved it after seeing it on the mood board. The Gate 1a specimen
