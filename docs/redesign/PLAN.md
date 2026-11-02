@@ -504,6 +504,15 @@ chart components, and the diagrams (`diagram.css`, `diagram.js`, `NeuralNetwork.
   and whose nodes light their links on hover or focus, and a flow chart whose steps light in turn,
   with a water fill on the slow step.
 
+**Fun elements** *(Gate 1b options, pending Rob's picks)*: flourishes that may inspire later work,
+under "Fun elements" at the bottom of `/styleguide/`.
+- Dial ramps: `rk-dial--ramp` on either dial swaps its ticks or track for 18 blocks that light up
+  to the value; unlit blocks are empty like the track, so the level reads without its colours.
+  The default ramp is cool to warm (navy, teal, green, yellow, tangerine, coral), and
+  `rk-dial--ramp-heat` is yellow, tangerine, coral. Any ramp is `--dial-ramp-steps` plus
+  `--dial-ramp-1…n`, in equal runs of blocks. A one-hue ramp (tint, hue, deep) was left out:
+  the tints sit too close to the empty blocks, about 1.2:1 in dark mode.
+
 
 ### 5.5 Iconography *(approved 2026-11-01, after Rob saw the icons on the mood board)*
 

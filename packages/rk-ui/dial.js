@@ -14,6 +14,11 @@ const TICK_OUTER_RADIUS = 94
 const TRACK_RADIUS = 84
 const LIMIT_RADIUS = 86
 const LIMIT_ANGLE = 158
+const RAMP_BLOCK_COUNT = 18
+/** Degrees left empty between neighbouring ramp blocks */
+const RAMP_BLOCK_GAP = 3
+const RAMP_INNER_RADIUS = 74
+const RAMP_OUTER_RADIUS = 94
 
 /**
  * @param {number} value
@@ -95,6 +100,44 @@ function ticks() {
 }
 
 /**
+ * @param {number} fromAngle
+ * @param {number} toAngle
+ * @returns {string} SVG path data for a block of the ramp's ring, between the two angles
+ */
+function blockPath(fromAngle, toAngle) {
+  const outerStart = polarToCartesian(RAMP_OUTER_RADIUS, fromAngle)
+  const outerEnd = polarToCartesian(RAMP_OUTER_RADIUS, toAngle)
+  const innerEnd = polarToCartesian(RAMP_INNER_RADIUS, toAngle)
+  const innerStart = polarToCartesian(RAMP_INNER_RADIUS, fromAngle)
+  return [
+    `M ${outerStart.x} ${outerStart.y}`,
+    `A ${RAMP_OUTER_RADIUS} ${RAMP_OUTER_RADIUS} 0 0 1 ${outerEnd.x} ${outerEnd.y}`,
+    `L ${innerEnd.x} ${innerEnd.y}`,
+    `A ${RAMP_INNER_RADIUS} ${RAMP_INNER_RADIUS} 0 0 0 ${innerStart.x} ${innerStart.y}`,
+    'Z',
+  ].join(' ')
+}
+
+/**
+ * @param {number} stepCount how many colours the ramp has
+ * @returns {SVGElement[]} the ramp's blocks around the dial's travel, each filled with its step's
+ *   colour, `--dial-ramp-1` to `--dial-ramp-<stepCount>`, in equal runs
+ */
+function rampBlocks(stepCount) {
+  const width = SWEEP / RAMP_BLOCK_COUNT
+  return Array.from({ length: RAMP_BLOCK_COUNT }, (_, index) => {
+    const from = START_ANGLE + index * width + RAMP_BLOCK_GAP / 2
+    const block = svgElement('path', {
+      class: 'rk-dial-block',
+      d: blockPath(from, from + width - RAMP_BLOCK_GAP),
+    })
+    const step = Math.floor((index * stepCount) / RAMP_BLOCK_COUNT) + 1
+    block.style.setProperty('--dial-block-fill', `var(--dial-ramp-${step})`)
+    return block
+  })
+}
+
+/**
  * @param {string} text
  * @param {number} angle
  * @returns {SVGElement} a min or max label, beside the gap at the bottom
@@ -120,8 +163,10 @@ function span(className) {
  * `<rk-dial>`: a rotary "thermostat" over a native range input, which stays the focusable,
  * accessible control (keys, labels and forms work as usual). Put a `<label>`, an
  * `<input type="range">` and an optional `<output>` inside it. Add the class `rk-dial--knob` for a
- * turning knob or `rk-dial--arc` for a filled arc with a thumb. Dragging around the dial sets the
- * value and fires `input` and, on release, `change`; the wheel steps it while the input has focus.
+ * turning knob or `rk-dial--arc` for a filled arc with a thumb, and `rk-dial--ramp` for a ring of
+ * coloured blocks that light up to the value (dial.css has the ramps). Dragging around the dial
+ * sets the value and fires `input` and, on release, `change`; the wheel steps it while the input
+ * has focus.
  */
 export class RkDial extends HTMLElement {
   /** @type {AbortController | undefined} */
@@ -132,6 +177,10 @@ export class RkDial extends HTMLElement {
   #face
   /** @type {SVGElement | undefined} */
   #fill
+  /** @type {SVGElement[]} */
+  #blocks = []
+  /** @type {HTMLElement | undefined} */
+  #thumb
   #valueAtDragStart = ''
 
   connectedCallback() {
@@ -179,7 +228,11 @@ export class RkDial extends HTMLElement {
     )
     face.append(svg)
 
-    if (this.classList.contains('rk-dial--arc')) {
+    const isArc = this.classList.contains('rk-dial--arc')
+    if (this.classList.contains('rk-dial--ramp')) {
+      this.#blocks = rampBlocks(this.#rampStepCount())
+      svg.append(...this.#blocks)
+    } else if (isArc) {
       const track = arcPath(TRACK_RADIUS, START_ANGLE, END_ANGLE)
       this.#fill = svgElement('path', { class: 'rk-dial-fill' })
       svg.append(
@@ -187,9 +240,14 @@ export class RkDial extends HTMLElement {
         svgElement('path', { class: 'rk-dial-track', d: track }),
         this.#fill
       )
-      face.append(span('rk-dial-thumb'))
     } else {
       svg.append(...ticks())
+    }
+
+    if (isArc) {
+      this.#thumb = span('rk-dial-thumb')
+      face.append(this.#thumb)
+    } else {
       const knob = span('rk-dial-knob')
       knob.append(span('rk-dial-notch'))
       face.append(knob)
@@ -199,15 +257,31 @@ export class RkDial extends HTMLElement {
     return face
   }
 
-  /** Turns the knob, or moves the arc and thumb, to the input's value and updates the output. */
+  /** @returns {number} how many colours the ramp has, from `--dial-ramp-steps` (at least 1) */
+  #rampStepCount() {
+    const count = parseInt(getComputedStyle(this).getPropertyValue('--dial-ramp-steps'), 10)
+    return count > 0 ? count : 1
+  }
+
+  /**
+   * Turns the knob, or moves the arc and thumb, to the input's value, lights the ramp's blocks up
+   * to it, and updates the output.
+   */
   #render = () => {
     const input = this.#input
     const { min, max } = this.#limits()
     const angle = valueToAngle(input.valueAsNumber, min, max)
     this.style.setProperty('--dial-angle', `${angle}deg`)
 
-    if (this.#fill) {
-      this.#fill.setAttribute('d', arcPath(TRACK_RADIUS, START_ANGLE, angle))
+    this.#fill?.setAttribute('d', arcPath(TRACK_RADIUS, START_ANGLE, angle))
+
+    // A block lights once the value reaches its middle.
+    const fraction = (input.valueAsNumber - min) / (max - min)
+    this.#blocks.forEach((block, index) => {
+      block.toggleAttribute('data-lit', (index + 0.5) / RAMP_BLOCK_COUNT <= fraction)
+    })
+
+    if (this.#thumb) {
       const thumb = polarToCartesian(TRACK_RADIUS, angle)
       this.style.setProperty('--dial-thumb-x', `${(thumb.x / VIEWBOX) * 100}%`)
       this.style.setProperty('--dial-thumb-y', `${(thumb.y / VIEWBOX) * 100}%`)

@@ -8,6 +8,10 @@
      <output class="rk-output" for="t">20</output>
    </rk-dial>
 
+   Add rk-dial--ramp to either for a ring of blocks that light up to the value, cool to warm; add
+   rk-dial--ramp-heat as well for yellow to coral. For another ramp, set --dial-ramp-steps and the
+   colours --dial-ramp-1 to --dial-ramp-<steps>. dial.js reads them when it draws the face.
+
    The face's SVG is 200 units square, so its lengths are pixels at the default --dial-size. */
 
 .rk-dial {
@@ -183,6 +187,38 @@
   text-align: center;
 }
 
+/* Ramp */
+
+.rk-dial--ramp {
+  --dial-ramp-steps: 6;
+  --dial-ramp-1: var(--navy);
+  --dial-ramp-2: var(--teal);
+  --dial-ramp-3: var(--green);
+  --dial-ramp-4: var(--yellow);
+  --dial-ramp-5: var(--tangerine);
+  --dial-ramp-6: var(--coral);
+}
+
+.rk-dial--ramp-heat {
+  --dial-ramp-steps: 3;
+  --dial-ramp-1: var(--yellow);
+  --dial-ramp-2: var(--tangerine);
+  --dial-ramp-3: var(--coral);
+}
+
+/* Unlit blocks are empty, like the arc's track, so the level reads without its colours. */
+.rk-dial-block {
+  fill: var(--raised);
+  stroke: var(--line-unfilled);
+  stroke-width: var(--outline-width);
+  stroke-linejoin: round;
+  transition: fill var(--duration-fast) ease;
+}
+
+.rk-dial-block[data-lit] {
+  fill: var(--dial-block-fill);
+}
+
 /* States */
 
 @media (hover: hover) {
@@ -219,7 +255,8 @@
   }
 
   .rk-dial-tick,
-  .rk-dial-track-outline {
+  .rk-dial-track-outline,
+  .rk-dial-block {
     stroke: CanvasText;
   }
 
@@ -231,8 +268,16 @@
     stroke: Canvas;
   }
 
+  .rk-dial-block {
+    fill: Canvas;
+  }
+
   .rk-dial-fill {
     stroke: Highlight;
+  }
+
+  .rk-dial-block[data-lit] {
+    fill: Highlight;
   }
 
   .rk-dial-notch::before {
