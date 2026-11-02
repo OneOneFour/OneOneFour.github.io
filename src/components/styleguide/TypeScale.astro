@@ -3,7 +3,9 @@
 import typeCss from 'rk-ui/type.css?raw'
 import { parseTokens } from '../../../scripts/check-contrast.mjs'
 
-const ratio = Number(parseTokens(typeCss).get('--type-ratio'))
+const typeTokens = parseTokens(typeCss)
+const ratio = Number(typeTokens.get('--type-ratio'))
+const smallRem = parseFloat(typeTokens.get('--step--1') ?? '')
 
 const HEADINGS = [
   { role: 'h1', step: 4, text: 'Sphinx of black quartz' },
@@ -12,10 +14,14 @@ const HEADINGS = [
   { role: 'h4', step: 1, text: 'The quick brown fox jumps' },
 ]
 
-/** The size of a step, e.g. "1.69rem / 27px" (the scale starts at 1rem = 16px). */
+/** A size in rem as e.g. "1.69rem / 27px" (1rem = 16px). */
+function format(rem: number): string {
+  return `${Number(rem.toFixed(3))}rem / ${Number((rem * 16).toFixed(1))}px`
+}
+
+/** The size of a step on the scale; step -1 is fixed in type.css rather than on the ratio. */
 function size(step: number): string {
-  const rem = ratio ** step
-  return `${Number(rem.toFixed(3))}rem / ${Math.round(rem * 16)}px`
+  return format(step === -1 ? smallRem : ratio ** step)
 }
 ---
 
