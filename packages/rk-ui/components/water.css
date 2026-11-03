@@ -5,7 +5,7 @@
    Under reduced motion the water stays still and fades in and out instead.
 
    Hosts in this file:
-   spinner D, .rk-spinner--water with .rk-water--rise: a flask that fills and drains;
+   water spinner, .rk-spinner--water with .rk-water--rise: a flask that fills and drains;
    filling button: a filled .rk-button with aria-busy="true" and an .rk-water child fills with its
    own colour. Keep it focusable with aria-disabled="true" rather than disabled, so focus isn't
    lost, ignore its clicks while busy, and say what is happening in its label;
@@ -96,7 +96,7 @@
   }
 }
 
-/* Spinner D: a round flask of water with the hard shadow, and a glint on the side the
+/* Water spinner: a round flask of water with the hard shadow, and a glint on the side the
    light comes from. */
 .rk-spinner--water {
   --spinner-fill: var(--sky);
