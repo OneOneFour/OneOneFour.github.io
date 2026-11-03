@@ -1,7 +1,8 @@
 ---
 /**
- * The tile picker with numbers, letters and icons, and the colour picker built on it, each in its
- * states. The flair row shows the options still open for the checked colour tile.
+ * The tile picker with numbers, letters and icons, the colour picker built on it, and the colour
+ * input on its own, each in its states. The flair row shows the options for the checked colour
+ * tile.
  *
  * @param theme the panel's theme, used to keep input names unique across the two panels
  */
@@ -14,6 +15,7 @@ import CloudIcon from 'rk-ui/icons/cloud.svg'
 import CloudRainIcon from 'rk-ui/icons/cloud-rain.svg'
 import CloudLightningIcon from 'rk-ui/icons/cloud-lightning.svg'
 import WindIcon from 'rk-ui/icons/wind.svg'
+import PaintBrushIcon from 'rk-ui/icons/paint-brush.svg'
 
 interface Props {
   theme: 'light' | 'dark'
@@ -30,7 +32,13 @@ const WEATHER = [
   { value: 'wind', label: 'Wind', Icon: WindIcon },
 ]
 const PICKERS = [
-  { title: 'Tile picker: numbers (a rating)', legend: 'Rating', tiles: NUMBERS, checked: ['3'] },
+  {
+    title: 'Tile picker: numbers (a rating), in every state',
+    legend: 'Rating',
+    tiles: NUMBERS,
+    checked: ['3'],
+    everyState: true,
+  },
   { title: 'Tile picker: letters (multiple choice)', legend: 'Answer', tiles: LETTERS, checked: ['c'] },
   {
     title: 'Tile picker: icons (checkboxes, several choices)',
@@ -48,14 +56,25 @@ const SWATCH_GROUPS = [
   { label: 'disabled', custom: true, disabled: true },
   { label: 'palette only, with no custom colour tile', custom: false },
 ]
+const COLOUR_STATES = [
+  { label: 'rest', class: '' },
+  { label: 'hover', class: 'is-hover' },
+  { label: 'pressed', class: 'is-active' },
+  { label: 'focused', class: 'is-focus' },
+  { label: 'disabled', class: '', disabled: true },
+]
 const FLAIRS = [
   { label: 'flair A: paint brush', class: 'rk-tiles--brush' },
   { label: 'flair B: paint drops', class: 'rk-tiles--drops' },
   { label: 'flair C: palette and stroke', class: 'rk-tiles--stroke', paletteLegend: true },
 ]
 
-/** The states shown for each picker, on its first, last and first checked tiles. */
+/**
+ * The states shown for a picker: rest and compact, or with everyState, every state on its first,
+ * last and first checked tiles.
+ */
 function pickerStates(picker: (typeof PICKERS)[number]) {
+  if (!picker.everyState) return [{ label: 'rest' }, { label: 'compact', compact: true }]
   const first = picker.tiles[0]
   const last = picker.tiles[picker.tiles.length - 1]
   return [
@@ -121,6 +140,19 @@ function pickerStates(picker: (typeof PICKERS)[number]) {
           paletteLegend={flair.paletteLegend}
           states={{ navy: 'is-hover' }}
         />
+      </Specimen>
+    ))
+  }
+</SpecimenRow>
+
+<SpecimenRow title="Colour input on its own, with no palette (.rk-colour-input)">
+  {
+    COLOUR_STATES.map((state) => (
+      <Specimen label={state.label}>
+        <span class:list={['rk-colour-input', state.class]}>
+          <input type="color" aria-label="Specimen" disabled={state.disabled} />
+          <PaintBrushIcon aria-hidden="true" />
+        </span>
       </Specimen>
     ))
   }

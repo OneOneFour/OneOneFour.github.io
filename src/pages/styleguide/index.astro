@@ -20,7 +20,6 @@ import InputSpecimens from '../../components/styleguide/InputSpecimens.astro'
 import SpecialInputSpecimens from '../../components/styleguide/SpecialInputSpecimens.astro'
 import SelectPickerSpecimens from '../../components/styleguide/SelectPickerSpecimens.astro'
 import DialSpecimens from '../../components/styleguide/DialSpecimens.astro'
-import DialRampSpecimens from '../../components/styleguide/DialRampSpecimens.astro'
 import ClockSpecimens from '../../components/styleguide/ClockSpecimens.astro'
 import ChoiceSpecimens from '../../components/styleguide/ChoiceSpecimens.astro'
 import RangeSpecimens from '../../components/styleguide/RangeSpecimens.astro'
@@ -62,11 +61,12 @@ const CONTENTS = [
       'Text inputs and selects',
       'Custom select list',
       'Special inputs',
-      'Dial',
       'Checkboxes, radios and switches',
       'Range slider',
+      'Dial',
+      'Clock',
       'Segmented control',
-      'Tile picker',
+      'Tile and colour pickers',
       'Ballot',
       'Chips',
     ],
@@ -93,7 +93,7 @@ const CONTENTS = [
   },
   {
     title: 'Fun elements',
-    sections: ['Dial ramps', 'Clock', 'Sticky notes', 'Exploded view'],
+    sections: ['Sticky notes', 'Exploded view'],
   },
 ]
 ---
@@ -192,15 +192,6 @@ const CONTENTS = [
       <SpecialInputSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
-    <SpecimenSection title="Dial">
-      <p>
-        Each dial draws over a native range input, which stays the accessible control: it keeps
-        focus, the arrow keys, Home and End, Page Up and Page Down, and form submission.
-      </p>
-      <DialSpecimens slot="light" theme="light" />
-      <DialSpecimens slot="dark" theme="dark" />
-    </SpecimenSection>
-
     <SpecimenSection title="Checkboxes, radios and switches">
       <ChoiceSpecimens slot="light" theme="light" />
       <ChoiceSpecimens slot="dark" theme="dark" />
@@ -211,12 +202,32 @@ const CONTENTS = [
       <RangeSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
+    <SpecimenSection title="Dial">
+      <p>
+        Each dial draws over a native range input, which stays the accessible control: it keeps
+        focus, the arrow keys, Home and End, Page Up and Page Down, and form submission. Add
+        rk-dial--ramp to either dial for a ring of blocks that light up to the value in token colours.
+      </p>
+      <DialSpecimens slot="light" theme="light" />
+      <DialSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Clock">
+      <p>
+        Drag a hand's tag to set the time: the hour hand goes round once a day, on a ring with day
+        over the top and night under it. The time input below the face stays the control for the
+        keyboard and screen readers.
+      </p>
+      <ClockSpecimens slot="light" theme="light" />
+      <ClockSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
     <SpecimenSection title="Segmented control">
       <SegmentedSpecimens slot="light" theme="light" />
       <SegmentedSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
-    <SpecimenSection title="Tile picker">
+    <SpecimenSection title="Tile and colour pickers">
       <TileSpecimens slot="light" theme="light" />
       <TileSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
@@ -349,25 +360,6 @@ const CONTENTS = [
     <SpecimenSection title="Figures and widgets" stacked>
       <FigureSpecimens slot="light" theme="light" />
       <FigureSpecimens slot="dark" theme="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Dial ramps">
-      <p>
-        Options for Gate 1b: the dials above with rk-dial--ramp, a ring of blocks that light up to the
-        value in discrete token colours.
-      </p>
-      <DialRampSpecimens slot="light" theme="light" />
-      <DialRampSpecimens slot="dark" theme="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Clock">
-      <p>
-        An option for Gate 1b. Drag a hand's tag to set the time: the hour hand goes round once a
-        day, on a ring with day over the top and night under it. The time input below the face stays
-        the control for the keyboard and screen readers.
-      </p>
-      <ClockSpecimens slot="light" theme="light" />
-      <ClockSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Sticky notes">

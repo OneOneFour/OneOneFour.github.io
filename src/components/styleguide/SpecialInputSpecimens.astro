@@ -1,8 +1,7 @@
 ---
 /**
- * The special input types (file, date and time, search, number, a colour input on its own, range
- * with ticks and the plain text-like types), each in its states. Lettered variants are options for
- * Gate 1b.
+ * The special input types (file, date and time, search, number and the plain text-like types),
+ * each in its states.
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
@@ -12,7 +11,6 @@ import UploadIcon from 'rk-ui/icons/upload-simple.svg'
 import SearchIcon from 'rk-ui/icons/magnifying-glass.svg'
 import CaretUpIcon from 'rk-ui/icons/caret-up.svg'
 import CaretDownIcon from 'rk-ui/icons/caret-down.svg'
-import PaintBrushIcon from 'rk-ui/icons/paint-brush.svg'
 
 interface Props {
   theme: 'light' | 'dark'
@@ -48,19 +46,6 @@ const NUMBER_STATES = [
   { label: 'focused', input: 'is-focus', buttons: '' },
   { label: 'disabled', input: '', buttons: '', disabled: true },
   { label: 'error', input: '', buttons: '', invalid: true },
-]
-const COLOUR_STATES = [
-  { label: 'rest', class: '' },
-  { label: 'hover', class: 'is-hover' },
-  { label: 'pressed', class: 'is-active' },
-  { label: 'focused', class: 'is-focus' },
-  { label: 'disabled', class: '', disabled: true },
-]
-const TICKS = [0, 25, 50, 75, 100]
-const TICK_STATES = [
-  { label: 'rest', class: '' },
-  { label: 'focused', class: 'is-focus' },
-  { label: 'disabled', class: '', disabled: true },
 ]
 const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
 ---
@@ -174,7 +159,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   }
 </SpecimenRow>
 
-<SpecimenRow title="Number stepper, split: buttons either side">
+<SpecimenRow title="Number stepper, split (.rk-stepper--split): buttons either side">
   {
     NUMBER_STATES.map((state) => (
       <Specimen label={state.label}>
@@ -207,7 +192,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   }
 </SpecimenRow>
 
-<SpecimenRow title="Number stepper, stacked: arrows inside">
+<SpecimenRow title="Number stepper, stacked (.rk-stepper--stacked): arrows inside">
   {
     NUMBER_STATES.map((state) => (
       <Specimen label={state.label.replace('+', 'up')}>
@@ -236,68 +221,6 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
             <CaretDownIcon aria-hidden="true" />
           </button>
         </rk-stepper>
-      </Specimen>
-    ))
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Colour: native input on its own, with no palette">
-  {
-    COLOUR_STATES.map((state) => (
-      <Specimen label={state.label}>
-        <span class:list={['rk-colour-input', state.class]}>
-          <input type="color" aria-label="Specimen" disabled={state.disabled} />
-          <PaintBrushIcon aria-hidden="true" />
-        </span>
-      </Specimen>
-    ))
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Ticks A: native">
-  <Specimen label="rest (drawn by the browser, where it supports them)" wide>
-    <input class="rk-range-native" type="range" list={`${theme}-ticks-a`} step="25" aria-label="Specimen" />
-    <datalist id={`${theme}-ticks-a`}>{TICKS.map((tick) => <option value={tick} />)}</datalist>
-  </Specimen>
-  <Specimen label="disabled" wide>
-    <input class="rk-range-native" type="range" list={`${theme}-ticks-a`} step="25" aria-label="Specimen" disabled />
-  </Specimen>
-</SpecimenRow>
-
-<SpecimenRow title="Ticks B: tick row with labels">
-  {
-    TICK_STATES.map((state, index) => (
-      <Specimen label={state.label} wide>
-        <div class="rk-field">
-          <input
-            class:list={['rk-range', state.class]}
-            type="range"
-            list={`${theme}-ticks-b-${index}`}
-            step="25"
-            aria-label="Specimen"
-            disabled={state.disabled}
-          />
-          <datalist class="rk-range-scale" id={`${theme}-ticks-b-${index}`}>
-            {TICKS.map((tick) => <option value={tick}>{tick}</option>)}
-          </datalist>
-        </div>
-      </Specimen>
-    ))
-  }
-</SpecimenRow>
-
-<SpecimenRow title="Ticks C: dots on the track">
-  {
-    TICK_STATES.map((state) => (
-      <Specimen label={state.label} wide>
-        <input
-          class:list={['rk-range rk-range--dots', state.class]}
-          type="range"
-          step="25"
-          style={`--ticks: ${TICKS.length}`}
-          aria-label="Specimen"
-          disabled={state.disabled}
-        />
       </Specimen>
     ))
   }

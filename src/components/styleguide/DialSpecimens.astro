@@ -1,7 +1,7 @@
 ---
 /**
- * The two dial variants for Gate 1b, live with a decimal and an integer range and disabled, plus
- * how a dial looks without its script.
+ * The two dial variants, live with a decimal and an integer range and disabled, the ramp modifier
+ * with the two ramps rk-ui has, and how a dial looks without its script.
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
@@ -14,13 +14,18 @@ interface Props {
 
 const { theme } = Astro.props
 const VARIANTS = [
-  { name: 'knob', title: 'Dial A (knob)' },
-  { name: 'arc', title: 'Dial B (arc)' },
+  { name: 'knob', title: 'A: knob (rk-dial--knob)' },
+  { name: 'arc', title: 'B: arc (rk-dial--arc)' },
 ]
 const RANGES = [
   { name: 'temperature', label: 'Temperature', caption: '10 to 30, step 0.5', min: 10, max: 30, step: 0.5, value: 20 },
   { name: 'level', label: 'Level', caption: '0 to 100, step 1', min: 0, max: 100, step: 1, value: 40 },
   { name: 'disabled', label: 'Label', caption: 'disabled', min: 0, max: 100, step: 1, value: 40, disabled: true },
+]
+const RAMPS = [
+  { name: 'knob', classes: 'rk-dial--knob', caption: 'knob, cool to warm' },
+  { name: 'arc', classes: 'rk-dial--arc', caption: 'arc, cool to warm' },
+  { name: 'heat', classes: 'rk-dial--arc rk-dial--ramp-heat', caption: 'arc, rk-dial--ramp-heat' },
 ]
 const fallbackId = `${theme}-dial-fallback`
 ---
@@ -54,6 +59,25 @@ const fallbackId = `${theme}-dial-fallback`
     </SpecimenRow>
   ))
 }
+
+<SpecimenRow title="Ramps (rk-dial--ramp)">
+  {
+    RAMPS.map((ramp) => {
+      const id = `${theme}-dial-ramp-${ramp.name}`
+      return (
+        <Specimen label={ramp.caption}>
+          <rk-dial class:list={['rk-dial', 'rk-dial--ramp', ramp.classes]}>
+            <label for={id}>Temperature</label>
+            <input class="rk-range" type="range" id={id} min="10" max="30" step="0.5" value="21" />
+            <output class="rk-output" for={id}>
+              21
+            </output>
+          </rk-dial>
+        </Specimen>
+      )
+    })
+  }
+</SpecimenRow>
 
 <SpecimenRow title="Without the script">
   <Specimen label="a plain range and readout; the readout only follows the range with dial.js" wide>
