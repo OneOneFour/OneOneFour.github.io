@@ -1,7 +1,7 @@
 ---
 /**
- * More spinners and loaders: water and dot spinners, filling buttons, the pending panel and the
- * hopping-ball loader. Spinner letters carry on from the spinners above.
+ * Everything that shows waiting: the spinners, their sizes and labels, the progress bar and the
+ * meter, filling buttons, the pending panel and the hopping-ball loader.
  */
 import Button from '../ui/Button.astro'
 import AtomIcon from 'rk-ui/icons/atom.svg'
@@ -10,13 +10,18 @@ import StarIcon from 'rk-ui/icons/star.svg'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 
+const DOT_SPINNERS = [
+  { label: '.rk-spinner--triangle', class: 'rk-spinner--triangle' },
+  { label: '.rk-spinner--dots.rk-spinner--squash', class: 'rk-spinner--dots rk-spinner--squash' },
+  { label: '.rk-spinner--orbit (an alternate)', class: 'rk-spinner--orbit' },
+]
+const METERS = [
+  { label: 'good (optimum range)', value: 0.3 },
+  { label: 'middling', value: 0.7 },
+  { label: 'bad', value: 0.92 },
+]
 const FILLS = [undefined, 'teal', 'navy', 'coral', 'grape'] as const
 const LEVELS = [0.25, 0.5, 0.85]
-const DOT_SPINNERS = [
-  { label: 'F: dots in a circle (an alternate)', class: 'rk-spinner--orbit' },
-  { label: 'G: dots in a triangle', class: 'rk-spinner--triangle' },
-  { label: 'H: dots that squash and stretch', class: 'rk-spinner--dots rk-spinner--squash' },
-]
 const BALLS = [
   { label: 'teal (the default)' },
   { label: 'in coral', fill: 'coral' },
@@ -27,30 +32,25 @@ const BALLS = [
 ]
 ---
 
-<SpecimenRow title="Water spinners">
-  <Specimen label="D: water, filling">
+<SpecimenRow title="Spinners">
+  <Specimen label=".rk-spinner--ring">
+    <span class="rk-spinner rk-spinner--ring" role="status">
+      <span class="rk-visually-hidden">Loading…</span>
+    </span>
+  </Specimen>
+  <Specimen label=".rk-spinner--dots">
+    <span class="rk-spinner rk-spinner--dots" role="status">
+      <span class="rk-spinner-dot"></span><span class="rk-spinner-dot"></span><span
+        class="rk-spinner-dot"></span>
+      <span class="rk-visually-hidden">Loading…</span>
+    </span>
+  </Specimen>
+  <Specimen label=".rk-spinner--water, filling">
     <span class="rk-spinner rk-spinner--water" role="status">
       <span class="rk-water rk-water--rise" aria-hidden="true"></span>
       <span class="rk-visually-hidden">Loading…</span>
     </span>
   </Specimen>
-  <Specimen label="D: large, --spinner-fill set to teal">
-    <span class="rk-spinner rk-spinner--water" style="--spinner-size: 3rem; --spinner-fill: var(--teal)" role="status">
-      <span class="rk-water rk-water--rise" aria-hidden="true"></span>
-      <span class="rk-visually-hidden">Loading…</span>
-    </span>
-  </Specimen>
-  <Specimen label="D: small, with a visible label">
-    <span class="loading" role="status">
-      <span class="rk-spinner rk-spinner--water" style="--spinner-size: 1.25rem" aria-hidden="true">
-        <span class="rk-water rk-water--rise"></span>
-      </span>
-      Loading…
-    </span>
-  </Specimen>
-</SpecimenRow>
-
-<SpecimenRow title="Dot spinners">
   {
     DOT_SPINNERS.map((spinner) => (
       <Specimen label={spinner.label}>
@@ -63,13 +63,81 @@ const BALLS = [
       </Specimen>
     ))
   }
-  <Specimen label="G: large">
+</SpecimenRow>
+
+<SpecimenRow title="Spinner sizes and labels (--spinner-size, --spinner-fill)">
+  <Specimen label="ring: small, with a visible label">
+    <span class="loading" role="status">
+      <span class="rk-spinner rk-spinner--ring" style="--spinner-size: 1.25rem" aria-hidden="true"
+      ></span>
+      Loading…
+    </span>
+  </Specimen>
+  <Specimen label="ring: large, --spinner-fill set to teal">
+    <span class="rk-spinner rk-spinner--ring" style="--spinner-size: 3rem; --spinner-fill: var(--teal)" role="status">
+      <span class="rk-visually-hidden">Loading…</span>
+    </span>
+  </Specimen>
+  <Specimen label="dots: small, with a visible label">
+    <span class="loading" role="status">
+      <span class="rk-spinner rk-spinner--dots" style="--spinner-size: 1.25rem" aria-hidden="true">
+        <span class="rk-spinner-dot"></span><span class="rk-spinner-dot"></span><span
+          class="rk-spinner-dot"></span>
+      </span>
+      Loading…
+    </span>
+  </Specimen>
+  <Specimen label="water: large, --spinner-fill set to teal">
+    <span class="rk-spinner rk-spinner--water" style="--spinner-size: 3rem; --spinner-fill: var(--teal)" role="status">
+      <span class="rk-water rk-water--rise" aria-hidden="true"></span>
+      <span class="rk-visually-hidden">Loading…</span>
+    </span>
+  </Specimen>
+  <Specimen label="water: small, with a visible label">
+    <span class="loading" role="status">
+      <span class="rk-spinner rk-spinner--water" style="--spinner-size: 1.25rem" aria-hidden="true">
+        <span class="rk-water rk-water--rise"></span>
+      </span>
+      Loading…
+    </span>
+  </Specimen>
+  <Specimen label="triangle: large">
     <span class="rk-spinner rk-spinner--triangle" style="--spinner-size: 3rem" role="status">
       <span class="rk-spinner-dot"></span><span class="rk-spinner-dot"></span><span
         class="rk-spinner-dot"></span>
       <span class="rk-visually-hidden">Loading…</span>
     </span>
   </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Progress bars">
+  <Specimen label="striped (the default)" wide>
+    <label class="rk-field">Label <progress class="rk-progress" max="100" value="65">65%</progress></label>
+  </Specimen>
+  <Specimen label="flat (.rk-progress--flat)" wide>
+    <label class="rk-field">
+      Label <progress class="rk-progress rk-progress--flat" max="100" value="40">40%</progress>
+    </label>
+  </Specimen>
+  <Specimen label="striped, indeterminate (no value)" wide>
+    <label class="rk-field">Label <progress class="rk-progress"></progress></label>
+  </Specimen>
+  <Specimen label="flat, indeterminate (no value)" wide>
+    <label class="rk-field">Label <progress class="rk-progress rk-progress--flat"></progress></label>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Meter (a measurement, not progress)">
+  {
+    METERS.map((meter) => (
+      <Specimen label={meter.label} wide>
+        <label class="rk-field">
+          Label
+          <meter class="rk-meter" min="0" max="1" low="0.6" high="0.85" optimum="0.2" value={meter.value} />
+        </label>
+      </Specimen>
+    ))
+  }
 </SpecimenRow>
 
 <SpecimenRow title="Filling buttons (aria-busy, with an .rk-water child)">
@@ -101,7 +169,7 @@ const BALLS = [
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title="Pending panel">
+<SpecimenRow title="Pending panel (.rk-pending)">
   <Specimen label="filling up" wide>
     <div class="rk-pending" role="status">
       <span class="rk-water rk-water--rise" aria-hidden="true"></span>

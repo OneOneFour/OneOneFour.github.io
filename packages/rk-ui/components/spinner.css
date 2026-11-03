@@ -1,8 +1,8 @@
 /* Spinners: a busy indicator. Give it role="status" and a visually hidden label, or hide it
    (aria-hidden) beside a visible one. Set --spinner-size to resize it.
-   A, .rk-spinner--ring: an outlined ring with the hard shadow, and a wedge rolling round inside
-   it as if it had weight.
-   B, .rk-spinner--dots: three dots that bounce in turn.
+   .rk-spinner--ring: an outlined ring with the hard shadow, and a wedge rolling round inside it
+   as if it had weight.
+   .rk-spinner--dots: three dots that bounce in turn.
    Under reduced motion nothing moves: each fades in and out instead.
 
    <span class="rk-spinner rk-spinner--ring" role="status"><span class="rk-visually-hidden">Loading…</span></span>

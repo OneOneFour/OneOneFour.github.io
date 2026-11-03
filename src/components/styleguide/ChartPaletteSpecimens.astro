@@ -24,12 +24,12 @@ const SERIES = ['teal', 'yellow', 'navy', 'green', 'sky', 'coral', 'grape', 'tan
 </SpecimenRow>
 
 <SpecimenRow title="Scales">
-  <Specimen label="sequential (--seq-1 to --seq-5): magnitude" wide>
+  <Specimen label="A: navy sequential (--seq-1 to --seq-5): magnitude" wide>
     <ol class="steps">
       {SEQUENTIAL.map((step) => <li><span class="chip" style={`background: var(${step})`} />{step}</li>)}
     </ol>
   </Specimen>
-  <Specimen label="vivid sequential (--seq-vivid-1 to --seq-vivid-5): option for Gate 1b" wide>
+  <Specimen label="B: vivid sequential (--seq-vivid-1 to --seq-vivid-5)" wide>
     <ol class="steps">
       {SEQUENTIAL_VIVID.map((step) => <li><span class="chip" style={`background: var(${step})`} />{step}</li>)}
     </ol>

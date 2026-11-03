@@ -1,5 +1,7 @@
 ---
 /** Static boxes for the shape, outline, shadow and focus tokens. The live versions are the components. */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
 
 const BOXES = [
   { class: 'panel', label: 'Panel', caption: '--radius, no outline (static)' },
@@ -13,37 +15,17 @@ const BOXES = [
 ]
 ---
 
-<div class="demos">
+<SpecimenRow title="Shape and shadow tokens">
   {
     BOXES.map((box) => (
-      <figure>
+      <Specimen label={box.caption}>
         <div class:list={['box', box.class]}>{box.label}</div>
-        <figcaption>{box.caption}</figcaption>
-      </figure>
+      </Specimen>
     ))
   }
-</div>
+</SpecimenRow>
 
 <style>
-  .demos {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
-    gap: var(--space-5);
-  }
-
-  figure {
-    display: grid;
-    align-content: start;
-    justify-items: start;
-    gap: var(--space-3);
-    margin: 0;
-  }
-
-  figcaption {
-    color: var(--muted);
-    font-size: var(--step--1);
-  }
-
   .box {
     padding: var(--space-3) var(--space-4);
     border: var(--outline-width) solid transparent;

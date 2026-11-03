@@ -1,25 +1,20 @@
 ---
-/** What base.css styles: headings, body text, links in each state, code, highlights and selection. */
+/**
+ * What base.css styles besides headings, which the type scale shows: links in each state, code,
+ * highlights and selection.
+ */
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 ---
 
-<SpecimenRow title="Headings (h2 to h4; h1 is step 4)">
-  <div class="headings">
-    <h2>Sphinx of black quartz</h2>
-    <h3>Judge my vow</h3>
-    <h4>Pack my box with five dozen jugs</h4>
-  </div>
-</SpecimenRow>
-
 <SpecimenRow title="Links">
-  <Specimen label="rest"><a href="#base">A text link</a></Specimen>
-  <Specimen label="hover"><a href="#base" class="is-hover">A text link</a></Specimen>
-  <Specimen label="focused (marker pen)"><a href="#base" class="is-focus">A text link</a></Specimen>
+  <Specimen label="rest"><a href="#specimen-link">A text link</a></Specimen>
+  <Specimen label="hover"><a href="#specimen-link" class="is-hover">A text link</a></Specimen>
+  <Specimen label="focused (marker pen)"><a href="#specimen-link" class="is-focus">A text link</a></Specimen>
   <Specimen label="in running text" wide>
     <p>
-      The quick brown fox <a href="#base">jumps over the lazy dog</a> and keeps on running until the line
-      wraps, so the <a href="#base" class="is-focus">focused marker carries across the line break</a> too.
+      The quick brown fox <a href="#specimen-link">jumps over the lazy dog</a> and keeps on running until the line
+      wraps, so the <a href="#specimen-link" class="is-focus">focused marker carries across the line break</a> too.
     </p>
   </Specimen>
 </SpecimenRow>
@@ -36,9 +31,3 @@ import SpecimenRow from './SpecimenRow.astro'
     <p>The quick brown fox <mark>jumps over the lazy dog</mark> and keeps on running.</p>
   </Specimen>
 </SpecimenRow>
-
-<style>
-  .headings > * {
-    margin-block: 0 var(--space-2);
-  }
-</style>

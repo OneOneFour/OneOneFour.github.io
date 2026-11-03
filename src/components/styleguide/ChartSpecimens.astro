@@ -32,8 +32,8 @@ const anomalyColumns = ANOMALY_YEARS.map((year, index) => ({ index, label: Strin
 const hours = Array.from({ length: 24 }, (_, hour) => `${String(hour).padStart(2, '0')}:00`)
 const hourColumns = [0, 6, 12, 18].map((index) => ({ index, label: hours[index] }))
 const HEATMAP_OPTIONS = [
-  { label: 'A: side by side, with ink gutters', tiles: false },
-  { label: 'B: tiles (.rk-chart--tiles)', tiles: true },
+  { label: 'layout A: side by side, with ink gutters', tiles: false },
+  { label: 'layout B: tiles (.rk-chart--tiles)', tiles: true },
 ]
 
 const anomalies = {
@@ -56,12 +56,12 @@ const week = {
 }
 const SCALES = [
   {
-    name: 'sequential',
+    name: 'scale A, navy sequential (--seq-*)',
     colour: (value: number) => sequentialColour(value),
     scale: { steps: SEQUENTIAL.map((step) => `var(${step})`), from: '0', to: '1' },
   },
   {
-    name: 'vivid sequential (--seq-vivid-*)',
+    name: 'scale B, vivid sequential (--seq-vivid-*)',
     colour: (value: number) => sequentialColour(value, SEQUENTIAL_VIVID),
     scale: { steps: SEQUENTIAL_VIVID.map((step) => `var(${step})`), from: '0', to: '1' },
   },

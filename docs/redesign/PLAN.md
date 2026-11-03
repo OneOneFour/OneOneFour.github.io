@@ -245,7 +245,7 @@ Rules (shown on the mood board, theme switch at the top):
   `light-dark()` keep the slab. `npm run contrast` checks `--shadow-lit` and each fill's `--shade`
   against the page under every palette (§5.1c). The styleguide has a
   Slab / Colour switch beside the palette switch (stored under `rk-shadow`) and keeps the two
-  side by side under "Dark-mode shadows".
+  side by side under "Shape, shadow and depth".
 - **Tints flip to deep versions** with cream text (sky, lilac, apricot are
   panel backgrounds and would glare in dark mode).
 - Hue-text variants (`--navy-deep` etc.) get lighter values for dark mode.
@@ -464,7 +464,7 @@ settles the type scale, the monospace face and the weights actually used.
   composed shadows are declared on every element (`*` in `tokens.css`), each built from its own
   depth, light (`--shadow-dx`/`-dy`) and shadow colours, so depth combines with both shadow
   modes, every palette, both themes and the turning light. Under reduced motion the shadows still
-  deepen but nothing moves. The styleguide shows normal and deep under "Depth".
+  deepen but nothing moves. The styleguide shows normal and deep under "Shape, shadow and depth".
 - **Focus** *(decided at Gate 1a)*: the **highlighter**, a 6px **tangerine** band
   (`--focus`) hugging the ink outline (no offset), with the hard shadow turned off while
   focused. Never removed.
@@ -552,7 +552,11 @@ The rules:
 | Layouts | `BaseLayout` (left bar + main), `PostLayout` (header band, breakout grid, end matter), `IndexLayout` (card grid + chips) |
 
 A `/styleguide/` page renders every token and component. It is where Rob
-reviews design work.
+reviews design work. *Reorganised 2026-11-02* as the component library's reference, ready to move
+into rk-ui as its documentation: Foundations, Controls, Components, Feedback, Navigation and
+scrolling, Maths, Data visualisation (a styleguide-only vibe check) and Illustration. Each
+component appears once, with its supported modifiers; each open decision carries an "Open" note
+at the top of its section (§5.8).
 
 **Options instead of one-offs** *(Rob, Gate 1b)*: where more than one treatment is good, the
 package keeps them as opt-in classes rather than picking one. Text fields' hover cue is the
@@ -582,8 +586,8 @@ supported, the bar takes its look over the first 3rem of scrolling (the toast dr
 The styleguide header uses A; `?topbar=flush` shows B live. Anchor jumps clear a one-row bar
 (`scroll-padding-block-start: 6rem`).
 
-**More loading options** *(Gate 1b)*: on `/styleguide/` under "More spinners and loaders",
-beside spinners A and B and the progress bar. *Rob's picks, 2026-11-02:* water spinner D and the filling
+**More loading options** *(Gate 1b)*: on `/styleguide/` under "Loading", beside spinners A
+(`.rk-spinner--ring`) and B (`.rk-spinner--dots`) and the progress bar. *Rob's picks, 2026-11-02:* water spinner D and the filling
 buttons; dots B, G and H for general content loading; several loader bars stay as candidates,
 with C, the hopping ball, the favourite (recoloured with `--loader-fill`, and an icon can ride in a
 `.rk-loader-ball`).
@@ -617,8 +621,8 @@ chart components, and the diagrams (`diagram.css`, `diagram.js`, `NeuralNetwork.
   and whose nodes light their links on hover or focus, and a flow chart whose steps light in turn,
   with a water fill on the slow step.
 
-**Fun elements** *(Gate 1b; dial ramps and the clock APPROVED 2026-11-02, as built)*: flourishes that may inspire later work,
-under "Fun elements" at the bottom of `/styleguide/`.
+**Fun elements** *(Gate 1b; dial ramps and the clock APPROVED 2026-11-02, as built)*: flourishes that may inspire later work.
+On `/styleguide/` the ramps are under "Dial" and the clock under "Clock", both with the controls.
 - Dial ramps: `rk-dial--ramp` on either dial swaps its ticks or track for 18 blocks that light up
   to the value; unlit blocks are empty like the track, so the level reads without its colours.
   The default ramp is cool to warm (navy, teal, green, yellow, tangerine, coral), and
@@ -646,12 +650,12 @@ are a tint in light mode and the vivid fill in dark (`--note-*` tokens), with in
 yellow by default, sky for a note callout, tangerine for a warning, and hue modifiers for the rest.
 A linked note card's corner lifts with the pop. Options: `--tilt` (−2°, or `--note-tilt`), whose
 resting shadow is turned back by the tilt with `cos()`/`sin()` so it still falls away from the
-light; `--tape` and `--pin`. On `/styleguide/` under "Fun elements".
+light; `--tape` and `--pin`. On `/styleguide/` under "Sticky notes", after the callouts.
 
 **Exploded view** *(Gate 1b, a fun element; styleguide only; redrawn in the illustration style,
 §5.3, 2026-11-02, then cut to two tones per part with less detail the same day)*: illustrations
 whose assemblies come apart on hover or focus so their parts can be inspected. "Exploded view"
-under "Fun elements" on `/styleguide/` shows a steam train (five assemblies, with an "Explode
+under "Illustration" on `/styleguide/` shows a steam train (five assemblies, with an "Explode
 all" switch) in the pop look (§5.3), a one-assembly table lamp, and the illustration
 colours. Beside the train, a *demo pending Rob's view* (2026-11-02): ExplodedView's `sticker`
 (`.rk-explode--sticker`), one die-cut keyline (glint, edged in `--line-unfilled`) round the whole
@@ -896,6 +900,39 @@ a positive delay an animation doesn't apply, so the element's own style is its r
   open a hairline seam at the join (found on folder tabs at Gate 1b). Use offsets for 1–2px moves
   at a join, and `translate` everywhere else.
 - No permanent `will-change`.
+
+### 5.8 Open design decisions *(2026-11-02)*
+
+Each has an "Open" note at the top of its `/styleguide/` section, with the options lettered as the
+specimens are.
+
+- Motion policy (§5.7), "Motion": "only clickable things lift and sink" stays, or changes.
+- Motion policy, "Motion": illustrative loops stop under reduced motion while state loops fade.
+- `<rk-motion>` (the Pause button, off-screen pausing) stays in rk-ui or not: "Motion", "Diagrams".
+- Custom select list, checked option: A filled or B tinted (`.rk-select--tint`): "Custom select list".
+- File input: A button and filename, or B drop panel: "Special inputs".
+- Search: A icon inside, or B attached button: "Special inputs".
+- Range ticks: A native, B tick row with labels, or C dots on the track: "Range slider".
+- Dial: A knob or B arc: "Dial".
+- Dial ramp: blocks lit up to the value (as built) or all lit: "Dial".
+- Clock: the hour hand stays longer than the minute hand (as built) or not: "Clock".
+- Colour tile flair: none, A paint brush, B paint drops or C palette and stroke: "Tile and colour
+  pickers".
+- Loaders and spinners time their loops with the `--loop-*` tokens or keep their own: "Loading".
+- `.rk-progress--flat` stays or goes: "Loading".
+- Tooltip: A inverted or B toon (`.rk-tooltip--toon`): "Tooltips and popups".
+- Corner badge edge: A outline, B ring, or C sticker: "Badges".
+- Breadcrumbs: A plain links, B chips, or C path bar: "Breadcrumbs".
+- Pagination: A folder tabs, or B tiles between buttons: "Pagination".
+- Inline maths size (`--maths-scale`): A 1em, B 1.1em, C 1.15em (proposed) or D 1.21em: "Maths in
+  text".
+- Heatmap layout: A side by side with ink gutters, or B tiles (`.rk-chart--tiles`): "Charts".
+- Sequential scale: A navy (`--seq-*`) or B vivid (`--seq-vivid-*`): "Chart colours", "Charts".
+- Exploded view: A no sticker, or B the single-outline sticker demo: "Exploded view".
+- Exploded view: parts lose their shadows under the focus band (as built), or keep them:
+  "Exploded view".
+- Exploded view: an open assembly labels every part (as built), or only the hovered one:
+  "Exploded view".
 ---
 
 ## 6. Content model *(proposed)*
