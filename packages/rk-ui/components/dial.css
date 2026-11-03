@@ -1,4 +1,4 @@
-/* Dial: a rotary "thermostat" for a number, in two variants for Gate 1b. Needs dial.js, which draws
+/* Dial: a rotary "thermostat" for a number, in two variants (A knob, B arc). Needs dial.js, which draws
    a face over the range; without it, the range and readout show side by side.
 
    Dial A, knob: <rk-dial class="rk-dial rk-dial--knob">

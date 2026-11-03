@@ -23,7 +23,7 @@
   --seq-4: color-mix(in oklab, var(--navy-deep) 82%, var(--navy-tint));
   --seq-5: var(--navy-deep);
 
-  /* Vivid sequential scale (Gate 1b option): the fills from yellow through green and teal to navy,
+  /* Vivid sequential scale (an option beside the navy one): the fills from yellow through green and teal to navy,
      in even steps of lightness. Light mode runs from yellow up to navy and dark mode from navy up
      to yellow, so the strongest step stands out most from the page. */
   --seq-vivid-1: light-dark(var(--yellow), color-mix(in oklab, var(--navy) 50%, var(--navy-tint)));

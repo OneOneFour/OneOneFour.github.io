@@ -146,12 +146,13 @@
 /* Sized to the pill's text and lowered to sit on its baseline like a letter, so neither the pill
    nor the line grows. */
 .rk-eqref .rk-icon {
+  --icon-stroke: 28;
+
   inline-size: 1em;
   block-size: 1em;
   margin-inline-end: 0.25em;
   color: inherit;
   vertical-align: -0.125em;
-  --icon-stroke: 28;
 }
 
 .rk-eqref:hover {

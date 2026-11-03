@@ -1,4 +1,4 @@
-/* Range sliders with tick marks, in three variants for Gate 1b. Match the ticks to min, max and
+/* Range sliders with tick marks, in three variants (A, B, C). Match the ticks to min, max and
    step so the thumb lands on them.
 
    Ticks A: the browser's own slider and ticks. Browsers draw datalist ticks only on an unstyled

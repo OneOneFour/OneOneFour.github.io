@@ -20,8 +20,8 @@
      <text class="rk-chart-label" …>Series A</text>  direct label, in text colours
    </svg>
 
-   Marks are toon: ink outlines, and hard shadows under bars. Heatmaps have two options, labelled
-   for Gate 1b, with the cells in a <g class="rk-chart-cells">:
+   Marks are toon: ink outlines, and hard shadows under bars. Heatmaps have two options, with the
+   cells in a <g class="rk-chart-cells">:
    A, the default: cells side by side with ink gutters, on a .rk-chart-shadow rect under the grid;
    B, .rk-chart--tiles: rounded tiles (rx in the markup) with gaps between them, each outlined
    and on a short hard shadow.

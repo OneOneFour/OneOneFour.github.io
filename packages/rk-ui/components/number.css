@@ -93,9 +93,10 @@
 }
 
 .rk-stepper--stacked svg {
+  --icon-stroke: 28;
+
   inline-size: 1rem;
   block-size: 1rem;
-  --icon-stroke: 28;
 }
 
 .rk-stepper--stacked button:enabled:hover {

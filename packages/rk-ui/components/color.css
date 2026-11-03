@@ -92,6 +92,8 @@
 /* The paint brush sits on a neutral disc in the corner, so it reads on any picked colour. Clicks
    pass through it to the input. */
 :is(.rk-tile--custom-colour, .rk-colour-input) > svg {
+  --icon-stroke: 28;
+
   position: absolute;
   inset-block-end: -0.375rem;
   inset-inline-end: -0.375rem;
@@ -104,10 +106,9 @@
   color: var(--fg);
   forced-color-adjust: auto;
   pointer-events: none;
-  --icon-stroke: 28;
 }
 
-/* Flair options for colour tiles, for Gate 1b. With none, the tiles are plain (flair none). Each
+/* Flair options for colour tiles. With none, the tiles are plain (flair none). Each
    is a modifier on the group. */
 
 /* Flair A: add .rk-tiles--brush for a faint paint brush on the checked and hovered colour tiles.

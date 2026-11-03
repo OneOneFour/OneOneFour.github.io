@@ -3,8 +3,7 @@
    units (--x, --y, --w, --h), and says how far it moves (--explode-x, --explode-y, in units) and
    how many layers from the back it is (--depth). At rest each assembly casts the UI's resting
    shadow; exploded, each part rises towards the light and casts a shadow that is longer for each
-   layer. Parts are drawn in
-   order, back to front, so a part's shadow falls on the parts behind it.
+   layer. Parts are drawn in order, back to front, so a part's shadow falls on the parts behind it.
 
    <div class="rk-explode">
      <div class="rk-explode-stage" style="--columns: 16; --rows: 38; --hatch: url(#…)" role="group"
@@ -44,7 +43,7 @@
      </label>
    </div>
 
-   Styleguide only for now, like the diagrams. */
+   Styleguide only, like the diagrams. */
 
 .rk-explode {
   display: grid;
@@ -245,8 +244,8 @@
 
 /* The sticker look, a demo: the whole drawing is one die-cut sticker, a band of glint round every
    part's resting shape with a thin edge round that, and the sticker casts the resting shadow in
-   place of the assemblies (coloured from glint in the colour mode, via --extrusion). Every shape is stroked twice: wide in the edge colour, then narrower in
-   glint on top, so the strokes merge and only the outer edge shows. The sticker stays put while
+   place of the assemblies (coloured from glint in the colour mode, via --extrusion). Every shape
+   is stroked twice: wide in the edge colour, then narrower in glint on top, so the strokes merge and only the outer edge shows. The sticker stays put while
    the parts come apart: the rest of the drawing still sits on it, and it marks where each part
    goes home. */
 .rk-explode--sticker {

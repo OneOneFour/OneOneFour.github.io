@@ -1,6 +1,7 @@
 ---
 /**
- * A display equation in the rk-ui wrapper: the markup the posts' maths pipeline will write.
+ * A display equation in the rk-ui wrapper: the markup the posts' maths pipeline will write. It is a
+ * focusable scroll region, so it is named after its equation numbers.
  *
  * @param tex the TeX source, with \tag{n} for a numbered equation
  * @param id the anchor that equation references link to, e.g. eq-lorenz
@@ -15,6 +16,15 @@ interface Props {
 }
 
 const { tex, id, class: className } = Astro.props
+const numbers = [...tex.matchAll(/\\tag\{([^}]*)\}/g)].map((match) => match[1])
+const label = `${numbers.length > 1 ? 'Equations' : 'Equation'} ${numbers.join(', ')}`.trim()
 ---
 
-<div class:list={['rk-equation', 'rk-scroll', className]} id={id} tabindex="0" set:html={renderMaths(tex, true)} />
+<div
+  class:list={['rk-equation', 'rk-scroll', className]}
+  id={id}
+  tabindex="0"
+  role="region"
+  aria-label={label}
+  set:html={renderMaths(tex, true)}
+/>

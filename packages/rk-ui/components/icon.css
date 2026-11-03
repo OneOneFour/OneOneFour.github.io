@@ -4,15 +4,17 @@
    --icon-ocean. */
 
 .rk-icon {
+  --icon-stroke: 21;
+
   flex: none;
   inline-size: 1.5rem;
   block-size: 1.5rem;
   color: var(--fg);
-  --icon-stroke: 21;
 }
 
 .rk-icon--small {
+  --icon-stroke: 24;
+
   inline-size: 1.25rem;
   block-size: 1.25rem;
-  --icon-stroke: 24;
 }
