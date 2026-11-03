@@ -30,7 +30,6 @@ import ChipSpecimens from '../../components/styleguide/ChipSpecimens.astro'
 import CardSpecimens from '../../components/styleguide/CardSpecimens.astro'
 import CalloutSpecimens from '../../components/styleguide/CalloutSpecimens.astro'
 import BadgeSpecimens from '../../components/styleguide/BadgeSpecimens.astro'
-import ProgressSpecimens from '../../components/styleguide/ProgressSpecimens.astro'
 import LoadingSpecimens from '../../components/styleguide/LoadingSpecimens.astro'
 import TooltipSpecimens from '../../components/styleguide/TooltipSpecimens.astro'
 import WidgetFrameSpecimen from '../../components/styleguide/WidgetFrameSpecimen.astro'
@@ -52,7 +51,7 @@ import StyleguideContents from '../../components/styleguide/StyleguideContents.a
 const CONTENTS = [
   {
     title: 'Foundations',
-    sections: ['Colours', 'Type', 'Fonts', 'Code', 'Icons', 'Shape, shadow and depth', 'Motion'],
+    sections: ['Colours', 'Type', 'Fonts', 'Icons', 'Shape, shadow and depth', 'Motion'],
   },
   {
     title: 'Controls',
@@ -73,15 +72,11 @@ const CONTENTS = [
   },
   {
     title: 'Components',
-    sections: [
-      'Cards',
-      'Callouts',
-      'Badges',
-      'Spinners and progress',
-      'More spinners and loaders',
-      'Tooltips and popups',
-      'Widget frame',
-    ],
+    sections: ['Cards', 'Callouts', 'Sticky notes', 'Code blocks', 'Widget frame'],
+  },
+  {
+    title: 'Feedback',
+    sections: ['Loading', 'Tooltips and popups', 'Badges'],
   },
   {
     title: 'Navigation and scrolling',
@@ -93,7 +88,7 @@ const CONTENTS = [
   },
   {
     title: 'Fun elements',
-    sections: ['Sticky notes', 'Exploded view'],
+    sections: ['Exploded view'],
   },
 ]
 ---
@@ -119,15 +114,6 @@ const CONTENTS = [
     <SpecimenSection title="Fonts">
       <FontSpecimens slot="light" />
       <FontSpecimens slot="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Code" stacked>
-      <p>
-        The copy buttons are live; without JavaScript they stay hidden. Tab into a block to scroll
-        long lines with the arrow keys.
-      </p>
-      <CodeSpecimens slot="light" />
-      <CodeSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Icons">
@@ -252,18 +238,30 @@ const CONTENTS = [
       <CalloutSpecimens slot="dark" />
     </SpecimenSection>
 
-    <SpecimenSection title="Badges">
-      <BadgeSpecimens slot="light" />
-      <BadgeSpecimens slot="dark" />
+    <SpecimenSection title="Sticky notes">
+      <p>
+        Add .rk-sticky-note to a card or a callout. Turn the light under Shape, shadow and depth to
+        see the tilted notes' shadows follow it.
+      </p>
+      <StickyNoteSpecimens slot="light" />
+      <StickyNoteSpecimens slot="dark" />
     </SpecimenSection>
 
-    <SpecimenSection title="Spinners and progress">
-      <ProgressSpecimens slot="light" />
-      <ProgressSpecimens slot="dark" />
+    <SpecimenSection title="Code blocks" stacked>
+      <p>
+        The copy buttons are live; without JavaScript they stay hidden. Tab into a block to scroll
+        long lines with the arrow keys; Overflow shows a long line.
+      </p>
+      <CodeSpecimens slot="light" />
+      <CodeSpecimens slot="dark" />
     </SpecimenSection>
 
-    <SpecimenSection title="More spinners and loaders">
-      <p>Spinner letters carry on from the spinners above.</p>
+    <SpecimenSection title="Widget frame">
+      <WidgetFrameSpecimen slot="light" />
+      <WidgetFrameSpecimen slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Loading">
       <LoadingSpecimens slot="light" />
       <LoadingSpecimens slot="dark" />
     </SpecimenSection>
@@ -275,6 +273,11 @@ const CONTENTS = [
       </p>
       <TooltipSpecimens slot="light" theme="light" />
       <TooltipSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Badges">
+      <BadgeSpecimens slot="light" />
+      <BadgeSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Breadcrumbs">
@@ -304,11 +307,6 @@ const CONTENTS = [
       </p>
       <TopBarSpecimens slot="light" />
       <TopBarSpecimens slot="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Widget frame">
-      <WidgetFrameSpecimen slot="light" />
-      <WidgetFrameSpecimen slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Overflow" stacked>
@@ -360,15 +358,6 @@ const CONTENTS = [
     <SpecimenSection title="Figures and widgets" stacked>
       <FigureSpecimens slot="light" theme="light" />
       <FigureSpecimens slot="dark" theme="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Sticky notes">
-      <p>
-        Fun elements are options for Gate 1b. Turn the light above to see the tilted notes' shadows
-        follow it.
-      </p>
-      <StickyNoteSpecimens slot="light" />
-      <StickyNoteSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Exploded view">

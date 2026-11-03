@@ -1,4 +1,4 @@
-/** Specimen code shared by the monospace and code block sections of the styleguide. */
+/** Specimen code shared by the styleguide's font, code block and overflow specimens. */
 
 export const LORENZ_PYTHON = `def lorenz(x, y, z, σ=10.0, ρ=28.0, β=8 / 3) -> tuple:
     """Return (dx/dt, dy/dt, dz/dt) for the Lorenz system."""

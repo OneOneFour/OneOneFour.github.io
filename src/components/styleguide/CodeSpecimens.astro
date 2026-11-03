@@ -1,53 +1,47 @@
 ---
 /**
- * Code blocks with live copy buttons: the default box and the editor tab, then both on the greige
- * slate, with inline code in a sentence.
+ * Code blocks with live copy buttons: the default box in each language with a logo, the editor
+ * tab, the greige slate, and inline code in a sentence.
  */
 import CodeBlock from '../CodeBlock.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import { LORENZ_JS, LORENZ_PYTHON } from './code-samples'
-
-const BOXES = [
-  { title: 'Code block', class: undefined },
-  { title: 'Editor tab (.rk-code--tab)', class: 'rk-code--tab' },
-]
+import { LORENZ_PYTHON } from './code-samples'
 ---
 
-{
-  BOXES.map((box) => (
-    <SpecimenRow title={box.title}>
-      <Specimen label="Python, with caption" wide>
-        <CodeBlock code={LORENZ_PYTHON} lang="python" label="Python" class={box.class} />
-      </Specimen>
-      <Specimen label="JavaScript, long lines scroll" wide>
-        <CodeBlock code={LORENZ_JS} lang="javascript" label="JavaScript" class={box.class} />
-      </Specimen>
-      <Specimen label="Julia" wide>
-        <CodeBlock code="σ, ρ, β = 10.0, 28.0, 8 / 3" lang="julia" label="Julia" class={box.class} />
-      </Specimen>
-      <Specimen label="Fortran" wide>
-        <CodeBlock code="real :: sigma = 10.0, rho = 28.0" lang="fortran-free-form" label="Fortran" class={box.class} />
-      </Specimen>
-      <Specimen label="C++" wide>
-        <CodeBlock code="double sigma = 10.0, rho = 28.0;" lang="cpp" label="C++" class={box.class} />
-      </Specimen>
-      <Specimen label="Markdown (wide mark)" wide>
-        <CodeBlock code="**β ≈ 0.3** in the [paper](#)" lang="markdown" label="Markdown" class={box.class} />
-      </Specimen>
-      <Specimen label="no caption" wide>
-        <CodeBlock code="x = lorenz(1.0, 1.0, 1.0)" lang="python" class={box.class} />
-      </Specimen>
-    </SpecimenRow>
-  ))
-}
+<SpecimenRow title="Code block">
+  <Specimen label="Python, with caption" wide>
+    <CodeBlock code={LORENZ_PYTHON} lang="python" label="Python" />
+  </Specimen>
+  <Specimen label="Julia" wide>
+    <CodeBlock code="σ, ρ, β = 10.0, 28.0, 8 / 3" lang="julia" label="Julia" />
+  </Specimen>
+  <Specimen label="Fortran" wide>
+    <CodeBlock code="real :: sigma = 10.0, rho = 28.0" lang="fortran-free-form" label="Fortran" />
+  </Specimen>
+  <Specimen label="C++" wide>
+    <CodeBlock code="double sigma = 10.0, rho = 28.0;" lang="cpp" label="C++" />
+  </Specimen>
+  <Specimen label="Markdown (wide mark)" wide>
+    <CodeBlock code="**β ≈ 0.3** in the [paper](#)" lang="markdown" label="Markdown" />
+  </Specimen>
+  <Specimen label="no caption" wide>
+    <CodeBlock code="x = lorenz(1.0, 1.0, 1.0)" lang="python" />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Editor tab (.rk-code--tab)">
+  <Specimen label="Python, with caption" wide>
+    <CodeBlock code={LORENZ_PYTHON} lang="python" label="Python" class="rk-code--tab" />
+  </Specimen>
+  <Specimen label="no caption" wide>
+    <CodeBlock code="x = lorenz(1.0, 1.0, 1.0)" lang="python" class="rk-code--tab" />
+  </Specimen>
+</SpecimenRow>
 
 <SpecimenRow title="Greige slate (.rk-slate-greige)">
   <Specimen label="default box" wide>
     <CodeBlock code={LORENZ_PYTHON} lang="python" label="Python" class="rk-slate-greige" />
-  </Specimen>
-  <Specimen label="editor tab" wide>
-    <CodeBlock code={LORENZ_PYTHON} lang="python" label="Python" class="rk-slate-greige rk-code--tab" />
   </Specimen>
   <Specimen label="inline code" wide>
     <p class="rk-slate-greige">
