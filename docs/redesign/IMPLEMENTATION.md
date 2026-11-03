@@ -374,9 +374,9 @@ The coordinator presents:
   - Xmind's source link in `THIRD_PARTY_NOTICES.md` is probably `github.com/lamzhonghang/xmind`.
   - The dark-mode neutral `--section` nearly matches the page (P2).
   - Scrollbar lag on `/styleguide/`, not yet diagnosed (rk-ui HANDOFF §4).
-  - Rob's uncommitted edit to `scripts/vendor-icons.mjs` in the main checkout.
 - **Next:**
-  - Rob approves Gate 1b and tags `gate-1b`, after any blocking review finding is fixed.
+  - Rob approves Gate 1b and tags `gate-1b`. The review found nothing blocking; its small fixes
+    are in `05ffe8e`.
   - Then library work happens in `~/MiscProjects/rk-ui`, following its `docs/HANDOFF.md` §7.
   - This repo resumes at P2 once rk-ui v0.1.0 is installed.
 
