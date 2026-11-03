@@ -1,10 +1,9 @@
 ---
 /**
- * Every package icon with its default fill, icons in context, both .rk-icon sizes, and one icon
- * with other fills.
+ * Every package icon with its default fill, icons in context, both .rk-icon sizes on a few icons,
+ * and one icon with other fills.
  */
 import type { SvgComponent } from 'astro/types'
-import Button from '../ui/Button.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 import Flask from 'rk-ui/icons/flask.svg'
@@ -43,6 +42,7 @@ const ICONS = Object.entries(iconModules).map(([path, module]) => ({
 }))
 
 const FILLS = ['teal', 'yellow', 'coral', 'grape', 'raised']
+const SIZE_SAMPLES = [Flask, Copy, Play, Download, Code, Reset, ExternalLink, Sun]
 ---
 
 <SpecimenRow title="Default fills">
@@ -55,21 +55,7 @@ const FILLS = ['teal', 'yellow', 'coral', 'grape', 'raised']
   }
 </SpecimenRow>
 
-<SpecimenRow title="In context">
-  <Specimen label="yellow button"><Button><Copy class="rk-icon" />Copy</Button></Specimen>
-  <Specimen label="teal button"><Button fill="teal"><Play class="rk-icon" />Play</Button></Specimen>
-  <Specimen label="navy button">
-    <Button fill="navy"><Download class="rk-icon" />Download</Button>
-  </Specimen>
-  <Specimen label="coral button">
-    <Button fill="coral"><Play class="rk-icon" />Start</Button>
-  </Specimen>
-  <Specimen label="grape button">
-    <Button fill="grape"><Code class="rk-icon" />Run</Button>
-  </Specimen>
-  <Specimen label="unfilled button (own default)">
-    <Button unfilled><Reset class="rk-icon" />Reset</Button>
-  </Specimen>
+<SpecimenRow title="In context (icons in buttons take the button's fill: see Buttons)">
   <Specimen label="neutral icon alone"><Copy class="rk-icon" /></Specimen>
   <Specimen label="sun set to neutral: --icon-fill overrides any icon's default">
     <span class="fill" style="--icon-fill: var(--icon-fill-neutral)"><Sun class="rk-icon" /></span>
@@ -81,12 +67,13 @@ const FILLS = ['teal', 'yellow', 'coral', 'grape', 'raised']
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title=".rk-icon (24px, stroke about 2px)">
-  <div class="strip">{ICONS.map(({ Icon }) => <Icon class="rk-icon" />)}</div>
-</SpecimenRow>
-
-<SpecimenRow title=".rk-icon--small (20px)">
-  <div class="strip">{ICONS.map(({ Icon }) => <Icon class="rk-icon rk-icon--small" />)}</div>
+<SpecimenRow title="Sizes">
+  <Specimen label=".rk-icon (24px, stroke about 2px)">
+    {SIZE_SAMPLES.map((Icon) => <Icon class="rk-icon" />)}
+  </Specimen>
+  <Specimen label=".rk-icon--small (20px)">
+    {SIZE_SAMPLES.map((Icon) => <Icon class="rk-icon rk-icon--small" />)}
+  </Specimen>
 </SpecimenRow>
 
 <SpecimenRow title="--icon-fill">
@@ -123,11 +110,5 @@ const FILLS = ['teal', 'yellow', 'coral', 'grape', 'raised']
 
   .fill {
     display: flex;
-  }
-
-  .strip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
   }
 </style>
