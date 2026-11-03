@@ -343,17 +343,42 @@ The coordinator presents:
   "pop" for every clickable component; unfilled buttons discouraged and press inward; chart
   order; radio and textarea join the step 7 primitives; projects index layout open for P2.
 - 2026-11-02: Rob decided to consolidate all library code (Astro wrappers, styleguide, an optional
-  Astro integration) into `packages/rk-ui/` (PLAN §5.6). It runs **at the very end, after all
-  core gates**, as its own builder + reviewer pass.
+  Astro integration). *Superseded the same day:* the library moves to **its own repo,
+  `~/MiscProjects/rk-ui`**, and this site installs it as a package (below).
+- 2026-11-02: **Gate 1b work done; Rob to approve.** P1 commits `gate-1a..redesign` (300), steps
+  5 and 7–8. Step 9, the review, ran at close-down; its findings are in rk-ui `docs/HANDOFF.md`
+  §8.
+  - Everything built, and its state, is summarised in rk-ui `docs/HANDOFF.md`. The design
+    decisions are in PLAN §5 (5.1–5.7), distilled in rk-ui `docs/DESIGN.md`.
+  - Still-open design choices (23) are PLAN §5.8, each marked "Open" on `/styleguide/`. They don't
+    block Gate 1b: they move to rk-ui phase L3.
+  - The styleguide was reorganised into a library-style reference (38 sections, 8 groups).
+    `npm run contrast` now resolves `color-mix()` and passes, with three shortfalls Rob accepted.
+  - No browser was used. Rob's checks by eye are listed in the HANDOFF; the unverified items go to
+    rk-ui's Playwright lane.
+- 2026-11-02: **rk-ui spin-out.** `~/MiscProjects/rk-ui` was scaffolded as a new git repo, with
+  docs only:
+  - `README.md` and `CLAUDE.md`;
+  - `docs/HANDOFF.md`, `docs/PLAN.md` (phases L0–L4, gates, the agent workflow) and
+    `docs/DESIGN.md`;
+  - the PowerPoint generator in `pptx/`.
+
+  The code moves there with its history in L0 (`git subtree split --prefix=packages/rk-ui`).
+  **This site's P2 waits on rk-ui v0.1.0.** Then the site installs it from a git tag, deletes
+  `packages/rk-ui/`, `src/components/ui/`, the styleguide files and the `rk-ui/*` alias, and
+  decides what the reserved `/styleguide/` path becomes (rk-ui PLAN §3, "Site integration").
 - **Open:**
-  - `svgo` is imported by `vendor-icons.mjs` from Astro's tree; declare it as a dev dependency.
+  - `svgo` is imported by `vendor-icons.mjs` from Astro's tree; declare it as a dev dependency
+    (in rk-ui after L0).
   - LinkedIn brand mark: Rob deferred it.
   - Xmind's source link in `THIRD_PARTY_NOTICES.md` is probably `github.com/lamzhonghang/xmind`.
-  - Small review nits for step 7: `--ease-out` only renames a keyword; one fixed font size in
-    `FontSpecimens.astro`; swatches print "fail" for the known dark-outline gap; the dark-mode
-    neutral `--section` nearly matches the page (P2).
-- **Next:** P1 step 5 (theme script + toggle) and steps 7–9 (component CSS with the "pop"
-  interaction, full `/styleguide/`, review), then Gate 1b. Start with `git diff gate-1a..redesign`.
+  - The dark-mode neutral `--section` nearly matches the page (P2).
+  - Scrollbar lag on `/styleguide/`, not yet diagnosed (rk-ui HANDOFF §4).
+  - Rob's uncommitted edit to `scripts/vendor-icons.mjs` in the main checkout.
+- **Next:**
+  - Rob approves Gate 1b and tags `gate-1b`, after any blocking review finding is fixed.
+  - Then library work happens in `~/MiscProjects/rk-ui`, following its `docs/HANDOFF.md` §7.
+  - This repo resumes at P2 once rk-ui v0.1.0 is installed.
 
 ---
 

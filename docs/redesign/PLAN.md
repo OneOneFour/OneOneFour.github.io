@@ -766,6 +766,11 @@ that need no framework at all:
 - **Why not "everything in Vue":** Vue components only work in Vue sites, or in Astro via an
   integration, and they don't fit plain HTML. CSS + custom elements cover every case, and thin
   wrappers keep authoring pleasant in each framework.
+- **Spin-out (DECIDED 2026-11-02, supersedes the consolidation note below):** the library leaves
+  this repo for its own, `~/MiscProjects/rk-ui`. That repo's `docs/PLAN.md` holds the plan:
+  one `rk-ui` package with subpath exports for the core, Astro and later Vue; a build step for
+  minified CSS and JS; installation from a git tag. This site installs it, and the integration
+  ideas below carry over.
 - **Consolidation (decided 2026-11-02, done after the core gates):** everything that is really
   library code moves into the package, so it all lives in one place. That means the `.astro`
   wrappers (under `astro/`), ThemeToggle, CodeBlock, the specimen layout, the styleguide (under
