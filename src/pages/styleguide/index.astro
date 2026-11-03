@@ -47,6 +47,7 @@ import FigureSpecimens from '../../components/styleguide/FigureSpecimens.astro'
 import StickyNoteSpecimens from '../../components/styleguide/StickyNoteSpecimens.astro'
 import ExplodedViewSpecimens from '../../components/styleguide/ExplodedViewSpecimens.astro'
 import StyleguideContents from '../../components/styleguide/StyleguideContents.astro'
+import OpenDecision from '../../components/styleguide/OpenDecision.astro'
 
 const CONTENTS = [
   {
@@ -154,6 +155,15 @@ const CONTENTS = [
         The patterns of the motion policy (PLAN §5.7). Turn the light under Shape, shadow and depth to
         see the shadows and the glint follow it while things move.
       </p>
+      <OpenDecision>
+        Two rules of the policy: only clickable things lift and sink, and anything else pops in
+        place (the flow chart's steps under Diagrams); and illustrative loops stop under reduced
+        motion (the network's pulses), while loops that show a state fade. Keep or change each.
+      </OpenDecision>
+      <OpenDecision>
+        Whether &lt;rk-motion&gt;, which gives these specimens and the diagrams their Pause button and
+        pauses them off-screen, stays in rk-ui.
+      </OpenDecision>
       <MotionSpecimens slot="light" />
       <MotionSpecimens slot="dark" />
     </SpecimenSection>
@@ -173,11 +183,16 @@ const CONTENTS = [
         Open these in a browser with customizable select (appearance: base-select) to see the
         styled list. Elsewhere they are the plain select above.
       </p>
+      <OpenDecision>The checked option: A filled, or B tinted (.rk-select--tint).</OpenDecision>
       <SelectPickerSpecimens slot="light" theme="light" />
       <SelectPickerSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Special inputs">
+      <OpenDecision>
+        File input A (button and filename) or B (drop panel), and search A (icon inside) or B
+        (attached button).
+      </OpenDecision>
       <SpecialInputSpecimens slot="light" theme="light" />
       <SpecialInputSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
@@ -188,6 +203,9 @@ const CONTENTS = [
     </SpecimenSection>
 
     <SpecimenSection title="Range slider">
+      <OpenDecision>
+        Tick marks A (native), B (a tick row with labels) or C (dots on the track).
+      </OpenDecision>
       <RangeSpecimens slot="light" theme="light" />
       <RangeSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
@@ -198,6 +216,10 @@ const CONTENTS = [
         focus, the arrow keys, Home and End, Page Up and Page Down, and form submission. Add
         rk-dial--ramp to either dial for a ring of blocks that light up to the value in token colours.
       </p>
+      <OpenDecision>
+        Dial A (knob) or B (arc); and whether ramp blocks light up to the value, as built, or all
+        stay lit.
+      </OpenDecision>
       <DialSpecimens slot="light" theme="light" />
       <DialSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
@@ -208,6 +230,10 @@ const CONTENTS = [
         over the top and night under it. The time input below the face stays the control for the
         keyboard and screen readers.
       </p>
+      <OpenDecision>
+        Whether the hour hand stays longer than the minute hand, out to the day and night ring, as
+        built.
+      </OpenDecision>
       <ClockSpecimens slot="light" theme="light" />
       <ClockSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
@@ -218,6 +244,10 @@ const CONTENTS = [
     </SpecimenSection>
 
     <SpecimenSection title="Tile and colour pickers">
+      <OpenDecision>
+        The checked colour tile's flair: none (the first colour picker row), A paint brush, B paint
+        drops or C palette and stroke.
+      </OpenDecision>
       <TileSpecimens slot="light" theme="light" />
       <TileSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
@@ -266,6 +296,10 @@ const CONTENTS = [
     </SpecimenSection>
 
     <SpecimenSection title="Loading">
+      <OpenDecision>
+        Whether the spinners and loaders time their loops with the --loop-* tokens (PLAN §5.7) rather
+        than their own durations; and whether .rk-progress--flat stays.
+      </OpenDecision>
       <LoadingSpecimens slot="light" />
       <LoadingSpecimens slot="dark" />
     </SpecimenSection>
@@ -275,16 +309,22 @@ const CONTENTS = [
         Popups open under their button where CSS anchor positioning is supported, and in the middle
         of the window elsewhere.
       </p>
+      <OpenDecision>Tooltip A (inverted) or B (toon, .rk-tooltip--toon).</OpenDecision>
       <TooltipSpecimens slot="light" theme="light" />
       <TooltipSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Badges">
+      <OpenDecision>
+        The corner badge's edge: A outline, B ring in the page colour (.rk-badge--ring) or C sticker
+        (.rk-badge--sticker).
+      </OpenDecision>
       <BadgeSpecimens slot="light" />
       <BadgeSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Breadcrumbs">
+      <OpenDecision>A plain links, B chips or C path bar (.rk-breadcrumbs--path).</OpenDecision>
       <BreadcrumbSpecimens slot="light" />
       <BreadcrumbSpecimens slot="dark" />
     </SpecimenSection>
@@ -299,6 +339,7 @@ const CONTENTS = [
     </SpecimenSection>
 
     <SpecimenSection title="Pagination">
+      <OpenDecision>A folder tabs, or B tiles between previous and next buttons.</OpenDecision>
       <PaginationSpecimens slot="light" />
       <PaginationSpecimens slot="dark" />
     </SpecimenSection>
@@ -332,6 +373,9 @@ const CONTENTS = [
     </SpecimenSection>
 
     <SpecimenSection title="Maths in text" stacked>
+      <OpenDecision>
+        The inline maths size, --maths-scale: A 1em, B 1.1em, C 1.15em (proposed) or D 1.21em.
+      </OpenDecision>
       <MathsInTextSpecimens slot="light" theme="light" />
       <MathsInTextSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
@@ -341,6 +385,10 @@ const CONTENTS = [
         Data visualisation is a vibe check for the styleguide only: none of it is part of rk-ui in
         this version. Its colours are the styleguide's chart tokens.
       </p>
+      <OpenDecision>
+        The sequential scale: A navy (--seq-*) or B vivid (--seq-vivid-*). The heatmaps under Charts
+        show both.
+      </OpenDecision>
       <ChartPaletteSpecimens slot="light" />
       <ChartPaletteSpecimens slot="dark" />
     </SpecimenSection>
@@ -350,6 +398,10 @@ const CONTENTS = [
         A vibe check, not part of rk-ui in this version: inline SVG drawn at build time, in the toon
         look and coloured by the styleguide's chart tokens.
       </p>
+      <OpenDecision>
+        The heatmap layout, A side by side with ink gutters or B tiles (.rk-chart--tiles), and its
+        sequential scale, A navy or B vivid.
+      </OpenDecision>
       <ChartSpecimens slot="light" />
       <ChartSpecimens slot="dark" />
     </SpecimenSection>
@@ -374,6 +426,12 @@ const CONTENTS = [
         Each part says how far it moves and how many layers from the back it is. Try the light, the
         palettes and the shadow modes.
       </p>
+      <OpenDecision>
+        The train without a sticker (A) or with the single-outline sticker demo (B,
+        .rk-explode--sticker). Also, as built, the parts lose their shadows under the focus band and
+        an open assembly shows every part's label: keep these, or keep the shadows and label only
+        the hovered part?
+      </OpenDecision>
       <ExplodedViewSpecimens slot="light" theme="light" />
       <ExplodedViewSpecimens slot="dark" theme="dark" />
     </SpecimenSection>

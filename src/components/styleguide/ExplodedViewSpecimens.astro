@@ -22,13 +22,13 @@ const { theme } = Astro.props
 
 <SpecimenRow title="Steam train: hover or focus an assembly to take it apart">
   <Specimen
-    label="the UI's fills, and each assembly casts the resting shadow; apart on --ease-spring, home on --ease-snap; the switch pulls every assembly apart"
+    label="A: the UI's fills, and each assembly casts the resting shadow; apart on --ease-spring, home on --ease-snap; the switch pulls every assembly apart"
     wide
   >
     <div class="train"><ExplodedView illustration={steamTrain} theme={theme} /></div>
   </Specimen>
   <Specimen
-    label="demo, sticker: one glint keyline and edge round the whole drawing, which casts the resting shadow and stays put while the parts come apart"
+    label="B: sticker demo (.rk-explode--sticker), one glint keyline and edge round the whole drawing, which casts the resting shadow and stays put while the parts come apart"
     wide
   >
     <div class="train"><ExplodedView illustration={steamTrain} theme={theme} sticker /></div>

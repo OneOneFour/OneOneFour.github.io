@@ -21,10 +21,10 @@ const { theme } = Astro.props
 const critical = `eq-critical-${theme}`
 
 const SCALES = [
-  { label: '1em', value: '1em' },
-  { label: '1.1em', value: '1.1em' },
-  { label: '1.15em: proposed, matches the x-height', value: '1.15em' },
-  { label: "1.21em: KaTeX's default", value: '1.21em' },
+  { label: 'A: 1em', value: '1em' },
+  { label: 'B: 1.1em', value: '1.1em' },
+  { label: 'C: 1.15em, proposed, matches the x-height', value: '1.15em' },
+  { label: "D: 1.21em, KaTeX's default", value: '1.21em' },
 ]
 const ENERGY = String.raw`\frac{\partial E}{\partial t} = \teal{-\nabla \cdot \mathbf{F}} + \coral{Q} - \navy{\varepsilon}`
 const ALL_HUES = TERM_HUES.map((hue, i) => `\\${hue}{x_${i + 1}}`).join(' + ')
