@@ -7,9 +7,8 @@ import ColourSummary from '../../components/styleguide/ColourSummary.astro'
 import ColourTokens from '../../components/styleguide/ColourTokens.astro'
 import TypeScale from '../../components/styleguide/TypeScale.astro'
 import FontSpecimens from '../../components/styleguide/FontSpecimens.astro'
-import MonoSpecimen from '../../components/styleguide/MonoSpecimen.astro'
 import CodeSpecimens from '../../components/styleguide/CodeSpecimens.astro'
-import ShapeAndMotion from '../../components/styleguide/ShapeAndMotion.astro'
+import ShapeSpecimens from '../../components/styleguide/ShapeSpecimens.astro'
 import MotionSpecimens from '../../components/styleguide/MotionSpecimens.astro'
 import LightDirection from '../../components/styleguide/LightDirection.astro'
 import ShadowSpecimens from '../../components/styleguide/ShadowSpecimens.astro'
@@ -54,19 +53,7 @@ import StyleguideContents from '../../components/styleguide/StyleguideContents.a
 const CONTENTS = [
   {
     title: 'Foundations',
-    sections: [
-      'Colours',
-      'Type scale',
-      'Fonts',
-      'Monospace',
-      'Code',
-      'Shape and motion',
-      'Motion',
-      'Dark-mode shadows',
-      'Depth',
-      'Base styles',
-      'Icons',
-    ],
+    sections: ['Colours', 'Type', 'Fonts', 'Code', 'Icons', 'Shape, shadow and depth', 'Motion'],
   },
   {
     title: 'Controls',
@@ -123,19 +110,15 @@ const CONTENTS = [
       <ColourTokens slot="dark" theme="dark" />
     </SpecimenSection>
 
-    <SpecimenSection title="Type scale">
-      <TypeScale slot="light" />
-      <TypeScale slot="dark" />
+    <SpecimenSection title="Type">
+      <p>The type scale, then what base.css gives links, code, highlights and selections.</p>
+      <Fragment slot="light"><TypeScale /><BaseSpecimens /></Fragment>
+      <Fragment slot="dark"><TypeScale /><BaseSpecimens /></Fragment>
     </SpecimenSection>
 
     <SpecimenSection title="Fonts">
       <FontSpecimens slot="light" />
       <FontSpecimens slot="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Monospace" stacked>
-      <MonoSpecimen slot="light" />
-      <MonoSpecimen slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Code" stacked>
@@ -147,49 +130,42 @@ const CONTENTS = [
       <CodeSpecimens slot="dark" />
     </SpecimenSection>
 
-    <SpecimenSection title="Shape and motion">
+    <SpecimenSection title="Icons">
+      <IconSpecimens slot="light" />
+      <IconSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Shape, shadow and depth" stacked>
       <p>The light turns every shadow and pop on the page.</p>
       <LightDirection />
-      <ShapeAndMotion slot="light" />
-      <ShapeAndMotion slot="dark" />
+      <p>
+        Dark mode has two shadow modes: the slab by default, or data-shadow="colour" on &lt;html&gt;
+        or any container, where each fill casts its own shade. The switch at the top sets it for the
+        whole page, so every component can be seen in both. Light mode is the same in both.
+      </p>
+      <p>
+        With data-depth="deep" on &lt;html&gt;, any container or one element, its shadows, insets and
+        pops are 1.5 times as deep; data-depth="normal" switches back inside it.
+      </p>
+      <Fragment slot="light">
+        <ShapeSpecimens />
+        <ShadowSpecimens theme="light" />
+        <DepthSpecimens theme="light" />
+      </Fragment>
+      <Fragment slot="dark">
+        <ShapeSpecimens />
+        <ShadowSpecimens theme="dark" />
+        <DepthSpecimens theme="dark" />
+      </Fragment>
     </SpecimenSection>
 
     <SpecimenSection title="Motion">
       <p>
-        The patterns of the motion policy (PLAN §5.7). Turn the light above to see the shadows and the
-        glint follow it while things move.
+        The patterns of the motion policy (PLAN §5.7). Turn the light under Shape, shadow and depth to
+        see the shadows and the glint follow it while things move.
       </p>
       <MotionSpecimens slot="light" />
       <MotionSpecimens slot="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Dark-mode shadows" stacked>
-      <p>
-        The default slab (B) against the colour mode (D): set data-shadow="colour" on &lt;html&gt; or
-        any container, or use the switch at the top for the whole page. Light mode is the same in
-        both.
-      </p>
-      <ShadowSpecimens slot="light" theme="light" />
-      <ShadowSpecimens slot="dark" theme="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Depth" stacked>
-      <p>
-        Set data-depth="deep" on &lt;html&gt;, any container or one element for shadows, insets and
-        pops 1.5 times as deep, and data-depth="normal" to switch back inside it.
-      </p>
-      <DepthSpecimens slot="light" theme="light" />
-      <DepthSpecimens slot="dark" theme="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Base styles">
-      <BaseSpecimens slot="light" />
-      <BaseSpecimens slot="dark" />
-    </SpecimenSection>
-
-    <SpecimenSection title="Icons">
-      <IconSpecimens slot="light" />
-      <IconSpecimens slot="dark" />
     </SpecimenSection>
 
     <SpecimenSection title="Buttons">

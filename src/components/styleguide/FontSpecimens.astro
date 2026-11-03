@@ -1,5 +1,9 @@
 ---
-/** Roboto Slab and Xmind in the weights in use, Xmind italic, and Greek in running prose. */
+/**
+ * Roboto Slab and Xmind in the weights in use, Xmind italic, Greek in running prose, maths symbols,
+ * and JetBrains Mono.
+ */
+import MonoSpecimen from './MonoSpecimen.astro'
 
 const SLAB_WEIGHTS = [500, 800]
 const XMIND_WEIGHTS = [400, 600, 800]
@@ -48,6 +52,9 @@ const MATHS_SYMBOLS = '≈ ≠ ≤ ≥ ± × ÷ − → ← ∞ ∂ ∇ ∑ ∫ 
 <p class="xmind symbols">{MATHS_SYMBOLS}</p>
 <p class="xmind symbols"><em>{MATHS_SYMBOLS}</em></p>
 <p class="label">Symbols a family lacks fall back to the system font.</p>
+
+<h3>JetBrains Mono</h3>
+<MonoSpecimen />
 
 <style>
   h3 {
