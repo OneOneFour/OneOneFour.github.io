@@ -1,22 +1,22 @@
 ---
-/** Top bar options A and B, each at the top of a small page and in place rather than stuck. */
+/** The toast and flush top bars, each at the top of a small page and in place rather than stuck. */
 import Specimen from './Specimen.astro'
 import BackToTop from '../BackToTop.astro'
 import Button from '../ui/Button.astro'
 
 const SPECIMEN_TEXT =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-const OPTIONS = [
-  { label: 'A: toast', class: 'rk-topbar--toast' },
-  { label: 'B: flush', class: 'rk-topbar--flush' },
+const VARIANTS = [
+  { label: '.rk-topbar--toast (the default)', class: 'rk-topbar--toast' },
+  { label: ".rk-topbar--flush, for full-width headers such as an article's title", class: 'rk-topbar--flush' },
 ]
 ---
 
 {
-  OPTIONS.map((option) => (
-    <Specimen label={option.label} wide>
+  VARIANTS.map((variant) => (
+    <Specimen label={variant.label} wide>
       <div class="page">
-        <div class:list={['rk-topbar', option.class]}>
+        <div class:list={['rk-topbar', variant.class]}>
           <Button>Button</Button>
           <BackToTop />
         </div>

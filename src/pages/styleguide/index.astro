@@ -83,11 +83,15 @@ const CONTENTS = [
     sections: ['Breadcrumbs', 'Folder tabs', 'Pagination', 'Top bar', 'Overflow'],
   },
   {
-    title: 'Maths and charts',
-    sections: ['Equations', 'Maths in text', 'Chart colours', 'Charts', 'Diagrams', 'Figures and widgets'],
+    title: 'Maths',
+    sections: ['Equations', 'Maths in text'],
   },
   {
-    title: 'Fun elements',
+    title: 'Data visualisation',
+    sections: ['Chart colours', 'Charts', 'Diagrams', 'Figures and widgets'],
+  },
+  {
+    title: 'Illustration',
     sections: ['Exploded view'],
   },
 ]
@@ -301,7 +305,7 @@ const CONTENTS = [
 
     <SpecimenSection title="Top bar">
       <p>
-        Options for Gate 1b. This page's own header is A; see <a href="?topbar=flush">B live</a> here.
+        This page's own header is the toast; see <a href="?topbar=flush">the flush bar live</a> here.
         At the top of the page the toast lies flat and the flush bar has no shadow; scroll a little
         and they take the look below, and the back-to-top button appears.
       </p>
@@ -333,6 +337,10 @@ const CONTENTS = [
     </SpecimenSection>
 
     <SpecimenSection title="Chart colours">
+      <p>
+        Data visualisation is a vibe check for the styleguide only: none of it is part of rk-ui in
+        this version. Its colours are the styleguide's chart tokens.
+      </p>
       <ChartPaletteSpecimens slot="light" />
       <ChartPaletteSpecimens slot="dark" />
     </SpecimenSection>
@@ -340,7 +348,7 @@ const CONTENTS = [
     <SpecimenSection title="Charts" stacked>
       <p>
         A vibe check, not part of rk-ui in this version: inline SVG drawn at build time, in the toon
-        look and coloured by the styleguide's chart tokens. The heatmaps have options for Gate 1b.
+        look and coloured by the styleguide's chart tokens.
       </p>
       <ChartSpecimens slot="light" />
       <ChartSpecimens slot="dark" />

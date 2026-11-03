@@ -32,20 +32,20 @@ const MOMENTUM = String.raw`\frac{\partial u}{\partial t} + u \frac{\partial u}{
   + \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2} \right) \tag{5}`
 const LYAPUNOV = String.raw`\lambda = \lim_{t \to \infty} \frac{1}{t} \ln \frac{\lVert \delta \mathbf{x}(t) \rVert}{\lVert \delta \mathbf{x}(0) \rVert}`
 
+const flow = anchor('flow')
+const lorenz = anchor('lorenz')
 const WRAPPERS = [
-  { label: 'bare (the default)', class: undefined },
+  { label: 'bare (the default); the references below jump here', class: undefined, id: flow },
   { label: 'slate panel (.rk-equation--panel)', class: 'rk-equation--panel' },
   { label: 'left rule (.rk-equation--rule.rk-scroll--bar)', class: 'rk-equation--rule rk-scroll--bar' },
 ]
-const flow = anchor('flow')
-const lorenz = anchor('lorenz')
 ---
 
 <SpecimenRow title="Display equations">
   {
     WRAPPERS.map((wrapper) => (
       <Specimen label={wrapper.label} wide>
-        <Equation tex={`${FLOW} \\tag{1}`} class={wrapper.class} />
+        <Equation tex={`${FLOW} \\tag{1}`} class={wrapper.class} id={wrapper.id} />
       </Specimen>
     ))
   }
@@ -56,14 +56,12 @@ const lorenz = anchor('lorenz')
     <Equation tex={`\\begin{align*}${LORENZ_ROWS}\\end{align*}`} />
   </Specimen>
   <Specimen label="one number for the whole system (aligned, in one tagged display)" wide>
-    <Equation tex={LORENZ_SYSTEM} />
+    <Equation tex={LORENZ_SYSTEM} id={lorenz} />
   </Specimen>
 </SpecimenRow>
 
 <SpecimenRow title="References and the jump target">
-  <Specimen label="short pill in prose (click to jump)" wide>
-    <Equation tex={`${FLOW} \\tag{1}`} id={flow} />
-    <Equation tex={LORENZ_SYSTEM} id={lorenz} />
+  <Specimen label="short pill in prose (click to jump to (1) or (2) above)" wide>
     <p>
       Pack my box with <EquationReference to={flow} number={1} /> five dozen liquor jugs:{' '}
       <EquationReference to={lorenz} number={2} class="is-hover" /> hovered,{' '}
@@ -86,13 +84,8 @@ const lorenz = anchor('lorenz')
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title="Long equations scroll">
-  <Specimen label="phone width: scroll, or tab in and use the arrow keys" wide>
-    <div class="phone">
-      <Equation tex={MOMENTUM} />
-    </div>
-  </Specimen>
-  <Specimen label="focused" wide>
+<SpecimenRow title="Long equations scroll (more under Overflow)">
+  <Specimen label="phone width, focused: scroll, or tab in and use the arrow keys" wide>
     <div class="phone">
       <Equation tex={MOMENTUM} class="is-focus" />
     </div>
